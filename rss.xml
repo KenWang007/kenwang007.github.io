@@ -5,62 +5,52 @@
     <link>https://kenwang007.github.io</link>
     <description>记录AI学习、架构设计、编程技术和读书心得的个人知识库</description>
     <language>zh-CN</language>
-<<<<<<< HEAD
-    <lastBuildDate>Sat, 24 Jan 2026 14:45:24 +0000</lastBuildDate>
-=======
-    <lastBuildDate>Sat, 24 Jan 2026 22:47:47 +0000</lastBuildDate>
->>>>>>> 6090b2b (Restructure UI)
+    <lastBuildDate>Sat, 24 Jan 2026 14:57:00 +0000</lastBuildDate>
     <atom:link href="https://kenwang007.github.io/rss.xml" rel="self" type="application/rss+xml"/>
     <item>
       <title>变量与数据类型</title>
-      <link>https://kenwang007.github.io/notes/Architecture/Python-learning.html</link>
-      <guid>https://kenwang007.github.io/notes/Architecture/Python-learning.html</guid>
+      <link>https://kenwang007.github.io/notes/软件设计/Python-learning.html</link>
+      <guid>https://kenwang007.github.io/notes/软件设计/Python-learning.html</guid>
       <description>关键词: 变量与数据类型</description>
       <category>变量与数据类型</category>
-<<<<<<< HEAD
-      <pubDate>Sat, 24 Jan 2026 14:45:24 +0000</pubDate>
-=======
-      <pubDate>Sat, 24 Jan 2026 22:40:25 +0000</pubDate>
->>>>>>> 6090b2b (Restructure UI)
+      <pubDate>Sat, 24 Jan 2026 14:57:00 +0000</pubDate>
     </item>
     <item>
       <title>How to use cursor in local</title>
-      <link>https://kenwang007.github.io/notes/AI Learning/Tools/Ollama/OpenwebUI/How to use cursor in delivery.html</link>
-      <guid>https://kenwang007.github.io/notes/AI Learning/Tools/Ollama/OpenwebUI/How to use cursor in delivery.html</guid>
+      <link>https://kenwang007.github.io/notes/AI相关/Tools/Ollama/OpenwebUI/How to use cursor in delivery.html</link>
+      <guid>https://kenwang007.github.io/notes/AI相关/Tools/Ollama/OpenwebUI/How to use cursor in delivery.html</guid>
       <description>关键词: cursor, local</description>
       <category>cursor</category>
       <category>local</category>
-<<<<<<< HEAD
-      <pubDate>Sat, 24 Jan 2026 14:45:24 +0000</pubDate>
-=======
-      <pubDate>Sat, 24 Jan 2026 22:40:25 +0000</pubDate>
->>>>>>> 6090b2b (Restructure UI)
+      <pubDate>Sat, 24 Jan 2026 14:57:00 +0000</pubDate>
     </item>
     <item>
       <title>What is OpenwebUI</title>
-      <link>https://kenwang007.github.io/notes/AI Learning/Tools/Ollama/OpenwebUI/How to run OpenwebUI.html</link>
-      <guid>https://kenwang007.github.io/notes/AI Learning/Tools/Ollama/OpenwebUI/How to run OpenwebUI.html</guid>
+      <link>https://kenwang007.github.io/notes/AI相关/Tools/Ollama/OpenwebUI/How to run OpenwebUI.html</link>
+      <guid>https://kenwang007.github.io/notes/AI相关/Tools/Ollama/OpenwebUI/How to run OpenwebUI.html</guid>
       <description>关键词: OpenwebUI, Openweb</description>
       <category>OpenwebUI</category>
       <category>Openweb</category>
-<<<<<<< HEAD
-      <pubDate>Sat, 24 Jan 2026 14:45:24 +0000</pubDate>
-=======
-      <pubDate>Sat, 24 Jan 2026 22:40:25 +0000</pubDate>
->>>>>>> 6090b2b (Restructure UI)
+      <pubDate>Sat, 24 Jan 2026 14:57:00 +0000</pubDate>
     </item>
     <item>
       <title>📚 RAG技术全面介绍</title>
-      <link>https://kenwang007.github.io/notes/AI Learning/RAG/introduction.html</link>
-      <guid>https://kenwang007.github.io/notes/AI Learning/RAG/introduction.html</guid>
+      <link>https://kenwang007.github.io/notes/AI相关/RAG/introduction.html</link>
+      <guid>https://kenwang007.github.io/notes/AI相关/RAG/introduction.html</guid>
       <description>关键词: RAG, 技术全面介绍</description>
       <category>RAG</category>
       <category>技术全面介绍</category>
-<<<<<<< HEAD
-      <pubDate>Sat, 24 Jan 2026 14:45:24 +0000</pubDate>
-=======
-      <pubDate>Sat, 24 Jan 2026 22:40:25 +0000</pubDate>
->>>>>>> 6090b2b (Restructure UI)
+      <pubDate>Sat, 24 Jan 2026 14:57:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>如何高效使用 AI Agent</title>
+      <link>https://kenwang007.github.io/notes/AI相关/Agent/如何高效使用agent.html</link>
+      <guid>https://kenwang007.github.io/notes/AI相关/Agent/如何高效使用agent.html</guid>
+      <description>关键词: AI, Agent, 如何高效使用</description>
+      <category>AI</category>
+      <category>Agent</category>
+      <category>如何高效使用</category>
+      <pubDate>Sat, 24 Jan 2026 14:57:00 +0000</pubDate>
     </item>
   </channel>
 </rss>

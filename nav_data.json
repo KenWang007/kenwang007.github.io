@@ -1,16 +1,12 @@
 {
   "nav_menu": [
     {
-      "name": "AI",
-      "path": "notes/AI"
+      "name": "AI相关",
+      "path": "notes/AI相关"
     },
     {
-      "name": "AI Learning",
-      "path": "notes/AI Learning"
-    },
-    {
-      "name": "Architecture",
-      "path": "notes/Architecture"
+      "name": "软件设计",
+      "path": "notes/软件设计"
     },
     {
       "name": "阅读感悟",
@@ -19,32 +15,41 @@
   ],
   "blog_posts": [
     {
-      "title": "What is OpenwebUI",
-      "path": "notes/AI Learning/Tools/Ollama/OpenwebUI/How to run OpenwebUI.html",
+      "title": "如何高效使用 AI Agent",
+      "path": "notes/AI相关/Agent/如何高效使用agent.html",
       "keywords": [
-        "OpenwebUI",
-        "Openweb"
-      ]
-    },
-    {
-      "title": "How to use cursor in local",
-      "path": "notes/AI Learning/Tools/Ollama/OpenwebUI/How to use cursor in delivery.html",
-      "keywords": [
-        "cursor",
-        "local"
+        "AI",
+        "Agent",
+        "如何高效使用"
       ]
     },
     {
       "title": "📚 RAG技术全面介绍",
-      "path": "notes/AI Learning/RAG/introduction.html",
+      "path": "notes/AI相关/RAG/introduction.html",
       "keywords": [
         "RAG",
         "技术全面介绍"
       ]
     },
     {
+      "title": "How to use cursor in local",
+      "path": "notes/AI相关/Tools/Ollama/OpenwebUI/How to use cursor in delivery.html",
+      "keywords": [
+        "cursor",
+        "local"
+      ]
+    },
+    {
+      "title": "What is OpenwebUI",
+      "path": "notes/AI相关/Tools/Ollama/OpenwebUI/How to run OpenwebUI.html",
+      "keywords": [
+        "OpenwebUI",
+        "Openweb"
+      ]
+    },
+    {
       "title": "变量与数据类型",
-      "path": "notes/Architecture/Python-learning.html",
+      "path": "notes/软件设计/Python-learning.html",
       "keywords": [
         "变量与数据类型"
       ]
@@ -52,29 +57,29 @@
   ],
   "directory_structure": [
     {
-      "path": "notes/AI",
-      "has_html": true,
-      "subdirs": []
-    },
-    {
-      "path": "notes/AI Learning",
+      "path": "notes/AI相关",
       "has_html": true,
       "subdirs": [
         {
-          "path": "notes/AI Learning/RAG",
+          "path": "notes/AI相关/Agent",
           "has_html": true,
           "subdirs": []
         },
         {
-          "path": "notes/AI Learning/Tools",
+          "path": "notes/AI相关/RAG",
+          "has_html": true,
+          "subdirs": []
+        },
+        {
+          "path": "notes/AI相关/Tools",
           "has_html": true,
           "subdirs": [
             {
-              "path": "notes/AI Learning/Tools/Ollama",
+              "path": "notes/AI相关/Tools/Ollama",
               "has_html": true,
               "subdirs": [
                 {
-                  "path": "notes/AI Learning/Tools/Ollama/OpenwebUI",
+                  "path": "notes/AI相关/Tools/Ollama/OpenwebUI",
                   "has_html": true,
                   "subdirs": []
                 }
@@ -85,7 +90,7 @@
       ]
     },
     {
-      "path": "notes/Architecture",
+      "path": "notes/软件设计",
       "has_html": true,
       "subdirs": []
     },
@@ -95,5 +100,5 @@
       "subdirs": []
     }
   ],
-  "generated_at": 1769265924.510478
+  "generated_at": 1769266620.901408
 }
