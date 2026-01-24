@@ -25,6 +25,8 @@ def scan_notes_directory():
     nav_menu = []
     # 博客文章数据
     blog_posts = []
+    # 目录结构数据
+    directory_structure = []
     
     # 扫描一级目录
     for dir_path in sorted(NOTES_DIR.iterdir()):
@@ -32,16 +34,63 @@ def scan_notes_directory():
             dir_name = dir_path.name
             dir_rel_path = str(dir_path.relative_to(ROOT_DIR))
             
-            # 添加到导航菜单
-            nav_menu.append({
-                "name": dir_name,
-                "path": dir_rel_path
+            # 检查目录下是否有.html文件（包括子目录）
+            has_html = check_directory_has_html(dir_path)
+            
+            # 扫描子目录结构
+            subdirs = scan_directory_structure(dir_path)
+            
+            # 只有当目录本身有.html文件或有包含.html文件的子目录时才添加到导航
+            if has_html or subdirs:
+                nav_menu.append({
+                    "name": dir_name,
+                    "path": dir_rel_path
+                })
+            
+            # 添加到目录结构
+            directory_structure.append({
+                "path": dir_rel_path,
+                "has_html": has_html,
+                "subdirs": subdirs
             })
             
             # 扫描目录下的博客文章
             scan_blog_posts(dir_path, blog_posts)
     
-    return nav_menu, blog_posts
+    return nav_menu, blog_posts, directory_structure
+
+
+def check_directory_has_html(directory):
+    """检查目录下是否有.html文件（包括子目录）"""
+    for root, _, files in os.walk(directory):
+        for file in files:
+            if file.endswith(".html"):
+                return True
+    return False
+
+
+def scan_directory_structure(directory):
+    """扫描目录结构，返回子目录列表"""
+    subdirs = []
+    
+    try:
+        for item in sorted(directory.iterdir()):
+            if item.is_dir():
+                dir_rel_path = str(item.relative_to(ROOT_DIR))
+                has_html = check_directory_has_html(item)
+                subdirs_structure = scan_directory_structure(item)
+                
+                # 只有当目录本身有.html文件或有包含.html文件的子目录时才添加
+                if has_html or subdirs_structure:
+                    subdirs.append({
+                        "path": dir_rel_path,
+                        "has_html": has_html,
+                        "subdirs": subdirs_structure
+                    })
+    except PermissionError:
+        pass
+    
+    return subdirs
 
 
 def scan_blog_posts(directory, blog_posts):
@@ -55,6 +104,18 @@ def scan_blog_posts(directory, blog_posts):
                 
                 file_path = Path(root) / file
                 file_rel_path = str(file_path.relative_to(ROOT_DIR))
+                
+                # 如果是.md文件，检查对应的.html文件是否存在
+                if file_rel_path.endswith('.md'):
+                    html_path = file_rel_path[:-3] + '.html'
+                    html_file = ROOT_DIR / html_path
+                    # 如果对应的.html文件不存在，跳过这个.md文件
+                    if not html_file.exists():
+                        continue
+                    file_rel_path = html_path
+                elif not file_rel_path.endswith('.html'):
+                    # 既不是.md也不是.html文件，跳过
+                    continue
                 
                 # 提取标题和关键词
                 title, keywords = extract_metadata(file_path)
@@ -168,12 +229,13 @@ def main():
     print("=== 导航数据自动生成工具 ===")
     
     # 扫描目录结构
-    nav_menu, blog_posts = scan_notes_directory()
+    nav_menu, blog_posts, directory_structure = scan_notes_directory()
     
     # 生成导航数据
     nav_data = {
         "nav_menu": nav_menu,
         "blog_posts": blog_posts,
+        "directory_structure": directory_structure,
         "generated_at": os.path.getmtime(__file__)
     }
     
@@ -184,6 +246,7 @@ def main():
     print(f"\n生成完成！")
     print(f"导航菜单数量: {len(nav_menu)}")
     print(f"博客文章数量: {len(blog_posts)}")
+    print(f"目录结构数量: {len(directory_structure)}")
     print(f"输出文件: {OUTPUT_FILE}")
     
     return nav_data

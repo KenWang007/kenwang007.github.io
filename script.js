@@ -4,6 +4,7 @@
 let allKeywords = [];
 let blogPosts = [];
 let navMenuData = [];
+let directoryStructure = [];
 
 // 页面加载完成后执行
 document.addEventListener('DOMContentLoaded', async function() {
@@ -19,6 +20,9 @@ document.addEventListener('DOMContentLoaded', async function() {
         
         // 初始化搜索功能
         initSearch();
+        
+        // 初始化目录列表
+        initDirectoryList();
     } catch (error) {
         console.error('加载导航数据失败:', error);
     }
@@ -36,10 +40,12 @@ async function loadNavData() {
         // 更新全局变量
         navMenuData = data.nav_menu || [];
         blogPosts = data.blog_posts || [];
+        directoryStructure = data.directory_structure || [];
         
         console.log('导航数据加载成功:', {
             navMenuCount: navMenuData.length,
-            blogPostsCount: blogPosts.length
+            blogPostsCount: blogPosts.length,
+            directoryStructureCount: directoryStructure.length
         });
     } catch (error) {
         console.error('加载nav_data.json失败:', error);
@@ -351,3 +357,61 @@ window.blogUtils = {
     highlightKeywords,
     getUrlParameter
 };
+
+// 动态生成目录列表
+function generateDirectoryList() {
+    // 获取当前页面的路径
+    const currentPath = window.location.pathname;
+    
+    // 移除文件名，只保留目录路径
+    let dirPath = currentPath.substring(0, currentPath.lastIndexOf('/'));
+    if (!dirPath) {
+        dirPath = '/';
+    }
+    
+    // 在directoryStructure中查找当前目录
+    const currentDir = findDirectoryByPath(directoryStructure, dirPath);
+    
+    if (!currentDir || !currentDir.subdirs || currentDir.subdirs.length === 0) {
+        return null;
+    }
+    
+    // 生成目录列表HTML
+    let html = '<h2>目录结构</h2><ul>';
+    currentDir.subdirs.forEach(subdir => {
+        const dirName = subdir.path.split('/').pop();
+        html += `<li><a href="/${subdir.path}/index.html">${dirName}</a></li>`;
+    });
+    html += '</ul>';
+    
+    return html;
+}
+
+// 根据路径查找目录
+function findDirectoryByPath(directories, targetPath) {
+    for (const dir of directories) {
+        if (dir.path === targetPath) {
+            return dir;
+        }
+        if (dir.subdirs && dir.subdirs.length > 0) {
+            const found = findDirectoryByPath(dir.subdirs, targetPath);
+            if (found) {
+                return found;
+            }
+        }
+    }
+    return null;
+}
+
+// 初始化目录列表
+function initDirectoryList() {
+    const dirListHtml = generateDirectoryList();
+    if (dirListHtml) {
+        // 查找目录列表容器
+        const contentArea = document.querySelector('.markdown-content');
+        if (contentArea) {
+            // 在文章内容后插入目录列表
+            contentArea.insertAdjacentHTML('beforeend', dirListHtml);
+        }
+    }
+}

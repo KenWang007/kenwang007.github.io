@@ -19,66 +19,71 @@
   ],
   "blog_posts": [
     {
-      "title": "How to use cursor in local",
-      "path": "notes/AI Learning/Tools/Ollama/OpenwebUI/How to use cursor in delivery.md",
-      "keywords": [
-        "How to use cursor in local",
-        "how does cursor can help devs"
-      ]
-    },
-    {
-      "title": "What is OpenwebUI",
-      "path": "notes/AI Learning/Tools/Ollama/OpenwebUI/How to run OpenwebUI.md",
-      "keywords": [
-        "What is OpenwebUI",
-        "How to run OpenwebUI in local"
-      ]
-    },
-    {
       "title": "📚 RAG技术全面介绍",
-      "path": "notes/AI Learning/RAG/introduction.md",
+      "path": "notes/AI Learning/RAG/introduction.html",
       "keywords": [
-        "RAG与其他AI技术的对比",
-        "自适应检索策略",
-        "RAG的优势",
-        "RAG的实现架构",
-        "流程图",
-        "核心组件",
-        "RAG的挑战与解决方案",
-        "RAG的应用场景",
-        "轻量化RAG",
-        "客户服务",
-        " RAG技术全面介绍",
-        "灵活可扩展",
-        "参考资料",
-        "RAG的发展趋势",
-        "跨语言RAG",
-        "学术研究",
-        "个人应用",
-        "什么是RAG",
         "推理阶段",
-        "成本效益",
-        "常见实现方案",
-        "解决LLM的固有问题",
-        "多模态RAG",
-        "知识准备阶段",
-        "实时更新机制",
+        "自适应检索策略",
+        "跨语言RAG",
+        "客户服务",
+        "参考资料",
+        "轻量化RAG",
+        "个人应用",
         "RAG的工作原理",
-        "企业知识管理"
+        "知识准备阶段",
+        "RAG的发展趋势",
+        "流程图",
+        "学术研究",
+        "RAG的实现架构",
+        "RAG的优势",
+        "实时更新机制",
+        " RAG技术全面介绍",
+        "常见实现方案",
+        "RAG的挑战与解决方案",
+        "灵活可扩展",
+        "成本效益",
+        "什么是RAG",
+        "解决LLM的固有问题",
+        "企业知识管理",
+        "核心组件",
+        "RAG的应用场景",
+        "多模态RAG",
+        "RAG与其他AI技术的对比"
       ]
     },
     {
       "title": "1. 加载文档",
       "path": "notes/AI Learning/RAG/introduction.html",
       "keywords": []
-    },
-    {
-      "title": "变量与数据类型",
-      "path": "notes/Architecture/Python-learning.md",
-      "keywords": [
-        "变量与数据类型"
-      ]
     }
   ],
-  "generated_at": 1769254225.777783
+  "directory_structure": [
+    {
+      "path": "notes/AI",
+      "has_html": true,
+      "subdirs": []
+    },
+    {
+      "path": "notes/AI Learning",
+      "has_html": true,
+      "subdirs": [
+        {
+          "path": "notes/AI Learning/RAG",
+          "has_html": true,
+          "subdirs": []
+        }
+      ]
+    },
+    {
+      "path": "notes/Architecture",
+      "has_html": true,
+      "subdirs": []
+    },
+    {
+      "path": "notes/books",
+      "has_html": true,
+      "subdirs": []
+    }
+  ],
+  "generated_at": 1769256887.0024905
 }
