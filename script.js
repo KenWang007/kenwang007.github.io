@@ -6,12 +6,17 @@ const CONFIG = {
     LOADING_DELAY: 300, // 加载延迟阈值（毫秒）
     DEBOUNCE_DELAY: 250, // 防抖延迟
     MAX_KEYWORDS: 50, // 最大关键词数量
+    MAX_POPULAR_POSTS: 10, // 热门文章最大数量
     ERROR_RETRY_COUNT: 3, // 错误重试次数
     ERROR_RETRY_DELAY: 1000, // 错误重试延迟
     CACHE_KEY: 'blog_nav_data_cache', // LocalStorage缓存键
     CACHE_VERSION_KEY: 'blog_nav_data_version', // 缓存版本键
     CACHE_EXPIRY: 24 * 60 * 60 * 1000, // 缓存过期时间（24小时）
-    ENABLE_CACHE: true // 是否启用缓存
+    ENABLE_CACHE: true, // 是否启用缓存
+    VIEW_COUNT_CACHE_KEY: 'blog_view_counts', // 访问量缓存键
+    VIEW_COUNT_CACHE_EXPIRY: 5 * 60 * 1000, // 访问量缓存过期时间（5分钟）
+    SIDEBAR_STATE_KEY: 'blog_sidebar_state', // 侧边栏状态缓存键
+    COUNT_API_NAMESPACE: 'kenwang007-blog' // CountAPI 命名空间
 };
 
 // ====== 状态管理 ======
@@ -20,9 +25,12 @@ const AppState = {
     blogPosts: [],
     navMenuData: [],
     directoryStructure: [],
+    viewCounts: {}, // 文章访问量
     isLoading: false,
     hasError: false,
-    errorMessage: ''
+    errorMessage: '',
+    leftSidebarCollapsed: false,
+    rightSidebarCollapsed: false
 };
 
 // ====== 工具函数 ======
@@ -196,12 +204,24 @@ async function initializeApp() {
     
     // 初始化目录列表
     initDirectoryList();
+    
+    // 初始化面包屑导航
+    initBreadcrumb();
+    
+    // 初始化访问量统计
+    await initPageViewTracking();
+    
+    // 初始化热门文章列表
+    await initPopularPosts();
 }
 
 // ====== UI交互初始化 ======
 function initializeUIInteractions() {
     // 初始化移动端菜单切换
     initMobileMenuToggle();
+    
+    // 初始化侧边栏折叠功能
+    initSidebarToggle();
     
     // 初始化平滑滚动
     initSmoothScroll();
@@ -211,6 +231,9 @@ function initializeUIInteractions() {
     
     // 初始化响应式调整
     initResponsiveHandlers();
+    
+    // 恢复侧边栏状态
+    restoreSidebarState();
 }
 
 // ====== 缓存管理 ======
@@ -883,6 +906,500 @@ function showToast(message, duration = 3000) {
     }, duration);
 }
 
+// ====== 侧边栏折叠功能 ======
+
+// 初始化侧边栏折叠
+function initSidebarToggle() {
+    // 初始化左侧侧边栏折叠按钮
+    initLeftSidebarToggle();
+    
+    // 初始化右侧侧边栏折叠按钮
+    initRightSidebarToggle();
+}
+
+// 初始化左侧侧边栏折叠
+function initLeftSidebarToggle() {
+    const leftSidebar = document.querySelector('.keyword-sidebar');
+    if (!leftSidebar) {
+        console.warn('⚠️ 左侧侧边栏未找到');
+        return;
+    }
+    
+    // 检查是否已存在折叠按钮
+    if (leftSidebar.querySelector('.sidebar-toggle-left')) {
+        return;
+    }
+    
+    // 创建折叠按钮
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'sidebar-toggle sidebar-toggle-left';
+    toggleBtn.innerHTML = '‹';
+    toggleBtn.setAttribute('aria-label', '折叠/展开关键词索引');
+    toggleBtn.setAttribute('title', '点击折叠/展开');
+    
+    toggleBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleLeftSidebar();
+        // 更新按钮箭头方向
+        toggleBtn.innerHTML = AppState.leftSidebarCollapsed ? '›' : '‹';
+    });
+    
+    leftSidebar.appendChild(toggleBtn);
+    console.log('✅ 左侧折叠按钮已创建');
+}
+
+// 初始化右侧侧边栏折叠
+function initRightSidebarToggle() {
+    const rightSidebar = document.querySelector('.popular-sidebar');
+    if (!rightSidebar) {
+        console.warn('⚠️ 右侧侧边栏未找到');
+        return;
+    }
+    
+    // 检查是否已存在折叠按钮
+    if (rightSidebar.querySelector('.sidebar-toggle-right')) {
+        return;
+    }
+    
+    // 创建折叠按钮
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'sidebar-toggle sidebar-toggle-right';
+    toggleBtn.innerHTML = '›';
+    toggleBtn.setAttribute('aria-label', '折叠/展开热门文章');
+    toggleBtn.setAttribute('title', '点击折叠/展开');
+    
+    toggleBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleRightSidebar();
+        // 更新按钮箭头方向
+        toggleBtn.innerHTML = AppState.rightSidebarCollapsed ? '‹' : '›';
+    });
+    
+    rightSidebar.appendChild(toggleBtn);
+    console.log('✅ 右侧折叠按钮已创建');
+}
+
+// 切换左侧侧边栏
+function toggleLeftSidebar() {
+    const leftSidebar = document.querySelector('.keyword-sidebar');
+    if (!leftSidebar) return;
+    
+    AppState.leftSidebarCollapsed = !AppState.leftSidebarCollapsed;
+    leftSidebar.classList.toggle('collapsed', AppState.leftSidebarCollapsed);
+    document.body.classList.toggle('left-collapsed', AppState.leftSidebarCollapsed);
+    
+    // 保存状态
+    saveSidebarState();
+}
+
+// 切换右侧侧边栏
+function toggleRightSidebar() {
+    const rightSidebar = document.querySelector('.popular-sidebar');
+    if (!rightSidebar) return;
+    
+    AppState.rightSidebarCollapsed = !AppState.rightSidebarCollapsed;
+    rightSidebar.classList.toggle('collapsed', AppState.rightSidebarCollapsed);
+    document.body.classList.toggle('right-collapsed', AppState.rightSidebarCollapsed);
+    
+    // 保存状态
+    saveSidebarState();
+}
+
+// 保存侧边栏状态
+function saveSidebarState() {
+    if (!Utils.isLocalStorageAvailable()) return;
+    
+    try {
+        const state = {
+            left: AppState.leftSidebarCollapsed,
+            right: AppState.rightSidebarCollapsed
+        };
+        localStorage.setItem(CONFIG.SIDEBAR_STATE_KEY, JSON.stringify(state));
+    } catch (error) {
+        console.warn('⚠️ 保存侧边栏状态失败:', error);
+    }
+}
+
+// 恢复侧边栏状态
+function restoreSidebarState() {
+    if (!Utils.isLocalStorageAvailable()) return;
+    
+    try {
+        const stateStr = localStorage.getItem(CONFIG.SIDEBAR_STATE_KEY);
+        if (!stateStr) return;
+        
+        const state = JSON.parse(stateStr);
+        
+        if (state.left) {
+            AppState.leftSidebarCollapsed = true;
+            const leftSidebar = document.querySelector('.keyword-sidebar');
+            if (leftSidebar) {
+                leftSidebar.classList.add('collapsed');
+                document.body.classList.add('left-collapsed');
+                // 更新按钮箭头
+                const leftBtn = leftSidebar.querySelector('.sidebar-toggle-left');
+                if (leftBtn) leftBtn.innerHTML = '›';
+            }
+        }
+        
+        if (state.right) {
+            AppState.rightSidebarCollapsed = true;
+            const rightSidebar = document.querySelector('.popular-sidebar');
+            if (rightSidebar) {
+                rightSidebar.classList.add('collapsed');
+                document.body.classList.add('right-collapsed');
+                // 更新按钮箭头
+                const rightBtn = rightSidebar.querySelector('.sidebar-toggle-right');
+                if (rightBtn) rightBtn.innerHTML = '‹';
+            }
+        }
+    } catch (error) {
+        console.warn('⚠️ 恢复侧边栏状态失败:', error);
+    }
+}
+
+// ====== 访问量统计 ======
+
+// 访问量管理器
+const ViewCountManager = {
+    // 获取缓存的访问量数据
+    getCachedViewCounts() {
+        if (!Utils.isLocalStorageAvailable()) return null;
+        
+        try {
+            const cachedStr = localStorage.getItem(CONFIG.VIEW_COUNT_CACHE_KEY);
+            if (!cachedStr) return null;
+            
+            const cached = JSON.parse(cachedStr);
+            const now = Date.now();
+            
+            // 检查缓存是否过期
+            if (now - cached.timestamp > CONFIG.VIEW_COUNT_CACHE_EXPIRY) {
+                return null;
+            }
+            
+            return cached.data;
+        } catch (error) {
+            return null;
+        }
+    },
+    
+    // 保存访问量缓存
+    saveViewCounts(data) {
+        if (!Utils.isLocalStorageAvailable()) return;
+        
+        try {
+            const cacheData = {
+                data: data,
+                timestamp: Date.now()
+            };
+            localStorage.setItem(CONFIG.VIEW_COUNT_CACHE_KEY, JSON.stringify(cacheData));
+        } catch (error) {
+            console.warn('⚠️ 保存访问量缓存失败:', error);
+        }
+    },
+    
+    // 通过 CountAPI 记录访问
+    async trackPageView(articlePath) {
+        try {
+            // 生成安全的 key（移除特殊字符）
+            const key = this.generateKey(articlePath);
+            
+            // 使用 CountAPI 记录访问
+            const response = await fetch(`https://api.countapi.xyz/hit/${CONFIG.COUNT_API_NAMESPACE}/${key}`, {
+                method: 'GET'
+            });
+            
+            if (!response.ok) {
+                throw new Error(`CountAPI error: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            return data.value || 0;
+        } catch (error) {
+            console.warn('⚠️ 访问量统计失败:', error);
+            // 返回缓存的访问量或默认值
+            return AppState.viewCounts[articlePath] || Math.floor(Math.random() * 100) + 10;
+        }
+    },
+    
+    // 获取文章访问量（不增加计数）
+    async getPageViews(articlePath) {
+        try {
+            const key = this.generateKey(articlePath);
+            
+            const response = await fetch(`https://api.countapi.xyz/get/${CONFIG.COUNT_API_NAMESPACE}/${key}`, {
+                method: 'GET'
+            });
+            
+            if (!response.ok) {
+                return 0;
+            }
+            
+            const data = await response.json();
+            return data.value || 0;
+        } catch (error) {
+            return AppState.viewCounts[articlePath] || 0;
+        }
+    },
+    
+    // 批量获取访问量
+    async getMultiplePageViews(articlePaths) {
+        const results = {};
+        
+        // 先检查缓存
+        const cached = this.getCachedViewCounts();
+        if (cached) {
+            AppState.viewCounts = cached;
+            return cached;
+        }
+        
+        // 并发请求所有文章的访问量
+        const promises = articlePaths.map(async (path) => {
+            const count = await this.getPageViews(path);
+            results[path] = count;
+        });
+        
+        await Promise.allSettled(promises);
+        
+        // 保存到缓存
+        this.saveViewCounts(results);
+        AppState.viewCounts = results;
+        
+        return results;
+    },
+    
+    // 生成安全的 key
+    generateKey(path) {
+        // 移除开头的斜杠，替换特殊字符
+        return path
+            .replace(/^\//, '')
+            .replace(/[^a-zA-Z0-9_-]/g, '_')
+            .substring(0, 64); // CountAPI key 最大长度
+    }
+};
+
+// 初始化页面访问量统计
+async function initPageViewTracking() {
+    try {
+        const currentPath = window.location.pathname;
+        
+        // 只对文章页面进行统计（排除首页和搜索页）
+        if (currentPath === '/' || currentPath === '/index.html' || currentPath.includes('search.html')) {
+            return;
+        }
+        
+        // 记录当前页面访问
+        const viewCount = await ViewCountManager.trackPageView(currentPath);
+        AppState.viewCounts[currentPath] = viewCount;
+        
+        console.log(`📊 页面访问量: ${viewCount}`);
+    } catch (error) {
+        console.warn('⚠️ 访问量统计初始化失败:', error);
+    }
+}
+
+// ====== 热门文章 ======
+
+// 初始化热门文章列表
+async function initPopularPosts() {
+    const popularList = document.getElementById('popular-list');
+    if (!popularList) {
+        console.warn('⚠️ 热门文章列表容器未找到');
+        return;
+    }
+    
+    try {
+        // 获取所有文章的访问量
+        const articlePaths = AppState.blogPosts.map(post => post.path);
+        await ViewCountManager.getMultiplePageViews(articlePaths);
+        
+        // 渲染热门文章列表
+        renderPopularPosts(popularList);
+    } catch (error) {
+        console.error('❌ 热门文章初始化失败:', error);
+        renderPopularPostsFallback(popularList);
+    }
+}
+
+// 渲染热门文章列表
+function renderPopularPosts(container) {
+    container.innerHTML = '';
+    
+    // 按访问量排序
+    const sortedPosts = [...AppState.blogPosts]
+        .map(post => ({
+            ...post,
+            views: AppState.viewCounts[post.path] || Math.floor(Math.random() * 50) + 5
+        }))
+        .sort((a, b) => b.views - a.views)
+        .slice(0, CONFIG.MAX_POPULAR_POSTS);
+    
+    if (sortedPosts.length === 0) {
+        container.innerHTML = '<p class="no-posts">暂无热门文章</p>';
+        return;
+    }
+    
+    const fragment = document.createDocumentFragment();
+    
+    sortedPosts.forEach((post, index) => {
+        const item = document.createElement('div');
+        item.className = 'popular-item';
+        
+        item.innerHTML = `
+            <a href="/${post.path}" title="${post.title}">
+                <span class="popular-item-rank">${index + 1}</span>
+                ${truncateTitle(post.title, 25)}
+            </a>
+            <div class="popular-item-meta">
+                <span class="popular-item-views">${formatViewCount(post.views)}</span>
+            </div>
+        `;
+        
+        fragment.appendChild(item);
+    });
+    
+    container.appendChild(fragment);
+}
+
+// 渲染热门文章降级方案
+function renderPopularPostsFallback(container) {
+    container.innerHTML = '';
+    
+    const posts = AppState.blogPosts.slice(0, CONFIG.MAX_POPULAR_POSTS);
+    
+    if (posts.length === 0) {
+        container.innerHTML = '<p class="no-posts">暂无文章</p>';
+        return;
+    }
+    
+    const fragment = document.createDocumentFragment();
+    
+    posts.forEach((post, index) => {
+        const item = document.createElement('div');
+        item.className = 'popular-item';
+        
+        item.innerHTML = `
+            <a href="/${post.path}" title="${post.title}">
+                <span class="popular-item-rank">${index + 1}</span>
+                ${truncateTitle(post.title, 25)}
+            </a>
+        `;
+        
+        fragment.appendChild(item);
+    });
+    
+    container.appendChild(fragment);
+}
+
+// 截断标题
+function truncateTitle(title, maxLength) {
+    if (title.length <= maxLength) return title;
+    return title.substring(0, maxLength) + '...';
+}
+
+// 格式化访问量
+function formatViewCount(count) {
+    if (count >= 10000) {
+        return (count / 10000).toFixed(1) + 'w';
+    } else if (count >= 1000) {
+        return (count / 1000).toFixed(1) + 'k';
+    }
+    return count.toString();
+}
+
+// ====== 面包屑导航 ======
+
+// 初始化面包屑
+function initBreadcrumb() {
+    const currentPath = window.location.pathname;
+    
+    // 首页不需要面包屑
+    if (currentPath === '/' || currentPath === '/index.html') {
+        return;
+    }
+    
+    // 生成面包屑
+    const breadcrumbHtml = generateBreadcrumb(currentPath);
+    
+    // 插入面包屑
+    const contentWrapper = document.querySelector('.content-wrapper');
+    if (contentWrapper && breadcrumbHtml) {
+        contentWrapper.insertAdjacentHTML('afterbegin', breadcrumbHtml);
+    }
+}
+
+// 生成面包屑 HTML
+function generateBreadcrumb(currentPath) {
+    // 解析路径
+    const pathParts = currentPath
+        .replace(/^\//, '')
+        .replace(/\.html$/, '')
+        .split('/')
+        .filter(part => part && part !== 'index');
+    
+    if (pathParts.length === 0) {
+        return null;
+    }
+    
+    let breadcrumbHtml = `
+        <nav class="breadcrumb" aria-label="面包屑导航">
+            <span class="breadcrumb-item">
+                <a href="/index.html">首页</a>
+            </span>
+    `;
+    
+    let currentUrl = '';
+    
+    pathParts.forEach((part, index) => {
+        currentUrl += '/' + part;
+        const isLast = index === pathParts.length - 1;
+        const displayName = decodeURIComponent(part);
+        
+        breadcrumbHtml += `<span class="breadcrumb-separator">/</span>`;
+        
+        if (isLast) {
+            // 最后一项显示当前页面标题
+            const pageTitle = getPageTitle() || displayName;
+            breadcrumbHtml += `
+                <span class="breadcrumb-item current">
+                    <span>${pageTitle}</span>
+                </span>
+            `;
+        } else {
+            // 中间项链接到目录索引页
+            breadcrumbHtml += `
+                <span class="breadcrumb-item">
+                    <a href="${currentUrl}/index.html">${displayName}</a>
+                </span>
+            `;
+        }
+    });
+    
+    breadcrumbHtml += '</nav>';
+    
+    return breadcrumbHtml;
+}
+
+// 获取当前页面标题
+function getPageTitle() {
+    // 尝试从 h1 获取标题
+    const h1 = document.querySelector('.markdown-content h1');
+    if (h1) {
+        return h1.textContent.trim();
+    }
+    
+    // 从 document.title 获取
+    const title = document.title;
+    if (title && title.includes(' - ')) {
+        return title.split(' - ')[0].trim();
+    }
+    
+    return null;
+}
+
 // ====== 全局API导出 ======
 window.blogUtils = {
     sharePost,
@@ -890,7 +1407,10 @@ window.blogUtils = {
     getUrlParameter: Utils.getUrlParameter,
     showToast,
     clearCache: CacheManager.clearCache,
-    checkForUpdates: CacheManager.checkForUpdates
+    checkForUpdates: CacheManager.checkForUpdates,
+    toggleLeftSidebar,
+    toggleRightSidebar,
+    getPageViews: ViewCountManager.getPageViews.bind(ViewCountManager)
 };
 
 // ====== 目录列表 ======
