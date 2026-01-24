@@ -11,3 +11,5 @@ search_enabled: true
 
 # 可选：自定义颜色
 color_scheme: dark  # 或 light, auto
+plugins:
+  - jekyll-default-layout
