@@ -13,17 +13,17 @@
       "path": "notes/Architecture"
     },
     {
-      "name": "books",
-      "path": "notes/books"
+      "name": "阅读感悟",
+      "path": "notes/阅读感悟"
     }
   ],
   "blog_posts": [
     {
-      "title": "📚 RAG技术全面介绍",
-      "path": "notes/AI Learning/RAG/introduction.html",
+      "title": "What is OpenwebUI",
+      "path": "notes/AI Learning/Tools/Ollama/OpenwebUI/How to run OpenwebUI.html",
       "keywords": [
-        "RAG",
-        "技术全面介绍"
+        "OpenwebUI",
+        "Openweb"
       ]
     },
     {
@@ -35,11 +35,11 @@
       ]
     },
     {
-      "title": "What is OpenwebUI",
-      "path": "notes/AI Learning/Tools/Ollama/OpenwebUI/How to run OpenwebUI.html",
+      "title": "📚 RAG技术全面介绍",
+      "path": "notes/AI Learning/RAG/introduction.html",
       "keywords": [
-        "OpenwebUI",
-        "Openweb"
+        "RAG",
+        "技术全面介绍"
       ]
     },
     {
@@ -90,7 +90,7 @@
       "subdirs": []
     },
     {
-      "path": "notes/books",
+      "path": "notes/阅读感悟",
       "has_html": true,
       "subdirs": []
     }

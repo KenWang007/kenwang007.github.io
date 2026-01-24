@@ -5,7 +5,11 @@
     <link>https://kenwang007.github.io</link>
     <description>记录AI学习、架构设计、编程技术和读书心得的个人知识库</description>
     <language>zh-CN</language>
+<<<<<<< HEAD
     <lastBuildDate>Sat, 24 Jan 2026 14:45:24 +0000</lastBuildDate>
+=======
+    <lastBuildDate>Sat, 24 Jan 2026 22:47:47 +0000</lastBuildDate>
+>>>>>>> 6090b2b (Restructure UI)
     <atom:link href="https://kenwang007.github.io/rss.xml" rel="self" type="application/rss+xml"/>
     <item>
       <title>变量与数据类型</title>
@@ -13,7 +17,11 @@
       <guid>https://kenwang007.github.io/notes/Architecture/Python-learning.html</guid>
       <description>关键词: 变量与数据类型</description>
       <category>变量与数据类型</category>
+<<<<<<< HEAD
       <pubDate>Sat, 24 Jan 2026 14:45:24 +0000</pubDate>
+=======
+      <pubDate>Sat, 24 Jan 2026 22:40:25 +0000</pubDate>
+>>>>>>> 6090b2b (Restructure UI)
     </item>
     <item>
       <title>How to use cursor in local</title>
@@ -22,7 +30,11 @@
       <description>关键词: cursor, local</description>
       <category>cursor</category>
       <category>local</category>
+<<<<<<< HEAD
       <pubDate>Sat, 24 Jan 2026 14:45:24 +0000</pubDate>
+=======
+      <pubDate>Sat, 24 Jan 2026 22:40:25 +0000</pubDate>
+>>>>>>> 6090b2b (Restructure UI)
     </item>
     <item>
       <title>What is OpenwebUI</title>
@@ -31,7 +43,11 @@
       <description>关键词: OpenwebUI, Openweb</description>
       <category>OpenwebUI</category>
       <category>Openweb</category>
+<<<<<<< HEAD
       <pubDate>Sat, 24 Jan 2026 14:45:24 +0000</pubDate>
+=======
+      <pubDate>Sat, 24 Jan 2026 22:40:25 +0000</pubDate>
+>>>>>>> 6090b2b (Restructure UI)
     </item>
     <item>
       <title>📚 RAG技术全面介绍</title>
@@ -40,7 +56,11 @@
       <description>关键词: RAG, 技术全面介绍</description>
       <category>RAG</category>
       <category>技术全面介绍</category>
+<<<<<<< HEAD
       <pubDate>Sat, 24 Jan 2026 14:45:24 +0000</pubDate>
+=======
+      <pubDate>Sat, 24 Jan 2026 22:40:25 +0000</pubDate>
+>>>>>>> 6090b2b (Restructure UI)
     </item>
   </channel>
 </rss>
