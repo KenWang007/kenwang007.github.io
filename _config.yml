@@ -4,7 +4,7 @@ description: 个人学习与思考笔记
 url: https://kenblogs.github.io
 
 # 使用远程主题（关键！）
-remote_theme: pages-themes/architect@v0.2.0
+remote_theme: pages-themes/time-machine@v0.2.0
 
 # 启用搜索
 search_enabled: true
