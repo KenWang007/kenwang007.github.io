@@ -488,7 +488,7 @@ function initNavigation() {
     navMenu.innerHTML = '';
     
     // 添加首页菜单项
-    const homeItem = createMenuItem('首页', '/index.html');
+    const homeItem = createMenuItem('首页', '/index.html', true);
     navMenu.appendChild(homeItem);
     
     // 添加notes目录下的一级文件夹作为菜单项
@@ -499,12 +499,29 @@ function initNavigation() {
 }
 
 // 创建菜单项
-function createMenuItem(name, href) {
+function createMenuItem(name, href, isHome = false) {
     const li = document.createElement('li');
     const a = document.createElement('a');
     a.href = href;
     a.textContent = name;
     a.setAttribute('aria-label', `导航到${name}`);
+    
+    // 首页链接特殊处理：如果已在首页，滚动到顶部
+    if (isHome) {
+        a.addEventListener('click', (e) => {
+            const currentPath = window.location.pathname;
+            if (currentPath === '/' || currentPath === '/index.html' || currentPath.endsWith('/index.html')) {
+                // 如果当前就在首页，阻止默认行为并滚动到顶部
+                if (currentPath === '/' || currentPath === '/index.html') {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    return;
+                }
+            }
+            // 否则正常导航到首页
+        });
+    }
+    
     li.appendChild(a);
     return li;
 }
