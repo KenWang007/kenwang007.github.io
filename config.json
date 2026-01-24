@@ -1,0 +1,52 @@
+{
+  "site": {
+    "name": "Ken的知识库",
+    "url": "https://kenwang007.github.io",
+    "description": "记录AI学习、架构设计、编程技术和读书心得的个人知识库",
+    "author": "Ken Wang",
+    "language": "zh-CN",
+    "timezone": "Asia/Shanghai"
+  },
+  "features": {
+    "cache": {
+      "enabled": true,
+      "expiry": 86400000,
+      "comment": "缓存过期时间（毫秒），默认24小时"
+    },
+    "serviceWorker": {
+      "enabled": true,
+      "version": "v1.0.0"
+    },
+    "search": {
+      "enabled": true,
+      "maxResults": 50
+    },
+    "keywords": {
+      "maxPerPost": 5,
+      "minLength": 2
+    }
+  },
+  "build": {
+    "outputDir": ".",
+    "notesDir": "notes",
+    "templateFile": "template.html",
+    "generateSitemap": true,
+    "generateRss": true,
+    "pandocEnabled": true
+  },
+  "theme": {
+    "primaryColor": "#6366f1",
+    "darkMode": true,
+    "animations": true
+  },
+  "analytics": {
+    "enabled": false,
+    "provider": null,
+    "trackingId": null
+  },
+  "social": {
+    "github": "kenwang007",
+    "twitter": null,
+    "linkedin": null
+  }
+}

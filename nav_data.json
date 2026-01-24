@@ -22,16 +22,16 @@
       "title": "What is OpenwebUI",
       "path": "notes/AI Learning/Tools/Ollama/OpenwebUI/How to run OpenwebUI.html",
       "keywords": [
-        "What",
-        "is"
+        "OpenwebUI",
+        "Openweb"
       ]
     },
     {
       "title": "How to use cursor in local",
       "path": "notes/AI Learning/Tools/Ollama/OpenwebUI/How to use cursor in delivery.html",
       "keywords": [
-        "How",
-        "to"
+        "cursor",
+        "local"
       ]
     },
     {
@@ -39,15 +39,14 @@
       "path": "notes/AI Learning/RAG/introduction.html",
       "keywords": [
         "RAG",
-        "技术介绍"
+        "技术全面介绍"
       ]
     },
     {
       "title": "变量与数据类型",
       "path": "notes/Architecture/Python-learning.html",
       "keywords": [
-        "变量与",
-        "数据类型"
+        "变量与数据类型"
       ]
     }
   ],
@@ -96,5 +95,5 @@
       "subdirs": []
     }
   ],
-  "generated_at": 1769259975.1237237
+  "generated_at": 1769262920.44108
 }

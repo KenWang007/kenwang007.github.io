@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://kenwang007.github.io/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <lastmod>2026-01-24</lastmod>
+  </url>
+  <url>
+    <loc>https://kenwang007.github.io/notes/AI Learning/Tools/Ollama/OpenwebUI/How to run OpenwebUI.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-01-24</lastmod>
+  </url>
+  <url>
+    <loc>https://kenwang007.github.io/notes/AI Learning/Tools/Ollama/OpenwebUI/How to use cursor in delivery.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-01-24</lastmod>
+  </url>
+  <url>
+    <loc>https://kenwang007.github.io/notes/AI Learning/RAG/introduction.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-01-24</lastmod>
+  </url>
+  <url>
+    <loc>https://kenwang007.github.io/notes/Architecture/Python-learning.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-01-24</lastmod>
+  </url>
+</urlset>
