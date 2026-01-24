@@ -22,39 +22,9 @@
       "title": "📚 RAG技术全面介绍",
       "path": "notes/AI Learning/RAG/introduction.html",
       "keywords": [
-        "推理阶段",
-        "自适应检索策略",
-        "跨语言RAG",
-        "客户服务",
-        "参考资料",
-        "轻量化RAG",
-        "个人应用",
-        "RAG的工作原理",
-        "知识准备阶段",
-        "RAG的发展趋势",
-        "流程图",
-        "学术研究",
-        "RAG的实现架构",
-        "RAG的优势",
-        "实时更新机制",
-        " RAG技术全面介绍",
-        "常见实现方案",
-        "RAG的挑战与解决方案",
-        "灵活可扩展",
-        "成本效益",
-        "什么是RAG",
-        "解决LLM的固有问题",
-        "企业知识管理",
-        "核心组件",
-        "RAG的应用场景",
-        "多模态RAG",
-        "RAG与其他AI技术的对比"
+        "RAG",
+        "技术介绍"
       ]
-    },
-    {
-      "title": "1. 加载文档",
-      "path": "notes/AI Learning/RAG/introduction.html",
-      "keywords": []
     }
   ],
   "directory_structure": [
@@ -85,5 +55,5 @@
       "subdirs": []
     }
   ],
-  "generated_at": 1769256887.0024905
+  "generated_at": 1769258497.0398362
 }

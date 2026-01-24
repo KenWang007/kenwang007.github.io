@@ -95,37 +95,32 @@ def scan_directory_structure(directory):
 
 def scan_blog_posts(directory, blog_posts):
     """扫描目录下的博客文章"""
+    processed_files = set()
+    
     for root, _, files in os.walk(directory):
         for file in files:
-            if file.endswith(".md") or file.endswith(".html"):
-                # 跳过index.html和index.md
-                if file.lower() == "index.html" or file.lower() == "index.md":
+            file_path = Path(root) / file
+            file_rel_path = str(file_path.relative_to(ROOT_DIR))
+            
+            # 只处理.html文件
+            if file_rel_path.endswith('.html'):
+                # 跳过index.html
+                if file.lower() == "index.html":
                     continue
                 
-                file_path = Path(root) / file
-                file_rel_path = str(file_path.relative_to(ROOT_DIR))
-                
-                # 如果是.md文件，检查对应的.html文件是否存在
-                if file_rel_path.endswith('.md'):
-                    html_path = file_rel_path[:-3] + '.html'
-                    html_file = ROOT_DIR / html_path
-                    # 如果对应的.html文件不存在，跳过这个.md文件
-                    if not html_file.exists():
-                        continue
-                    file_rel_path = html_path
-                elif not file_rel_path.endswith('.html'):
-                    # 既不是.md也不是.html文件，跳过
-                    continue
-                
-                # 提取标题和关键词
-                title, keywords = extract_metadata(file_path)
-                
-                # 添加到博客文章数据
-                blog_posts.append({
-                    "title": title or file_path.stem,
-                    "path": file_rel_path,
-                    "keywords": keywords
-                })
+                # 确保每个.html文件只处理一次
+                if file_rel_path not in processed_files:
+                    # 提取标题和关键词
+                    title, keywords = extract_metadata(file_path)
+                    
+                    # 添加到博客文章数据
+                    blog_posts.append({
+                        "title": title or file_path.stem,
+                        "path": file_rel_path,
+                        "keywords": keywords
+                    })
+                    
+                    processed_files.add(file_rel_path)
 
 
 def extract_metadata(file_path):
@@ -134,9 +129,22 @@ def extract_metadata(file_path):
         with open(file_path, 'r', encoding='utf-8') as f:
             content = f.read()
         
-        # 提取标题（Markdown格式）
-        title_match = re.search(r'^#\s+(.+)', content, re.MULTILINE)
-        title = title_match.group(1) if title_match else None
+        title = None
+        
+        # 检测文件类型并提取标题
+        if file_path.suffix == '.md':
+            # Markdown格式：提取#标题
+            title_match = re.search(r'^#\s+(.+)', content, re.MULTILINE)
+            if title_match:
+                title = title_match.group(1)
+        elif file_path.suffix == '.html':
+            # HTML格式：提取<h1>标题
+            title_match = re.search(r'<h1[^>]*>(.+?)</h1>', content, re.IGNORECASE)
+            if title_match:
+                # 移除HTML标签和特殊字符
+                title = re.sub(r'<[^>]+>', '', title_match.group(1))
+                # 移除多余空格
+                title = title.strip()
         
         # 提取关键词（从标题和内容中）
         keywords = extract_keywords(content, title)
@@ -148,80 +156,111 @@ def extract_metadata(file_path):
 
 
 def extract_keywords(content, title=None):
-    """从内容中提取关键词"""
-    # 停用词列表，排除无意义的单词
-    stop_words = {
-        # 数字和序号
-        '1.', '2.', '3.', '4.', '5.', '6.', '7.', '8.', '9.', '10.',
-        '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
-        
-        # 常用无意义单词
-        'is', 'in', 'to', 'the', 'of', 'and', 'a', 'an', 'for', 'on',
-        'with', 'by', 'at', 'from', 'as', 'was', 'were', 'are', 'be',
-        'what', 'how', 'use', 'local', 'cursor', 'delivery',
-        'run', 'open', 'web', 'ui', 'python', 'learning', 
-        '变量', '数据', '类型', 'devs', 'does', 'help', 'can',
-        '10', '加载文档', '创建检索链', '创建查询引擎', '向量化并存储', '创建索引',
-        
-        # 动词和常见短语
-        '提取', '生成', '更新', '使用', '创建', '加载', '运行', '打开',
-        '设置', '配置', '安装', '部署', '测试', '开发', '实现',
-        '学习', '研究', '分析', '思考', '总结', '介绍', '说明',
-        '详细', '全面', '技术', '方法', '步骤', '过程', '原理',
-        '架构', '设计', '实现', '功能', '特性', '优势', '劣势',
-        '应用', '场景', '案例', '实践', '经验', '技巧', '建议',
-        '问题', '解决方案', '挑战', '趋势', '未来', '发展', '前景'
+    """只从文章标题提取关键词"""
+    # 核心主题词优先级（这些词如果出现，应该优先作为关键词）
+    core_topics = {
+        'RAG', '检索增强生成', 'LLM', '大型语言模型', '向量数据库',
+        '嵌入模型', '知识管理', '客户服务', '学术研究', '多模态',
+        '自适应检索', '实时更新', '跨语言', '轻量化'
     }
     
-    keywords = set()
-    
     # 从标题提取关键词
+    final_keywords = []
+    seen_keywords = set()
+    
     if title:
         # 移除表情符号
         clean_title = re.sub(r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F1E0-\U0001F1FF]', '', title)
         
-        # 直接将整个标题作为关键词（如果有意义）
-        if len(clean_title) > 2 and clean_title.lower() not in stop_words:
-            keywords.add(clean_title)
+        # 1. 首先查找标题中是否包含核心主题词
+        for topic in core_topics:
+            if topic in clean_title and topic not in seen_keywords:
+                final_keywords.append(topic)
+                seen_keywords.add(topic)
+                if len(final_keywords) >= 2:
+                    return final_keywords
+        
+        # 2. 如果标题中包含英文缩写，提取出来作为关键词
+        # 例如："RAG技术全面介绍" -> "RAG"
+        english_terms = re.findall(r'[A-Za-z]+', clean_title)
+        for term in english_terms:
+            if len(term) > 1 and term not in seen_keywords:  # 忽略单个字母和重复项
+                final_keywords.append(term)
+                seen_keywords.add(term)
+                if len(final_keywords) >= 2:
+                    return final_keywords
+        
+        # 3. 提取标题中的核心概念组合
+        # 例如："RAG技术全面介绍" -> "技术介绍"
+        # 移除常见修饰词
+        modifiers = ['全面', '详细', '深入', '最新', '完整', '简明', '快速', '实战', '入门', '进阶', '高级']
+        processed_title = clean_title
+        for modifier in modifiers:
+            processed_title = processed_title.replace(modifier, '')
+        
+        # 提取有意义的概念组合
+        # 中文标题常见模式：[主题] + [技术/方法/工具] + [介绍/教程/指南]
+        concepts = []
+        
+        # 提取"技术"相关组合
+        if '技术' in processed_title:
+            tech_index = processed_title.find('技术')
+            # 提取"技术"后面的内容
+            after_tech = processed_title[tech_index:]
+            if after_tech and after_tech not in seen_keywords:
+                concepts.append(after_tech)
+        
+        # 提取"介绍"相关组合
+        if '介绍' in processed_title:
+            intro_index = processed_title.find('介绍')
+            # 提取"介绍"前面的内容
+            before_intro = processed_title[:intro_index+2]  # 包括"介绍"
+            if before_intro and before_intro not in seen_keywords:
+                concepts.append(before_intro)
+        
+        # 提取"学习"相关组合
+        if '学习' in processed_title:
+            learn_index = processed_title.find('学习')
+            # 提取"学习"前面的内容
+            before_learn = processed_title[:learn_index+2]  # 包括"学习"
+            if before_learn and before_learn not in seen_keywords:
+                concepts.append(before_learn)
+        
+        # 添加提取的概念到关键词列表
+        for concept in concepts:
+            if concept not in seen_keywords:
+                final_keywords.append(concept)
+                seen_keywords.add(concept)
+                if len(final_keywords) >= 2:
+                    return final_keywords
+        
+        # 4. 最后，如果关键词不足，使用标题中的主要主题词
+        if len(final_keywords) < 2:
+            # 尝试提取标题的前半部分和后半部分作为不同关键词
+            if len(clean_title) > 6:
+                parts = clean_title.split()
+                if len(parts) >= 2:
+                    for part in parts:
+                        if part and len(part) > 2 and part not in seen_keywords:
+                            final_keywords.append(part)
+                            seen_keywords.add(part)
+                            if len(final_keywords) >= 2:
+                                return final_keywords
+                else:
+                    # 对于没有空格的长标题，拆分为两部分
+                    mid = len(clean_title) // 2
+                    part1 = clean_title[:mid].strip()
+                    part2 = clean_title[mid:].strip()
+                    
+                    for part in [part1, part2]:
+                        if part and len(part) > 2 and part not in seen_keywords:
+                            final_keywords.append(part)
+                            seen_keywords.add(part)
+                            if len(final_keywords) >= 2:
+                                return final_keywords
     
-    # 从内容中提取关键词
-    if content:
-        # 提取H1-H3标题
-        headers = re.findall(r'^(#{1,3})\s+(.+)$', content, re.MULTILINE)
-        for level, header in headers:
-            # 移除表情符号
-            clean_header = re.sub(r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F1E0-\U0001F1FF]', '', header)
-            
-            # 跳过无意义的标题
-            if len(clean_header) <= 2 or clean_header.lower() in stop_words:
-                continue
-            
-            # 直接将标题作为关键词（如果是主要标题）
-            if level == '#':
-                keywords.add(clean_header)
-            else:
-                # 对于次级标题，提取核心主题词
-                header_parts = re.split(r'[\s,，.。:：;；!?！？]+', clean_header)
-                for part in header_parts:
-                    part = part.strip()
-                    if len(part) > 2 and part.lower() not in stop_words:
-                        keywords.add(part)
-    
-    # 特殊处理：移除过于通用的关键词
-    final_keywords = []
-    for keyword in keywords:
-        # 移除包含数字的关键词
-        if re.search(r'\d', keyword):
-            continue
-        # 移除过于简短的关键词
-        if len(keyword) <= 2:
-            continue
-        # 移除过于通用的关键词
-        if keyword in ['什么', '如何', '使用', '安装', '配置', '教程', '指南', '基础', '进阶']:
-            continue
-        final_keywords.append(keyword)
-    
-    return final_keywords
+    # 最终返回最多2个关键词
+    return final_keywords[:2]
 
 
 def main():

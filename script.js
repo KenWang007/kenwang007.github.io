@@ -127,13 +127,10 @@ function extractKeywords() {
     // 清空现有关键词
     allKeywords = [];
     
-    // 遍历所有博客文章
+    // 遍历所有博客文章，只使用nav_data.json中已经提取好的关键词
     blogPosts.forEach(post => {
-        // 从标题中提取关键词
-        const titleKeywords = extractKeywordsFromTitle(post.title);
-        
-        // 合并关键词到全局数组
-        allKeywords = [...new Set([...allKeywords, ...titleKeywords, ...post.keywords])];
+        // 只使用post.keywords（从nav_data.json中提取的），不再从标题中重复提取
+        allKeywords = [...new Set([...allKeywords, ...post.keywords])];
     });
     
     // 按字母顺序排序

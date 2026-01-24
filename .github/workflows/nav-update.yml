@@ -1,4 +1,4 @@
-name: Update Navigation Data
+name: Update Navigation Data and Convert Markdown to HTML
 
 # 触发条件：推送到main分支，且修改了notes目录下的文件
 on:
@@ -10,7 +10,7 @@ on:
 
 # 作业配置
 jobs:
-  update-nav:
+  update-content:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -30,33 +30,71 @@ jobs:
           python-version: '3.10'
           cache: 'pip'
       
-      # 3. 运行导航数据生成脚本
+      # 3. 安装pandoc用于markdown转html
+      - name: Install pandoc
+        run: sudo apt-get update && sudo apt-get install -y pandoc
+      
+      # 4. 转换markdown为html
+      - name: Convert Markdown to HTML
+        run: |
+          # 遍历notes目录下所有.md文件（排除index.md）
+          find notes -name "*.md" -not -name "index.md" | while read md_file; do
+            # 生成对应的html文件名
+            html_file="${md_file%.md}.html"
+            
+            # 从markdown文件中提取标题
+            title=$(grep -m 1 "^# " "$md_file" | sed 's/^# //')
+            if [ -z "$title" ]; then
+              title="${md_file##*/}"
+              title="${title%.md}"
+            fi
+            
+            # 使用pandoc转换markdown内容
+            content=$(pandoc -s "$md_file" -o "$md_file.temp.html" && 
+                     grep -A 1000 "<body>" "$md_file.temp.html" | 
+                     grep -B 1000 "</body>" | 
+                     sed '1d;$d')
+            
+            # 使用template.html模板生成最终html文件
+            cp template.html "$html_file"
+            
+            # 替换模板中的标题和内容
+            sed -i "s/{{title}}/$title/g" "$html_file"
+            sed -i "s/{{content}}/$content/g" "$html_file"
+            
+            # 清理临时文件
+            rm "$md_file.temp.html"
+          done
+      
+      # 5. 运行导航数据生成脚本
       - name: Generate navigation data
         run: python3 generate_nav.py
       
-      # 4. 检查是否有更改
+      # 6. 检查是否有更改
       - name: Check for changes
         id: check_changes
         run: |
           git status
-          if git diff --exit-code nav_data.json; then
-            echo "nav_data.json未更改，跳过提交"
+          # 检查nav_data.json和生成的html文件是否有更改
+          if git diff --exit-code nav_data.json $(find notes -name "*.html" -not -name "index.html"); then
+            echo "没有文件更改，跳过提交"
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
-            echo "nav_data.json已更改，准备提交"
+            echo "文件已更改，准备提交"
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
       
-      # 5. 提交更改
+      # 7. 提交更改
       - name: Commit and push changes
         if: steps.check_changes.outputs.has_changes == 'true'
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git add nav_data.json
-          git commit -m "自动更新导航数据"
+          # 提交nav_data.json和生成的html文件
+          git add nav_data.json $(find notes -name "*.html" -not -name "index.html")
+          git commit -m "自动更新导航数据和转换markdown为html"
           git push origin main
       
-      # 6. 输出结果
+      # 8. 输出结果
       - name: Show result
-        run: echo "导航数据更新作业完成"
+        run: echo "内容更新作业完成"
