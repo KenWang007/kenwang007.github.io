@@ -1,0 +1,84 @@
+{
+  "nav_menu": [
+    {
+      "name": "AI",
+      "path": "notes/AI"
+    },
+    {
+      "name": "AI Learning",
+      "path": "notes/AI Learning"
+    },
+    {
+      "name": "Architecture",
+      "path": "notes/Architecture"
+    },
+    {
+      "name": "books",
+      "path": "notes/books"
+    }
+  ],
+  "blog_posts": [
+    {
+      "title": "How to use cursor in local",
+      "path": "notes/AI Learning/Tools/Ollama/OpenwebUI/How to use cursor in delivery.md",
+      "keywords": [
+        "How to use cursor in local",
+        "how does cursor can help devs"
+      ]
+    },
+    {
+      "title": "What is OpenwebUI",
+      "path": "notes/AI Learning/Tools/Ollama/OpenwebUI/How to run OpenwebUI.md",
+      "keywords": [
+        "What is OpenwebUI",
+        "How to run OpenwebUI in local"
+      ]
+    },
+    {
+      "title": "📚 RAG技术全面介绍",
+      "path": "notes/AI Learning/RAG/introduction.md",
+      "keywords": [
+        "RAG与其他AI技术的对比",
+        "自适应检索策略",
+        "RAG的优势",
+        "RAG的实现架构",
+        "流程图",
+        "核心组件",
+        "RAG的挑战与解决方案",
+        "RAG的应用场景",
+        "轻量化RAG",
+        "客户服务",
+        " RAG技术全面介绍",
+        "灵活可扩展",
+        "参考资料",
+        "RAG的发展趋势",
+        "跨语言RAG",
+        "学术研究",
+        "个人应用",
+        "什么是RAG",
+        "推理阶段",
+        "成本效益",
+        "常见实现方案",
+        "解决LLM的固有问题",
+        "多模态RAG",
+        "知识准备阶段",
+        "实时更新机制",
+        "RAG的工作原理",
+        "企业知识管理"
+      ]
+    },
+    {
+      "title": "1. 加载文档",
+      "path": "notes/AI Learning/RAG/introduction.html",
+      "keywords": []
+    },
+    {
+      "title": "变量与数据类型",
+      "path": "notes/Architecture/Python-learning.md",
+      "keywords": [
+        "变量与数据类型"
+      ]
+    }
+  ],
+  "generated_at": 1769254225.777783
+}
