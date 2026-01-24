@@ -15,22 +15,6 @@
   ],
   "blog_posts": [
     {
-      "title": "What is OpenwebUI",
-      "path": "notes/AI相关/Tools/Ollama/OpenwebUI/How to run OpenwebUI.html",
-      "keywords": [
-        "OpenwebUI",
-        "Openweb"
-      ]
-    },
-    {
-      "title": "How to use cursor in local",
-      "path": "notes/AI相关/Tools/Ollama/OpenwebUI/How to use cursor in delivery.html",
-      "keywords": [
-        "cursor",
-        "local"
-      ]
-    },
-    {
       "title": "如何高效使用 AI Agent",
       "path": "notes/AI相关/Agent/如何高效使用agent.html",
       "keywords": [
@@ -45,6 +29,22 @@
       "keywords": [
         "RAG",
         "技术全面介绍"
+      ]
+    },
+    {
+      "title": "How to use cursor in local",
+      "path": "notes/AI相关/Tools/Ollama/OpenwebUI/How to use cursor in delivery.html",
+      "keywords": [
+        "cursor",
+        "local"
+      ]
+    },
+    {
+      "title": "What is OpenwebUI",
+      "path": "notes/AI相关/Tools/Ollama/OpenwebUI/How to run OpenwebUI.html",
+      "keywords": [
+        "OpenwebUI",
+        "Openweb"
       ]
     },
     {
@@ -100,5 +100,5 @@
       "subdirs": []
     }
   ],
-  "generated_at": 1769266729.575927
+  "generated_at": 1769266762.059987
 }
