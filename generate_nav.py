@@ -2,17 +2,21 @@
 """
 导航数据自动生成脚本
 用于扫描notes目录结构，生成导航菜单和博客文章数据
+同时将Markdown文件转换为HTML格式
 """
 
 import os
 import json
 import re
+import subprocess
 from pathlib import Path
 
 # 项目根目录
 ROOT_DIR = Path(__file__).parent
 # Notes目录
 NOTES_DIR = ROOT_DIR / "notes"
+# HTML模板文件
+TEMPLATE_FILE = ROOT_DIR / "template.html"
 # 输出JSON文件
 OUTPUT_FILE = ROOT_DIR / "nav_data.json"
 
@@ -20,6 +24,14 @@ OUTPUT_FILE = ROOT_DIR / "nav_data.json"
 def scan_notes_directory():
     """扫描notes目录结构"""
     print("开始扫描notes目录...")
+    
+    # 1. 首先将所有Markdown文件转换为HTML
+    print("\n=== 开始转换Markdown到HTML ===")
+    for root, _, files in os.walk(NOTES_DIR):
+        for file in files:
+            if file.endswith('.md') and file != 'index.md':
+                md_file_path = Path(root) / file
+                convert_markdown_to_html(md_file_path)
     
     # 导航菜单数据
     nav_menu = []
@@ -153,6 +165,62 @@ def extract_metadata(file_path):
     except Exception as e:
         print(f"提取文件元数据失败: {file_path} - {e}")
         return file_path.stem, []
+
+
+def convert_markdown_to_html(md_file_path):
+    """将Markdown文件转换为HTML文件"""
+    try:
+        # 生成对应的HTML文件路径
+        html_file_path = md_file_path.with_suffix('.html')
+        
+        # 读取Markdown文件内容
+        with open(md_file_path, 'r', encoding='utf-8') as f:
+            md_content = f.read()
+        
+        # 提取标题
+        title_match = re.search(r'^#\s+(.+)', md_content, re.MULTILINE)
+        title = title_match.group(1) if title_match else md_file_path.stem
+        
+        # 使用pandoc转换Markdown到HTML
+        temp_html_path = md_file_path.with_suffix('.temp.html')
+        subprocess.run(
+            ['pandoc', '-s', str(md_file_path), '-o', str(temp_html_path)],
+            check=True,
+            capture_output=True,
+            text=True
+        )
+        
+        # 读取并提取转换后的HTML内容
+        with open(temp_html_path, 'r', encoding='utf-8') as f:
+            temp_html_content = f.read()
+        
+        # 提取<body>标签内的内容
+        body_match = re.search(r'<body[^>]*>([\s\S]*?)</body>', temp_html_content, re.IGNORECASE)
+        if body_match:
+            body_content = body_match.group(1)
+        else:
+            body_content = temp_html_content
+        
+        # 读取模板文件
+        with open(TEMPLATE_FILE, 'r', encoding='utf-8') as f:
+            template_content = f.read()
+        
+        # 替换模板中的标题和内容
+        final_html_content = template_content.replace('{{title}}', title)
+        final_html_content = final_html_content.replace('{{content}}', body_content)
+        
+        # 写入最终的HTML文件
+        with open(html_file_path, 'w', encoding='utf-8') as f:
+            f.write(final_html_content)
+        
+        # 清理临时文件
+        temp_html_path.unlink()
+        
+        print(f"✓ 转换完成: {md_file_path} -> {html_file_path}")
+        return html_file_path
+    except Exception as e:
+        print(f"✗ 转换失败: {md_file_path} - {e}")
+        return None
 
 
 def extract_keywords(content, title=None):

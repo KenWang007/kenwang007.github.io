@@ -1,159 +1,91 @@
-# just-the-docs-template
+# Ken的知识库
 
-This is a *bare-minimum* template to create a [Jekyll] site that:
+一个基于纯静态HTML/CSS/JavaScript构建的知识库网站，具有自动导航生成和关键词提取功能。
 
-- uses the [Just the Docs] theme;
-- can be built and published on [GitHub Pages];
-- can be built and previewed locally, and published on other platforms.
+## 功能特性
 
-More specifically, the created site:
+- **纯静态架构**: 无需任何后端服务，直接部署到GitHub Pages
+- **自动导航生成**: 基于文件系统自动生成导航菜单，无需手动维护
+- **智能关键词提取**: 从文章标题自动提取核心关键词，用于左侧导航
+- **GitHub Actions集成**: 自动将Markdown文件转换为HTML格式
+- **响应式设计**: 适配各种屏幕尺寸
+- **深色太空主题**: 现代化的视觉设计
 
-- uses a gem-based approach, i.e. uses a `Gemfile` and loads the `just-the-docs` gem;
-- uses the [GitHub Pages / Actions workflow] to build and publish the site on GitHub Pages.
+## 项目结构
 
-To get started with creating a site, simply:
+```
+├── notes/              # 知识库文章目录
+├── .github/workflows/  # GitHub Actions工作流
+├── template.html       # HTML模板文件
+├── style.css           # 样式文件
+├── script.js           # JavaScript逻辑
+├── generate_nav.py     # 导航数据生成脚本
+├── nav_data.json       # 自动生成的导航数据
+└── .nojekyll           # 禁用GitHub Pages的Jekyll构建
+```
 
-1. click "[use this template]" to create a GitHub repository
-2. go to Settings > Pages > Build and deployment > Source, and select GitHub Actions
+## 本地开发
 
-If you want to maintain your docs in the `docs` directory of an existing project repo, see [Hosting your docs from an existing project repo](#hosting-your-docs-from-an-existing-project-repo).
+### 1. 安装依赖
 
-After completing the creation of your new site on GitHub, update it as needed:
+```bash
+# 安装pandoc用于Markdown转HTML
+brew install pandoc  # macOS
+# 或
+sudo apt-get install pandoc  # Ubuntu
+```
 
-## Replace the content of the template pages
+### 2. 运行本地服务器
 
-Update the following files to your own content:
+```bash
+python3 -m http.server 8000
+```
 
-- `index.md` (your new home page)
-- `README.md` (information for those who access your site repo on GitHub)
+然后在浏览器中访问 `http://localhost:8000`
 
-## Changing the version of the theme and/or Jekyll
+### 3. 更新导航数据
 
-Simply edit the relevant line(s) in the `Gemfile`.
+当你添加或修改文章后，需要重新生成导航数据：
 
-## Adding a plugin
+```bash
+python3 generate_nav.py
+```
 
-The Just the Docs theme automatically includes the [`jekyll-seo-tag`] plugin.
+## 发布流程
 
-To add an extra plugin, you need to add it in the `Gemfile` *and* in `_config.yml`. For example, to add [`jekyll-default-layout`]:
+1. 将Markdown文件添加到 `notes/` 目录下
+2. 提交代码到GitHub仓库的 `main` 分支
+3. GitHub Actions会自动执行以下操作：
+   - 将Markdown文件转换为HTML
+   - 生成新的导航数据
+   - 提交更新到仓库
+4. GitHub Pages会自动部署更新后的网站
 
-- Add the following to your site's `Gemfile`:
+## 文章编写规范
 
-  ```ruby
-  gem "jekyll-default-layout"
-  ```
+- 使用Markdown格式编写文章
+- 每个文章文件以 `# 标题` 开头
+- 文章会自动按文件系统结构组织
+- 支持子目录嵌套
 
-- And add the following to your site's `_config.yml`:
+## 自定义样式
 
-  ```yaml
-  plugins:
-    - jekyll-default-layout
-  ```
+修改 `style.css` 文件来自定义网站样式。主题基于深色太空风格，主要包含：
 
-Note: If you are using a Jekyll version less than 3.5.0, use the `gems` key instead of `plugins`.
+- 固定的顶部导航栏
+- 固定的左侧关键词导航
+- 响应式布局
+- 平滑滚动效果
+- 悬停动画
 
-## Publishing your site on GitHub Pages
+## 自动关键词提取规则
 
-1.  If your created site is `YOUR-USERNAME/YOUR-SITE-NAME`, update `_config.yml` to:
+1. 从每篇文章的标题提取最多2个核心关键词
+2. 优先提取核心主题词
+3. 支持英文缩写识别
+4. 支持核心概念组合提取
 
-    ```yaml
-    title: YOUR TITLE
-    description: YOUR DESCRIPTION
-    theme: just-the-docs
+## 许可证
 
-    url: https://YOUR-USERNAME.github.io/YOUR-SITE-NAME
-
-    aux_links: # remove if you don't want this link to appear on your pages
-      Template Repository: https://github.com/YOUR-USERNAME/YOUR-SITE-NAME
-    ```
-
-2.  Push your updated `_config.yml` to your site on GitHub.
-
-3.  In your newly created repo on GitHub:
-    - go to the `Settings` tab -> `Pages` -> `Build and deployment`, then select `Source`: `GitHub Actions`.
-    - if there were any failed Actions, go to the `Actions` tab and click on `Re-run jobs`.
-
-## Building and previewing your site locally
-
-Assuming [Jekyll] and [Bundler] are installed on your computer:
-
-1.  Change your working directory to the root directory of your site.
-
-2.  Run `bundle install`.
-
-3.  Run `bundle exec jekyll serve` to build your site and preview it at `localhost:4000`.
-
-    The built site is stored in the directory `_site`.
-
-## Publishing your built site on a different platform
-
-Just upload all the files in the directory `_site`.
-
-## Customization
-
-You're free to customize sites that you create with this template, however you like!
-
-[Browse our documentation][Just the Docs] to learn more about how to use this theme.
-
-## Hosting your docs from an existing project repo
-
-You might want to maintain your docs in an existing project repo. Instead of creating a new repo using the [just-the-docs template](https://github.com/just-the-docs/just-the-docs-template), you can copy the template files into your existing repo and configure the template's Github Actions workflow to build from a `docs` directory. You can clone the template to your local machine or download the `.zip` file to access the files.
-
-### Copy the template files
-
-1.  Create a `.github/workflows` directory at your project root if your repo doesn't already have one. Copy the `pages.yml` file into this directory. GitHub Actions searches this directory for workflow files.
-
-2.  Create a `docs` directory at your project root and copy all remaining template files into this directory.
-
-### Modify the GitHub Actions workflow
-
-The GitHub Actions workflow that builds and deploys your site to Github Pages is defined by the `pages.yml` file. You'll need to edit this file to that so that your build and deploy steps look to your `docs` directory, rather than the project root.
-
-1.  Set the default `working-directory` param for the build job.
-
-    ```yaml
-    build:
-      runs-on: ubuntu-latest
-      defaults:
-        run:
-          working-directory: docs
-    ```
-
-2.  Set the `working-directory` param for the Setup Ruby step.
-
-    ```yaml
-    - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.3'
-          bundler-cache: true
-          cache-version: 0
-          working-directory: '${{ github.workspace }}/docs'
-    ```
-
-3.  Set the path param for the Upload artifact step:
-
-    ```yaml
-    - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: docs/_site/
-    ```
-
-4.  Modify the trigger so that only changes within the `docs` directory start the workflow. Otherwise, every change to your project (even those that don't affect the docs) would trigger a new site build and deploy.
-
-    ```yaml
-    on:
-      push:
-        branches:
-          - "main"
-        paths:
-          - "docs/**"
-    ```
-
-## Licensing and Attribution
-
-This repository is licensed under the [MIT License]. You are generally free to reuse or extend upon this code as you see fit; just include the original copy of the license (which is preserved when you "make a template"). While it's not necessary, we'd love to hear from you if you do use this template, and how we can improve it for future use!
-
-The deployment GitHub Actions workflow is heavily based on GitHub's mixed-party [starter workflows]. A copy of their MIT License is available in [actions/starter-workflows].
+MIT License
 

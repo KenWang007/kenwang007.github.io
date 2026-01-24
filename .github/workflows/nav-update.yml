@@ -34,40 +34,8 @@ jobs:
       - name: Install pandoc
         run: sudo apt-get update && sudo apt-get install -y pandoc
       
-      # 4. 转换markdown为html
-      - name: Convert Markdown to HTML
-        run: |
-          # 遍历notes目录下所有.md文件（排除index.md）
-          find notes -name "*.md" -not -name "index.md" | while read md_file; do
-            # 生成对应的html文件名
-            html_file="${md_file%.md}.html"
-            
-            # 从markdown文件中提取标题
-            title=$(grep -m 1 "^# " "$md_file" | sed 's/^# //')
-            if [ -z "$title" ]; then
-              title="${md_file##*/}"
-              title="${title%.md}"
-            fi
-            
-            # 使用pandoc转换markdown内容
-            content=$(pandoc -s "$md_file" -o "$md_file.temp.html" && 
-                     grep -A 1000 "<body>" "$md_file.temp.html" | 
-                     grep -B 1000 "</body>" | 
-                     sed '1d;$d')
-            
-            # 使用template.html模板生成最终html文件
-            cp template.html "$html_file"
-            
-            # 替换模板中的标题和内容
-            sed -i "s/{{title}}/$title/g" "$html_file"
-            sed -i "s/{{content}}/$content/g" "$html_file"
-            
-            # 清理临时文件
-            rm "$md_file.temp.html"
-          done
-      
-      # 5. 运行导航数据生成脚本
-      - name: Generate navigation data
+      # 4. 运行导航数据生成脚本（同时处理Markdown转换和导航生成）
+      - name: Generate navigation data and convert Markdown to HTML
         run: python3 generate_nav.py
       
       # 6. 检查是否有更改

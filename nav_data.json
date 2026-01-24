@@ -19,11 +19,35 @@
   ],
   "blog_posts": [
     {
+      "title": "What is OpenwebUI",
+      "path": "notes/AI Learning/Tools/Ollama/OpenwebUI/How to run OpenwebUI.html",
+      "keywords": [
+        "What",
+        "is"
+      ]
+    },
+    {
+      "title": "How to use cursor in local",
+      "path": "notes/AI Learning/Tools/Ollama/OpenwebUI/How to use cursor in delivery.html",
+      "keywords": [
+        "How",
+        "to"
+      ]
+    },
+    {
       "title": "📚 RAG技术全面介绍",
       "path": "notes/AI Learning/RAG/introduction.html",
       "keywords": [
         "RAG",
         "技术介绍"
+      ]
+    },
+    {
+      "title": "变量与数据类型",
+      "path": "notes/Architecture/Python-learning.html",
+      "keywords": [
+        "变量与",
+        "数据类型"
       ]
     }
   ],
@@ -41,6 +65,23 @@
           "path": "notes/AI Learning/RAG",
           "has_html": true,
           "subdirs": []
+        },
+        {
+          "path": "notes/AI Learning/Tools",
+          "has_html": true,
+          "subdirs": [
+            {
+              "path": "notes/AI Learning/Tools/Ollama",
+              "has_html": true,
+              "subdirs": [
+                {
+                  "path": "notes/AI Learning/Tools/Ollama/OpenwebUI",
+                  "has_html": true,
+                  "subdirs": []
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -55,5 +96,5 @@
       "subdirs": []
     }
   ],
-  "generated_at": 1769258497.0398362
+  "generated_at": 1769259975.1237237
 }
