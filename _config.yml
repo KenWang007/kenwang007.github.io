@@ -4,7 +4,7 @@ description: 个人学习与思考笔记
 url: https://kenblogs.github.io
 
 # 使用远程主题（关键！）
-remote_theme: just-the-docs/just-the-docs
+remote_theme: pages-themes/hacker@v0.2.0
 
 # 启用搜索
 search_enabled: true
@@ -12,4 +12,4 @@ search_enabled: true
 # 可选：自定义颜色
 color_scheme: dark  # 或 light, auto
 plugins:
-  - jekyll-default-layout
+  - jekyll-remote-theme
