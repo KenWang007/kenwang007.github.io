@@ -1,8 +1,3 @@
----
-layout: default
-title: 架构随笔
-nav_order: 2
----
 
 # 🏗️ 架构随笔
 

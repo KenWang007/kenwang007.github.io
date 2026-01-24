@@ -1,8 +1,3 @@
----
-layout: default
-title: 笔记
-nav_order: 1
----
 
 # 📝 笔记
 

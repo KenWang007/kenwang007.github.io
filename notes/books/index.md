@@ -1,8 +1,3 @@
----
-layout: default
-title: 读书摘要
-nav_order: 3
----
 
 # 📖 读书摘要
 

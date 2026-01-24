@@ -1,8 +1,3 @@
----
-layout: default
-title: AI学习
-nav_order: 1
----
 
 # 🤖 AI学习
 

@@ -1,9 +1,3 @@
----
-layout: default
-title: RAG介绍
-nav_order: 1
-date: 2026-01-24
----
 
 # 📚 RAG技术全面介绍
 
@@ -215,6 +209,3 @@ RAG技术通过将信息检索与生成式AI相结合，有效解决了纯LLM模
 4. [Vector Databases for RAG](https://www.pinecone.io/learn/vector-databases/)
 5. [OpenAI Embeddings](https://platform.openai.com/docs/guides/embeddings)
 
----
-
-感谢阅读！希望这篇文章能帮助你全面了解RAG技术。如果你有任何问题或建议，欢迎留言讨论。
