@@ -15,25 +15,6 @@
   ],
   "blog_posts": [
     {
-      "title": "Cursor：AI 驱动的代码编辑器",
-      "path": "notes/AI相关/Tools/Ollama/OpenwebUI/how-cursor-help-software-delivery.html",
-      "keywords": [
-        "Cursor",
-        "AI",
-        "驱动的代码编辑器"
-      ]
-    },
-    {
-      "title": "什么是 Open WebUI",
-      "path": "notes/AI相关/Tools/Ollama/OpenwebUI/what-is-openwebui.html",
-      "keywords": [
-        "Open",
-        "WebUI",
-        "Web",
-        "什么是"
-      ]
-    },
-    {
       "title": "如何高效使用 AI Agent",
       "path": "notes/AI相关/Agent/如何高效使用agent.html",
       "keywords": [
@@ -51,10 +32,37 @@
       ]
     },
     {
+      "title": "Cursor：AI 驱动的代码编辑器",
+      "path": "notes/AI相关/Tools/Ollama/OpenwebUI/how-cursor-help-software-delivery.html",
+      "keywords": [
+        "AI",
+        "Cursor",
+        "驱动的代码编辑器"
+      ]
+    },
+    {
+      "title": "什么是 Open WebUI",
+      "path": "notes/AI相关/Tools/Ollama/OpenwebUI/what-is-openwebui.html",
+      "keywords": [
+        "Open",
+        "WebUI",
+        "Web",
+        "什么是"
+      ]
+    },
+    {
       "title": "变量与数据类型",
       "path": "notes/软件设计/Python-learning.html",
       "keywords": [
         "变量与数据类型"
+      ]
+    },
+    {
+      "title": "《认知觉醒》读书笔记",
+      "path": "notes/阅读感悟/认知觉醒-周岭.html",
+      "keywords": [
+        "认知觉醒",
+        "读书笔记"
       ]
     },
     {
@@ -66,10 +74,26 @@
       ]
     },
     {
-      "title": "《认知觉醒》读书笔记",
-      "path": "notes/阅读感悟/认知觉醒-周岭.html",
+      "title": "《开窍》读书笔记",
+      "path": "notes/阅读感悟/开窍-所长林超.html",
       "keywords": [
-        "认知觉醒",
+        "开窍",
+        "读书笔记"
+      ]
+    },
+    {
+      "title": "《墨菲定律》读书笔记",
+      "path": "notes/阅读感悟/墨菲定律-张新捷.html",
+      "keywords": [
+        "墨菲定律",
+        "读书笔记"
+      ]
+    },
+    {
+      "title": "《原则》读书笔记",
+      "path": "notes/阅读感悟/原则-瑞·达利欧.html",
+      "keywords": [
+        "原则",
         "读书笔记"
       ]
     },
@@ -86,30 +110,6 @@
       "path": "notes/阅读感悟/平凡的世界-路遥.html",
       "keywords": [
         "平凡的世界",
-        "读书笔记"
-      ]
-    },
-    {
-      "title": "《墨菲定律》读书笔记",
-      "path": "notes/阅读感悟/墨菲定律-张新捷.html",
-      "keywords": [
-        "墨菲定律",
-        "读书笔记"
-      ]
-    },
-    {
-      "title": "《开窍》读书笔记",
-      "path": "notes/阅读感悟/开窍-所长林超.html",
-      "keywords": [
-        "开窍",
-        "读书笔记"
-      ]
-    },
-    {
-      "title": "《原则》读书笔记",
-      "path": "notes/阅读感悟/原则-瑞·达利欧.html",
-      "keywords": [
-        "原则",
         "读书笔记"
       ]
     }
@@ -159,5 +159,5 @@
       "subdirs": []
     }
   ],
-  "generated_at": 1769319958.887583
+  "generated_at": 1769319983.559327
 }
