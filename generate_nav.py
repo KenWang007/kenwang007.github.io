@@ -357,8 +357,8 @@ def convert_markdown_to_html(md_file_path: Path) -> Optional[Path]:
         # 提取关键词
         keywords = extract_keywords(title, md_content)
         
-        # 生成元数据
-        metadata = generate_metadata_for_template(html_file_path, title, keywords)
+        # 生成元数据（使用源md文件获取文件信息，因为html文件还不存在）
+        metadata = generate_metadata_for_template(html_file_path, title, keywords, source_file=md_file_path)
         
         # 替换模板中的所有占位符
         final_html_content = template_content
@@ -630,14 +630,15 @@ def generate_rss_feed(blog_posts: List[Dict]) -> None:
     logger.info(f"✅ RSS Feed生成完成: {Config.RSS_FILE}")
 
 
-def generate_metadata_for_template(file_path: Path, title: str, keywords: List[str]) -> Dict[str, str]:
+def generate_metadata_for_template(file_path: Path, title: str, keywords: List[str], source_file: Path = None) -> Dict[str, str]:
     """
     为模板生成元数据
     
     Args:
-        file_path: 文件路径
+        file_path: 目标文件路径
         title: 标题
         keywords: 关键词列表
+        source_file: 源文件路径（用于获取文件信息，如果目标文件不存在）
         
     Returns:
         Dict[str, str]: 元数据字典
@@ -649,8 +650,9 @@ def generate_metadata_for_template(file_path: Path, title: str, keywords: List[s
     else:
         description += Config.SITE_DESCRIPTION
     
-    # 获取文件信息
-    stat = file_path.stat()
+    # 获取文件信息（优先使用源文件，因为目标文件可能还不存在）
+    stat_file = source_file if source_file and source_file.exists() else file_path
+    stat = stat_file.stat()
     created_date = datetime.fromtimestamp(stat.st_ctime)
     modified_date = datetime.fromtimestamp(stat.st_mtime)
     

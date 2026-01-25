@@ -3,11 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="详细介绍如何高效使用AI Agent，包括核心原则、实用技巧、最佳实践和实战案例">
-    <meta name="keywords" content="AI Agent,人工智能代理,LLM,Prompt工程,自动化">
+    <meta name="description" content="如何高效使用 AI Agent - 关键词: AI, Agent, 如何高效使用">
+    <meta name="keywords" content="AI, Agent, 如何高效使用">
+    <meta name="author" content="Ken Wang">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://kenwang007.github.io/notes/AI相关/Agent/如何高效使用agent.html">
+    <meta property="og:title" content="如何高效使用 AI Agent - Ken的知识库">
+    <meta property="og:description" content="如何高效使用 AI Agent - 关键词: AI, Agent, 如何高效使用">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://kenwang007.github.io/notes/AI相关/Agent/如何高效使用agent.html">
+    <meta property="twitter:title" content="如何高效使用 AI Agent - Ken的知识库">
+    <meta property="twitter:description" content="如何高效使用 AI Agent - 关键词: AI, Agent, 如何高效使用">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#6366f1">
+    
     <title>如何高效使用 AI Agent - Ken的知识库</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%236366f1%22>📚</text></svg>">
+    <link rel="canonical" href="https://kenwang007.github.io/notes/AI相关/Agent/如何高效使用agent.html">
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- RSS Feed -->
+    <link rel="alternate" type="application/rss+xml" title="Ken的知识库 RSS Feed" href="/rss.xml">
+    
+    <!-- Breadcrumb Navigation -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "首页",
+          "item": "https://kenwang007.github.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "如何高效使用 AI Agent",
+          "item": "https://kenwang007.github.io/notes/AI相关/Agent/如何高效使用agent.html"
+        }
+      ]
+    }
+    </script>
+    
+    <!-- Article Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "如何高效使用 AI Agent",
+      "description": "如何高效使用 AI Agent - 关键词: AI, Agent, 如何高效使用",
+      "author": {
+        "@type": "Person",
+        "name": "Ken Wang"
+      },
+      "datePublished": "2026-01-24T22:54:41.191275",
+      "dateModified": "2026-01-24T22:54:41.191275",
+      "inLanguage": "zh-CN"
+    }
+    </script>
 </head>
 <body>
     <!-- 星空背景 -->
@@ -47,20 +109,21 @@
         <section class="content-area">
             <div class="content-wrapper">
                 <article class="markdown-content">
-
-<h1 id="如何高效使用ai-agent">如何高效使用 AI Agent</h1>
-
-<h2 id="什么是ai-agent">1. 什么是 AI Agent？</h2>
-<p>AI Agent（人工智能代理）是一种能够自主感知环境、做出决策并执行任务的智能系统。与传统的聊天机器人不同，Agent 具备以下核心特征：</p>
+                    
+<h1 id="如何高效使用-ai-agent">如何高效使用 AI Agent</h1>
+<h2 id="什么是-ai-agent">1. 什么是 AI Agent？</h2>
+<p>AI
+Agent（人工智能代理）是一种能够自主感知环境、做出决策并执行任务的智能系统。与传统的聊天机器人不同，Agent
+具备以下核心特征：</p>
 <ul>
 <li><strong>自主性</strong>：能够独立完成复杂任务，无需人工逐步干预</li>
 <li><strong>目标导向</strong>：围绕用户设定的目标进行规划和执行</li>
-<li><strong>工具使用</strong>：可以调用外部工具、API 和服务来完成任务</li>
+<li><strong>工具使用</strong>：可以调用外部工具、API
+和服务来完成任务</li>
 <li><strong>记忆能力</strong>：能够记住上下文和历史交互信息</li>
 <li><strong>反思与迭代</strong>：能够评估自己的输出并进行优化</li>
 </ul>
-
-<h2 id="agent的核心组成">2. Agent 的核心组成</h2>
+<h2 id="agent-的核心组成">2. Agent 的核心组成</h2>
 <pre><code>┌─────────────────────────────────────────────────────────┐
 │                      AI Agent 架构                       │
 ├─────────────────────────────────────────────────────────┤
@@ -83,256 +146,295 @@
 │    └────────────────────────────────────────────────┘  │
 │                                                         │
 └─────────────────────────────────────────────────────────┘</code></pre>
-
-<h3 id="大语言模型">2.1 大语言模型 (LLM)</h3>
-<p>Agent 的"大脑"，负责理解、推理和生成。常用模型包括：</p>
-<ul>
-<li>GPT-4 / GPT-4o</li>
-<li>Claude 3.5 Sonnet / Opus</li>
-<li>Gemini Pro</li>
-<li>Llama 3</li>
-<li>Qwen</li>
-</ul>
-
-<h3 id="规划模块">2.2 规划模块 (Planning)</h3>
-<p>将复杂任务拆解为可执行的子任务：</p>
-<ul>
-<li><strong>任务分解</strong>：将大目标拆成小步骤</li>
-<li><strong>优先级排序</strong>：确定执行顺序</li>
-<li><strong>依赖管理</strong>：处理任务间的依赖关系</li>
-</ul>
-
-<h3 id="工具集">2.3 工具集 (Tools)</h3>
-<p>扩展 Agent 能力的外部工具：</p>
-<ul>
-<li>网络搜索</li>
-<li>代码解释器</li>
-<li>文件读写</li>
-<li>数据库查询</li>
-<li>API 调用</li>
-<li>浏览器自动化</li>
-</ul>
-
-<h3 id="记忆系统">2.4 记忆系统 (Memory)</h3>
+<h3 id="大语言模型-llm">2.1 大语言模型 (LLM)</h3>
+<p>Agent 的”大脑”，负责理解、推理和生成。常用模型包括： - GPT-4 / GPT-4o
+- Claude 3.5 Sonnet / Opus - Gemini Pro - Llama 3 - Qwen</p>
+<h3 id="规划模块-planning">2.2 规划模块 (Planning)</h3>
+<p>将复杂任务拆解为可执行的子任务： -
+<strong>任务分解</strong>：将大目标拆成小步骤 -
+<strong>优先级排序</strong>：确定执行顺序 -
+<strong>依赖管理</strong>：处理任务间的依赖关系</p>
+<h3 id="工具集-tools">2.3 工具集 (Tools)</h3>
+<p>扩展 Agent 能力的外部工具： - 网络搜索 - 代码解释器 - 文件读写 -
+数据库查询 - API 调用 - 浏览器自动化</p>
+<h3 id="记忆系统-memory">2.4 记忆系统 (Memory)</h3>
 <ul>
 <li><strong>短期记忆</strong>：当前会话的上下文</li>
 <li><strong>长期记忆</strong>：跨会话的持久化信息</li>
 <li><strong>工作记忆</strong>：当前任务的临时状态</li>
 </ul>
-
-<h2 id="高效使用agent的核心原则">3. 高效使用 Agent 的核心原则</h2>
-
+<h2 id="高效使用-agent-的核心原则">3. 高效使用 Agent 的核心原则</h2>
 <h3 id="清晰定义目标">3.1 清晰定义目标</h3>
-<p>❌ <strong>模糊的指令</strong>：</p>
-<blockquote>"帮我写点代码"</blockquote>
-<p>✅ <strong>清晰的指令</strong>：</p>
-<blockquote>"使用 Python 编写一个 Web 爬虫，从豆瓣电影 Top250 页面抓取电影名称、评分和简介，保存为 CSV 文件"</blockquote>
-
+<p>❌ <strong>模糊的指令</strong>： &gt; “帮我写点代码”</p>
+<p>✅ <strong>清晰的指令</strong>： &gt; “使用 Python 编写一个 Web
+爬虫，从豆瓣电影 Top250 页面抓取电影名称、评分和简介，保存为 CSV
+文件”</p>
 <h3 id="提供充足的上下文">3.2 提供充足的上下文</h3>
 <p>好的上下文应该包含：</p>
-<pre><code>## 背景信息
-- 项目类型：[Web应用/数据分析/自动化脚本...]
-- 技术栈：[Python/JavaScript/Go...]
-- 环境：[本地开发/生产环境/Docker...]
-
-## 具体需求
-- 功能描述：[详细说明要实现什么]
-- 输入输出：[期望的输入格式和输出结果]
-- 约束条件：[性能要求/安全限制/兼容性...]
-
-## 参考资料
-- 相关文档链接
-- 示例代码
-- 已有的实现</code></pre>
-
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## 背景信息</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>项目类型：<span class="co">[</span><span class="ot">Web应用/数据分析/自动化脚本...</span><span class="co">]</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>技术栈：<span class="co">[</span><span class="ot">Python/JavaScript/Go...</span><span class="co">]</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>环境：<span class="co">[</span><span class="ot">本地开发/生产环境/Docker...</span><span class="co">]</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">## 具体需求</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>功能描述：<span class="co">[</span><span class="ot">详细说明要实现什么</span><span class="co">]</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>输入输出：<span class="co">[</span><span class="ot">期望的输入格式和输出结果</span><span class="co">]</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>约束条件：<span class="co">[</span><span class="ot">性能要求/安全限制/兼容性...</span><span class="co">]</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## 参考资料</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>相关文档链接</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>示例代码</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>已有的实现</span></code></pre></div>
 <h3 id="分步骤迭代">3.3 分步骤迭代</h3>
 <p>不要期望一次性完成所有任务。采用迭代方式：</p>
-<ol>
+<ol type="1">
 <li><strong>第一轮</strong>：完成核心功能</li>
 <li><strong>第二轮</strong>：添加错误处理</li>
 <li><strong>第三轮</strong>：优化性能</li>
 <li><strong>第四轮</strong>：添加测试</li>
 <li><strong>第五轮</strong>：完善文档</li>
 </ol>
-
 <h3 id="善用反馈循环">3.4 善用反馈循环</h3>
 <pre><code>用户输入 -&gt; Agent 输出 -&gt; 用户反馈 -&gt; Agent 改进 -&gt; 循环...</code></pre>
-<p>有效的反馈示例：</p>
-<ul>
-<li>"这个函数的逻辑是对的，但需要添加输入验证"</li>
-<li>"运行时出现了这个错误：[错误信息]，请修复"</li>
-<li>"功能可以工作，但代码风格需要改成 PEP8 规范"</li>
-</ul>
-
+<p>有效的反馈示例： - “这个函数的逻辑是对的，但需要添加输入验证” -
+“运行时出现了这个错误：[错误信息]，请修复” -
+“功能可以工作，但代码风格需要改成 PEP8 规范”</p>
 <h2 id="实用技巧与最佳实践">4. 实用技巧与最佳实践</h2>
-
-<h3 id="prompt工程技巧">4.1 Prompt 工程技巧</h3>
-<h4>角色设定</h4>
+<h3 id="prompt-工程技巧">4.1 Prompt 工程技巧</h3>
+<h4 id="角色设定">角色设定</h4>
 <pre><code>你是一位资深的后端工程师，专注于高并发系统设计，
 熟悉 Go、Python 和分布式架构。</code></pre>
-
-<h4>思维链 (Chain of Thought)</h4>
+<h4 id="思维链-chain-of-thought">思维链 (Chain of Thought)</h4>
 <pre><code>请一步步思考这个问题：
 1. 首先分析需求...
 2. 然后设计架构...
 3. 接着实现代码...
 4. 最后进行测试...</code></pre>
-
-<h4>Few-shot 示例</h4>
+<h4 id="few-shot-示例">Few-shot 示例</h4>
 <pre><code>这是输入输出的示例：
-输入: "hello world"
-输出: "HELLO WORLD"
+输入: &quot;hello world&quot;
+输出: &quot;HELLO WORLD&quot;
 
-输入: "ai agent"
-输出: "AI AGENT"
+输入: &quot;ai agent&quot;
+输出: &quot;AI AGENT&quot;
 
-现在处理: "machine learning"</code></pre>
-
+现在处理: &quot;machine learning&quot;</code></pre>
 <h3 id="任务模板">4.2 任务模板</h3>
-<h4>代码编写任务</h4>
-<pre><code>## 任务：[任务名称]
-
-### 需求描述
-[详细描述需要实现的功能]
-
-### 技术要求
-- 语言：[编程语言]
-- 框架：[使用的框架]
-- 依赖：[需要的库]
-
-### 输入输出
-- 输入：[输入格式和示例]
-- 输出：[期望的输出格式]
-
-### 约束条件
-- [性能要求]
-- [代码规范]
-- [其他限制]</code></pre>
-
+<h4 id="代码编写任务">代码编写任务</h4>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## 任务：[任务名称]</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">### 需求描述</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">详细描述需要实现的功能</span><span class="co">]</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">### 技术要求</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>语言：<span class="co">[</span><span class="ot">编程语言</span><span class="co">]</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>框架：<span class="co">[</span><span class="ot">使用的框架</span><span class="co">]</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>依赖：<span class="co">[</span><span class="ot">需要的库</span><span class="co">]</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">### 输入输出</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>输入：<span class="co">[</span><span class="ot">输入格式和示例</span><span class="co">]</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>输出：<span class="co">[</span><span class="ot">期望的输出格式</span><span class="co">]</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="fu">### 约束条件</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">性能要求</span><span class="co">]</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">代码规范</span><span class="co">]</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">其他限制</span><span class="co">]</span></span></code></pre></div>
+<h4 id="文档编写任务">文档编写任务</h4>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## 任务：编写 [主题] 的技术文档</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">### 目标读者</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">初学者/中级开发者/架构师...</span><span class="co">]</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">### 文档结构</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>概述</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>核心概念</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>使用方法</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>示例代码</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>最佳实践</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>常见问题</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="fu">### 风格要求</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">正式/轻松</span><span class="co">]</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">技术深度</span><span class="co">]</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">示例数量</span><span class="co">]</span></span></code></pre></div>
 <h3 id="调试与问题解决">4.3 调试与问题解决</h3>
 <p>当 Agent 输出不符合预期时：</p>
-<ol>
+<ol type="1">
 <li><strong>检查输入</strong>：确保指令清晰无歧义</li>
 <li><strong>分解问题</strong>：将复杂问题拆成简单的子问题</li>
 <li><strong>提供示例</strong>：给出期望输出的具体例子</li>
 <li><strong>明确约束</strong>：说明哪些做法是不可接受的</li>
 <li><strong>迭代优化</strong>：基于输出结果逐步调整</li>
 </ol>
-
-<h2 id="常见agent工具与平台">5. 常见 Agent 工具与平台</h2>
-
+<h2 id="常见-agent-工具与平台">5. 常见 Agent 工具与平台</h2>
 <h3 id="开发辅助类">5.1 开发辅助类</h3>
 <table>
 <thead>
-<tr><th>工具</th><th>特点</th><th>适用场景</th></tr>
+<tr>
+<th>工具</th>
+<th>特点</th>
+<th>适用场景</th>
+</tr>
 </thead>
 <tbody>
-<tr><td><strong>Cursor</strong></td><td>集成 AI 的代码编辑器</td><td>日常编码、代码重构</td></tr>
-<tr><td><strong>GitHub Copilot</strong></td><td>代码自动补全</td><td>代码编写、学习新语言</td></tr>
-<tr><td><strong>Codeium</strong></td><td>免费的代码助手</td><td>个人项目开发</td></tr>
-<tr><td><strong>Tabnine</strong></td><td>本地化代码补全</td><td>企业隐私场景</td></tr>
+<tr>
+<td><strong>Cursor</strong></td>
+<td>集成 AI 的代码编辑器</td>
+<td>日常编码、代码重构</td>
+</tr>
+<tr>
+<td><strong>GitHub Copilot</strong></td>
+<td>代码自动补全</td>
+<td>代码编写、学习新语言</td>
+</tr>
+<tr>
+<td><strong>Codeium</strong></td>
+<td>免费的代码助手</td>
+<td>个人项目开发</td>
+</tr>
+<tr>
+<td><strong>Tabnine</strong></td>
+<td>本地化代码补全</td>
+<td>企业隐私场景</td>
+</tr>
 </tbody>
 </table>
-
 <h3 id="自动化类">5.2 自动化类</h3>
 <table>
 <thead>
-<tr><th>工具</th><th>特点</th><th>适用场景</th></tr>
+<tr>
+<th>工具</th>
+<th>特点</th>
+<th>适用场景</th>
+</tr>
 </thead>
 <tbody>
-<tr><td><strong>AutoGPT</strong></td><td>自主任务执行</td><td>复杂自动化任务</td></tr>
-<tr><td><strong>BabyAGI</strong></td><td>任务管理优化</td><td>项目规划</td></tr>
-<tr><td><strong>AgentGPT</strong></td><td>浏览器中运行</td><td>快速原型验证</td></tr>
-<tr><td><strong>CrewAI</strong></td><td>多 Agent 协作</td><td>团队模拟场景</td></tr>
+<tr>
+<td><strong>AutoGPT</strong></td>
+<td>自主任务执行</td>
+<td>复杂自动化任务</td>
+</tr>
+<tr>
+<td><strong>BabyAGI</strong></td>
+<td>任务管理优化</td>
+<td>项目规划</td>
+</tr>
+<tr>
+<td><strong>AgentGPT</strong></td>
+<td>浏览器中运行</td>
+<td>快速原型验证</td>
+</tr>
+<tr>
+<td><strong>CrewAI</strong></td>
+<td>多 Agent 协作</td>
+<td>团队模拟场景</td>
+</tr>
 </tbody>
 </table>
-
-<h3 id="agent开发框架">5.3 Agent 开发框架</h3>
+<h3 id="agent-开发框架">5.3 Agent 开发框架</h3>
 <table>
 <thead>
-<tr><th>框架</th><th>特点</th><th>适用场景</th></tr>
+<tr>
+<th>框架</th>
+<th>特点</th>
+<th>适用场景</th>
+</tr>
 </thead>
 <tbody>
-<tr><td><strong>LangChain</strong></td><td>功能全面，生态丰富</td><td>复杂 Agent 应用</td></tr>
-<tr><td><strong>LlamaIndex</strong></td><td>专注数据处理</td><td>RAG 应用</td></tr>
-<tr><td><strong>AutoGen</strong></td><td>多 Agent 对话</td><td>协作式 AI 系统</td></tr>
-<tr><td><strong>Semantic Kernel</strong></td><td>微软出品，企业级</td><td>企业应用集成</td></tr>
+<tr>
+<td><strong>LangChain</strong></td>
+<td>功能全面，生态丰富</td>
+<td>复杂 Agent 应用</td>
+</tr>
+<tr>
+<td><strong>LlamaIndex</strong></td>
+<td>专注数据处理</td>
+<td>RAG 应用</td>
+</tr>
+<tr>
+<td><strong>AutoGen</strong></td>
+<td>多 Agent 对话</td>
+<td>协作式 AI 系统</td>
+</tr>
+<tr>
+<td><strong>Semantic Kernel</strong></td>
+<td>微软出品，企业级</td>
+<td>企业应用集成</td>
+</tr>
 </tbody>
 </table>
-
 <h2 id="实战案例">6. 实战案例</h2>
-
-<h3 id="案例1">6.1 案例：自动化代码审查</h3>
-<pre><code class="language-python"># 使用 Agent 进行代码审查的示例流程
-
-任务描述 = """
-请审查以下 Python 代码，关注：
-1. 代码风格是否符合 PEP8
-2. 是否存在潜在的 bug
-3. 性能优化建议
-4. 安全漏洞检查
-
-代码：
-[粘贴代码]
-"""
-
-# Agent 会：
-# 1. 分析代码结构
-# 2. 检查各项指标
-# 3. 生成详细报告
-# 4. 提供改进建议</code></pre>
-
-<h3 id="案例2">6.2 案例：技术文档生成</h3>
-<pre><code>任务：为我的 API 生成完整的技术文档
-
-输入：
-- OpenAPI/Swagger 规范文件
-- 代码注释
-- 使用示例
-
-期望输出：
-- API 概述
-- 认证方式
-- 端点详情
-- 请求/响应示例
-- 错误码说明
-- SDK 使用指南</code></pre>
-
-<h3 id="案例3">6.3 案例：数据分析助手</h3>
-<pre><code>任务：分析销售数据并生成报告
-
-数据源：sales_2024.csv
-
-分析维度：
-1. 月度销售趋势
-2. 产品类别分布
-3. 地区销售对比
-4. 同比/环比增长
-
-输出要求：
-- 数据可视化图表
-- 关键指标摘要
-- 异常点分析
-- 改进建议</code></pre>
-
+<h3 id="案例自动化代码审查">6.1 案例：自动化代码审查</h3>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用 Agent 进行代码审查的示例流程</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>任务描述 <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="st">请审查以下 Python 代码，关注：</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="st">1. 代码风格是否符合 PEP8</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="st">2. 是否存在潜在的 bug</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="st">3. 性能优化建议</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="st">4. 安全漏洞检查</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="st">代码：</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="st">[粘贴代码]</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Agent 会：</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 分析代码结构</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 检查各项指标</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 生成详细报告</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. 提供改进建议</span></span></code></pre></div>
+<h3 id="案例技术文档生成">6.2 案例：技术文档生成</h3>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>任务：为我的 API 生成完整的技术文档</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>输入：</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>OpenAPI/Swagger 规范文件</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>代码注释</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>使用示例</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>期望输出：</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>API 概述</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>认证方式</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>端点详情</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>请求/响应示例</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>错误码说明</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>SDK 使用指南</span></code></pre></div>
+<h3 id="案例数据分析助手">6.3 案例：数据分析助手</h3>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>任务：分析销售数据并生成报告</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>数据源：sales_2024.csv</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>分析维度：</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>月度销售趋势</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>产品类别分布</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>地区销售对比</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>同比/环比增长</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>输出要求：</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>数据可视化图表</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>关键指标摘要</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>异常点分析</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>改进建议</span></code></pre></div>
 <h2 id="注意事项与局限性">7. 注意事项与局限性</h2>
-
-<h3 id="agent的局限性">7.1 Agent 的局限性</h3>
+<h3 id="agent-的局限性">7.1 Agent 的局限性</h3>
 <ul>
 <li><strong>幻觉问题</strong>：可能生成看似合理但实际错误的内容</li>
 <li><strong>上下文限制</strong>：处理超长文本时可能丢失信息</li>
 <li><strong>实时性</strong>：知识可能存在截止日期</li>
 <li><strong>专业深度</strong>：在细分领域可能不够专业</li>
 </ul>
-
 <h3 id="安全注意事项">7.2 安全注意事项</h3>
-<ol>
+<ol type="1">
 <li><strong>不要泄露敏感信息</strong>：API 密钥、密码、个人数据</li>
 <li><strong>验证输出</strong>：Agent 生成的代码需要人工审查</li>
 <li><strong>权限控制</strong>：限制 Agent 的工具访问权限</li>
 <li><strong>日志记录</strong>：记录 Agent 的操作便于审计</li>
 </ol>
-
 <h3 id="成本控制">7.3 成本控制</h3>
 <ul>
 <li>选择合适的模型（不是所有任务都需要最强模型）</li>
@@ -340,20 +442,18 @@
 <li>使用缓存避免重复请求</li>
 <li>设置使用限额</li>
 </ul>
-
 <h2 id="未来展望">8. 未来展望</h2>
 <p>AI Agent 正在快速发展，未来趋势包括：</p>
-<ol>
+<ol type="1">
 <li><strong>多模态能力</strong>：处理文本、图像、音频、视频</li>
 <li><strong>更强的推理</strong>：复杂问题的深度思考</li>
 <li><strong>自主学习</strong>：从交互中持续改进</li>
 <li><strong>协作智能</strong>：多 Agent 协同工作</li>
 <li><strong>个性化</strong>：适应个人工作风格和偏好</li>
 </ol>
-
 <h2 id="总结">9. 总结</h2>
 <p>高效使用 AI Agent 的关键点：</p>
-<ol>
+<ol type="1">
 <li>✅ 清晰定义目标和期望</li>
 <li>✅ 提供充足的上下文信息</li>
 <li>✅ 采用迭代式的工作方式</li>
@@ -361,16 +461,16 @@
 <li>✅ 了解 Agent 的能力边界</li>
 <li>✅ 保持对输出的审慎验证</li>
 </ol>
-<p>记住：<strong>Agent 是强大的助手，但最终的判断和决策仍需要人类来把控。</strong></p>
-
-<hr>
-
+<p>记住：<strong>Agent
+是强大的助手，但最终的判断和决策仍需要人类来把控。</strong></p>
+<hr />
 <h2 id="参考资源">参考资源</h2>
 <ul>
 <li><a href="https://python.langchain.com/">LangChain 官方文档</a></li>
 <li><a href="https://platform.openai.com/docs/">OpenAI API 文档</a></li>
 <li><a href="https://docs.anthropic.com/">Anthropic Claude 文档</a></li>
-<li><a href="https://github.com/Significant-Gravitas/AutoGPT">AutoGPT GitHub</a></li>
+<li><a href="https://github.com/Significant-Gravitas/AutoGPT">AutoGPT
+GitHub</a></li>
 <li><a href="https://docs.crewai.com/">CrewAI 文档</a></li>
 </ul>
 
