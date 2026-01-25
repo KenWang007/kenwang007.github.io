@@ -56,6 +56,14 @@
       "keywords": [
         "变量与数据类型"
       ]
+    },
+    {
+      "title": "《活着》读书笔记",
+      "path": "notes/阅读感悟/活着-余华.html",
+      "keywords": [
+        "活着",
+        "读书笔记"
+      ]
     }
   ],
   "directory_structure": [
@@ -103,5 +111,5 @@
       "subdirs": []
     }
   ],
-  "generated_at": 1769318252.028688
+  "generated_at": 1769318458.287136
 }
