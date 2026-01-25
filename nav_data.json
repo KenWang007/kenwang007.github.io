@@ -109,8 +109,8 @@
       "url": "dist/p/post-bdc928dcc6fb.html",
       "original_path": "notes/AI相关/Tools/Ollama/OpenwebUI/how-cursor-help-software-delivery.html",
       "keywords": [
-        "AI",
         "Cursor",
+        "AI",
         "驱动的代码编辑器"
       ]
     },
@@ -301,5 +301,5 @@
       "subdirs": []
     }
   ],
-  "generated_at": 1769348190.838867
+  "generated_at": 1769348411.085145
 }

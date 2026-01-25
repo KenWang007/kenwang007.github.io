@@ -1335,7 +1335,7 @@ def main():
         print(f"  • {Config.RSS_FILE}")
     print(f"\n完成时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     
-    return nav_data
+    return 0  # 成功返回 0
 
 
 if __name__ == "__main__":
