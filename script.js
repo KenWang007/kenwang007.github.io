@@ -963,14 +963,14 @@ function initLeftSidebarToggle() {
     }
     
     // 检查是否已存在折叠按钮
-    if (leftSidebar.querySelector('.sidebar-toggle-left')) {
+    if (document.querySelector('.sidebar-toggle-left')) {
         return;
     }
     
-    // 创建折叠按钮
+    // 创建折叠按钮 - 添加到 body 以便 fixed 定位
     const toggleBtn = document.createElement('button');
     toggleBtn.className = 'sidebar-toggle sidebar-toggle-left';
-    toggleBtn.innerHTML = '‹';
+    toggleBtn.innerHTML = AppState.leftSidebarCollapsed ? '›' : '‹';
     toggleBtn.setAttribute('aria-label', '折叠/展开关键词索引');
     toggleBtn.setAttribute('title', '点击折叠/展开');
     
@@ -982,7 +982,7 @@ function initLeftSidebarToggle() {
         toggleBtn.innerHTML = AppState.leftSidebarCollapsed ? '›' : '‹';
     });
     
-    leftSidebar.appendChild(toggleBtn);
+    document.body.appendChild(toggleBtn);
     console.log('✅ 左侧折叠按钮已创建');
 }
 
@@ -995,14 +995,14 @@ function initRightSidebarToggle() {
     }
     
     // 检查是否已存在折叠按钮
-    if (rightSidebar.querySelector('.sidebar-toggle-right')) {
+    if (document.querySelector('.sidebar-toggle-right')) {
         return;
     }
     
-    // 创建折叠按钮
+    // 创建折叠按钮 - 添加到 body 以便 fixed 定位
     const toggleBtn = document.createElement('button');
     toggleBtn.className = 'sidebar-toggle sidebar-toggle-right';
-    toggleBtn.innerHTML = '›';
+    toggleBtn.innerHTML = AppState.rightSidebarCollapsed ? '‹' : '›';
     toggleBtn.setAttribute('aria-label', '折叠/展开热门文章');
     toggleBtn.setAttribute('title', '点击折叠/展开');
     
@@ -1014,7 +1014,7 @@ function initRightSidebarToggle() {
         toggleBtn.innerHTML = AppState.rightSidebarCollapsed ? '‹' : '›';
     });
     
-    rightSidebar.appendChild(toggleBtn);
+    document.body.appendChild(toggleBtn);
     console.log('✅ 右侧折叠按钮已创建');
 }
 
