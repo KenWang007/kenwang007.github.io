@@ -190,6 +190,9 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 // ====== 应用初始化 ======
 async function initializeApp() {
+    // 强制清除旧缓存（确保使用最新数据）
+    CacheManager.clearCache();
+    
     // 加载导航数据
     await loadNavData();
     
@@ -445,36 +448,25 @@ async function loadNavDataFromNetwork(retryCount = 0, isBackgroundUpdate = false
 // 使用默认导航数据作为回退
 function useDefaultNavData() {
     AppState.navMenuData = [
-        { name: 'AI', path: 'notes/AI' },
-        { name: 'AI Learning', path: 'notes/AI Learning' },
-        { name: 'Architecture', path: 'notes/Architecture' },
-        { name: 'books', path: 'notes/books' }
+        { name: 'AI相关', path: 'notes/AI相关' },
+        { name: '软件设计', path: 'notes/软件设计' },
+        { name: '阅读感悟', path: 'notes/阅读感悟' }
     ];
     
     AppState.blogPosts = [
         {
             title: "📚 RAG技术全面介绍",
-            path: "notes/AI Learning/RAG/introduction.html",
+            path: "notes/AI相关/RAG/introduction.html",
             keywords: ["RAG", "检索增强生成"]
         },
         {
-            title: "🏗️ 架构随笔",
-            path: "notes/Architecture/index.html",
-            keywords: ["架构", "设计"]
-        },
-        {
-            title: "📖 读书摘要",
-            path: "notes/books/index.html",
-            keywords: ["读书", "摘要"]
-        },
-        {
-            title: "🤖 AI学习",
-            path: "notes/AI Learning/index.html",
-            keywords: ["AI", "学习"]
+            title: "如何高效使用 AI Agent",
+            path: "notes/AI相关/Agent/如何高效使用agent.html",
+            keywords: ["AI", "Agent"]
         },
         {
             title: "💻 Python学习",
-            path: "notes/Architecture/Python-learning.html",
+            path: "notes/软件设计/Python-learning.html",
             keywords: ["Python", "编程"]
         }
     ];
@@ -490,6 +482,9 @@ function initNavigation() {
         return;
     }
     
+    // 调试日志
+    console.log('🧭 初始化导航菜单，数据:', AppState.navMenuData);
+    
     // 清空现有菜单
     navMenu.innerHTML = '';
     
@@ -498,8 +493,10 @@ function initNavigation() {
     navMenu.appendChild(homeItem);
     
     // 添加notes目录下的一级文件夹作为菜单项
-    AppState.navMenuData.forEach(folder => {
-        const menuItem = createMenuItem(folder.name, `/${folder.path}/index.html`);
+    AppState.navMenuData.forEach((folder, index) => {
+        const href = `/${folder.path}/index.html`;
+        console.log(`📁 菜单项 ${index}: ${folder.name} -> ${href}`);
+        const menuItem = createMenuItem(folder.name, href);
         navMenu.appendChild(menuItem);
     });
 }
