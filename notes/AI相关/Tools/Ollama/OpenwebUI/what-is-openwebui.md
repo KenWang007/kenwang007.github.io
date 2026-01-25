@@ -1,3 +1,8 @@
+---
+slug: post-2bdf7e1dd475
+title: 什么是 Open WebUI
+---
+
 # 什么是 Open WebUI
 
 **Open WebUI** 是一个可扩展、功能丰富且用户友好的**自托管 AI 平台**，专为完全离线运行而设计。它基于通用标准构建，支持 **Ollama** 和 **OpenAI 兼容协议**（特别是 Chat Completions API）。这种协议优先的方法使其成为一个强大的、与供应商无关的 AI 部署解决方案，适用于本地和云端模型。

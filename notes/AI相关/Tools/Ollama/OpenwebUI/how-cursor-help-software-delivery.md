@@ -1,3 +1,8 @@
+---
+slug: post-bdc928dcc6fb
+title: Cursor：AI 驱动的代码编辑器
+---
+
 # Cursor：AI 驱动的代码编辑器
 
 **Cursor** 是一款基于 VS Code 构建的 AI 驱动代码编辑器，它将大型语言模型（LLM）深度集成到开发工作流中，旨在大幅提升开发者的编码效率和开发体验。

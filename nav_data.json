@@ -2,21 +2,30 @@
   "nav_menu": [
     {
       "name": "AI相关",
+      "id": "d100f76c397a",
+      "url": "dist/c/d100f76c397a/index.html",
       "path": "notes/AI相关"
     },
     {
       "name": "软件设计",
+      "id": "1744c5c25a1f",
+      "url": "dist/c/1744c5c25a1f/index.html",
       "path": "notes/软件设计"
     },
     {
       "name": "阅读感悟",
+      "id": "6a562c27e8cf",
+      "url": "dist/c/6a562c27e8cf/index.html",
       "path": "notes/阅读感悟"
     }
   ],
   "blog_posts": [
     {
       "title": "如何高效使用 AI Agent",
-      "path": "notes/AI相关/Agent/如何高效使用agent.html",
+      "id": "48808d32a4ac",
+      "slug": "use-agent",
+      "url": "dist/p/use-agent.html",
+      "original_path": "notes/AI相关/Agent/如何高效使用agent.html",
       "keywords": [
         "AI",
         "Agent",
@@ -25,7 +34,10 @@
     },
     {
       "title": "📚 RAG技术全面介绍",
-      "path": "notes/AI相关/RAG/introduction.html",
+      "id": "5913e408a3e0",
+      "slug": "post-5913e408a3e0",
+      "url": "dist/p/post-5913e408a3e0.html",
+      "original_path": "notes/AI相关/RAG/introduction.html",
       "keywords": [
         "RAG",
         "技术全面介绍"
@@ -33,16 +45,22 @@
     },
     {
       "title": "Cursor：AI 驱动的代码编辑器",
-      "path": "notes/AI相关/Tools/Ollama/OpenwebUI/how-cursor-help-software-delivery.html",
+      "id": "bdc928dcc6fb",
+      "slug": "post-bdc928dcc6fb",
+      "url": "dist/p/post-bdc928dcc6fb.html",
+      "original_path": "notes/AI相关/Tools/Ollama/OpenwebUI/how-cursor-help-software-delivery.html",
       "keywords": [
-        "Cursor",
         "AI",
+        "Cursor",
         "驱动的代码编辑器"
       ]
     },
     {
       "title": "什么是 Open WebUI",
-      "path": "notes/AI相关/Tools/Ollama/OpenwebUI/what-is-openwebui.html",
+      "id": "2bdf7e1dd475",
+      "slug": "post-2bdf7e1dd475",
+      "url": "dist/p/post-2bdf7e1dd475.html",
+      "original_path": "notes/AI相关/Tools/Ollama/OpenwebUI/what-is-openwebui.html",
       "keywords": [
         "Open",
         "WebUI",
@@ -52,94 +70,142 @@
     },
     {
       "title": "变量与数据类型",
-      "path": "notes/软件设计/Python-learning.html",
+      "id": "99d4eddda91e",
+      "slug": "post-99d4eddda91e",
+      "url": "dist/p/post-99d4eddda91e.html",
+      "original_path": "notes/软件设计/Python-learning.html",
       "keywords": [
         "变量与数据类型"
       ]
     },
     {
-      "title": "《认知觉醒》读书笔记",
-      "path": "notes/阅读感悟/认知觉醒-周岭.html",
-      "keywords": [
-        "认知觉醒",
-        "读书笔记"
-      ]
-    },
-    {
-      "title": "《吴军》读书笔记",
-      "path": "notes/阅读感悟/吴军-吴军.html",
-      "keywords": [
-        "吴军",
-        "读书笔记"
-      ]
-    },
-    {
-      "title": "《开窍》读书笔记",
-      "path": "notes/阅读感悟/开窍-所长林超.html",
-      "keywords": [
-        "开窍",
-        "读书笔记"
-      ]
-    },
-    {
-      "title": "《墨菲定律》读书笔记",
-      "path": "notes/阅读感悟/墨菲定律-张新捷.html",
-      "keywords": [
-        "墨菲定律",
-        "读书笔记"
-      ]
-    },
-    {
       "title": "《原则》读书笔记",
-      "path": "notes/阅读感悟/原则-瑞·达利欧.html",
+      "id": "91d111dd462a",
+      "slug": "post-91d111dd462a",
+      "url": "dist/p/post-91d111dd462a.html",
+      "original_path": "notes/阅读感悟/原则-瑞·达利欧.html",
       "keywords": [
         "原则",
         "读书笔记"
       ]
     },
     {
+      "title": "《吴军》读书笔记",
+      "id": "4d1244462891",
+      "slug": "post-4d1244462891",
+      "url": "dist/p/post-4d1244462891.html",
+      "original_path": "notes/阅读感悟/吴军-吴军.html",
+      "keywords": [
+        "吴军",
+        "读书笔记"
+      ]
+    },
+    {
+      "title": "《墨菲定律》读书笔记",
+      "id": "3a59d51693f5",
+      "slug": "post-3a59d51693f5",
+      "url": "dist/p/post-3a59d51693f5.html",
+      "original_path": "notes/阅读感悟/墨菲定律-张新捷.html",
+      "keywords": [
+        "墨菲定律",
+        "读书笔记"
+      ]
+    },
+    {
+      "title": "《平凡的世界》读书笔记",
+      "id": "de1457ea5395",
+      "slug": "post-de1457ea5395",
+      "url": "dist/p/post-de1457ea5395.html",
+      "original_path": "notes/阅读感悟/平凡的世界-路遥.html",
+      "keywords": [
+        "平凡的世界",
+        "读书笔记"
+      ]
+    },
+    {
+      "title": "《开窍》读书笔记",
+      "id": "228bf3eb0d92",
+      "slug": "post-228bf3eb0d92",
+      "url": "dist/p/post-228bf3eb0d92.html",
+      "original_path": "notes/阅读感悟/开窍-所长林超.html",
+      "keywords": [
+        "开窍",
+        "读书笔记"
+      ]
+    },
+    {
       "title": "《活着》读书笔记",
-      "path": "notes/阅读感悟/活着-余华.html",
+      "id": "bec12646d3a6",
+      "slug": "post-bec12646d3a6",
+      "url": "dist/p/post-bec12646d3a6.html",
+      "original_path": "notes/阅读感悟/活着-余华.html",
       "keywords": [
         "活着",
         "读书笔记"
       ]
     },
     {
-      "title": "《平凡的世界》读书笔记",
-      "path": "notes/阅读感悟/平凡的世界-路遥.html",
+      "title": "《认知觉醒》读书笔记",
+      "id": "3b8053158ffa",
+      "slug": "post-3b8053158ffa",
+      "url": "dist/p/post-3b8053158ffa.html",
+      "original_path": "notes/阅读感悟/认知觉醒-周岭.html",
       "keywords": [
-        "平凡的世界",
+        "认知觉醒",
         "读书笔记"
       ]
     }
   ],
   "directory_structure": [
     {
+      "name": "AI相关",
       "path": "notes/AI相关",
-      "has_html": true,
+      "id": "d100f76c397a",
+      "slug": null,
+      "url": "dist/c/d100f76c397a/index.html",
+      "has_posts": true,
       "subdirs": [
         {
+          "name": "Agent",
           "path": "notes/AI相关/Agent",
-          "has_html": true,
+          "id": "b781b63010c1",
+          "slug": null,
+          "url": "dist/c/b781b63010c1/index.html",
+          "has_posts": true,
           "subdirs": []
         },
         {
+          "name": "RAG",
           "path": "notes/AI相关/RAG",
-          "has_html": true,
+          "id": "8baad371a9a6",
+          "slug": null,
+          "url": "dist/c/8baad371a9a6/index.html",
+          "has_posts": true,
           "subdirs": []
         },
         {
+          "name": "Tools",
           "path": "notes/AI相关/Tools",
-          "has_html": true,
+          "id": "d4e54a48dfdc",
+          "slug": null,
+          "url": "dist/c/d4e54a48dfdc/index.html",
+          "has_posts": false,
           "subdirs": [
             {
+              "name": "Ollama",
               "path": "notes/AI相关/Tools/Ollama",
-              "has_html": true,
+              "id": "99c807999700",
+              "slug": null,
+              "url": "dist/c/99c807999700/index.html",
+              "has_posts": false,
               "subdirs": [
                 {
+                  "name": "OpenwebUI",
                   "path": "notes/AI相关/Tools/Ollama/OpenwebUI",
-                  "has_html": true,
+                  "id": "809c329d0c39",
+                  "slug": null,
+                  "url": "dist/c/809c329d0c39/index.html",
+                  "has_posts": true,
                   "subdirs": []
                 }
               ]
@@ -149,15 +215,27 @@
       ]
     },
     {
+      "name": "软件设计",
       "path": "notes/软件设计",
-      "has_html": true,
+      "id": "1744c5c25a1f",
+      "slug": null,
+      "url": "dist/c/1744c5c25a1f/index.html",
+      "has_posts": true,
       "subdirs": []
     },
     {
+      "name": "阅读感悟",
       "path": "notes/阅读感悟",
-      "has_html": true,
+      "id": "6a562c27e8cf",
+      "slug": null,
+      "url": "dist/c/6a562c27e8cf/index.html",
+      "has_posts": true,
       "subdirs": []
     }
   ],
+<<<<<<< HEAD
   "generated_at": 1769329267.195821
+=======
+  "generated_at": 1769338748.383541
+>>>>>>> 9516c5d (generate new routing)
 }

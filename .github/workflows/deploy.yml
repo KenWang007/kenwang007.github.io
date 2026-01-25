@@ -1,98 +1,61 @@
-name: Deploy to GitHub Pages
+name: Build and Deploy to GitHub Pages
 
 on:
+  # 推送到 main 分支时触发
   push:
-    branches:
-      - main
+    branches: ["main"]
+  # 允许手动触发
   workflow_dispatch:
 
-# 设置权限
+# 设置 GITHUB_TOKEN 权限以允许部署到 GitHub Pages
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
 # 只允许一个并发部署
 concurrency:
   group: "pages"
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
+  # 构建任务
+  build:
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      
-      - name: Install Pandoc
+
+      - name: Install pandoc
         run: |
           sudo apt-get update
           sudo apt-get install -y pandoc
-      
-      - name: Verify Pandoc Installation
-        run: pandoc --version
-      
-      - name: Generate Navigation Data
-        run: |
-          python3 generate_nav.py --verbose
-      
-      - name: Verify Generated Files
-        run: |
-          echo "Checking generated files..."
-          ls -lh nav_data.json sitemap.xml rss.xml
-          echo "nav_data.json content:"
-          cat nav_data.json | head -20
-      
-      - name: Check for Changes
-        id: check_changes
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          
-          # 检查是否有变更
-          if git diff --quiet && git diff --cached --quiet; then
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-            echo "No changes detected"
-          else
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-            echo "Changes detected"
-            git status
-          fi
-      
-      - name: Commit and Push Changes
-        if: steps.check_changes.outputs.has_changes == 'true'
-        run: |
-          git add nav_data.json sitemap.xml rss.xml notes/**/*.html
-          git commit -m "chore: auto-generate navigation data and HTML files [skip ci]" || echo "No changes to commit"
-          git push
-      
+
+      - name: Generate pages
+        run: python generate_nav.py
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
-      
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
+          # 上传整个仓库（包含生成的 dist/ 目录）
           path: '.'
-      
+
+  # 部署任务
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-      
-      - name: Summary
-        run: |
-          echo "## Deployment Summary 🚀" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Build completed successfully" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Navigation data generated" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Sitemap.xml generated" >> $GITHUB_STEP_SUMMARY
-          echo "✅ RSS feed generated" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "🌐 Site URL: ${{ steps.deployment.outputs.page_url }}" >> $GITHUB_STEP_SUMMARY

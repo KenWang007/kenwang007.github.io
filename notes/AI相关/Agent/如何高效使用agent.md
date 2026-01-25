@@ -1,3 +1,7 @@
+---
+slug: use-agent
+title: 如何高效使用 AI Agent
+---
 # 如何高效使用 AI Agent
 
 ## 1. 什么是 AI Agent？

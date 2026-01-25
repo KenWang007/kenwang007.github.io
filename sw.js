@@ -2,7 +2,7 @@
 // 提供离线访问和缓存管理
 
 // Bump this when core assets (style/script) change to avoid stale SW caches in browsers like Chrome.
-const CACHE_VERSION = 'v2.1.0';
+const CACHE_VERSION = 'v2.1.4';
 const CACHE_NAME = `blog-cache-${CACHE_VERSION}`;
 
 // 需要缓存的核心资源
@@ -180,7 +180,8 @@ async function networkFirst(request) {
     const cache = await caches.open(CACHE_NAME);
     
     try {
-        const response = await fetch(request);
+        // Bypass HTTP cache to avoid serving stale HTML/JS/CSS on Chromium (especially with SW updates)
+        const response = await fetch(new Request(request, { cache: 'reload' }));
         
         // 缓存成功的响应（只缓存非 notes 目录的页面，避免中文 URL 问题）
         if (response && response.status === 200) {

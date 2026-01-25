@@ -33,6 +33,11 @@ class Config:
     SITEMAP_FILE = ROOT_DIR / "sitemap.xml"
     # RSS Feed输出文件
     RSS_FILE = ROOT_DIR / "rss.xml"
+
+    # New ASCII-only output roots (under dist/ for cleaner separation)
+    DIST_DIR = ROOT_DIR / "dist"
+    POSTS_OUT_DIR = DIST_DIR / "p"
+    CATEGORIES_OUT_DIR = DIST_DIR / "c"
     
     # 网站配置
     SITE_URL = "https://kenwang007.github.io"
@@ -77,63 +82,430 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+_PANDOC_AVAILABLE: Optional[bool] = None
+
+def pandoc_available() -> bool:
+    global _PANDOC_AVAILABLE
+    if _PANDOC_AVAILABLE is not None:
+        return _PANDOC_AVAILABLE
+    try:
+        subprocess.run(['pandoc', '--version'], capture_output=True, check=True)
+        _PANDOC_AVAILABLE = True
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        _PANDOC_AVAILABLE = False
+    return _PANDOC_AVAILABLE
+
+def extract_markdown_content_from_legacy_html(legacy_html_path: Path) -> str:
+    """
+    Extract the inner HTML of <article class="markdown-content">...</article> from an existing legacy HTML page.
+    Falls back to <body> content if not found.
+    """
+    try:
+        with open(legacy_html_path, 'r', encoding='utf-8') as f:
+            html = f.read()
+        article_match = re.search(
+            r'<article[^>]*class="[^"]*markdown-content[^"]*"[^>]*>([\s\S]*?)</article>',
+            html,
+            re.IGNORECASE
+        )
+        if article_match:
+            return article_match.group(1).strip()
+        body_match = re.search(r'<body[^>]*>([\s\S]*?)</body>', html, re.IGNORECASE)
+        if body_match:
+            return body_match.group(1).strip()
+        return html
+    except Exception:
+        return ""
+
+def stable_id(text: str, length: int = 12) -> str:
+    """Create a stable ASCII id from an arbitrary unicode string."""
+    h = hashlib.sha1(text.encode("utf-8")).hexdigest()
+    return h[:length]
+
+_FRONT_MATTER_RE = re.compile(r'^\s*---\s*\n([\s\S]*?)\n---\s*\n', re.MULTILINE)
+
+def parse_front_matter(md_text: str) -> Tuple[Dict[str, str], str]:
+    """
+    Very small YAML front-matter parser.
+    Supports top-of-file:
+      ---
+      key: value
+      ---
+    Returns (meta, content_without_front_matter).
+    """
+    m = _FRONT_MATTER_RE.match(md_text)
+    if not m:
+        return {}, md_text
+
+    raw = m.group(1)
+    meta: Dict[str, str] = {}
+    for line in raw.splitlines():
+        line = line.strip()
+        if not line or line.startswith('#'):
+            continue
+        if ':' not in line:
+            continue
+        k, v = line.split(':', 1)
+        k = k.strip()
+        v = v.strip().strip('"').strip("'")
+        if k:
+            meta[k] = v
+    return meta, md_text[m.end():]
+
+def validate_slug(slug: str) -> str:
+    slug = (slug or '').strip()
+    if not slug:
+        raise ValueError("slug is empty")
+    if not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*', slug):
+        raise ValueError(f"invalid slug: {slug} (allowed: a-z0-9 and '-')")
+    return slug
+
+
+def slug_report(md_files: List[Path]) -> int:
+    """
+    Print a report of post/directory slugs:
+    - missing slug
+    - invalid slug
+    - duplicate slug
+    Returns process exit code (0 if OK, 1 if issues found).
+    """
+    missing_posts: List[Tuple[str, str]] = []   # (rel_md, suggested_slug)
+    invalid_posts: List[Tuple[str, str]] = []   # (rel_md, slug)
+    dup_posts: Dict[str, List[str]] = {}        # slug -> [rel_md]
+
+    missing_dirs: List[Tuple[str, str]] = []    # (rel_dir_index_md, suggested_slug)
+    invalid_dirs: List[Tuple[str, str]] = []    # (rel_dir_index_md, slug)
+    dup_dirs: Dict[str, List[str]] = {}         # slug -> [rel_dir_index_md]
+
+    seen_post: Dict[str, List[str]] = {}
+    seen_dir: Dict[str, List[str]] = {}
+
+    # Posts
+    for md in md_files:
+        rel_md = str(md.relative_to(Config.ROOT_DIR))
+        text = md.read_text(encoding='utf-8')
+        meta, _ = parse_front_matter(text)
+        slug = meta.get('slug')
+        if not slug:
+            missing_posts.append((rel_md, f"post-{stable_id(rel_md)}"))
+            continue
+        try:
+            slug = validate_slug(slug)
+            seen_post.setdefault(slug, []).append(rel_md)
+        except Exception:
+            invalid_posts.append((rel_md, slug))
+
+    for slug, files in seen_post.items():
+        if len(files) > 1:
+            dup_posts[slug] = files
+
+    # Directories (index.md only)
+    for root, _, files in os.walk(Config.NOTES_DIR):
+        if "index.md" not in files:
+            continue
+        idx = Path(root) / "index.md"
+        rel_idx = str(idx.relative_to(Config.ROOT_DIR))
+        text = idx.read_text(encoding='utf-8')
+        meta, _ = parse_front_matter(text)
+        slug = meta.get('slug')
+        if not slug:
+            # Suggest a stable placeholder based on directory path
+            rel_dir = str(Path(root).relative_to(Config.ROOT_DIR))
+            missing_dirs.append((rel_idx, f"cat-{stable_id(rel_dir)}"))
+            continue
+        try:
+            slug = validate_slug(slug)
+            seen_dir.setdefault(slug, []).append(rel_idx)
+        except Exception:
+            invalid_dirs.append((rel_idx, slug))
+
+    for slug, files in seen_dir.items():
+        if len(files) > 1:
+            dup_dirs[slug] = files
+
+    issues = (
+        len(missing_posts) + len(invalid_posts) + len(dup_posts) +
+        len(missing_dirs) + len(invalid_dirs) + len(dup_dirs)
+    )
+
+    print("=== Slug Report ===")
+    print(f"Posts scanned: {len(md_files)}")
+    print()
+
+    if missing_posts:
+        print(f"[Posts missing slug] {len(missing_posts)}")
+        for rel_md, sug in missing_posts:
+            print(f"  - {rel_md}")
+            print(f"    suggested: slug: {sug}")
+        print()
+
+    if invalid_posts:
+        print(f"[Posts invalid slug] {len(invalid_posts)}")
+        for rel_md, bad in invalid_posts:
+            print(f"  - {rel_md}")
+            print(f"    found: slug: {bad}")
+            print("    rule: a-z 0-9 and '-' only (lowercase)")
+        print()
+
+    if dup_posts:
+        print(f"[Posts duplicate slug] {len(dup_posts)}")
+        for slug, files in dup_posts.items():
+            print(f"  - slug: {slug}")
+            for f in files:
+                print(f"    * {f}")
+        print()
+
+    if missing_dirs:
+        print(f"[Dirs missing slug] {len(missing_dirs)} (optional)")
+        for rel_idx, sug in missing_dirs:
+            print(f"  - {rel_idx}")
+            print(f"    suggested: slug: {sug}")
+        print()
+
+    if invalid_dirs:
+        print(f"[Dirs invalid slug] {len(invalid_dirs)}")
+        for rel_idx, bad in invalid_dirs:
+            print(f"  - {rel_idx}")
+            print(f"    found: slug: {bad}")
+            print("    rule: a-z 0-9 and '-' only (lowercase)")
+        print()
+
+    if dup_dirs:
+        print(f"[Dirs duplicate slug] {len(dup_dirs)}")
+        for slug, files in dup_dirs.items():
+            print(f"  - slug: {slug}")
+            for f in files:
+                print(f"    * {f}")
+        print()
+
+    if issues == 0:
+        print("✅ No slug issues found.")
+        return 0
+
+    print(f"❌ Found {issues} issue(s).")
+    return 1
+
+def collect_markdown_posts() -> List[Path]:
+    """Collect all markdown posts under notes/ excluding index.md."""
+    md_files: List[Path] = []
+    for root, _, files in os.walk(Config.NOTES_DIR):
+        for file in files:
+            if not file.endswith(".md"):
+                continue
+            if file == "index.md":
+                continue
+            md_files.append(Path(root) / file)
+    return sorted(md_files)
+
+def build_directory_structure_from_md(md_files: List[Path]) -> List[Dict]:
+    """
+    Build directory structure tree (only directories that contain posts or index.md or have subdirs with posts).
+    Each node has: {name, path(original), id, url, has_posts, subdirs[]}
+    """
+    # Build a set of directories that should exist as nodes
+    dir_set: Set[Path] = set()
+    for md in md_files:
+        dir_set.add(md.parent)
+        # include all parents up to notes
+        p = md.parent
+        while p != Config.NOTES_DIR and Config.NOTES_DIR in p.parents:
+            p = p.parent
+            dir_set.add(p)
+
+    # also include directories that have index.md
+    for root, dirs, files in os.walk(Config.NOTES_DIR):
+        if "index.md" in files:
+            dir_set.add(Path(root))
+
+    # directory slug mapping from index.md front matter (manual)
+    dir_slug_by_rel: Dict[str, str] = {}
+    used_dir_slugs: Set[str] = set()
+    for d in list(dir_set):
+        index_md = d / "index.md"
+        if not index_md.exists():
+            continue
+        try:
+            text = index_md.read_text(encoding='utf-8')
+            meta, _ = parse_front_matter(text)
+            if meta.get('slug'):
+                slug = validate_slug(meta['slug'])
+                if slug in used_dir_slugs:
+                    raise ValueError(f"duplicate directory slug: {slug}")
+                used_dir_slugs.add(slug)
+                rel_dir = str(d.relative_to(Config.ROOT_DIR))
+                dir_slug_by_rel[rel_dir] = slug
+        except Exception as e:
+            logger.warning(f"目录 slug 解析失败 {index_md}: {e}")
+
+    def node_for_dir(dir_path: Path) -> Dict:
+        rel_dir = str(dir_path.relative_to(Config.ROOT_DIR))
+        dir_id = stable_id(rel_dir)
+        slug = dir_slug_by_rel.get(rel_dir)
+        url = f"dist/c/{slug}/index.html" if slug else f"dist/c/{dir_id}/index.html"
+        name = dir_path.name
+        has_posts = any((p.parent == dir_path) for p in md_files) or (dir_path / "index.md").exists()
+        return {
+            "name": name,
+            "path": rel_dir,
+            "id": dir_id,
+            "slug": slug,
+            "url": url,
+            "has_posts": has_posts,
+            "subdirs": []
+        }
+
+    # Build tree under notes
+    def build_children(parent: Path) -> List[Dict]:
+        children = []
+        for child in sorted(parent.iterdir()):
+            if not child.is_dir():
+                continue
+            if child not in dir_set:
+                # But keep if it has any descendant in dir_set
+                if not any((d != child and child in d.parents) for d in dir_set):
+                    continue
+            child_node = node_for_dir(child)
+            child_node["subdirs"] = build_children(child)
+            # Include node if it has posts or any included subdirs
+            if child_node["has_posts"] or child_node["subdirs"]:
+                children.append(child_node)
+        return children
+
+    roots = []
+    for top in sorted(Config.NOTES_DIR.iterdir()):
+        if not top.is_dir():
+            continue
+        if top not in dir_set and not any((d != top and top in d.parents) for d in dir_set):
+            continue
+        top_node = node_for_dir(top)
+        top_node["subdirs"] = build_children(top)
+        if top_node["has_posts"] or top_node["subdirs"]:
+            roots.append(top_node)
+    return roots
+
+def flatten_directories(dirs: List[Dict]) -> List[Dict]:
+    """Flatten directory tree into a list."""
+    out: List[Dict] = []
+    def walk(nodes: List[Dict]):
+        for n in nodes:
+            out.append(n)
+            walk(n.get("subdirs", []))
+    walk(dirs)
+    return out
+
 
 def scan_notes_directory() -> Tuple[List[Dict], List[Dict], List[Dict]]:
     """
-    扫描notes目录结构
-    
+    扫描 notes 目录结构（ASCII-only URL 输出）
+
     Returns:
-        Tuple[List[Dict], List[Dict], List[Dict]]: 
-            导航菜单数据、博客文章数据、目录结构数据
+        nav_menu: 顶层导航（使用 /c/<id>/index.html）
+        blog_posts: 文章列表（使用 /p/<id>.html）
+        directory_structure: 目录树（每个节点包含 id/url/path/subdirs）
     """
-    logger.info("开始扫描notes目录...")
-    
-    # 1. 首先将所有Markdown文件转换为HTML
-    logger.info("=== 开始转换Markdown到HTML ===")
-    convert_all_markdown_files()
-    
-    # 初始化数据结构
-    nav_menu = []
-    blog_posts = []
-    directory_structure = []
-    
-    # 检查notes目录是否存在
+    logger.info("开始扫描notes目录（ASCII-only URL）...")
+
     if not Config.NOTES_DIR.exists():
         logger.warning(f"Notes目录不存在: {Config.NOTES_DIR}")
-        return nav_menu, blog_posts, directory_structure
-    
-    # 扫描一级目录
-    for dir_path in sorted(Config.NOTES_DIR.iterdir()):
-        if not dir_path.is_dir():
-            continue
-            
-        dir_name = dir_path.name
-        dir_rel_path = str(dir_path.relative_to(Config.ROOT_DIR))
-        
-        # 检查目录下是否有.html文件（包括子目录）
-        has_html = check_directory_has_html(dir_path)
-        
-        # 扫描子目录结构
-        subdirs = scan_directory_structure(dir_path)
-        
-        # 只有当目录本身有.html文件或有包含.html文件的子目录时才添加到导航
-        if has_html or subdirs:
-            nav_menu.append({
-                "name": dir_name,
-                "path": dir_rel_path
-            })
-        
-        # 添加到目录结构
-        directory_structure.append({
-            "path": dir_rel_path,
-            "has_html": has_html,
-            "subdirs": subdirs
+        return [], [], []
+
+    md_files = collect_markdown_posts()
+    logger.info(f"找到 Markdown 文章: {len(md_files)}")
+
+    # Build directory structure from Markdown sources
+    directory_structure = build_directory_structure_from_md(md_files)
+    flat_dirs = flatten_directories(directory_structure)
+
+    # Top nav uses top-level nodes
+    nav_menu = [
+        {"name": d["name"], "id": d["id"], "url": d["url"], "path": d["path"]}
+        for d in directory_structure
+    ]
+
+    # Build post records and legacy->new url map (for link rewriting)
+    blog_posts: List[Dict] = []
+    legacy_to_new: Dict[str, str] = {}
+    used_post_slugs: Set[str] = set()
+
+    for md in md_files:
+        rel_md = str(md.relative_to(Config.ROOT_DIR))
+        # original html path (legacy)
+        rel_html_legacy = str(md.with_suffix(".html").relative_to(Config.ROOT_DIR))
+        post_id = stable_id(rel_md)
+
+        # Read markdown to support manual slug/title in front matter
+        md_text = md.read_text(encoding='utf-8')
+        meta, md_text_wo_fm = parse_front_matter(md_text)
+        manual_slug = None
+        if meta.get('slug'):
+            manual_slug = validate_slug(meta['slug'])
+            if manual_slug in used_post_slugs:
+                raise ValueError(f"duplicate post slug: {manual_slug}")
+            used_post_slugs.add(manual_slug)
+
+        post_url = f"dist/p/{manual_slug}.html" if manual_slug else f"dist/p/{post_id}.html"
+
+        # Title / keywords (prefer front matter title if provided)
+        title, keywords = extract_metadata(md)
+        if meta.get('title'):
+            title = meta['title']
+
+        blog_posts.append({
+            "title": title or md.stem,
+            "id": post_id,
+            "slug": manual_slug,
+            "url": post_url,
+            "original_path": rel_html_legacy,
+            "keywords": keywords
         })
-        
-        # 扫描目录下的博客文章
-        scan_blog_posts(dir_path, blog_posts)
-    
-    logger.info(f"扫描完成: 找到 {len(nav_menu)} 个导航项, {len(blog_posts)} 篇文章")
+
+        # map both md/html legacy references to new url
+        legacy_to_new[rel_html_legacy] = post_url
+        legacy_to_new["/" + rel_html_legacy] = post_url
+        legacy_to_new[rel_md] = post_url
+        legacy_to_new["/" + rel_md] = post_url
+
+    # Directory legacy index mapping (notes/.../index.html -> /c/<id>/index.html)
+    for d in flat_dirs:
+        legacy_index = f"{d['path']}/index.html"
+        legacy_to_new[legacy_index] = d["url"]
+        legacy_to_new["/" + legacy_index] = d["url"]
+
+    # Build helper: md -> post record
+    id_to_post = {p["id"]: p for p in blog_posts}
+    md_to_post: Dict[str, Dict] = {}
+    for md in md_files:
+        rel_md = str(md.relative_to(Config.ROOT_DIR))
+        pid = stable_id(rel_md)
+        md_to_post[rel_md] = id_to_post.get(pid)
+
+    converted_ok = 0
+    for md in md_files:
+        rel_md = str(md.relative_to(Config.ROOT_DIR))
+        post = md_to_post.get(rel_md)
+        if not post:
+            continue
+        out_path = Config.ROOT_DIR / post["url"]
+        try:
+            if convert_markdown_to_html(md, out_path, legacy_to_new):
+                converted_ok += 1
+        except Exception as e:
+            logger.error(f"转换失败: {md} - {e}")
+
+    logger.info(f"文章页生成完成: {converted_ok}/{len(md_files)}")
+
+    # Generate directory pages
+    logger.info("=== 开始生成目录页 /c/<id>/index.html ===")
+    dir_pages_ok = 0
+    for d in flat_dirs:
+        try:
+            if generate_directory_page(d, legacy_to_new):
+                dir_pages_ok += 1
+        except Exception as e:
+            logger.error(f"目录页生成失败 {d.get('path')}: {e}")
+    logger.info(f"目录页生成完成: {dir_pages_ok}/{len(flat_dirs)}")
+
+    logger.info(f"扫描完成: 导航 {len(nav_menu)}，文章 {len(blog_posts)}，目录节点 {len(flat_dirs)}")
     return nav_menu, blog_posts, directory_structure
 
 def convert_all_markdown_files() -> None:
@@ -301,6 +673,8 @@ def convert_markdown_to_html(md_file_path: Path) -> Optional[Path]:
     Returns:
         Optional[Path]: 转换后的HTML文件路径，失败返回None
     """
+    # NOTE: kept for backward compatibility of API signature; new pipeline uses the
+    # overloaded function signature below that writes to an ASCII-only output path.
     html_file_path = md_file_path.with_suffix('.html')
     temp_html_path = md_file_path.with_suffix('.temp.html')
     
@@ -388,6 +762,224 @@ def convert_markdown_to_html(md_file_path: Path) -> Optional[Path]:
                 temp_html_path.unlink()
             except Exception as e:
                 logger.warning(f"清理临时文件失败: {e}")
+
+
+def rewrite_internal_links(html_fragment: str, current_md: Path, legacy_to_new: Dict[str, str]) -> str:
+    """
+    Rewrite internal links pointing to notes/*.md or notes/*.html into ASCII-only /p/<id>.html or /c/<id>/index.html.
+    """
+    # Resolve relative href against current markdown directory
+    current_rel_dir = Path(current_md.relative_to(Config.ROOT_DIR)).parent
+
+    def resolve_candidate(href: str) -> Optional[str]:
+        # strip query/hash for mapping
+        base = href.split('#', 1)[0].split('?', 1)[0]
+        if not base:
+            return None
+        if base.startswith(("http://", "https://", "mailto:", "tel:")):
+            return None
+        # absolute to site root
+        if base.startswith("/"):
+            return base.lstrip("/")
+        # relative path
+        try:
+            # Use PurePosix-ish behavior with Path join then normalize
+            resolved = (current_rel_dir / base).as_posix()
+            # normalize ./ and ../ via Path
+            resolved = str(Path(resolved))
+            return resolved
+        except Exception:
+            return None
+
+    # Replace href="..." and href='...'
+    href_re = re.compile(r'''href=(["'])([^"']+)\1''', re.IGNORECASE)
+
+    def repl(m):
+        quote = m.group(1)
+        href = m.group(2)
+        candidate = resolve_candidate(href)
+        if not candidate:
+            return m.group(0)
+
+        # If points to .md, map .md and also .html sibling
+        candidates = [candidate]
+        if candidate.endswith(".md"):
+            candidates.append(candidate[:-3] + ".html")
+        if candidate.endswith(".html"):
+            candidates.append(candidate[:-5] + ".md")
+
+        for c in candidates:
+            if c in legacy_to_new:
+                return f'href={quote}/{legacy_to_new[c]}{quote}'
+            if ("/" + c) in legacy_to_new:
+                return f'href={quote}/{legacy_to_new["/" + c]}{quote}'
+
+        return m.group(0)
+
+    return href_re.sub(repl, html_fragment)
+
+
+def convert_markdown_to_html(md_file_path: Path, out_html_path: Path, legacy_to_new: Dict[str, str]) -> bool:
+    """
+    Convert a Markdown file to an HTML page at an explicit output path (ASCII-only URL),
+    using the template and rewriting internal links based on legacy_to_new mapping.
+    """
+    temp_html_path = md_file_path.with_suffix('.temp.html')
+
+    try:
+        # Ensure output directories exist
+        out_html_path.parent.mkdir(parents=True, exist_ok=True)
+
+        with open(md_file_path, 'r', encoding='utf-8') as f:
+            md_content = f.read()
+        meta, md_content_wo_fm = parse_front_matter(md_content)
+
+        # Title
+        title = meta.get('title')
+        if not title:
+            title_match = re.search(r'^#\s+(.+)', md_content_wo_fm, re.MULTILINE)
+            title = title_match.group(1).strip() if title_match else md_file_path.stem
+
+        body_content = ""
+        if pandoc_available():
+            # Write a temp md without front matter to avoid leaking slug/title into content
+            temp_md_path = md_file_path.with_suffix('.nofm.temp.md')
+            try:
+                with open(temp_md_path, 'w', encoding='utf-8') as f:
+                    f.write(md_content_wo_fm)
+            except Exception:
+                temp_md_path = md_file_path
+
+            # Convert to temp HTML
+            result = subprocess.run(
+                ['pandoc', '-s', str(temp_md_path), '-o', str(temp_html_path)],
+                capture_output=True,
+                text=True,
+                timeout=30
+            )
+            if result.returncode != 0:
+                logger.error(f"Pandoc转换失败: {result.stderr}")
+                body_content = ""
+            else:
+                with open(temp_html_path, 'r', encoding='utf-8') as f:
+                    temp_html_content = f.read()
+                body_match = re.search(r'<body[^>]*>([\s\S]*?)</body>', temp_html_content, re.IGNORECASE)
+                body_content = body_match.group(1) if body_match else temp_html_content
+        else:
+            # Fallback: reuse existing legacy html content if present
+            legacy_html_path = md_file_path.with_suffix('.html')
+            if legacy_html_path.exists():
+                body_content = extract_markdown_content_from_legacy_html(legacy_html_path)
+            else:
+                safe = re.sub(r'&', '&amp;', md_content)
+                safe = re.sub(r'<', '&lt;', safe)
+                body_content = f"<h1>{title}</h1><pre>{safe}</pre>"
+
+        # Rewrite internal links to ASCII-only urls
+        body_content = rewrite_internal_links(body_content, md_file_path, legacy_to_new)
+
+        if not Config.TEMPLATE_FILE.exists():
+            logger.error(f"模板文件不存在: {Config.TEMPLATE_FILE}")
+            return False
+
+        with open(Config.TEMPLATE_FILE, 'r', encoding='utf-8') as f:
+            template_content = f.read()
+
+        keywords = extract_keywords(title, md_content_wo_fm)
+        metadata = generate_metadata_for_template(out_html_path, title, keywords, source_file=md_file_path)
+
+        final_html_content = template_content
+        for key, value in metadata.items():
+            final_html_content = final_html_content.replace(f'{{{{{key}}}}}', str(value))
+        final_html_content = final_html_content.replace('{{content}}', body_content)
+
+        with open(out_html_path, 'w', encoding='utf-8') as f:
+            f.write(final_html_content)
+
+        logger.info(f"✓ 生成: {md_file_path.relative_to(Config.ROOT_DIR)} -> {out_html_path.relative_to(Config.ROOT_DIR)}")
+        return True
+    except subprocess.TimeoutExpired:
+        logger.error(f"转换超时: {md_file_path}")
+        return False
+    except Exception as e:
+        logger.error(f"✗ 转换失败: {md_file_path} - {e}")
+        return False
+    finally:
+        if temp_html_path.exists():
+            try:
+                temp_html_path.unlink()
+            except Exception as e:
+                logger.warning(f"清理临时文件失败: {e}")
+        try:
+            temp_md_path = md_file_path.with_suffix('.nofm.temp.md')
+            if temp_md_path.exists():
+                temp_md_path.unlink()
+        except Exception:
+            pass
+
+
+def generate_directory_page(dir_node: Dict, legacy_to_new: Dict[str, str]) -> bool:
+    """Generate a directory index page at /c/<id>/index.html."""
+    out_path = Config.ROOT_DIR / dir_node["url"]
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+
+    # Prefer existing legacy index.html content, then index.md content
+    dir_abs = Config.ROOT_DIR / dir_node["path"]
+    legacy_index_html = dir_abs / "index.html"
+    index_md = dir_abs / "index.md"
+    title = dir_node.get("name") or dir_abs.name
+    description = f"{title} - {Config.SITE_NAME}"
+
+    body_content = ""
+    if legacy_index_html.exists():
+        body_content = extract_markdown_content_from_legacy_html(legacy_index_html)
+        body_content = rewrite_internal_links(body_content, legacy_index_html, legacy_to_new)
+
+    if index_md.exists() and pandoc_available():
+        # Convert index.md to HTML fragment
+        temp_html_path = index_md.with_suffix(".temp.html")
+        try:
+            result = subprocess.run(
+                ['pandoc', '-s', str(index_md), '-o', str(temp_html_path)],
+                capture_output=True,
+                text=True,
+                timeout=30
+            )
+            if result.returncode == 0 and temp_html_path.exists():
+                with open(temp_html_path, 'r', encoding='utf-8') as f:
+                    temp_html_content = f.read()
+                body_match = re.search(r'<body[^>]*>([\s\S]*?)</body>', temp_html_content, re.IGNORECASE)
+                body_content = body_match.group(1) if body_match else temp_html_content
+                body_content = rewrite_internal_links(body_content, index_md, legacy_to_new)
+        except Exception:
+            body_content = ""
+        finally:
+            if temp_html_path.exists():
+                try:
+                    temp_html_path.unlink()
+                except Exception:
+                    pass
+
+    if not body_content:
+        body_content = f"<h1>{title}</h1><p>{description}</p>"
+
+    # Inject directory id marker for frontend rendering
+    body_content = f'<div id="directory-page" data-dir-id="{dir_node["id"]}"></div>\n' + body_content
+
+    with open(Config.TEMPLATE_FILE, 'r', encoding='utf-8') as f:
+        template_content = f.read()
+
+    metadata_source = index_md if index_md.exists() else (legacy_index_html if legacy_index_html.exists() else out_path)
+    metadata = generate_metadata_for_template(out_path, title, [], source_file=metadata_source)
+
+    final_html_content = template_content
+    for key, value in metadata.items():
+        final_html_content = final_html_content.replace(f'{{{{{key}}}}}', str(value))
+    final_html_content = final_html_content.replace('{{content}}', body_content)
+
+    with open(out_path, 'w', encoding='utf-8') as f:
+        f.write(final_html_content)
+    return True
 
 
 def extract_keywords(title: str, content: str = "") -> List[str]:
@@ -532,16 +1124,17 @@ def generate_sitemap(blog_posts: List[Dict]) -> None:
     ET.SubElement(url, 'priority').text = '1.0'
     ET.SubElement(url, 'lastmod').text = datetime.now().strftime('%Y-%m-%d')
     
-    # 添加所有博客文章
+    # 添加所有博客文章（ASCII-only URL 优先）
     for post in blog_posts:
         url = ET.SubElement(urlset, 'url')
-        post_url = f"{Config.SITE_URL}/{post['path']}"
+        rel = post.get('url') or post.get('path')
+        post_url = f"{Config.SITE_URL}/{rel}"
         ET.SubElement(url, 'loc').text = post_url
         ET.SubElement(url, 'changefreq').text = 'weekly'
         ET.SubElement(url, 'priority').text = '0.8'
         
         # 获取文件修改时间
-        file_path = Config.ROOT_DIR / post['path']
+        file_path = Config.ROOT_DIR / rel
         if file_path.exists():
             mod_time = datetime.fromtimestamp(file_path.stat().st_mtime)
             ET.SubElement(url, 'lastmod').text = mod_time.strftime('%Y-%m-%d')
@@ -587,18 +1180,20 @@ def generate_rss_feed(blog_posts: List[Dict]) -> None:
     atom_link.set('type', 'application/rss+xml')
     
     # 按修改时间排序文章（最新的在前）
-    sorted_posts = sorted(
-        blog_posts,
-        key=lambda p: Config.ROOT_DIR / p['path'] if (Config.ROOT_DIR / p['path']).exists() else 0,
-        reverse=True
-    )
+    def post_mtime(p: Dict) -> float:
+        rel = p.get('url') or p.get('path')
+        fp = Config.ROOT_DIR / rel
+        return fp.stat().st_mtime if fp.exists() else 0
+
+    sorted_posts = sorted(blog_posts, key=post_mtime, reverse=True)
     
     # 只包含最近的20篇文章
     for post in sorted_posts[:20]:
         item = ET.SubElement(channel, 'item')
         ET.SubElement(item, 'title').text = post['title']
         
-        post_url = f"{Config.SITE_URL}/{post['path']}"
+        rel = post.get('url') or post.get('path')
+        post_url = f"{Config.SITE_URL}/{rel}"
         ET.SubElement(item, 'link').text = post_url
         ET.SubElement(item, 'guid').text = post_url
         
@@ -612,7 +1207,7 @@ def generate_rss_feed(blog_posts: List[Dict]) -> None:
             ET.SubElement(item, 'category').text = keyword
         
         # 添加发布日期
-        file_path = Config.ROOT_DIR / post['path']
+        file_path = Config.ROOT_DIR / rel
         if file_path.exists():
             pub_date = datetime.fromtimestamp(file_path.stat().st_mtime)
             ET.SubElement(item, 'pubDate').text = pub_date.strftime('%a, %d %b %Y %H:%M:%S +0000')
@@ -652,9 +1247,13 @@ def generate_metadata_for_template(file_path: Path, title: str, keywords: List[s
     
     # 获取文件信息（优先使用源文件，因为目标文件可能还不存在）
     stat_file = source_file if source_file and source_file.exists() else file_path
-    stat = stat_file.stat()
-    created_date = datetime.fromtimestamp(stat.st_ctime)
-    modified_date = datetime.fromtimestamp(stat.st_mtime)
+    if stat_file.exists():
+        stat = stat_file.stat()
+        created_date = datetime.fromtimestamp(stat.st_ctime)
+        modified_date = datetime.fromtimestamp(stat.st_mtime)
+    else:
+        created_date = datetime.now()
+        modified_date = datetime.now()
     
     # 相对路径
     rel_path = file_path.relative_to(Config.ROOT_DIR)
@@ -675,6 +1274,7 @@ def main():
     parser.add_argument('--no-sitemap', action='store_true', help='不生成sitemap.xml')
     parser.add_argument('--no-rss', action='store_true', help='不生成RSS feed')
     parser.add_argument('--verbose', '-v', action='store_true', help='详细输出模式')
+    parser.add_argument('--slugs-report', action='store_true', help='输出 slug 检查报告（缺失/非法/重复）并退出')
     
     args = parser.parse_args()
     
@@ -683,6 +1283,11 @@ def main():
     
     print("=== 导航数据自动生成工具 ===")
     print(f"开始时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+
+    # Slug report mode (no build)
+    if args.slugs_report:
+        md_files = collect_markdown_posts()
+        return slug_report(md_files)
     
     # 扫描目录结构
     nav_menu, blog_posts, directory_structure = scan_notes_directory()
@@ -734,4 +1339,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

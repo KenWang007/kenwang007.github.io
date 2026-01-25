@@ -166,6 +166,62 @@ const Utils = {
     }
 };
 
+// ====== URL helpers (ASCII-only routing) ======
+function toSiteHref(p) {
+    if (!p) return '#';
+    if (p.startsWith('http://') || p.startsWith('https://')) return p;
+    return p.startsWith('/') ? p : `/${p}`;
+}
+
+function getPostHref(post) {
+    return toSiteHref(post?.url || post?.path);
+}
+
+function getDirHref(dirNode) {
+    return toSiteHref(dirNode?.url || (dirNode?.path ? `${dirNode.path}/index.html` : null));
+}
+
+function isAsciiPostPath(pathname) {
+    // /dist/p/<slug>.html OR /dist/p/<hex>.html
+    return /^\/dist\/p\/[a-z0-9]+(?:-[a-z0-9]+)*\.html$/i.test(pathname);
+}
+
+function isAsciiDirPath(pathname) {
+    // /dist/c/<slug>/index.html OR /dist/c/<hex>/index.html
+    return /^\/dist\/c\/[a-z0-9]+(?:-[a-z0-9]+)*\/index\.html$/i.test(pathname);
+}
+
+function getAsciiPostKeyFromPath(pathname) {
+    const m = pathname.match(/^\/dist\/p\/([^/]+)\.html$/i);
+    return m ? m[1] : null; // slug or id
+}
+
+function getAsciiDirKeyFromPath(pathname) {
+    const m = pathname.match(/^\/dist\/c\/([^/]+)\/index\.html$/i);
+    return m ? m[1] : null; // slug or id
+}
+
+function findPostByUrlPath(pathname) {
+    const norm = pathname.replace(/^\//, '');
+    return AppState.blogPosts.find(p => (p.url || p.path) === norm) || null;
+}
+
+function findDirByUrlPath(pathname) {
+    const norm = pathname.replace(/^\//, '');
+    // directory nodes are nested in directoryStructure; match by url
+    const targetUrl = norm;
+    const walk = (dirs) => {
+        if (!dirs || !Array.isArray(dirs)) return null;
+        for (const d of dirs) {
+            if (d.url === targetUrl) return d;
+            const f = walk(d.subdirs);
+            if (f) return f;
+        }
+        return null;
+    };
+    return walk(AppState.directoryStructure);
+}
+
 // ====== Service Worker 注册 ======
 async function registerServiceWorker() {
     if (!('serviceWorker' in navigator)) {
@@ -618,9 +674,9 @@ function initNavigation() {
     const homeItem = createMenuItem('首页', '/index.html');
     navMenu.appendChild(homeItem);
     
-    // 添加notes目录下的一级文件夹作为菜单项
+    // 添加notes目录下的一级文件夹作为菜单项（优先使用 ASCII-only 目录 URL）
     AppState.navMenuData.forEach((folder, index) => {
-        const href = `/${folder.path}/index.html`;
+        const href = getDirHref(folder);
         console.log(`📁 菜单项 ${index}: ${folder.name} -> ${href}`);
         const menuItem = createMenuItem(folder.name, href);
         navMenu.appendChild(menuItem);
@@ -877,7 +933,7 @@ function renderSearchResults(container, posts, keyword) {
         title.className = 'result-title';
         
         const link = document.createElement('a');
-        link.href = `/${post.path}`;
+        link.href = getPostHref(post);
         link.textContent = post.title;
         link.setAttribute('aria-label', `查看文章: ${post.title}`);
         
@@ -1361,6 +1417,9 @@ const ViewCountManager = {
     
     // 生成安全的 key
     generateKey(path) {
+        if (!path || typeof path !== 'string') {
+            return 'unknown';
+        }
         // 移除开头的斜杠，替换特殊字符
         return path
             .replace(/^\//, '')
@@ -1401,7 +1460,7 @@ async function initPopularPosts() {
     
     try {
         // 获取所有文章的访问量
-        const articlePaths = AppState.blogPosts.map(post => post.path);
+        const articlePaths = AppState.blogPosts.map(post => getPostHref(post));
         await ViewCountManager.getMultiplePageViews(articlePaths);
         
         // 渲染热门文章列表
@@ -1418,10 +1477,13 @@ function renderPopularPosts(container) {
     
     // 按访问量排序
     const sortedPosts = [...AppState.blogPosts]
-        .map(post => ({
-            ...post,
-            views: AppState.viewCounts[post.path] || Math.floor(Math.random() * 50) + 5
-        }))
+        .map(post => {
+            const key = getPostHref(post); // starts with /
+            return {
+                ...post,
+                views: AppState.viewCounts[key] || Math.floor(Math.random() * 50) + 5
+            };
+        })
         .sort((a, b) => b.views - a.views)
         .slice(0, CONFIG.MAX_POPULAR_POSTS);
     
@@ -1437,7 +1499,7 @@ function renderPopularPosts(container) {
         item.className = 'popular-item';
         
         item.innerHTML = `
-            <a href="/${post.path}" title="${post.title}">
+            <a href="${getPostHref(post)}" title="${post.title}">
                 <span class="popular-item-rank">${index + 1}</span>
                 ${truncateTitle(post.title, 25)}
             </a>
@@ -1470,7 +1532,7 @@ function renderPopularPostsFallback(container) {
         item.className = 'popular-item';
         
         item.innerHTML = `
-            <a href="/${post.path}" title="${post.title}">
+            <a href="${getPostHref(post)}" title="${post.title}">
                 <span class="popular-item-rank">${index + 1}</span>
                 ${truncateTitle(post.title, 25)}
             </a>
@@ -1509,7 +1571,7 @@ function initBreadcrumb() {
         return;
     }
     
-    // 生成面包屑
+    // 生成面包屑（支持 /p/<id>.html 与 /c/<id>/index.html）
     const breadcrumbHtml = generateBreadcrumb(currentPath);
     
     // 插入面包屑
@@ -1521,6 +1583,98 @@ function initBreadcrumb() {
 
 // 生成面包屑 HTML
 function generateBreadcrumb(currentPath) {
+    // ASCII-only article page
+    if (isAsciiPostPath(currentPath)) {
+        const post = findPostByUrlPath(currentPath);
+        if (!post) return null;
+
+        // original_path example: notes/阅读感悟/活着-余华.html
+        const original = post.original_path || post.path || '';
+        const parts = original.replace(/^\//, '').split('/').filter(Boolean);
+        if (parts.length === 0) return null;
+
+        // drop filename
+        parts.pop();
+        // drop leading "notes"
+        if (parts[0] === 'notes') parts.shift();
+
+        let breadcrumbHtml = `
+            <nav class="breadcrumb" aria-label="面包屑导航">
+                <span class="breadcrumb-item">
+                    <a href="/index.html">首页</a>
+                </span>
+        `;
+
+        // Build cumulative directory path under notes/
+        let cumulative = 'notes';
+        for (let i = 0; i < parts.length; i++) {
+            cumulative += '/' + parts[i];
+            const dirNode = findDirectoryByPath(AppState.directoryStructure, cumulative);
+            breadcrumbHtml += `<span class="breadcrumb-separator">/</span>`;
+            if (dirNode) {
+                breadcrumbHtml += `
+                    <span class="breadcrumb-item">
+                        <a href="${getDirHref(dirNode)}">${parts[i]}</a>
+                    </span>
+                `;
+            } else {
+                breadcrumbHtml += `
+                    <span class="breadcrumb-item">
+                        <span>${parts[i]}</span>
+                    </span>
+                `;
+            }
+        }
+
+        breadcrumbHtml += `<span class="breadcrumb-separator">/</span>`;
+        breadcrumbHtml += `
+            <span class="breadcrumb-item current">
+                <span>${getPageTitle() || post.title || '文章'}</span>
+            </span>
+        `;
+        breadcrumbHtml += '</nav>';
+        return breadcrumbHtml;
+    }
+
+    // ASCII-only directory page
+    if (isAsciiDirPath(currentPath)) {
+        const dirNode = findDirByUrlPath(currentPath);
+        if (!dirNode) return null;
+
+        const original = dirNode.path || '';
+        const parts = original.replace(/^\//, '').split('/').filter(Boolean);
+        if (parts[0] === 'notes') parts.shift();
+
+        let breadcrumbHtml = `
+            <nav class="breadcrumb" aria-label="面包屑导航">
+                <span class="breadcrumb-item">
+                    <a href="/index.html">首页</a>
+                </span>
+        `;
+
+        let cumulative = 'notes';
+        for (let i = 0; i < parts.length; i++) {
+            cumulative += '/' + parts[i];
+            const node = findDirectoryByPath(AppState.directoryStructure, cumulative);
+            breadcrumbHtml += `<span class="breadcrumb-separator">/</span>`;
+            if (node && i !== parts.length - 1) {
+                breadcrumbHtml += `
+                    <span class="breadcrumb-item">
+                        <a href="${getDirHref(node)}">${parts[i]}</a>
+                    </span>
+                `;
+            } else {
+                breadcrumbHtml += `
+                    <span class="breadcrumb-item current">
+                        <span>${parts[i]}</span>
+                    </span>
+                `;
+            }
+        }
+        breadcrumbHtml += '</nav>';
+        return breadcrumbHtml;
+    }
+
     // 解析路径
     const pathParts = currentPath
         .replace(/^\//, '')
@@ -1621,15 +1775,19 @@ function initDirectoryList() {
 // 动态生成目录列表
 function generateDirectoryList() {
     const currentPath = window.location.pathname;
-    
-    // 移除文件名，只保留目录路径
-    let dirPath = currentPath.substring(0, currentPath.lastIndexOf('/'));
-    if (!dirPath || dirPath === '') {
-        dirPath = '/';
+
+    // Find current directory node (supports /c/<id>/index.html and legacy /notes/.../index.html)
+    let currentDir = null;
+    if (isAsciiDirPath(currentPath)) {
+        currentDir = findDirByUrlPath(currentPath);
+    } else {
+        // Legacy: /notes/.../something.html -> match against "notes/..." (no leading slash)
+        let legacyDirPath = currentPath.substring(0, currentPath.lastIndexOf('/'));
+        legacyDirPath = legacyDirPath.replace(/^\//, '');
+        // normalize possible trailing /index
+        if (!legacyDirPath || legacyDirPath === '') legacyDirPath = '';
+        currentDir = findDirectoryByPath(AppState.directoryStructure, legacyDirPath);
     }
-    
-    // 在directoryStructure中查找当前目录
-    const currentDir = findDirectoryByPath(AppState.directoryStructure, dirPath);
     
     if (!currentDir || !currentDir.subdirs || currentDir.subdirs.length === 0) {
         return null;
@@ -1638,8 +1796,8 @@ function generateDirectoryList() {
     // 生成目录列表HTML
     const subdirItems = currentDir.subdirs
         .map(subdir => {
-            const dirName = subdir.path.split('/').pop();
-            return `<li><a href="/${subdir.path}/index.html">${dirName}</a></li>`;
+            const dirName = (subdir.path || '').split('/').pop() || subdir.name || '目录';
+            return `<li><a href="${getDirHref(subdir)}">${dirName}</a></li>`;
         })
         .join('');
     
@@ -1668,6 +1826,20 @@ function findDirectoryByPath(directories, targetPath) {
     return null;
 }
 
+function findDirectoryById(directories, targetId) {
+    if (!directories || !Array.isArray(directories)) {
+        return null;
+    }
+    for (const dir of directories) {
+        if (dir.id === targetId) return dir;
+        if (dir.subdirs && dir.subdirs.length > 0) {
+            const found = findDirectoryById(dir.subdirs, targetId);
+            if (found) return found;
+        }
+    }
+    return null;
+}
+
 // ====== 文章卡片渲染 ======
 function renderArticleCards(container, dirPath) {
     if (!container) return;
@@ -1676,7 +1848,7 @@ function renderArticleCards(container, dirPath) {
     console.log('📚 所有文章:', AppState.blogPosts);
     console.log('📁 目录结构:', AppState.directoryStructure);
     
-    // 获取当前目录下的所有文章
+    // 获取当前目录下的所有文章（按 original_path 归类，避免中文 URL 暴露到地址栏）
     const articlesInDir = getArticlesInDirectory(dirPath);
     console.log('📄 当前目录文章:', articlesInDir);
     
@@ -1696,7 +1868,7 @@ function renderArticleCards(container, dirPath) {
             const dirName = subdir.path.split('/').pop();
             const articleCount = getArticlesInDirectory(subdir.path).length;
             html += `
-                <a href="/${subdir.path}/index.html" class="article-card subdir-card">
+                <a href="${getDirHref(subdir)}" class="article-card subdir-card">
                     <div class="subdir-card-icon">📂</div>
                     <div class="subdir-card-title">${dirName}</div>
                     <div class="subdir-card-count">${articleCount} 篇文章</div>
@@ -1713,18 +1885,19 @@ function renderArticleCards(container, dirPath) {
         html += '<div class="article-cards">';
         
         articlesInDir.forEach(article => {
-            const pathParts = article.path.split('/');
-            const fileName = pathParts.pop().replace('.html', '');
-            const dirPath = pathParts.slice(1).join(' / '); // 移除 'notes' 前缀
+            const sourcePath = article.original_path || article.path || '';
+            const pathParts = sourcePath.split('/');
+            pathParts.pop(); // filename
+            const prettyDir = pathParts.slice(1).join(' / '); // 移除 'notes' 前缀
             
             const keywordsHtml = article.keywords && article.keywords.length > 0
                 ? article.keywords.map(k => `<span class="article-card-keyword">${k}</span>`).join('')
                 : '';
             
             html += `
-                <a href="/${article.path}" class="article-card">
+                <a href="${getPostHref(article)}" class="article-card">
                     <div class="article-card-title">${article.title}</div>
-                    <div class="article-card-path">${dirPath || '根目录'}</div>
+                    <div class="article-card-path">${prettyDir || '根目录'}</div>
                     <div class="article-card-keywords">${keywordsHtml}</div>
                 </a>
             `;
@@ -1744,8 +1917,8 @@ function renderArticleCards(container, dirPath) {
 // 获取指定目录下的所有文章（包括子目录）
 function getArticlesInDirectory(dirPath) {
     return AppState.blogPosts.filter(post => {
-        // 检查文章路径是否以目录路径开头
-        return post.path.startsWith(dirPath + '/');
+        const original = post.original_path || post.path || '';
+        return original.startsWith(dirPath + '/');
     });
 }
 
@@ -1754,23 +1927,27 @@ function initArticleCards() {
     const currentPath = window.location.pathname;
     console.log('🎴 initArticleCards 开始，当前路径:', currentPath);
     
-    // 只在 notes 目录的 index.html 页面显示卡片（不包括首页）
-    if (!currentPath.includes('/notes/') || !currentPath.endsWith('/index.html')) {
-        console.log('🎴 跳过：不是 notes 目录的 index.html 页面');
-        return;
+    let dirPath = null;
+
+    // New ASCII-only directory page: /c/<id>/index.html
+    if (isAsciiDirPath(currentPath)) {
+        const dirNode = findDirByUrlPath(currentPath);
+        if (!dirNode) {
+            console.log('🎴 跳过：找不到目录节点', currentPath);
+            return;
+        }
+        dirPath = dirNode.path; // legacy (may contain Chinese) used internally for grouping
+    } else {
+        // Legacy: notes/<...>/index.html
+        if (!currentPath.includes('/notes/') || !currentPath.endsWith('/index.html')) {
+            console.log('🎴 跳过：不是目录页面');
+            return;
+        }
+        const pathMatch = currentPath.match(/\/notes\/(.+)\/index\.html$/);
+        if (!pathMatch) return;
+        const decodedPath = decodeURIComponent(pathMatch[1]);
+        dirPath = 'notes/' + decodedPath;
     }
-    
-    // 提取目录路径（需要解码 URL 编码的中文字符）
-    const pathMatch = currentPath.match(/\/notes\/(.+)\/index\.html$/);
-    console.log('🎴 路径匹配结果:', pathMatch);
-    if (!pathMatch) {
-        console.log('🎴 跳过：路径匹配失败');
-        return;
-    }
-    
-    // 解码 URL 编码的路径（如 %E7%9B%B8%E5%85%B3 -> 相关）
-    const decodedPath = decodeURIComponent(pathMatch[1]);
-    const dirPath = 'notes/' + decodedPath;
     
     console.log('📂 初始化文章卡片，目录路径:', dirPath);
     
