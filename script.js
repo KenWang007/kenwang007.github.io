@@ -510,15 +510,12 @@ function createMenuItem(name, href, isHome = false) {
     if (isHome) {
         a.addEventListener('click', (e) => {
             const currentPath = window.location.pathname;
-            if (currentPath === '/' || currentPath === '/index.html' || currentPath.endsWith('/index.html')) {
-                // 如果当前就在首页，阻止默认行为并滚动到顶部
-                if (currentPath === '/' || currentPath === '/index.html') {
-                    e.preventDefault();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                    return;
-                }
+            // 只有当前已在首页时，才阻止默认行为并滚动到顶部
+            if (currentPath === '/' || currentPath === '/index.html') {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
-            // 否则正常导航到首页
+            // 其他页面：浏览器默认行为会正常导航到 /index.html
         });
     }
     
