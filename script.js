@@ -488,7 +488,7 @@ function initNavigation() {
     navMenu.innerHTML = '';
     
     // 添加首页菜单项
-    const homeItem = createMenuItem('首页', '/index.html', true);
+    const homeItem = createMenuItem('首页', '/index.html');
     navMenu.appendChild(homeItem);
     
     // 添加notes目录下的一级文件夹作为菜单项
@@ -499,31 +499,12 @@ function initNavigation() {
 }
 
 // 创建菜单项
-function createMenuItem(name, href, isHome = false) {
+function createMenuItem(name, href) {
     const li = document.createElement('li');
     const a = document.createElement('a');
     a.href = href;
     a.textContent = name;
     a.setAttribute('aria-label', `导航到${name}`);
-    
-    // 首页链接特殊处理
-    if (isHome) {
-        a.addEventListener('click', (e) => {
-            e.preventDefault(); // 始终阻止默认行为，由我们控制导航
-            
-            const currentPath = window.location.pathname;
-            const isOnHomePage = currentPath === '/' || currentPath === '/index.html';
-            
-            if (isOnHomePage) {
-                // 已在首页：滚动到顶部
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } else {
-                // 不在首页：导航到首页
-                window.location.href = '/index.html';
-            }
-        });
-    }
-    
     li.appendChild(a);
     return li;
 }
@@ -1120,27 +1101,23 @@ const ViewCountManager = {
         }
     },
     
-    // 通过 CountAPI 记录访问
+    // 使用本地存储记录访问量（不再依赖外部 API）
     async trackPageView(articlePath) {
         try {
-            // 生成安全的 key（移除特殊字符）
             const key = this.generateKey(articlePath);
+            const storageKey = `view_${key}`;
             
-            // 使用 CountAPI 记录访问
-            const response = await fetch(`https://api.countapi.xyz/hit/${CONFIG.COUNT_API_NAMESPACE}/${key}`, {
-                method: 'GET'
-            });
+            // 从本地存储获取当前计数
+            let count = parseInt(localStorage.getItem(storageKey) || '0', 10);
+            count += 1;
             
-            if (!response.ok) {
-                throw new Error(`CountAPI error: ${response.status}`);
-            }
+            // 保存到本地存储
+            localStorage.setItem(storageKey, count.toString());
             
-            const data = await response.json();
-            return data.value || 0;
+            return count;
         } catch (error) {
-            console.warn('⚠️ 访问量统计失败:', error);
             // 返回缓存的访问量或默认值
-            return AppState.viewCounts[articlePath] || Math.floor(Math.random() * 100) + 10;
+            return AppState.viewCounts[articlePath] || 1;
         }
     },
     
@@ -1148,17 +1125,10 @@ const ViewCountManager = {
     async getPageViews(articlePath) {
         try {
             const key = this.generateKey(articlePath);
+            const storageKey = `view_${key}`;
             
-            const response = await fetch(`https://api.countapi.xyz/get/${CONFIG.COUNT_API_NAMESPACE}/${key}`, {
-                method: 'GET'
-            });
-            
-            if (!response.ok) {
-                return 0;
-            }
-            
-            const data = await response.json();
-            return data.value || 0;
+            const count = parseInt(localStorage.getItem(storageKey) || '0', 10);
+            return count;
         } catch (error) {
             return AppState.viewCounts[articlePath] || 0;
         }

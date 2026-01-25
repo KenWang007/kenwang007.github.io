@@ -102,6 +102,11 @@ self.addEventListener('fetch', (event) => {
  * 优先从缓存读取，如果缓存中没有，则从网络获取并缓存
  */
 async function cacheFirst(request) {
+    // 只有 GET 请求才能被缓存，其他方法（如 HEAD）直接走网络
+    if (request.method !== 'GET') {
+        return fetch(request);
+    }
+    
     const cache = await caches.open(CACHE_NAME);
     const cached = await cache.match(request);
     
@@ -115,7 +120,7 @@ async function cacheFirst(request) {
     try {
         const response = await fetch(request);
         
-        // 只缓存成功的响应
+        // 只缓存成功的 GET 响应
         if (response && response.status === 200) {
             cache.put(request, response.clone());
             console.log('[SW] 已缓存:', request.url);
