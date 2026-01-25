@@ -1535,15 +1535,32 @@ html.ua-chromium .top-nav {
     /* Reduce expensive large shadows/gradients during scroll compositing */
     background: rgba(10, 10, 18, 0.97) !important;
     box-shadow: 0 2px 12px rgba(99, 102, 241, 0.12) !important;
+    /* Chromium safeguard: avoid contain-related paint bugs on fast scroll */
+    contain: none !important;
 }
 
 html.ua-chromium .keyword-sidebar,
 html.ua-chromium .popular-sidebar {
     box-shadow: none !important;
+    contain: none !important;
 }
 
 html.ua-chromium .content-wrapper {
     box-shadow: none !important;
+    /* Create a stable stacking context / compositor layer to reduce blank paints */
+    isolation: isolate !important;
+    transform: translateZ(0);
+    contain: none !important;
+}
+
+html.ua-chromium .content-area,
+html.ua-chromium .main-content {
+    contain: none !important;
+}
+
+/* Chromium: disable entrance animation (can interact badly with fast scroll paints) */
+html.ua-chromium .markdown-content {
+    animation: none !important;
 }
 
 /* 减少重绘 */
