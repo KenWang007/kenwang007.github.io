@@ -2,7 +2,7 @@
 // 提供离线访问和缓存管理
 
 // Bump this when core assets (style/script) change to avoid stale SW caches in browsers like Chrome.
-const CACHE_VERSION = 'v2.1.4';
+const CACHE_VERSION = 'v2.2.0';
 const CACHE_NAME = `blog-cache-${CACHE_VERSION}`;
 
 // 需要缓存的核心资源
@@ -84,9 +84,10 @@ self.addEventListener('fetch', (event) => {
         return;
     }
     
-    // 对于包含 /notes/ 的路径，始终使用 Network First 策略
-    // 避免中文 URL 编码导致的缓存不匹配问题
-    if (url.pathname.includes('/notes/')) {
+    // 对于包含 /notes/ 或 /dist/ 的路径，始终使用 Network First 策略
+    // /notes/ - 避免中文 URL 编码导致的缓存不匹配问题
+    // /dist/ - 动态生成的页面，需要及时更新
+    if (url.pathname.includes('/notes/') || url.pathname.includes('/dist/')) {
         event.respondWith(
             networkFirst(request)
         );
@@ -183,7 +184,9 @@ async function networkFirst(request) {
         // Bypass HTTP cache to avoid serving stale HTML/JS/CSS on Chromium (especially with SW updates)
         const response = await fetch(new Request(request, { cache: 'reload' }));
         
-        // 缓存成功的响应（只缓存非 notes 目录的页面，避免中文 URL 问题）
+        // 缓存成功的响应
+        // - /notes/ 目录不缓存（中文 URL 编码问题）
+        // - /dist/ 目录可以缓存（ASCII-only URL）
         if (response && response.status === 200) {
             const url = new URL(request.url);
             if (!url.pathname.includes('/notes/')) {

@@ -25,29 +25,29 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
+      
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
+      
       - name: Install pandoc
         run: |
           sudo apt-get update
           sudo apt-get install -y pandoc
-
+      
       - name: Generate pages
         run: python generate_nav.py
-
+      
       - name: Setup Pages
         uses: actions/configure-pages@v4
-
+      
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           # 上传整个仓库（包含生成的 dist/ 目录）
           path: '.'
-
+      
   # 部署任务
   deploy:
     environment:
