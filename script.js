@@ -1617,15 +1617,21 @@ function getArticlesInDirectory(dirPath) {
 // 初始化目录页面的文章卡片
 function initArticleCards() {
     const currentPath = window.location.pathname;
+    console.log('🎴 initArticleCards 开始，当前路径:', currentPath);
     
-    // 只在 notes 目录的 index.html 页面显示卡片
+    // 只在 notes 目录的 index.html 页面显示卡片（不包括首页）
     if (!currentPath.includes('/notes/') || !currentPath.endsWith('/index.html')) {
+        console.log('🎴 跳过：不是 notes 目录的 index.html 页面');
         return;
     }
     
     // 提取目录路径（需要解码 URL 编码的中文字符）
     const pathMatch = currentPath.match(/\/notes\/(.+)\/index\.html$/);
-    if (!pathMatch) return;
+    console.log('🎴 路径匹配结果:', pathMatch);
+    if (!pathMatch) {
+        console.log('🎴 跳过：路径匹配失败');
+        return;
+    }
     
     // 解码 URL 编码的路径（如 %E7%9B%B8%E5%85%B3 -> 相关）
     const decodedPath = decodeURIComponent(pathMatch[1]);
@@ -1635,11 +1641,16 @@ function initArticleCards() {
     
     // 找到内容容器
     const contentContainer = document.querySelector('.markdown-content');
-    if (!contentContainer) return;
+    console.log('🎴 内容容器:', contentContainer);
+    if (!contentContainer) {
+        console.log('🎴 跳过：找不到 .markdown-content 容器');
+        return;
+    }
     
     // 保留标题和描述，替换文章列表
     const h1 = contentContainer.querySelector('h1');
     const firstP = contentContainer.querySelector('p');
+    console.log('🎴 找到标题:', h1?.textContent, '描述:', firstP?.textContent);
     
     // 创建卡片容器
     const cardsContainer = document.createElement('div');
@@ -1651,6 +1662,7 @@ function initArticleCards() {
     if (firstP) contentContainer.appendChild(firstP);
     contentContainer.appendChild(cardsContainer);
     
+    console.log('🎴 开始渲染文章卡片...');
     // 渲染卡片
     renderArticleCards(cardsContainer, dirPath);
 }
