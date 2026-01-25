@@ -4,6 +4,6 @@
 记录编程、工具、读书与生活思考。
 
 ## 分类
-- [AI学习](notes/AI Learning)
-- [架构随笔](notes/Architecture)
-- [读书摘要](notes/books)
+- [AI相关](notes/AI相关/)
+- [架构随笔](notes/软件设计)
+- [读书摘要](notes/阅读感悟)
