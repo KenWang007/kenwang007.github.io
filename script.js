@@ -852,13 +852,22 @@ function initScrollEffects() {
     const nav = document.querySelector('.top-nav');
     if (!nav) return;
     
+    let scrollingTimer = null;
     const handleScroll = Utils.throttle(() => {
+        // 标记滚动中：用于 CSS 临时降级昂贵特效，避免快速滚动时黑屏闪烁
+        document.documentElement.classList.add('is-scrolling');
+        if (scrollingTimer) clearTimeout(scrollingTimer);
+        scrollingTimer = setTimeout(() => {
+            document.documentElement.classList.remove('is-scrolling');
+        }, 150);
+
+        // 使用 class 切换替代频繁写入 inline style，减少重绘压力
         if (window.scrollY > 50) {
-            nav.style.boxShadow = '0 2px 20px rgba(99, 102, 241, 0.2)';
+            nav.classList.add('scrolled');
         } else {
-            nav.style.boxShadow = '0 2px 20px rgba(99, 102, 241, 0.1)';
+            nav.classList.remove('scrolled');
         }
-    }, 100);
+    }, 50);
     
     window.addEventListener('scroll', handleScroll, { passive: true });
 }

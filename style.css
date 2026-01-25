@@ -145,6 +145,11 @@ body {
     transition: all var(--transition-normal);
 }
 
+/* 由 JS 在滚动时切换，避免频繁写入 inline style 触发重绘 */
+.top-nav.scrolled {
+    box-shadow: 0 2px 20px rgba(99, 102, 241, 0.2);
+}
+
 /* 导航栏底部发光边框 */
 .top-nav::after {
     content: '';
@@ -1462,15 +1467,37 @@ body.left-collapsed.right-collapsed .footer {
 /* ====== 性能优化 ====== */
 
 /* GPU加速动画 */
-.stars,
-.stars2,
-.stars3,
 .nav-menu li a,
 .keyword-item a,
 .popular-item,
 .card,
 .sidebar-toggle {
     will-change: transform;
+}
+
+/*
+  滚动性能保护：
+  在部分浏览器/显卡组合下，多个 fixed 全屏层 + backdrop-filter + 动画 transform
+  在快速滚动时可能触发合成层重建，表现为短暂黑屏闪烁。
+  这里在“滚动中”临时降级昂贵特效，滚动结束后恢复。
+*/
+html.is-scrolling .stars,
+html.is-scrolling .stars2,
+html.is-scrolling .stars3 {
+    animation-play-state: paused;
+}
+
+html.is-scrolling .top-nav::after {
+    animation-play-state: paused;
+}
+
+html.is-scrolling .top-nav,
+html.is-scrolling .keyword-sidebar,
+html.is-scrolling .popular-sidebar,
+html.is-scrolling .content-wrapper {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    transition: none !important;
 }
 
 /* 减少重绘 */
