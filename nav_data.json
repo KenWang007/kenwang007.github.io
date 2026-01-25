@@ -32,22 +32,6 @@
       ]
     },
     {
-      "title": "How to use cursor in local",
-      "path": "notes/AI相关/Tools/Ollama/OpenwebUI/How to use cursor in delivery.html",
-      "keywords": [
-        "cursor",
-        "local"
-      ]
-    },
-    {
-      "title": "What is OpenwebUI",
-      "path": "notes/AI相关/Tools/Ollama/OpenwebUI/How to run OpenwebUI.html",
-      "keywords": [
-        "OpenwebUI",
-        "Openweb"
-      ]
-    },
-    {
       "title": "变量与数据类型",
       "path": "notes/软件设计/Python-learning.html",
       "keywords": [
@@ -69,23 +53,6 @@
           "path": "notes/AI相关/RAG",
           "has_html": true,
           "subdirs": []
-        },
-        {
-          "path": "notes/AI相关/Tools",
-          "has_html": true,
-          "subdirs": [
-            {
-              "path": "notes/AI相关/Tools/Ollama",
-              "has_html": true,
-              "subdirs": [
-                {
-                  "path": "notes/AI相关/Tools/Ollama/OpenwebUI",
-                  "has_html": true,
-                  "subdirs": []
-                }
-              ]
-            }
-          ]
         }
       ]
     },
@@ -100,5 +67,5 @@
       "subdirs": []
     }
   ],
-  "generated_at": 1769311817.091437
+  "generated_at": 1769317115.47463
 }
