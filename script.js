@@ -506,16 +506,21 @@ function createMenuItem(name, href, isHome = false) {
     a.textContent = name;
     a.setAttribute('aria-label', `导航到${name}`);
     
-    // 首页链接特殊处理：如果已在首页，滚动到顶部
+    // 首页链接特殊处理
     if (isHome) {
         a.addEventListener('click', (e) => {
+            e.preventDefault(); // 始终阻止默认行为，由我们控制导航
+            
             const currentPath = window.location.pathname;
-            // 只有当前已在首页时，才阻止默认行为并滚动到顶部
-            if (currentPath === '/' || currentPath === '/index.html') {
-                e.preventDefault();
+            const isOnHomePage = currentPath === '/' || currentPath === '/index.html';
+            
+            if (isOnHomePage) {
+                // 已在首页：滚动到顶部
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                // 不在首页：导航到首页
+                window.location.href = '/index.html';
             }
-            // 其他页面：浏览器默认行为会正常导航到 /index.html
         });
     }
     
