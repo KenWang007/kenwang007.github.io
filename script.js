@@ -1537,12 +1537,18 @@ function findDirectoryByPath(directories, targetPath) {
 function renderArticleCards(container, dirPath) {
     if (!container) return;
     
+    console.log('📂 渲染文章卡片，目录:', dirPath);
+    console.log('📚 所有文章:', AppState.blogPosts);
+    console.log('📁 目录结构:', AppState.directoryStructure);
+    
     // 获取当前目录下的所有文章
     const articlesInDir = getArticlesInDirectory(dirPath);
+    console.log('📄 当前目录文章:', articlesInDir);
     
     // 获取子目录
     const currentDir = findDirectoryByPath(AppState.directoryStructure, dirPath);
     const subdirs = currentDir ? currentDir.subdirs : [];
+    console.log('📂 子目录:', subdirs);
     
     let html = '';
     
@@ -1617,11 +1623,15 @@ function initArticleCards() {
         return;
     }
     
-    // 提取目录路径
+    // 提取目录路径（需要解码 URL 编码的中文字符）
     const pathMatch = currentPath.match(/\/notes\/(.+)\/index\.html$/);
     if (!pathMatch) return;
     
-    const dirPath = 'notes/' + pathMatch[1];
+    // 解码 URL 编码的路径（如 %E7%9B%B8%E5%85%B3 -> 相关）
+    const decodedPath = decodeURIComponent(pathMatch[1]);
+    const dirPath = 'notes/' + decodedPath;
+    
+    console.log('📂 初始化文章卡片，目录路径:', dirPath);
     
     // 找到内容容器
     const contentContainer = document.querySelector('.markdown-content');
