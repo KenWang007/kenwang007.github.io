@@ -391,49 +391,49 @@ body {
     position: fixed;
     top: 50%;
     transform: translateY(-50%);
-    width: 36px;
-    height: 80px;
+    width: 20px;
+    height: 60px;
     background: linear-gradient(180deg, var(--color-primary), var(--color-secondary));
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 0 16px 16px 0;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0 10px 10px 0;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
-    font-size: 24px;
+    font-size: 16px;
     font-weight: bold;
     font-family: Arial, sans-serif;
     line-height: 1;
     z-index: 1001;
     transition: all var(--transition-normal);
     box-shadow: 
-        4px 0 20px rgba(99, 102, 241, 0.6),
-        0 0 30px rgba(99, 102, 241, 0.3);
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        2px 0 12px rgba(99, 102, 241, 0.6),
+        0 0 20px rgba(99, 102, 241, 0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     animation: sidebarTogglePulse 2s ease-in-out infinite;
 }
 
 @keyframes sidebarTogglePulse {
     0%, 100% {
         box-shadow: 
-            4px 0 20px rgba(99, 102, 241, 0.6),
-            0 0 30px rgba(99, 102, 241, 0.3);
+            2px 0 12px rgba(99, 102, 241, 0.6),
+            0 0 20px rgba(99, 102, 241, 0.3);
     }
     50% {
         box-shadow: 
-            4px 0 25px rgba(99, 102, 241, 0.8),
-            0 0 40px rgba(139, 92, 246, 0.5);
+            3px 0 18px rgba(99, 102, 241, 0.8),
+            0 0 25px rgba(139, 92, 246, 0.5);
     }
 }
 
 .sidebar-toggle:hover {
-    width: 42px;
+    width: 26px;
     background: linear-gradient(180deg, var(--color-primary-light), var(--color-accent));
     box-shadow: 
-        6px 0 30px rgba(99, 102, 241, 0.8),
-        0 0 50px rgba(139, 92, 246, 0.6);
-    transform: translateY(-50%) scale(1.1);
+        4px 0 20px rgba(99, 102, 241, 0.8),
+        0 0 30px rgba(139, 92, 246, 0.6);
+    transform: translateY(-50%) scale(1.05);
     animation: none;
 }
 

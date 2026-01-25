@@ -1029,6 +1029,11 @@ function toggleLeftSidebar() {
     
     // 保存状态
     saveSidebarState();
+    
+    // 触发 resize 事件，让星空等组件自适应
+    setTimeout(() => {
+        window.dispatchEvent(new Event('resize'));
+    }, 350); // 等待 CSS 过渡完成
 }
 
 // 切换右侧侧边栏
@@ -1042,6 +1047,11 @@ function toggleRightSidebar() {
     
     // 保存状态
     saveSidebarState();
+    
+    // 触发 resize 事件，让星空等组件自适应
+    setTimeout(() => {
+        window.dispatchEvent(new Event('resize'));
+    }, 350); // 等待 CSS 过渡完成
 }
 
 // 保存侧边栏状态
