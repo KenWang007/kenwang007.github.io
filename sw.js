@@ -104,7 +104,12 @@ self.addEventListener('fetch', (event) => {
 async function cacheFirst(request) {
     // 只有 GET 请求才能被缓存，其他方法（如 HEAD）直接走网络
     if (request.method !== 'GET') {
-        return fetch(request);
+        try {
+            return await fetch(request);
+        } catch (error) {
+            console.log('[SW] 非GET请求网络失败:', request.url);
+            return new Response('Network error', { status: 503, statusText: 'Service Unavailable' });
+        }
     }
     
     const cache = await caches.open(CACHE_NAME);
@@ -112,8 +117,8 @@ async function cacheFirst(request) {
     
     if (cached) {
         console.log('[SW] 从缓存返回:', request.url);
-        // 后台更新缓存
-        updateCache(request);
+        // 后台更新缓存（不等待，静默失败）
+        updateCache(request).catch(() => {});
         return cached;
     }
     
@@ -122,20 +127,30 @@ async function cacheFirst(request) {
         
         // 只缓存成功的 GET 响应
         if (response && response.status === 200) {
-            cache.put(request, response.clone());
+            cache.put(request, response.clone()).catch(() => {});
             console.log('[SW] 已缓存:', request.url);
         }
         
         return response;
     } catch (error) {
-        console.error('[SW] 网络请求失败:', request.url, error);
+        console.log('[SW] 网络请求失败，尝试返回缓存:', request.url);
+        
+        // 尝试从缓存返回任何匹配的响应
+        const fallbackCached = await cache.match(request);
+        if (fallbackCached) {
+            return fallbackCached;
+        }
         
         // 如果是页面请求，返回离线页面
         if (request.destination === 'document') {
-            return cache.match('/index.html');
+            const offlinePage = await cache.match('/index.html');
+            if (offlinePage) {
+                return offlinePage;
+            }
         }
         
-        throw error;
+        // 返回一个友好的错误响应而不是抛出错误
+        return new Response('Network error', { status: 503, statusText: 'Service Unavailable' });
     }
 }
 

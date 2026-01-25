@@ -38,6 +38,9 @@
     <!-- RSS Feed -->
     <link rel="alternate" type="application/rss+xml" title="Ken的知识库 RSS Feed" href="/rss.xml">
     
+    <!-- Three.js for 3D effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
     <!-- Structured Data -->
     <script type="application/ld+json">
     {
@@ -95,12 +98,14 @@
                     <h1>📚 我的知识库</h1>
                     <p>记录编程、工具、读书与生活思考。</p>
                     
-                    <h2>分类</h2>
-                    <ul>
-                        <li><a href="notes/AI相关/index.html">AI相关</a></li>
-                        <li><a href="notes/软件设计/index.html">软件设计</a></li>
-                        <li><a href="notes/阅读感悟/index.html">阅读感悟</a></li>
-                    </ul>
+                    <!-- 3D 宇宙星空效果 -->
+                    <div class="starfield-container" id="starfield-container">
+                        <canvas id="starfield-canvas"></canvas>
+                        <div class="starfield-overlay">
+                            <h2>探索知识宇宙</h2>
+                            <p>点击上方导航，开启您的学习之旅</p>
+                        </div>
+                    </div>
                 </article>
             </div>
         </section>
@@ -115,11 +120,6 @@
             </div>
         </aside>
     </main>
-
-    <!-- 页脚 -->
-    <footer class="footer">
-        <p>&copy; 2026 Ken的知识库 | 暗黑太空主题</p>
-    </footer>
 
     <!-- JavaScript -->
     <script src="/script.js"></script>
