@@ -5,8 +5,17 @@
     <link>https://kenwang007.github.io</link>
     <description>记录AI学习、架构设计、编程技术和读书心得的个人知识库</description>
     <language>zh-CN</language>
-    <lastBuildDate>Sun, 25 Jan 2026 13:20:58 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 25 Jan 2026 13:29:08 +0000</lastBuildDate>
     <atom:link href="https://kenwang007.github.io/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>《认知觉醒》读书笔记</title>
+      <link>https://kenwang007.github.io/notes/阅读感悟/认知觉醒-周岭.html</link>
+      <guid>https://kenwang007.github.io/notes/阅读感悟/认知觉醒-周岭.html</guid>
+      <description>关键词: 认知觉醒, 读书笔记</description>
+      <category>认知觉醒</category>
+      <category>读书笔记</category>
+      <pubDate>Sun, 25 Jan 2026 13:29:07 +0000</pubDate>
+    </item>
     <item>
       <title>《活着》读书笔记</title>
       <link>https://kenwang007.github.io/notes/阅读感悟/活着-余华.html</link>
@@ -14,7 +23,52 @@
       <description>关键词: 活着, 读书笔记</description>
       <category>活着</category>
       <category>读书笔记</category>
-      <pubDate>Sun, 25 Jan 2026 13:20:57 +0000</pubDate>
+      <pubDate>Sun, 25 Jan 2026 13:29:07 +0000</pubDate>
+    </item>
+    <item>
+      <title>《开窍》读书笔记</title>
+      <link>https://kenwang007.github.io/notes/阅读感悟/开窍-所长林超.html</link>
+      <guid>https://kenwang007.github.io/notes/阅读感悟/开窍-所长林超.html</guid>
+      <description>关键词: 开窍, 读书笔记</description>
+      <category>开窍</category>
+      <category>读书笔记</category>
+      <pubDate>Sun, 25 Jan 2026 13:29:07 +0000</pubDate>
+    </item>
+    <item>
+      <title>《平凡的世界》读书笔记</title>
+      <link>https://kenwang007.github.io/notes/阅读感悟/平凡的世界-路遥.html</link>
+      <guid>https://kenwang007.github.io/notes/阅读感悟/平凡的世界-路遥.html</guid>
+      <description>关键词: 平凡的世界, 读书笔记</description>
+      <category>平凡的世界</category>
+      <category>读书笔记</category>
+      <pubDate>Sun, 25 Jan 2026 13:29:06 +0000</pubDate>
+    </item>
+    <item>
+      <title>《墨菲定律》读书笔记</title>
+      <link>https://kenwang007.github.io/notes/阅读感悟/墨菲定律-张新捷.html</link>
+      <guid>https://kenwang007.github.io/notes/阅读感悟/墨菲定律-张新捷.html</guid>
+      <description>关键词: 墨菲定律, 读书笔记</description>
+      <category>墨菲定律</category>
+      <category>读书笔记</category>
+      <pubDate>Sun, 25 Jan 2026 13:29:07 +0000</pubDate>
+    </item>
+    <item>
+      <title>《吴军》读书笔记</title>
+      <link>https://kenwang007.github.io/notes/阅读感悟/吴军-吴军.html</link>
+      <guid>https://kenwang007.github.io/notes/阅读感悟/吴军-吴军.html</guid>
+      <description>关键词: 吴军, 读书笔记</description>
+      <category>吴军</category>
+      <category>读书笔记</category>
+      <pubDate>Sun, 25 Jan 2026 13:29:07 +0000</pubDate>
+    </item>
+    <item>
+      <title>《原则》读书笔记</title>
+      <link>https://kenwang007.github.io/notes/阅读感悟/原则-瑞·达利欧.html</link>
+      <guid>https://kenwang007.github.io/notes/阅读感悟/原则-瑞·达利欧.html</guid>
+      <description>关键词: 原则, 读书笔记</description>
+      <category>原则</category>
+      <category>读书笔记</category>
+      <pubDate>Sun, 25 Jan 2026 13:29:07 +0000</pubDate>
     </item>
     <item>
       <title>变量与数据类型</title>
@@ -22,7 +76,7 @@
       <guid>https://kenwang007.github.io/notes/软件设计/Python-learning.html</guid>
       <description>关键词: 变量与数据类型</description>
       <category>变量与数据类型</category>
-      <pubDate>Sun, 25 Jan 2026 13:20:57 +0000</pubDate>
+      <pubDate>Sun, 25 Jan 2026 13:29:06 +0000</pubDate>
     </item>
     <item>
       <title>什么是 Open WebUI</title>
@@ -33,7 +87,7 @@
       <category>WebUI</category>
       <category>Web</category>
       <category>什么是</category>
-      <pubDate>Sun, 25 Jan 2026 13:20:57 +0000</pubDate>
+      <pubDate>Sun, 25 Jan 2026 13:29:08 +0000</pubDate>
     </item>
     <item>
       <title>Cursor：AI 驱动的代码编辑器</title>
@@ -43,7 +97,7 @@
       <category>AI</category>
       <category>Cursor</category>
       <category>驱动的代码编辑器</category>
-      <pubDate>Sun, 25 Jan 2026 13:20:57 +0000</pubDate>
+      <pubDate>Sun, 25 Jan 2026 13:29:08 +0000</pubDate>
     </item>
     <item>
       <title>📚 RAG技术全面介绍</title>
@@ -52,7 +106,7 @@
       <description>关键词: RAG, 技术全面介绍</description>
       <category>RAG</category>
       <category>技术全面介绍</category>
-      <pubDate>Sun, 25 Jan 2026 13:20:58 +0000</pubDate>
+      <pubDate>Sun, 25 Jan 2026 13:29:08 +0000</pubDate>
     </item>
     <item>
       <title>如何高效使用 AI Agent</title>
@@ -62,7 +116,7 @@
       <category>AI</category>
       <category>Agent</category>
       <category>如何高效使用</category>
-      <pubDate>Sun, 25 Jan 2026 13:20:58 +0000</pubDate>
+      <pubDate>Sun, 25 Jan 2026 13:29:08 +0000</pubDate>
     </item>
   </channel>
 </rss>
