@@ -141,6 +141,26 @@ async function registerServiceWorker() {
         });
         
         console.log('✅ Service Worker 注册成功:', registration.scope);
+
+        // Proactively check for updates (helps Chrome pick up new sw.js quickly).
+        try {
+            await registration.update();
+        } catch (_) {
+            // ignore
+        }
+
+        // If there's already a waiting worker, activate it immediately.
+        if (registration.waiting) {
+            registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+        }
+
+        // Reload once the new SW takes control, so latest CSS/JS are used.
+        let refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (refreshing) return;
+            refreshing = true;
+            window.location.reload();
+        });
         
         // 监听更新
         registration.addEventListener('updatefound', () => {
@@ -150,7 +170,11 @@ async function registerServiceWorker() {
                 if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                     // 有新版本可用
                     console.log('🔄 发现新版本');
-                    showToast('📦 新版本可用，刷新页面以更新', 5000);
+                    // Try to activate immediately; if blocked by open tabs, user can still refresh.
+                    try {
+                        newWorker.postMessage({ type: 'SKIP_WAITING' });
+                    } catch (_) {}
+                    showToast('📦 已更新资源，页面即将刷新', 3000);
                 }
             });
         });

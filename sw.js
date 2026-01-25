@@ -1,7 +1,8 @@
 // Service Worker for Ken's Knowledge Base
 // 提供离线访问和缓存管理
 
-const CACHE_VERSION = 'v2.0.0';
+// Bump this when core assets (style/script) change to avoid stale SW caches in browsers like Chrome.
+const CACHE_VERSION = 'v2.0.1';
 const CACHE_NAME = `blog-cache-${CACHE_VERSION}`;
 
 // 需要缓存的核心资源
@@ -30,7 +31,9 @@ self.addEventListener('install', (event) => {
         caches.open(CACHE_NAME)
             .then((cache) => {
                 console.log('[SW] 缓存核心资源');
-                return cache.addAll(CORE_ASSETS);
+                // Force reload to bypass HTTP cache and avoid serving stale core assets.
+                const requests = CORE_ASSETS.map((url) => new Request(url, { cache: 'reload' }));
+                return cache.addAll(requests);
             })
             .then(() => {
                 console.log('[SW] Service Worker 安装完成');
@@ -87,6 +90,12 @@ self.addEventListener('fetch', (event) => {
         event.respondWith(
             networkFirst(request)
         );
+        return;
+    }
+
+    // Core assets should always prefer network to pick up latest fixes quickly (especially on Chrome).
+    if (url.pathname === '/style.css' || url.pathname === '/script.js') {
+        event.respondWith(networkFirst(request));
         return;
     }
     
