@@ -19,6 +19,44 @@ const CONFIG = {
     COUNT_API_NAMESPACE: 'kenwang007-blog' // CountAPI 命名空间
 };
 
+// ====== 渲染模式（稳定/特效） ======
+const RenderMode = {
+    STORAGE_KEY: 'blog_render_mode', // 'stable' | 'fx'
+
+    getDefaultMode() {
+        // Default to stable on macOS + Chromium-family browsers due to known compositor black-tile issues.
+        try {
+            const ua = navigator.userAgent || '';
+            const isMac = /Macintosh|Mac OS X/.test(ua);
+            const isChromiumFamily = /Chrome\/|Chromium\/|CriOS\/|Edg\/|OPR\/|Brave\//.test(ua);
+            return (isMac && isChromiumFamily) ? 'stable' : 'fx';
+        } catch (_) {
+            return 'fx';
+        }
+    },
+
+    getSavedMode() {
+        try {
+            const v = localStorage.getItem(this.STORAGE_KEY);
+            return v === 'stable' || v === 'fx' ? v : null;
+        } catch (_) {
+            return null;
+        }
+    },
+
+    setSavedMode(mode) {
+        try {
+            localStorage.setItem(this.STORAGE_KEY, mode);
+        } catch (_) {}
+    },
+
+    apply(mode) {
+        const root = document.documentElement;
+        root.classList.toggle('mode-stable', mode === 'stable');
+        root.classList.toggle('mode-fx', mode === 'fx');
+    }
+};
+
 // ====== 状态管理 ======
 const AppState = {
     allKeywords: [],
@@ -191,6 +229,31 @@ document.addEventListener('DOMContentLoaded', async function() {
     try {
         AppState.isLoading = true;
         
+        // Browser hints (used for CSS fallbacks)
+        // Note: Chromium "fast scroll blank/black flashes" can happen across Chrome/Edge/Brave/Opera.
+        // We treat all Chromium-family UAs as candidates for safer rendering defaults.
+        try {
+            const ua = navigator.userAgent || '';
+            const isChromiumFamily = /Chrome\/|Chromium\/|CriOS\/|Edg\/|OPR\/|Brave\//.test(ua);
+            if (isChromiumFamily) document.documentElement.classList.add('ua-chromium');
+        } catch (_) {}
+
+        // Page hints (used for CSS stability fallbacks)
+        try {
+            const path = window.location.pathname || '';
+            const isHome = path === '/' || path === '/index.html';
+            const isSearch = path.includes('search.html');
+            if (isHome) document.documentElement.classList.add('page-home');
+            if (!isHome && !isSearch) document.documentElement.classList.add('page-article');
+        } catch (_) {}
+
+        // Apply render mode (stable/fx) ASAP before heavy paint
+        try {
+            const saved = RenderMode.getSavedMode();
+            const mode = saved || RenderMode.getDefaultMode();
+            RenderMode.apply(mode);
+        } catch (_) {}
+
         // 注册 Service Worker
         registerServiceWorker().catch(err => {
             console.warn('Service Worker 注册失败:', err);
@@ -267,6 +330,45 @@ function initializeUIInteractions() {
     
     // 恢复侧边栏状态
     restoreSidebarState();
+
+    // 初始化渲染模式切换（稳定/特效）
+    initRenderModeToggle();
+}
+
+// ====== 渲染模式切换按钮 ======
+function initRenderModeToggle() {
+    const navContainer = document.querySelector('.nav-container');
+    if (!navContainer) return;
+
+    // Avoid duplicates
+    if (document.getElementById('render-mode-toggle')) return;
+
+    const btn = document.createElement('button');
+    btn.id = 'render-mode-toggle';
+    btn.className = 'render-mode-toggle';
+    btn.type = 'button';
+    btn.setAttribute('aria-label', '切换渲染模式（稳定/特效）');
+    btn.setAttribute('title', '切换渲染模式（稳定/特效）');
+
+    const updateText = () => {
+        const isStable = document.documentElement.classList.contains('mode-stable');
+        btn.textContent = isStable ? '稳定模式' : '特效模式';
+        btn.setAttribute('aria-pressed', isStable ? 'true' : 'false');
+    };
+
+    btn.addEventListener('click', () => {
+        const isStable = document.documentElement.classList.contains('mode-stable');
+        const next = isStable ? 'fx' : 'stable';
+        RenderMode.apply(next);
+        RenderMode.setSavedMode(next);
+        updateText();
+        try {
+            showToast(next === 'stable' ? '🛡️ 已切换：稳定模式' : '✨ 已切换：特效模式', 2000);
+        } catch (_) {}
+    });
+
+    updateText();
+    navContainer.appendChild(btn);
 }
 
 // ====== 缓存管理 ======

@@ -2,7 +2,7 @@
 // 提供离线访问和缓存管理
 
 // Bump this when core assets (style/script) change to avoid stale SW caches in browsers like Chrome.
-const CACHE_VERSION = 'v2.0.1';
+const CACHE_VERSION = 'v2.1.0';
 const CACHE_NAME = `blog-cache-${CACHE_VERSION}`;
 
 // 需要缓存的核心资源
