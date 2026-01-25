@@ -5,11 +5,7 @@
     <link>https://kenwang007.github.io</link>
     <description>记录AI学习、架构设计、编程技术和读书心得的个人知识库</description>
     <language>zh-CN</language>
-<<<<<<< HEAD
-    <lastBuildDate>Sun, 25 Jan 2026 08:21:07 +0000</lastBuildDate>
-=======
-    <lastBuildDate>Sun, 25 Jan 2026 18:59:08 +0000</lastBuildDate>
->>>>>>> 9516c5d (generate new routing)
+    <lastBuildDate>Sun, 25 Jan 2026 19:19:34 +0000</lastBuildDate>
     <atom:link href="https://kenwang007.github.io/rss.xml" rel="self" type="application/rss+xml"/>
     <item>
       <title>《认知觉醒》读书笔记</title>
@@ -18,11 +14,7 @@
       <description>关键词: 认知觉醒, 读书笔记</description>
       <category>认知觉醒</category>
       <category>读书笔记</category>
-<<<<<<< HEAD
-      <pubDate>Sun, 25 Jan 2026 08:21:07 +0000</pubDate>
-=======
-      <pubDate>Sun, 25 Jan 2026 18:59:08 +0000</pubDate>
->>>>>>> 9516c5d (generate new routing)
+      <pubDate>Sun, 25 Jan 2026 19:19:34 +0000</pubDate>
     </item>
     <item>
       <title>《活着》读书笔记</title>
@@ -31,11 +23,7 @@
       <description>关键词: 活着, 读书笔记</description>
       <category>活着</category>
       <category>读书笔记</category>
-<<<<<<< HEAD
-      <pubDate>Sun, 25 Jan 2026 08:21:06 +0000</pubDate>
-=======
-      <pubDate>Sun, 25 Jan 2026 18:59:08 +0000</pubDate>
->>>>>>> 9516c5d (generate new routing)
+      <pubDate>Sun, 25 Jan 2026 19:19:34 +0000</pubDate>
     </item>
     <item>
       <title>《开窍》读书笔记</title>
@@ -44,11 +32,7 @@
       <description>关键词: 开窍, 读书笔记</description>
       <category>开窍</category>
       <category>读书笔记</category>
-<<<<<<< HEAD
-      <pubDate>Sun, 25 Jan 2026 08:21:07 +0000</pubDate>
-=======
-      <pubDate>Sun, 25 Jan 2026 18:59:08 +0000</pubDate>
->>>>>>> 9516c5d (generate new routing)
+      <pubDate>Sun, 25 Jan 2026 19:19:34 +0000</pubDate>
     </item>
     <item>
       <title>《平凡的世界》读书笔记</title>
@@ -57,11 +41,7 @@
       <description>关键词: 平凡的世界, 读书笔记</description>
       <category>平凡的世界</category>
       <category>读书笔记</category>
-<<<<<<< HEAD
-      <pubDate>Sun, 25 Jan 2026 08:21:06 +0000</pubDate>
-=======
-      <pubDate>Sun, 25 Jan 2026 18:59:08 +0000</pubDate>
->>>>>>> 9516c5d (generate new routing)
+      <pubDate>Sun, 25 Jan 2026 19:19:34 +0000</pubDate>
     </item>
     <item>
       <title>《墨菲定律》读书笔记</title>
@@ -70,11 +50,7 @@
       <description>关键词: 墨菲定律, 读书笔记</description>
       <category>墨菲定律</category>
       <category>读书笔记</category>
-<<<<<<< HEAD
-      <pubDate>Sun, 25 Jan 2026 08:21:07 +0000</pubDate>
-=======
-      <pubDate>Sun, 25 Jan 2026 18:59:08 +0000</pubDate>
->>>>>>> 9516c5d (generate new routing)
+      <pubDate>Sun, 25 Jan 2026 19:19:34 +0000</pubDate>
     </item>
     <item>
       <title>《吴军》读书笔记</title>
@@ -83,11 +59,7 @@
       <description>关键词: 吴军, 读书笔记</description>
       <category>吴军</category>
       <category>读书笔记</category>
-<<<<<<< HEAD
-      <pubDate>Sun, 25 Jan 2026 08:21:06 +0000</pubDate>
-=======
-      <pubDate>Sun, 25 Jan 2026 18:59:08 +0000</pubDate>
->>>>>>> 9516c5d (generate new routing)
+      <pubDate>Sun, 25 Jan 2026 19:19:34 +0000</pubDate>
     </item>
     <item>
       <title>《原则》读书笔记</title>
@@ -96,11 +68,7 @@
       <description>关键词: 原则, 读书笔记</description>
       <category>原则</category>
       <category>读书笔记</category>
-<<<<<<< HEAD
-      <pubDate>Sun, 25 Jan 2026 08:21:06 +0000</pubDate>
-=======
-      <pubDate>Sun, 25 Jan 2026 18:59:08 +0000</pubDate>
->>>>>>> 9516c5d (generate new routing)
+      <pubDate>Sun, 25 Jan 2026 19:19:34 +0000</pubDate>
     </item>
     <item>
       <title>变量与数据类型</title>
@@ -108,11 +76,7 @@
       <guid>https://kenwang007.github.io/dist/p/post-99d4eddda91e.html</guid>
       <description>关键词: 变量与数据类型</description>
       <category>变量与数据类型</category>
-<<<<<<< HEAD
-      <pubDate>Sun, 25 Jan 2026 08:21:06 +0000</pubDate>
-=======
-      <pubDate>Sun, 25 Jan 2026 18:59:08 +0000</pubDate>
->>>>>>> 9516c5d (generate new routing)
+      <pubDate>Sun, 25 Jan 2026 19:19:34 +0000</pubDate>
     </item>
     <item>
       <title>什么是 Open WebUI</title>
@@ -123,25 +87,17 @@
       <category>WebUI</category>
       <category>Web</category>
       <category>什么是</category>
-<<<<<<< HEAD
-      <pubDate>Sun, 25 Jan 2026 08:21:06 +0000</pubDate>
-=======
-      <pubDate>Sun, 25 Jan 2026 18:59:08 +0000</pubDate>
->>>>>>> 9516c5d (generate new routing)
+      <pubDate>Sun, 25 Jan 2026 19:19:34 +0000</pubDate>
     </item>
     <item>
       <title>Cursor：AI 驱动的代码编辑器</title>
       <link>https://kenwang007.github.io/dist/p/post-bdc928dcc6fb.html</link>
       <guid>https://kenwang007.github.io/dist/p/post-bdc928dcc6fb.html</guid>
-      <description>关键词: AI, Cursor, 驱动的代码编辑器</description>
-      <category>AI</category>
+      <description>关键词: Cursor, AI, 驱动的代码编辑器</description>
       <category>Cursor</category>
+      <category>AI</category>
       <category>驱动的代码编辑器</category>
-<<<<<<< HEAD
-      <pubDate>Sun, 25 Jan 2026 08:21:06 +0000</pubDate>
-=======
-      <pubDate>Sun, 25 Jan 2026 18:59:08 +0000</pubDate>
->>>>>>> 9516c5d (generate new routing)
+      <pubDate>Sun, 25 Jan 2026 19:19:34 +0000</pubDate>
     </item>
     <item>
       <title>📚 RAG技术全面介绍</title>
@@ -150,11 +106,7 @@
       <description>关键词: RAG, 技术全面介绍</description>
       <category>RAG</category>
       <category>技术全面介绍</category>
-<<<<<<< HEAD
-      <pubDate>Sun, 25 Jan 2026 08:21:06 +0000</pubDate>
-=======
-      <pubDate>Sun, 25 Jan 2026 18:59:08 +0000</pubDate>
->>>>>>> 9516c5d (generate new routing)
+      <pubDate>Sun, 25 Jan 2026 19:19:34 +0000</pubDate>
     </item>
     <item>
       <title>如何高效使用 AI Agent</title>
@@ -164,11 +116,7 @@
       <category>AI</category>
       <category>Agent</category>
       <category>如何高效使用</category>
-<<<<<<< HEAD
-      <pubDate>Sun, 25 Jan 2026 08:21:06 +0000</pubDate>
-=======
-      <pubDate>Sun, 25 Jan 2026 18:59:08 +0000</pubDate>
->>>>>>> 9516c5d (generate new routing)
+      <pubDate>Sun, 25 Jan 2026 19:19:34 +0000</pubDate>
     </item>
   </channel>
 </rss>

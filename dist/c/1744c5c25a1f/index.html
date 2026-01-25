@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="page-article">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="软件设计 - 记录AI学习、架构设计、编程技术和读书心得的个人知识库">
+    <meta name="keywords" content="">
+    <meta name="author" content="Ken Wang">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://kenwang007.github.io/dist/c/1744c5c25a1f/index.html">
+    <meta property="og:title" content="软件设计 - Ken的知识库">
+    <meta property="og:description" content="软件设计 - 记录AI学习、架构设计、编程技术和读书心得的个人知识库">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://kenwang007.github.io/dist/c/1744c5c25a1f/index.html">
+    <meta property="twitter:title" content="软件设计 - Ken的知识库">
+    <meta property="twitter:description" content="软件设计 - 记录AI学习、架构设计、编程技术和读书心得的个人知识库">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#6366f1">
+    
+    <title>软件设计 - Ken的知识库</title>
+    <link rel="stylesheet" href="/style.css?v=2.1.2">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%236366f1%22>📚</text></svg>">
+    <link rel="canonical" href="https://kenwang007.github.io/dist/c/1744c5c25a1f/index.html">
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- RSS Feed -->
+    <link rel="alternate" type="application/rss+xml" title="Ken的知识库 RSS Feed" href="/rss.xml">
+    
+    <!-- Breadcrumb Navigation -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "首页",
+          "item": "https://kenwang007.github.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "软件设计",
+          "item": "https://kenwang007.github.io/dist/c/1744c5c25a1f/index.html"
+        }
+      ]
+    }
+    </script>
+    
+    <!-- Article Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "软件设计",
+      "description": "软件设计 - 记录AI学习、架构设计、编程技术和读书心得的个人知识库",
+      "author": {
+        "@type": "Person",
+        "name": "Ken Wang"
+      },
+      "datePublished": "2026-01-24T22:54:41.194660",
+      "dateModified": "2026-01-24T22:54:41.194660",
+      "inLanguage": "zh-CN"
+    }
+    </script>
+</head>
+<body>
+    <!-- 星空背景 -->
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+
+    <!-- 顶部固定导航 -->
+    <header class="top-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="/index.html">
+                    <span class="logo-text">📚 Ken的知识库</span>
+                </a>
+            </div>
+            <nav class="main-nav">
+                <ul id="nav-menu" class="nav-menu">
+                    <!-- 动态生成的导航菜单项 -->
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <!-- 左侧固定关键词索引 -->
+        <aside class="keyword-sidebar">
+            <div class="keyword-header">
+                <h3>关键词索引</h3>
+            </div>
+            <div class="keyword-list" id="keyword-list">
+                <!-- 动态生成的关键词 -->
+            </div>
+        </aside>
+
+        <!-- 中间主内容 -->
+        <section class="content-area">
+            <div class="content-wrapper">
+                <article class="markdown-content">
+                    <div id="directory-page" data-dir-id="1744c5c25a1f"></div>
+<h1>🏗️ 架构随笔</h1>
+                    <p>记录架构设计相关的学习与思考。</p>
+                    
+                    <h2>文章列表</h2>
+                    
+                    <h3>手动方式（推荐，简单可靠）</h3>
+                    <ul>
+                        <li><a href="/dist/p/post-99d4eddda91e.html">Python-learning</a></li>
+                    </ul>
+                    
+                    <h3>自动生成方式（Jekyll 环境下）</h3>
+                    
+                    <p>要在 Jekyll 中自动生成目录下的文件列表，可以使用以下 Liquid 模板语法：</p>
+                    
+                    <pre><code>{% assign current_dir = page.dir %}
+{% assign files = site.pages | where_exp: "p", "p.dir == current_dir" %}
+{% for file in files %}
+{% if file.name != "index.md" %}
+- [{{ file.title | default: file.name | remove: ".md" }}]({{ file.name }})
+{% endif %}
+{% endfor %}</code></pre>
+                    
+                    <p>将上述代码添加到 index.md 文件中，Jekyll 会在构建时自动生成目录下的所有 Markdown 文件列表。</p>
+                    
+                    <h3>工作原理</h3>
+                    <ol>
+                        <li><code>page.dir</code> 获取当前页面所在目录</li>
+                        <li><code>site.pages</code> 包含所有 Jekyll 生成的页面</li>
+                        <li><code>where_exp</code> 过滤出当前目录下的所有页面</li>
+                        <li>遍历所有页面，排除 index.md 文件，生成链接列表</li>
+                    </ol>
+                    
+                    <h3>注意事项</h3>
+                    <ul>
+                        <li>只有在 Jekyll 环境下（如 GitHub Pages）才会自动生成</li>
+                        <li>本地直接打开文件不会显示自动生成的列表</li>
+                        <li>每个 Markdown 文件的前置元数据中的 <code>title</code> 会作为链接文本，否则使用文件名</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <!-- 右侧热门文章 -->
+        <aside class="popular-sidebar">
+            <div class="popular-header">
+                <h3>热门文章</h3>
+            </div>
+            <div class="popular-list" id="popular-list">
+                <!-- 动态生成的热门文章列表 -->
+            </div>
+        </aside>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="/script.js?v=2.1.2"></script>
+</body>
+</html>
