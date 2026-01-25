@@ -18,8 +18,8 @@
       "title": "Cursor：AI 驱动的代码编辑器",
       "path": "notes/AI相关/Tools/Ollama/OpenwebUI/how-cursor-help-software-delivery.html",
       "keywords": [
-        "AI",
         "Cursor",
+        "AI",
         "驱动的代码编辑器"
       ]
     },
@@ -159,5 +159,5 @@
       "subdirs": []
     }
   ],
-  "generated_at": 1769318948.688021
+  "generated_at": 1769318985.829048
 }
