@@ -15,25 +15,6 @@
   ],
   "blog_posts": [
     {
-      "title": "Cursor：AI 驱动的代码编辑器",
-      "path": "notes/AI相关/Tools/Ollama/OpenwebUI/how-cursor-help-software-delivery.html",
-      "keywords": [
-        "AI",
-        "Cursor",
-        "驱动的代码编辑器"
-      ]
-    },
-    {
-      "title": "什么是 Open WebUI",
-      "path": "notes/AI相关/Tools/Ollama/OpenwebUI/what-is-openwebui.html",
-      "keywords": [
-        "Open",
-        "WebUI",
-        "Web",
-        "什么是"
-      ]
-    },
-    {
       "title": "如何高效使用 AI Agent",
       "path": "notes/AI相关/Agent/如何高效使用agent.html",
       "keywords": [
@@ -48,6 +29,25 @@
       "keywords": [
         "RAG",
         "技术全面介绍"
+      ]
+    },
+    {
+      "title": "Cursor：AI 驱动的代码编辑器",
+      "path": "notes/AI相关/Tools/Ollama/OpenwebUI/how-cursor-help-software-delivery.html",
+      "keywords": [
+        "Cursor",
+        "AI",
+        "驱动的代码编辑器"
+      ]
+    },
+    {
+      "title": "什么是 Open WebUI",
+      "path": "notes/AI相关/Tools/Ollama/OpenwebUI/what-is-openwebui.html",
+      "keywords": [
+        "Open",
+        "WebUI",
+        "Web",
+        "什么是"
       ]
     },
     {
@@ -111,5 +111,5 @@
       "subdirs": []
     }
   ],
-  "generated_at": 1769318458.287136
+  "generated_at": 1769318502.150207
 }
