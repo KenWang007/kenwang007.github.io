@@ -21,6 +21,19 @@
   ],
   "blog_posts": [
     {
+      "title": "MCP Server vs Skills 全面对比指南",
+      "id": "cacbcb20949f",
+      "slug": "compare-mcp-skills",
+      "url": "dist/p/compare-mcp-skills.html",
+      "original_path": "notes/AI相关/Agent/Compare-mcp-skills.html",
+      "keywords": [
+        "MCP",
+        "Server",
+        "Skills",
+        "全面对比指南"
+      ]
+    },
+    {
       "title": "AI Agent 安全指南",
       "id": "05410b91004f",
       "slug": "security-in-ai-agent",
@@ -301,5 +314,5 @@
       "subdirs": []
     }
   ],
-  "generated_at": 1769348411.085145
+  "generated_at": 1769404383.881536
 }
