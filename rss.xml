@@ -5,7 +5,7 @@
     <link>https://kenwang007.github.io</link>
     <description>记录AI学习、架构设计、编程技术和读书心得的个人知识库</description>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 26 Jan 2026 14:03:10 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 26 Jan 2026 17:56:43 +0000</lastBuildDate>
     <atom:link href="https://kenwang007.github.io/rss.xml" rel="self" type="application/rss+xml"/>
     <item>
       <title>《认知觉醒》读书笔记</title>
@@ -14,7 +14,7 @@
       <description>关键词: 认知觉醒, 读书笔记</description>
       <category>认知觉醒</category>
       <category>读书笔记</category>
-      <pubDate>Mon, 26 Jan 2026 14:03:10 +0000</pubDate>
+      <pubDate>Mon, 26 Jan 2026 17:56:43 +0000</pubDate>
     </item>
     <item>
       <title>《活着》读书笔记</title>
@@ -23,7 +23,7 @@
       <description>关键词: 活着, 读书笔记</description>
       <category>活着</category>
       <category>读书笔记</category>
-      <pubDate>Mon, 26 Jan 2026 14:03:10 +0000</pubDate>
+      <pubDate>Mon, 26 Jan 2026 17:56:43 +0000</pubDate>
     </item>
     <item>
       <title>《开窍》读书笔记</title>
@@ -32,7 +32,7 @@
       <description>关键词: 开窍, 读书笔记</description>
       <category>开窍</category>
       <category>读书笔记</category>
-      <pubDate>Mon, 26 Jan 2026 14:03:10 +0000</pubDate>
+      <pubDate>Mon, 26 Jan 2026 17:56:43 +0000</pubDate>
     </item>
     <item>
       <title>《平凡的世界》读书笔记</title>
@@ -41,7 +41,7 @@
       <description>关键词: 平凡的世界, 读书笔记</description>
       <category>平凡的世界</category>
       <category>读书笔记</category>
-      <pubDate>Mon, 26 Jan 2026 14:03:10 +0000</pubDate>
+      <pubDate>Mon, 26 Jan 2026 17:56:43 +0000</pubDate>
     </item>
     <item>
       <title>《墨菲定律》读书笔记</title>
@@ -50,7 +50,7 @@
       <description>关键词: 墨菲定律, 读书笔记</description>
       <category>墨菲定律</category>
       <category>读书笔记</category>
-      <pubDate>Mon, 26 Jan 2026 14:03:10 +0000</pubDate>
+      <pubDate>Mon, 26 Jan 2026 17:56:43 +0000</pubDate>
     </item>
     <item>
       <title>《吴军》读书笔记</title>
@@ -59,7 +59,7 @@
       <description>关键词: 吴军, 读书笔记</description>
       <category>吴军</category>
       <category>读书笔记</category>
-      <pubDate>Mon, 26 Jan 2026 14:03:10 +0000</pubDate>
+      <pubDate>Mon, 26 Jan 2026 17:56:43 +0000</pubDate>
     </item>
     <item>
       <title>《原则》读书笔记</title>
@@ -68,7 +68,7 @@
       <description>关键词: 原则, 读书笔记</description>
       <category>原则</category>
       <category>读书笔记</category>
-      <pubDate>Mon, 26 Jan 2026 14:03:10 +0000</pubDate>
+      <pubDate>Mon, 26 Jan 2026 17:56:43 +0000</pubDate>
     </item>
     <item>
       <title>变量与数据类型</title>
@@ -76,7 +76,35 @@
       <guid>https://kenwang007.github.io/dist/p/post-99d4eddda91e.html</guid>
       <description>关键词: 变量与数据类型</description>
       <category>变量与数据类型</category>
-      <pubDate>Mon, 26 Jan 2026 14:03:10 +0000</pubDate>
+      <pubDate>Mon, 26 Jan 2026 17:56:43 +0000</pubDate>
+    </item>
+    <item>
+      <title>🚪 API 网关设计指南</title>
+      <link>https://kenwang007.github.io/dist/p/api-gateway-guide.html</link>
+      <guid>https://kenwang007.github.io/dist/p/api-gateway-guide.html</guid>
+      <description>关键词: API, 网关设计指南</description>
+      <category>API</category>
+      <category>网关设计指南</category>
+      <pubDate>Mon, 26 Jan 2026 17:56:43 +0000</pubDate>
+    </item>
+    <item>
+      <title>🔄 .NET 缓存框架全面对比</title>
+      <link>https://kenwang007.github.io/dist/p/dotnet-cache-compare.html</link>
+      <guid>https://kenwang007.github.io/dist/p/dotnet-cache-compare.html</guid>
+      <description>关键词: NET, 缓存, 缓存框架全面对比</description>
+      <category>NET</category>
+      <category>缓存</category>
+      <category>缓存框架全面对比</category>
+      <pubDate>Mon, 26 Jan 2026 17:56:43 +0000</pubDate>
+    </item>
+    <item>
+      <title>💾 软件架构中的缓存设计全解析</title>
+      <link>https://kenwang007.github.io/dist/p/how-to-use-cache.html</link>
+      <guid>https://kenwang007.github.io/dist/p/how-to-use-cache.html</guid>
+      <description>关键词: 架构, 软件架构中的缓存设计全解析</description>
+      <category>架构</category>
+      <category>软件架构中的缓存设计全解析</category>
+      <pubDate>Mon, 26 Jan 2026 17:56:43 +0000</pubDate>
     </item>
     <item>
       <title>什么是 Open WebUI</title>
@@ -87,7 +115,7 @@
       <category>WebUI</category>
       <category>Web</category>
       <category>什么是</category>
-      <pubDate>Mon, 26 Jan 2026 14:03:10 +0000</pubDate>
+      <pubDate>Mon, 26 Jan 2026 17:56:43 +0000</pubDate>
     </item>
     <item>
       <title>Cursor：AI 驱动的代码编辑器</title>
@@ -97,7 +125,18 @@
       <category>Cursor</category>
       <category>AI</category>
       <category>驱动的代码编辑器</category>
-      <pubDate>Mon, 26 Jan 2026 14:03:10 +0000</pubDate>
+      <pubDate>Mon, 26 Jan 2026 17:56:43 +0000</pubDate>
+    </item>
+    <item>
+      <title>Claude Code 全面解析与同类工具对比</title>
+      <link>https://kenwang007.github.io/dist/p/what-is-claude-code.html</link>
+      <guid>https://kenwang007.github.io/dist/p/what-is-claude-code.html</guid>
+      <description>关键词: Claude, Code, 全面解析与同类, 全面解析与同类工具对比</description>
+      <category>Claude</category>
+      <category>Code</category>
+      <category>全面解析与同类</category>
+      <category>全面解析与同类工具对比</category>
+      <pubDate>Mon, 26 Jan 2026 17:56:43 +0000</pubDate>
     </item>
     <item>
       <title>Gemini CLI 使用指南与同类工具对比</title>
@@ -109,7 +148,7 @@
       <category>使用指南与同类</category>
       <category>指南与同类工具对比</category>
       <category>使用指南与同类工具对比</category>
-      <pubDate>Mon, 26 Jan 2026 14:03:10 +0000</pubDate>
+      <pubDate>Mon, 26 Jan 2026 17:56:43 +0000</pubDate>
     </item>
     <item>
       <title>📚 RAG技术全面介绍</title>
@@ -118,7 +157,7 @@
       <description>关键词: RAG, 技术全面介绍</description>
       <category>RAG</category>
       <category>技术全面介绍</category>
-      <pubDate>Mon, 26 Jan 2026 14:03:10 +0000</pubDate>
+      <pubDate>Mon, 26 Jan 2026 17:56:43 +0000</pubDate>
     </item>
     <item>
       <title>🧠 LLM 大模型必知必会</title>
@@ -127,7 +166,7 @@
       <description>关键词: LLM, 大模型必知必会</description>
       <category>LLM</category>
       <category>大模型必知必会</category>
-      <pubDate>Mon, 26 Jan 2026 14:03:10 +0000</pubDate>
+      <pubDate>Mon, 26 Jan 2026 17:56:43 +0000</pubDate>
     </item>
     <item>
       <title>🏗️ 大模型架构、训练与部署</title>
@@ -137,7 +176,7 @@
       <category>架构</category>
       <category>大模型架构</category>
       <category>训练与部署</category>
-      <pubDate>Mon, 26 Jan 2026 14:03:10 +0000</pubDate>
+      <pubDate>Mon, 26 Jan 2026 17:56:43 +0000</pubDate>
     </item>
     <item>
       <title>🤖 LLM Agent 与工具生态</title>
@@ -147,7 +186,7 @@
       <category>LLM</category>
       <category>Agent</category>
       <category>与工具生态</category>
-      <pubDate>Mon, 26 Jan 2026 14:03:10 +0000</pubDate>
+      <pubDate>Mon, 26 Jan 2026 17:56:43 +0000</pubDate>
     </item>
     <item>
       <title>如何高效使用 AI Agent</title>
@@ -157,38 +196,7 @@
       <category>AI</category>
       <category>Agent</category>
       <category>如何高效使用</category>
-      <pubDate>Mon, 26 Jan 2026 14:03:10 +0000</pubDate>
-    </item>
-    <item>
-      <title>🤖 什么是 Agent？智能体全面解析</title>
-      <link>https://kenwang007.github.io/dist/p/what-is-agent.html</link>
-      <guid>https://kenwang007.github.io/dist/p/what-is-agent.html</guid>
-      <description>关键词: Agent, 什么是, 智能体全面解析</description>
-      <category>Agent</category>
-      <category>什么是</category>
-      <category>智能体全面解析</category>
-      <pubDate>Mon, 26 Jan 2026 14:03:10 +0000</pubDate>
-    </item>
-    <item>
-      <title>AI Agent 安全指南</title>
-      <link>https://kenwang007.github.io/dist/p/security-in-ai-agent.html</link>
-      <guid>https://kenwang007.github.io/dist/p/security-in-ai-agent.html</guid>
-      <description>关键词: AI, Agent, 安全指南</description>
-      <category>AI</category>
-      <category>Agent</category>
-      <category>安全指南</category>
-      <pubDate>Mon, 26 Jan 2026 14:03:10 +0000</pubDate>
-    </item>
-    <item>
-      <title>MCP Server vs Skills 全面对比指南</title>
-      <link>https://kenwang007.github.io/dist/p/compare-mcp-skills.html</link>
-      <guid>https://kenwang007.github.io/dist/p/compare-mcp-skills.html</guid>
-      <description>关键词: MCP, Server, Skills, 全面对比指南</description>
-      <category>MCP</category>
-      <category>Server</category>
-      <category>Skills</category>
-      <category>全面对比指南</category>
-      <pubDate>Mon, 26 Jan 2026 14:03:10 +0000</pubDate>
+      <pubDate>Mon, 26 Jan 2026 17:56:43 +0000</pubDate>
     </item>
   </channel>
 </rss>

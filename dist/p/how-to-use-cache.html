@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="page-article">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="💾 软件架构中的缓存设计全解析 - 关键词: 架构, 软件架构中的缓存设计全解析">
+    <meta name="keywords" content="架构, 软件架构中的缓存设计全解析">
+    <meta name="author" content="Ken Wang">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://kenwang007.github.io/dist/p/how-to-use-cache.html">
+    <meta property="og:title" content="💾 软件架构中的缓存设计全解析 - Ken的知识库">
+    <meta property="og:description" content="💾 软件架构中的缓存设计全解析 - 关键词: 架构, 软件架构中的缓存设计全解析">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://kenwang007.github.io/dist/p/how-to-use-cache.html">
+    <meta property="twitter:title" content="💾 软件架构中的缓存设计全解析 - Ken的知识库">
+    <meta property="twitter:description" content="💾 软件架构中的缓存设计全解析 - 关键词: 架构, 软件架构中的缓存设计全解析">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#6366f1">
+    
+    <title>💾 软件架构中的缓存设计全解析 - Ken的知识库</title>
+    <link rel="stylesheet" href="/style.css?v=2.1.2">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%236366f1%22>📚</text></svg>">
+    <link rel="canonical" href="https://kenwang007.github.io/dist/p/how-to-use-cache.html">
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- RSS Feed -->
+    <link rel="alternate" type="application/rss+xml" title="Ken的知识库 RSS Feed" href="/rss.xml">
+    
+    <!-- Breadcrumb Navigation -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "首页",
+          "item": "https://kenwang007.github.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "💾 软件架构中的缓存设计全解析",
+          "item": "https://kenwang007.github.io/dist/p/how-to-use-cache.html"
+        }
+      ]
+    }
+    </script>
+    
+    <!-- Article Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "💾 软件架构中的缓存设计全解析",
+      "description": "💾 软件架构中的缓存设计全解析 - 关键词: 架构, 软件架构中的缓存设计全解析",
+      "author": {
+        "@type": "Person",
+        "name": "Ken Wang"
+      },
+      "datePublished": "2026-01-26T17:24:16.214865",
+      "dateModified": "2026-01-26T17:24:16.214865",
+      "inLanguage": "zh-CN"
+    }
+    </script>
+</head>
+<body>
+    <!-- 星空背景 -->
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+
+    <!-- 顶部固定导航 -->
+    <header class="top-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="/index.html">
+                    <span class="logo-text">📚 Ken的知识库</span>
+                </a>
+            </div>
+            <nav class="main-nav">
+                <ul id="nav-menu" class="nav-menu">
+                    <!-- 动态生成的导航菜单项 -->
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <!-- 左侧固定关键词索引 -->
+        <aside class="keyword-sidebar">
+            <div class="keyword-header">
+                <h3>关键词索引</h3>
+            </div>
+            <div class="keyword-list" id="keyword-list">
+                <!-- 动态生成的关键词 -->
+            </div>
+        </aside>
+
+        <!-- 中间主内容 -->
+        <section class="content-area">
+            <div class="content-wrapper">
+                <article class="markdown-content">
+                    <h1>💾 软件架构中的缓存设计全解析</h1><pre>---
+slug: how-to-use-cache
+title: 💾 软件架构中的缓存设计全解析
+---
+
+# 💾 软件架构中的缓存设计全解析
+
+> "There are only two hard things in Computer Science: cache invalidation and naming things." — Phil Karlton
+
+## 1. 缓存概述
+
+### 1.1 什么是缓存？
+
+**缓存（Cache）** 是一种将数据存储在更快访问层的技术，用于减少数据访问延迟、降低后端负载、提升系统吞吐量。
+
+```
+缓存 = 用空间换时间
+
+CPU 寄存器 (~1ns) → 内存 (~100ns) → 磁盘 (~100μs)
+访问速度差异可达 10万倍！
+```
+
+### 1.2 多级缓存架构
+
+```
+客户端 → CDN → 网关层 → 应用层 → 分布式缓存(Redis) → 本地缓存 → 数据库
+```
+
+### 1.3 .NET 缓存技术栈
+
+| 层级 | 技术方案 |
+|------|----------|
+| **本地缓存** | `IMemoryCache`、`LazyCache` |
+| **分布式缓存** | `IDistributedCache`、`StackExchange.Redis` |
+| **缓存抽象** | `Microsoft.Extensions.Caching` |
+| **混合缓存** | `HybridCache`（.NET 9）、`FusionCache` |
+
+---
+
+## 2. 常见缓存问题与解决方案
+
+### 2.1 缓存穿透 (Cache Penetration)
+
+**问题**：查询不存在的数据，缓存永远无法命中，请求直接打到数据库。
+
+#### 解决方案一：缓存空对象
+
+```csharp
+public class UserService
+{
+    private readonly IDistributedCache _cache;
+    private readonly IUserRepository _repository;
+    
+    public async Task&lt;User?> GetUserAsync(int userId)
+    {
+        var cacheKey = $"user:{userId}";
+        var cached = await _cache.GetStringAsync(cacheKey);
+        
+        if (cached != null)
+        {
+            // 空对象标记
+            return cached == "NULL" ? null : JsonSerializer.Deserialize&lt;User>(cached);
+        }
+        
+        var user = await _repository.GetByIdAsync(userId);
+        
+        if (user != null)
+        {
+            await _cache.SetStringAsync(cacheKey, JsonSerializer.Serialize(user),
+                new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1) });
+        }
+        else
+        {
+            // 缓存空对象，短过期时间
+            await _cache.SetStringAsync(cacheKey, "NULL",
+                new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5) });
+        }
+        
+        return user;
+    }
+}
+```
+
+#### 解决方案二：布隆过滤器
+
+```csharp
+// 使用 BloomFilter.NetCore 包
+public class UserServiceWithBloom
+{
+    private readonly Filter&lt;int> _bloomFilter;
+    private readonly IDistributedCache _cache;
+    
+    public UserServiceWithBloom()
+    {
+        // 初始化布隆过滤器，预加载所有有效ID
+        _bloomFilter = FilterBuilder.Build&lt;int>(10000000, 0.001);
+    }
+    
+    public async Task&lt;User?> GetUserAsync(int userId)
+    {
+        // 布隆过滤器检查：不存在则一定不存在
+        if (!_bloomFilter.Contains(userId))
+            return null;
+        
+        // 可能存在，继续查询缓存和数据库...
+        return await GetFromCacheOrDbAsync(userId);
+    }
+}
+```
+
+### 2.2 缓存击穿 (Cache Breakdown)
+
+**问题**：热点 Key 突然过期，大量并发请求直接打到数据库。
+
+#### 解决方案一：分布式锁
+
+```csharp
+public class HotDataService
+{
+    private readonly IDistributedCache _cache;
+    private readonly IConnectionMultiplexer _redis;
+    
+    public async Task&lt;Product?> GetHotProductAsync(int productId)
+    {
+        var cacheKey = $"product:{productId}";
+        var cached = await _cache.GetStringAsync(cacheKey);
+        
+        if (cached != null)
+            return JsonSerializer.Deserialize&lt;Product>(cached);
+        
+        var lockKey = $"lock:{cacheKey}";
+        var db = _redis.GetDatabase();
+        
+        // 尝试获取分布式锁
+        if (await db.StringSetAsync(lockKey, "1", TimeSpan.FromSeconds(10), When.NotExists))
+        {
+            try
+            {
+                // 双重检查
+                cached = await _cache.GetStringAsync(cacheKey);
+                if (cached != null)
+                    return JsonSerializer.Deserialize&lt;Product>(cached);
+                
+                var product = await _repository.GetByIdAsync(productId);
+                if (product != null)
+                {
+                    await _cache.SetStringAsync(cacheKey, JsonSerializer.Serialize(product),
+                        new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1) });
+                }
+                return product;
+            }
+            finally
+            {
+                await db.KeyDeleteAsync(lockKey);
+            }
+        }
+        
+        // 未获取到锁，等待后重试
+        await Task.Delay(100);
+        return await GetHotProductAsync(productId);
+    }
+}
+```
+
+#### 解决方案二：使用 FusionCache（推荐）
+
+```csharp
+// FusionCache 内置防击穿机制
+builder.Services.AddFusionCache()
+    .WithDefaultEntryOptions(new FusionCacheEntryOptions
+    {
+        Duration = TimeSpan.FromHours(1),
+        // 启用故障安全机制：即使缓存过期，仍返回旧数据
+        IsFailSafeEnabled = true,
+        FailSafeMaxDuration = TimeSpan.FromHours(24),
+        // 后台刷新
+        FactorySoftTimeout = TimeSpan.FromMilliseconds(100)
+    })
+    .WithDistributedCache(
+        new RedisCache(new RedisCacheOptions { Configuration = "localhost:6379" })
+    );
+
+// 使用
+public class ProductService
+{
+    private readonly IFusionCache _cache;
+    
+    public async Task&lt;Product?> GetProductAsync(int id)
+    {
+        return await _cache.GetOrSetAsync(
+            $"product:{id}",
+            async _ => await _repository.GetByIdAsync(id),
+            TimeSpan.FromHours(1)
+        );
+    }
+}
+```
+
+### 2.3 缓存雪崩 (Cache Avalanche)
+
+**问题**：大量 Key 同时过期，或缓存服务宕机，导致请求全部涌向数据库。
+
+#### 解决方案一：随机过期时间
+
+```csharp
+public static class CacheExtensions
+{
+    private static readonly Random _random = new();
+    
+    public static async Task SetWithJitterAsync&lt;T>(
+        this IDistributedCache cache,
+        string key,
+        T value,
+        TimeSpan baseDuration)
+    {
+        // 在基础 TTL 上增加随机偏移（0-10分钟）
+        var jitter = TimeSpan.FromMinutes(_random.Next(0, 10));
+        var options = new DistributedCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = baseDuration + jitter
+        };
+        
+        await cache.SetStringAsync(key, JsonSerializer.Serialize(value), options);
+    }
+}
+```
+
+#### 解决方案二：多级缓存
+
+```csharp
+public class MultiLevelCache
+{
+    private readonly IMemoryCache _l1Cache;  // 本地缓存
+    private readonly IDistributedCache _l2Cache;  // Redis
+    
+    public async Task&lt;T?> GetAsync&lt;T>(string key) where T : class
+    {
+        // L1: 本地缓存
+        if (_l1Cache.TryGetValue(key, out T? value))
+            return value;
+        
+        // L2: Redis
+        try
+        {
+            var cached = await _l2Cache.GetStringAsync(key);
+            if (cached != null)
+            {
+                value = JsonSerializer.Deserialize&lt;T>(cached);
+                // 回填 L1（短过期）
+                _l1Cache.Set(key, value, TimeSpan.FromSeconds(30));
+                return value;
+            }
+        }
+        catch (RedisConnectionException)
+        {
+            // Redis 不可用，降级
+        }
+        
+        return null;
+    }
+}
+```
+
+#### 解决方案三：熔断降级（Polly）
+
+```csharp
+// 使用 Polly 实现熔断
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = "localhost:6379";
+});
+
+builder.Services.AddResiliencePipeline("cache-pipeline", builder =>
+{
+    builder
+        .AddCircuitBreaker(new CircuitBreakerStrategyOptions
+        {
+            FailureRatio = 0.5,
+            SamplingDuration = TimeSpan.FromSeconds(10),
+            MinimumThroughput = 10,
+            BreakDuration = TimeSpan.FromSeconds(30)
+        })
+        .AddTimeout(TimeSpan.FromSeconds(1));
+});
+```
+
+### 2.4 三大问题对比
+
+| 问题 | 原因 | 解决方案 |
+|------|------|----------|
+| **穿透** | 查询不存在的数据 | 缓存空对象、布隆过滤器 |
+| **击穿** | 热点Key过期 | 分布式锁、FusionCache |
+| **雪崩** | 大量Key同时过期 | 随机TTL、多级缓存、熔断 |
+
+---
+
+## 3. 缓存更新策略
+
+### 3.1 Cache Aside（最常用）
+
+```csharp
+public class CacheAsideService
+{
+    public async Task&lt;T?> GetAsync&lt;T>(string key, Func&lt;Task&lt;T?>> factory) where T : class
+    {
+        // 1. 先查缓存
+        var cached = await _cache.GetStringAsync(key);
+        if (cached != null)
+            return JsonSerializer.Deserialize&lt;T>(cached);
+        
+        // 2. 查数据库
+        var data = await factory();
+        
+        // 3. 回填缓存
+        if (data != null)
+        {
+            await _cache.SetStringAsync(key, JsonSerializer.Serialize(data),
+                new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1) });
+        }
+        
+        return data;
+    }
+    
+    public async Task UpdateAsync&lt;T>(string key, T value, Func&lt;Task> updateDb)
+    {
+        // 1. 先更新数据库
+        await updateDb();
+        
+        // 2. 再删除缓存（而非更新）
+        await _cache.RemoveAsync(key);
+    }
+}
+```
+
+### 3.2 延迟双删
+
+```csharp
+public async Task UpdateWithDelayDeleteAsync(string key, Product product)
+{
+    // 1. 先删除缓存
+    await _cache.RemoveAsync(key);
+    
+    // 2. 更新数据库
+    await _repository.UpdateAsync(product);
+    
+    // 3. 延迟再删一次
+    _ = Task.Run(async () =>
+    {
+        await Task.Delay(500);
+        await _cache.RemoveAsync(key);
+    });
+}
+```
+
+### 3.3 基于消息队列的最终一致性
+
+```csharp
+// 使用 MassTransit + RabbitMQ
+public class ProductUpdatedConsumer : IConsumer&lt;ProductUpdated>
+{
+    private readonly IDistributedCache _cache;
+    
+    public async Task Consume(ConsumeContext&lt;ProductUpdated> context)
+    {
+        var key = $"product:{context.Message.ProductId}";
+        await _cache.RemoveAsync(key);
+    }
+}
+
+// 发布事件
+public async Task UpdateProductAsync(Product product)
+{
+    await _repository.UpdateAsync(product);
+    await _publishEndpoint.Publish(new ProductUpdated { ProductId = product.Id });
+}
+```
+
+---
+
+## 4. 使用缓存注意事项
+
+### 4.1 Key 设计规范
+
+```csharp
+public static class CacheKeys
+{
+    // 命名规范：业务前缀:对象类型:唯一标识[:版本号]
+    public static string User(int id) => $"user:profile:{id}";
+    public static string Product(int id) => $"product:detail:{id}";
+    public static string Order(string orderId) => $"order:info:{orderId}";
+    public static string List(string category, int page) => $"list:{category}:page:{page}";
+}
+```
+
+**注意事项**：
+- ✅ 使用冒号分隔层级
+- ✅ Key 长度 &lt; 200 字节
+- ❌ 避免过长的 Key
+- ❌ 避免包含用户输入（注入风险）
+
+### 4.2 大 Key 处理
+
+```csharp
+// 拆分大列表
+public class BigListCache
+{
+    private const int PageSize = 100;
+    
+    public async Task SetLargeListAsync&lt;T>(string key, List&lt;T> items)
+    {
+        var pageCount = (items.Count + PageSize - 1) / PageSize;
+        
+        // 存储元数据
+        await _cache.SetStringAsync($"{key}:meta", 
+            JsonSerializer.Serialize(new { Total = items.Count, Pages = pageCount }));
+        
+        // 分页存储
+        for (int i = 0; i &lt; pageCount; i++)
+        {
+            var pageItems = items.Skip(i * PageSize).Take(PageSize).ToList();
+            await _cache.SetStringAsync($"{key}:page:{i}", JsonSerializer.Serialize(pageItems));
+        }
+    }
+}
+```
+
+### 4.3 监控指标
+
+| 指标 | 健康阈值 | 告警阈值 |
+|------|----------|----------|
+| **命中率** | > 90% | &lt; 80% |
+| **P99 延迟** | &lt; 10ms | > 50ms |
+| **内存使用率** | &lt; 80% | > 90% |
+| **连接数** | &lt; 80% max | > 90% max |
+
+### 4.4 淘汰策略
+
+| Redis 策略 | 描述 | 配置 |
+|------------|------|------|
+| `allkeys-lru` | 淘汰最近最少使用（推荐） | `maxmemory-policy allkeys-lru` |
+| `allkeys-lfu` | 淘汰最不经常使用 | `maxmemory-policy allkeys-lfu` |
+| `volatile-ttl` | 优先淘汰即将过期 | `maxmemory-policy volatile-ttl` |
+
+---
+
+## 5. .NET 最佳实践
+
+### 5.1 使用 HybridCache（.NET 9+）
+
+```csharp
+// .NET 9 内置的混合缓存，自动处理多级缓存
+builder.Services.AddHybridCache(options =>
+{
+    options.DefaultEntryOptions = new HybridCacheEntryOptions
+    {
+        Expiration = TimeSpan.FromHours(1),
+        LocalCacheExpiration = TimeSpan.FromMinutes(5)
+    };
+});
+
+public class ProductService
+{
+    private readonly HybridCache _cache;
+    
+    public async Task&lt;Product> GetProductAsync(int id)
+    {
+        return await _cache.GetOrCreateAsync(
+            $"product:{id}",
+            async cancel => await _repository.GetByIdAsync(id, cancel)
+        );
+    }
+}
+```
+
+### 5.2 使用 FusionCache（推荐）
+
+```csharp
+builder.Services.AddFusionCache()
+    .WithDefaultEntryOptions(new FusionCacheEntryOptions
+    {
+        Duration = TimeSpan.FromHours(1),
+        IsFailSafeEnabled = true,
+        FailSafeMaxDuration = TimeSpan.FromDays(1),
+        FactorySoftTimeout = TimeSpan.FromMilliseconds(100),
+        AllowBackgroundDistributedCacheOperations = true
+    })
+    .WithDistributedCache(new RedisCache(new RedisCacheOptions 
+    { 
+        Configuration = "localhost:6379" 
+    }))
+    .WithSerializer(new FusionCacheSystemTextJsonSerializer());
+
+// 自动处理：多级缓存、防击穿、故障安全、后台刷新
+public class ProductService
+{
+    private readonly IFusionCache _cache;
+    
+    public async Task&lt;Product?> GetAsync(int id) =>
+        await _cache.GetOrSetAsync($"product:{id}", 
+            _ => _repository.GetByIdAsync(id));
+    
+    public async Task UpdateAsync(Product product)
+    {
+        await _repository.UpdateAsync(product);
+        await _cache.RemoveAsync($"product:{product.Id}");
+    }
+}
+```
+
+### 5.3 完整示例：电商商品缓存
+
+```csharp
+public class ProductCacheService
+{
+    private readonly IFusionCache _cache;
+    private readonly IProductRepository _repository;
+    private readonly ILogger&lt;ProductCacheService> _logger;
+    
+    public async Task&lt;Product?> GetProductAsync(int productId)
+    {
+        return await _cache.GetOrSetAsync(
+            CacheKeys.Product(productId),
+            async ct =>
+            {
+                _logger.LogInformation("Cache miss for product {Id}", productId);
+                return await _repository.GetByIdAsync(productId, ct);
+            },
+            new FusionCacheEntryOptions
+            {
+                Duration = TimeSpan.FromHours(1),
+                JitterMaxDuration = TimeSpan.FromMinutes(10), // 防雪崩
+                IsFailSafeEnabled = true,
+                FailSafeMaxDuration = TimeSpan.FromHours(24)
+            }
+        );
+    }
+    
+    public async Task UpdateProductAsync(Product product)
+    {
+        await _repository.UpdateAsync(product);
+        
+        // 删除缓存并发布失效事件
+        await _cache.RemoveAsync(CacheKeys.Product(product.Id));
+        
+        _logger.LogInformation("Product {Id} cache invalidated", product.Id);
+    }
+    
+    public async Task&lt;List&lt;Product>> GetTopProductsAsync(int count)
+    {
+        return await _cache.GetOrSetAsync(
+            $"products:top:{count}",
+            _ => _repository.GetTopAsync(count),
+            TimeSpan.FromMinutes(10)
+        ) ?? new List&lt;Product>();
+    }
+}
+```
+
+---
+
+## 6. 总结
+
+### 核心要点
+
+| 主题 | 关键点 |
+|------|--------|
+| **缓存问题** | 穿透→空对象/布隆过滤器，击穿→分布式锁/FusionCache，雪崩→随机TTL/多级缓存 |
+| **更新策略** | Cache Aside：先更新 DB，再删除缓存 |
+| **推荐方案** | FusionCache（成熟）或 HybridCache（.NET 9+） |
+| **Key 设计** | `业务:类型:ID`，长度适中，避免大 Key |
+| **监控** | 命中率 > 90%，P99 &lt; 10ms |
+
+### 设计检查清单
+
+- [ ] 是否处理了缓存穿透？
+- [ ] 是否处理了缓存击穿？
+- [ ] 是否处理了缓存雪崩？
+- [ ] Key 命名是否规范？
+- [ ] TTL 是否带随机偏移？
+- [ ] 是否有降级兜底方案？
+- [ ] 是否有监控告警？
+
+### 参考资源
+
+- [Microsoft.Extensions.Caching](https://learn.microsoft.com/en-us/aspnet/core/performance/caching)
+- [FusionCache](https://github.com/ZiggyCreatures/FusionCache)
+- [StackExchange.Redis](https://stackexchange.github.io/StackExchange.Redis/)
+- [HybridCache in .NET 9](https://learn.microsoft.com/en-us/aspnet/core/performance/caching/hybrid)
+</pre>
+                </article>
+            </div>
+        </section>
+
+        <!-- 右侧热门文章 -->
+        <aside class="popular-sidebar">
+            <div class="popular-header">
+                <h3>热门文章</h3>
+            </div>
+            <div class="popular-list" id="popular-list">
+                <!-- 动态生成的热门文章列表 -->
+            </div>
+        </aside>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="/script.js?v=2.1.2"></script>
+</body>
+</html>

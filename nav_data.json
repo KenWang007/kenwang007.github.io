@@ -130,6 +130,19 @@
       ]
     },
     {
+      "title": "Claude Code 全面解析与同类工具对比",
+      "id": "3034e870f471",
+      "slug": "what-is-claude-code",
+      "url": "dist/p/what-is-claude-code.html",
+      "original_path": "notes/AI相关/Tools/Gemini/What-is-claude-code.html",
+      "keywords": [
+        "Claude",
+        "Code",
+        "全面解析与同类",
+        "全面解析与同类工具对比"
+      ]
+    },
+    {
       "title": "Cursor：AI 驱动的代码编辑器",
       "id": "bdc928dcc6fb",
       "slug": "post-bdc928dcc6fb",
@@ -152,6 +165,40 @@
         "WebUI",
         "Web",
         "什么是"
+      ]
+    },
+    {
+      "title": "💾 软件架构中的缓存设计全解析",
+      "id": "91a234a11ad5",
+      "slug": "how-to-use-cache",
+      "url": "dist/p/how-to-use-cache.html",
+      "original_path": "notes/软件设计/Cache/How-to-use-cache.html",
+      "keywords": [
+        "架构",
+        "软件架构中的缓存设计全解析"
+      ]
+    },
+    {
+      "title": "🔄 .NET 缓存框架全面对比",
+      "id": "163db9f34f12",
+      "slug": "dotnet-cache-compare",
+      "url": "dist/p/dotnet-cache-compare.html",
+      "original_path": "notes/软件设计/Cache/NET-cache-compare.html",
+      "keywords": [
+        "NET",
+        "缓存",
+        "缓存框架全面对比"
+      ]
+    },
+    {
+      "title": "🚪 API 网关设计指南",
+      "id": "a3939ca25bc8",
+      "slug": "api-gateway-guide",
+      "url": "dist/p/api-gateway-guide.html",
+      "original_path": "notes/软件设计/Cache/Need-to-know-gw.html",
+      "keywords": [
+        "API",
+        "网关设计指南"
       ]
     },
     {
@@ -325,7 +372,17 @@
       "slug": null,
       "url": "dist/c/1744c5c25a1f/index.html",
       "has_posts": true,
-      "subdirs": []
+      "subdirs": [
+        {
+          "name": "Cache",
+          "path": "notes/软件设计/Cache",
+          "id": "643d05dbc4ef",
+          "slug": null,
+          "url": "dist/c/643d05dbc4ef/index.html",
+          "has_posts": true,
+          "subdirs": []
+        }
+      ]
     },
     {
       "name": "阅读感悟",
@@ -337,5 +394,5 @@
       "subdirs": []
     }
   ],
-  "generated_at": 1769407390.731627
+  "generated_at": 1769421403.277235
 }
