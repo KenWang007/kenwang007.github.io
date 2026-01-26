@@ -116,6 +116,20 @@
       ]
     },
     {
+      "title": "Gemini CLI 使用指南与同类工具对比",
+      "id": "87d8d7561f17",
+      "slug": "how-to-use-gemini-cli",
+      "url": "dist/p/how-to-use-gemini-cli.html",
+      "original_path": "notes/AI相关/Tools/Gemini/How-to-use-gemini-cli.html",
+      "keywords": [
+        "Gemini",
+        "CLI",
+        "使用指南与同类",
+        "指南与同类工具对比",
+        "使用指南与同类工具对比"
+      ]
+    },
+    {
       "title": "Cursor：AI 驱动的代码编辑器",
       "id": "bdc928dcc6fb",
       "slug": "post-bdc928dcc6fb",
@@ -273,6 +287,15 @@
           "has_posts": false,
           "subdirs": [
             {
+              "name": "Gemini",
+              "path": "notes/AI相关/Tools/Gemini",
+              "id": "0b40025ca9c1",
+              "slug": null,
+              "url": "dist/c/0b40025ca9c1/index.html",
+              "has_posts": true,
+              "subdirs": []
+            },
+            {
               "name": "Ollama",
               "path": "notes/AI相关/Tools/Ollama",
               "id": "99c807999700",
@@ -314,5 +337,5 @@
       "subdirs": []
     }
   ],
-  "generated_at": 1769404383.881536
+  "generated_at": 1769407390.731627
 }
