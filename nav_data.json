@@ -128,6 +128,18 @@
       ]
     },
     {
+      "title": "Clawdbot 实现原理与架构说明",
+      "id": "8781ed35006f",
+      "slug": null,
+      "url": "dist/p/8781ed35006f.html",
+      "original_path": "notes/AI相关/Tools/Clawdbot/clawdbot-implementation-principle.html",
+      "keywords": [
+        "架构",
+        "Clawdbot",
+        "实现原理与架构说明"
+      ]
+    },
+    {
       "title": "Gemini CLI 使用指南与同类工具对比",
       "id": "87d8d7561f17",
       "slug": "how-to-use-gemini-cli",
@@ -161,8 +173,8 @@
       "url": "dist/p/post-bdc928dcc6fb.html",
       "original_path": "notes/AI相关/Tools/Ollama/OpenwebUI/how-cursor-help-software-delivery.html",
       "keywords": [
-        "AI",
         "Cursor",
+        "AI",
         "驱动的代码编辑器"
       ]
     },
@@ -415,5 +427,5 @@
       "subdirs": []
     }
   ],
-  "generated_at": 1769697378.756713
+  "generated_at": 1769697657.550963
 }

@@ -5,7 +5,7 @@
     <link>https://kenwang007.github.io</link>
     <description>记录AI学习、架构设计、编程技术和读书心得的个人知识库</description>
     <language>zh-CN</language>
-    <lastBuildDate>Thu, 29 Jan 2026 22:36:18 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 29 Jan 2026 22:40:57 +0000</lastBuildDate>
     <atom:link href="https://kenwang007.github.io/rss.xml" rel="self" type="application/rss+xml"/>
     <item>
       <title>《认知觉醒》读书笔记</title>
@@ -14,7 +14,7 @@
       <description>关键词: 认知觉醒, 读书笔记</description>
       <category>认知觉醒</category>
       <category>读书笔记</category>
-      <pubDate>Thu, 29 Jan 2026 22:36:18 +0000</pubDate>
+      <pubDate>Thu, 29 Jan 2026 22:40:57 +0000</pubDate>
     </item>
     <item>
       <title>《活着》读书笔记</title>
@@ -23,7 +23,7 @@
       <description>关键词: 活着, 读书笔记</description>
       <category>活着</category>
       <category>读书笔记</category>
-      <pubDate>Thu, 29 Jan 2026 22:36:18 +0000</pubDate>
+      <pubDate>Thu, 29 Jan 2026 22:40:57 +0000</pubDate>
     </item>
     <item>
       <title>《开窍》读书笔记</title>
@@ -32,7 +32,7 @@
       <description>关键词: 开窍, 读书笔记</description>
       <category>开窍</category>
       <category>读书笔记</category>
-      <pubDate>Thu, 29 Jan 2026 22:36:18 +0000</pubDate>
+      <pubDate>Thu, 29 Jan 2026 22:40:57 +0000</pubDate>
     </item>
     <item>
       <title>《平凡的世界》读书笔记</title>
@@ -41,7 +41,7 @@
       <description>关键词: 平凡的世界, 读书笔记</description>
       <category>平凡的世界</category>
       <category>读书笔记</category>
-      <pubDate>Thu, 29 Jan 2026 22:36:18 +0000</pubDate>
+      <pubDate>Thu, 29 Jan 2026 22:40:57 +0000</pubDate>
     </item>
     <item>
       <title>《墨菲定律》读书笔记</title>
@@ -50,7 +50,7 @@
       <description>关键词: 墨菲定律, 读书笔记</description>
       <category>墨菲定律</category>
       <category>读书笔记</category>
-      <pubDate>Thu, 29 Jan 2026 22:36:18 +0000</pubDate>
+      <pubDate>Thu, 29 Jan 2026 22:40:57 +0000</pubDate>
     </item>
     <item>
       <title>《吴军》读书笔记</title>
@@ -59,7 +59,7 @@
       <description>关键词: 吴军, 读书笔记</description>
       <category>吴军</category>
       <category>读书笔记</category>
-      <pubDate>Thu, 29 Jan 2026 22:36:18 +0000</pubDate>
+      <pubDate>Thu, 29 Jan 2026 22:40:57 +0000</pubDate>
     </item>
     <item>
       <title>《原则》读书笔记</title>
@@ -68,7 +68,7 @@
       <description>关键词: 原则, 读书笔记</description>
       <category>原则</category>
       <category>读书笔记</category>
-      <pubDate>Thu, 29 Jan 2026 22:36:18 +0000</pubDate>
+      <pubDate>Thu, 29 Jan 2026 22:40:57 +0000</pubDate>
     </item>
     <item>
       <title>变量与数据类型</title>
@@ -76,7 +76,7 @@
       <guid>https://kenwang007.github.io/dist/p/post-99d4eddda91e.html</guid>
       <description>关键词: 变量与数据类型</description>
       <category>变量与数据类型</category>
-      <pubDate>Thu, 29 Jan 2026 22:36:18 +0000</pubDate>
+      <pubDate>Thu, 29 Jan 2026 22:40:57 +0000</pubDate>
     </item>
     <item>
       <title>🚪 API 网关设计指南</title>
@@ -85,7 +85,7 @@
       <description>关键词: API, 网关设计指南</description>
       <category>API</category>
       <category>网关设计指南</category>
-      <pubDate>Thu, 29 Jan 2026 22:36:18 +0000</pubDate>
+      <pubDate>Thu, 29 Jan 2026 22:40:57 +0000</pubDate>
     </item>
     <item>
       <title>🔄 .NET 缓存框架全面对比</title>
@@ -95,7 +95,7 @@
       <category>NET</category>
       <category>缓存</category>
       <category>缓存框架全面对比</category>
-      <pubDate>Thu, 29 Jan 2026 22:36:18 +0000</pubDate>
+      <pubDate>Thu, 29 Jan 2026 22:40:57 +0000</pubDate>
     </item>
     <item>
       <title>💾 软件架构中的缓存设计全解析</title>
@@ -104,7 +104,7 @@
       <description>关键词: 架构, 软件架构中的缓存设计全解析</description>
       <category>架构</category>
       <category>软件架构中的缓存设计全解析</category>
-      <pubDate>Thu, 29 Jan 2026 22:36:18 +0000</pubDate>
+      <pubDate>Thu, 29 Jan 2026 22:40:57 +0000</pubDate>
     </item>
     <item>
       <title>什么是 Open WebUI</title>
@@ -115,17 +115,17 @@
       <category>WebUI</category>
       <category>Web</category>
       <category>什么是</category>
-      <pubDate>Thu, 29 Jan 2026 22:36:18 +0000</pubDate>
+      <pubDate>Thu, 29 Jan 2026 22:40:57 +0000</pubDate>
     </item>
     <item>
       <title>Cursor：AI 驱动的代码编辑器</title>
       <link>https://kenwang007.github.io/dist/p/post-bdc928dcc6fb.html</link>
       <guid>https://kenwang007.github.io/dist/p/post-bdc928dcc6fb.html</guid>
-      <description>关键词: AI, Cursor, 驱动的代码编辑器</description>
-      <category>AI</category>
+      <description>关键词: Cursor, AI, 驱动的代码编辑器</description>
       <category>Cursor</category>
+      <category>AI</category>
       <category>驱动的代码编辑器</category>
-      <pubDate>Thu, 29 Jan 2026 22:36:18 +0000</pubDate>
+      <pubDate>Thu, 29 Jan 2026 22:40:57 +0000</pubDate>
     </item>
     <item>
       <title>Claude Code 全面解析与同类工具对比</title>
@@ -136,7 +136,7 @@
       <category>Code</category>
       <category>全面解析与同类</category>
       <category>全面解析与同类工具对比</category>
-      <pubDate>Thu, 29 Jan 2026 22:36:18 +0000</pubDate>
+      <pubDate>Thu, 29 Jan 2026 22:40:57 +0000</pubDate>
     </item>
     <item>
       <title>Gemini CLI 使用指南与同类工具对比</title>
@@ -148,7 +148,17 @@
       <category>使用指南与同类</category>
       <category>指南与同类工具对比</category>
       <category>使用指南与同类工具对比</category>
-      <pubDate>Thu, 29 Jan 2026 22:36:18 +0000</pubDate>
+      <pubDate>Thu, 29 Jan 2026 22:40:57 +0000</pubDate>
+    </item>
+    <item>
+      <title>Clawdbot 实现原理与架构说明</title>
+      <link>https://kenwang007.github.io/dist/p/8781ed35006f.html</link>
+      <guid>https://kenwang007.github.io/dist/p/8781ed35006f.html</guid>
+      <description>关键词: 架构, Clawdbot, 实现原理与架构说明</description>
+      <category>架构</category>
+      <category>Clawdbot</category>
+      <category>实现原理与架构说明</category>
+      <pubDate>Thu, 29 Jan 2026 22:40:57 +0000</pubDate>
     </item>
     <item>
       <title>Clawdbot 架构与安全分析</title>
@@ -158,7 +168,7 @@
       <category>架构</category>
       <category>Clawdbot</category>
       <category>架构与安全分析</category>
-      <pubDate>Thu, 29 Jan 2026 22:36:18 +0000</pubDate>
+      <pubDate>Thu, 29 Jan 2026 22:40:57 +0000</pubDate>
     </item>
     <item>
       <title>📚 RAG技术全面介绍</title>
@@ -167,7 +177,7 @@
       <description>关键词: RAG, 技术全面介绍</description>
       <category>RAG</category>
       <category>技术全面介绍</category>
-      <pubDate>Thu, 29 Jan 2026 22:36:18 +0000</pubDate>
+      <pubDate>Thu, 29 Jan 2026 22:40:57 +0000</pubDate>
     </item>
     <item>
       <title>🧠 LLM 大模型必知必会</title>
@@ -176,7 +186,7 @@
       <description>关键词: LLM, 大模型必知必会</description>
       <category>LLM</category>
       <category>大模型必知必会</category>
-      <pubDate>Thu, 29 Jan 2026 22:36:18 +0000</pubDate>
+      <pubDate>Thu, 29 Jan 2026 22:40:57 +0000</pubDate>
     </item>
     <item>
       <title>🏗️ 大模型架构、训练与部署</title>
@@ -186,17 +196,7 @@
       <category>架构</category>
       <category>大模型架构</category>
       <category>训练与部署</category>
-      <pubDate>Thu, 29 Jan 2026 22:36:18 +0000</pubDate>
-    </item>
-    <item>
-      <title>🤖 LLM Agent 与工具生态</title>
-      <link>https://kenwang007.github.io/dist/p/llm-agent-and-tools.html</link>
-      <guid>https://kenwang007.github.io/dist/p/llm-agent-and-tools.html</guid>
-      <description>关键词: LLM, Agent, 与工具生态</description>
-      <category>LLM</category>
-      <category>Agent</category>
-      <category>与工具生态</category>
-      <pubDate>Thu, 29 Jan 2026 22:36:18 +0000</pubDate>
+      <pubDate>Thu, 29 Jan 2026 22:40:57 +0000</pubDate>
     </item>
   </channel>
 </rss>
