@@ -116,6 +116,18 @@
       ]
     },
     {
+      "title": "Clawdbot 架构与安全分析",
+      "id": "cb548276693c",
+      "slug": null,
+      "url": "dist/p/cb548276693c.html",
+      "original_path": "notes/AI相关/Tools/Clawdbot/clawdbot-architecture-and-security.html",
+      "keywords": [
+        "架构",
+        "Clawdbot",
+        "架构与安全分析"
+      ]
+    },
+    {
       "title": "Gemini CLI 使用指南与同类工具对比",
       "id": "87d8d7561f17",
       "slug": "how-to-use-gemini-cli",
@@ -149,8 +161,8 @@
       "url": "dist/p/post-bdc928dcc6fb.html",
       "original_path": "notes/AI相关/Tools/Ollama/OpenwebUI/how-cursor-help-software-delivery.html",
       "keywords": [
-        "Cursor",
         "AI",
+        "Cursor",
         "驱动的代码编辑器"
       ]
     },
@@ -334,6 +346,15 @@
           "has_posts": false,
           "subdirs": [
             {
+              "name": "Clawdbot",
+              "path": "notes/AI相关/Tools/Clawdbot",
+              "id": "463b5627bc26",
+              "slug": null,
+              "url": "dist/c/463b5627bc26/index.html",
+              "has_posts": true,
+              "subdirs": []
+            },
+            {
               "name": "Gemini",
               "path": "notes/AI相关/Tools/Gemini",
               "id": "0b40025ca9c1",
@@ -394,5 +415,5 @@
       "subdirs": []
     }
   ],
-  "generated_at": 1769421403.277235
+  "generated_at": 1769697378.756713
 }
