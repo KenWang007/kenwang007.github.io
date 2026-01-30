@@ -57,6 +57,73 @@ const RenderMode = {
     }
 };
 
+// ====== 外部脚本与特效懒加载 ======
+const ExternalScriptLoader = {
+    cache: new Map(),
+    load(src) {
+        if (typeof document === 'undefined') {
+            return Promise.reject(new Error('Document is unavailable; cannot load script.'));
+        }
+        if (this.cache.has(src)) {
+            return this.cache.get(src);
+        }
+        const promise = new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.async = true;
+            script.onload = () => resolve();
+            script.onerror = () => {
+                this.cache.delete(src);
+                reject(new Error(`Failed to load script: ${src}`));
+            };
+            document.head.appendChild(script);
+        });
+        this.cache.set(src, promise);
+        return promise;
+    }
+};
+
+const StarfieldLoader = {
+    initPromise: null,
+    async ensureInitialized() {
+        if (this.initPromise) {
+            return this.initPromise;
+        }
+        this.initPromise = loadThreeIfNeeded()
+            .then(() => import('/assets/js/starfield.js'))
+            .then(module => module.initThreeJsStarfield())
+            .catch(error => {
+                console.warn('⚠️ 星空特效加载失败:', error);
+                this.initPromise = null;
+            });
+        return this.initPromise;
+    }
+};
+
+function lazyInitializeStarfield() {
+    try {
+        const currentPath = window.location.pathname || '';
+        const isHome = currentPath === '/' || currentPath === '/index.html';
+        if (!isHome) {
+            return;
+        }
+        StarfieldLoader.ensureInitialized();
+    } catch (error) {
+        console.warn('⚠️ 初始化星空特效时出错:', error);
+    }
+}
+
+function loadThreeIfNeeded() {
+    if (typeof window === 'undefined') {
+        return Promise.reject(new Error('Window is unavailable; cannot load Three.js'));
+    }
+    if (window.THREE) {
+        return Promise.resolve(window.THREE);
+    }
+    const THREE_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+    return ExternalScriptLoader.load(THREE_CDN).then(() => window.THREE);
+}
+
 // ====== 状态管理 ======
 const AppState = {
     allKeywords: [],
@@ -375,8 +442,8 @@ function initializeUIInteractions() {
     // 初始化平滑滚动
     initSmoothScroll();
     
-    // 初始化 Three.js 星空效果（仅首页）
-    initThreeJsStarfield();
+    // 初始化 Three.js 星空效果（仅首页，按需加载）
+    lazyInitializeStarfield();
     
     // 初始化滚动监听
     initScrollEffects();
@@ -1977,184 +2044,4 @@ function initArticleCards() {
     console.log('🎴 开始渲染文章卡片...');
     // 渲染卡片
     renderArticleCards(cardsContainer, dirPath);
-}
-
-// ====== Three.js 3D 星空效果 ======
-function initThreeJsStarfield() {
-    // 仅在首页初始化
-    const currentPath = window.location.pathname;
-    if (currentPath !== '/' && currentPath !== '/index.html') {
-        return;
-    }
-    
-    const container = document.getElementById('starfield-container');
-    const canvas = document.getElementById('starfield-canvas');
-    
-    if (!container || !canvas || typeof THREE === 'undefined') {
-        console.log('📦 Three.js 星空效果：容器未找到或 Three.js 未加载');
-        return;
-    }
-    
-    console.log('🌟 初始化 Three.js 星空效果');
-    
-    // 场景设置
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-    
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    
-    // 创建星星粒子系统
-    const starCount = 2000;
-    const starGeometry = new THREE.BufferGeometry();
-    const starPositions = new Float32Array(starCount * 3);
-    const starColors = new Float32Array(starCount * 3);
-    const starSizes = new Float32Array(starCount);
-    
-    for (let i = 0; i < starCount; i++) {
-        const i3 = i * 3;
-        // 随机位置 - 球形分布
-        const radius = 50 + Math.random() * 150;
-        const theta = Math.random() * Math.PI * 2;
-        const phi = Math.acos((Math.random() * 2) - 1);
-        
-        starPositions[i3] = radius * Math.sin(phi) * Math.cos(theta);
-        starPositions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-        starPositions[i3 + 2] = radius * Math.cos(phi);
-        
-        // 随机颜色 - 偏蓝紫色调
-        const colorChoice = Math.random();
-        if (colorChoice < 0.3) {
-            // 蓝色
-            starColors[i3] = 0.4 + Math.random() * 0.2;
-            starColors[i3 + 1] = 0.5 + Math.random() * 0.3;
-            starColors[i3 + 2] = 0.9 + Math.random() * 0.1;
-        } else if (colorChoice < 0.6) {
-            // 紫色
-            starColors[i3] = 0.6 + Math.random() * 0.3;
-            starColors[i3 + 1] = 0.3 + Math.random() * 0.2;
-            starColors[i3 + 2] = 0.9 + Math.random() * 0.1;
-        } else if (colorChoice < 0.8) {
-            // 白色
-            starColors[i3] = 0.9 + Math.random() * 0.1;
-            starColors[i3 + 1] = 0.9 + Math.random() * 0.1;
-            starColors[i3 + 2] = 0.95 + Math.random() * 0.05;
-        } else {
-            // 青色
-            starColors[i3] = 0.3 + Math.random() * 0.2;
-            starColors[i3 + 1] = 0.8 + Math.random() * 0.2;
-            starColors[i3 + 2] = 0.9 + Math.random() * 0.1;
-        }
-        
-        // 随机大小
-        starSizes[i] = Math.random() * 2 + 0.5;
-    }
-    
-    starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
-    starGeometry.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
-    starGeometry.setAttribute('size', new THREE.BufferAttribute(starSizes, 1));
-    
-    // 星星材质
-    const starMaterial = new THREE.PointsMaterial({
-        size: 1.5,
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.8,
-        sizeAttenuation: true,
-        blending: THREE.AdditiveBlending
-    });
-    
-    const stars = new THREE.Points(starGeometry, starMaterial);
-    scene.add(stars);
-    
-    // 创建星云效果 - 多个发光球体
-    const nebulaGroup = new THREE.Group();
-    const nebulaColors = [0x6366f1, 0x8b5cf6, 0xec4899, 0x06b6d4];
-    
-    for (let i = 0; i < 5; i++) {
-        const nebulaGeometry = new THREE.SphereGeometry(15 + Math.random() * 20, 32, 32);
-        const nebulaMaterial = new THREE.MeshBasicMaterial({
-            color: nebulaColors[Math.floor(Math.random() * nebulaColors.length)],
-            transparent: true,
-            opacity: 0.03 + Math.random() * 0.02,
-            side: THREE.DoubleSide
-        });
-        const nebula = new THREE.Mesh(nebulaGeometry, nebulaMaterial);
-        
-        nebula.position.set(
-            (Math.random() - 0.5) * 60,
-            (Math.random() - 0.5) * 40,
-            (Math.random() - 0.5) * 60 - 30
-        );
-        
-        nebulaGroup.add(nebula);
-    }
-    scene.add(nebulaGroup);
-    
-    // 相机位置
-    camera.position.z = 50;
-    
-    // 鼠标交互
-    let mouseX = 0;
-    let mouseY = 0;
-    let targetX = 0;
-    let targetY = 0;
-    
-    container.addEventListener('mousemove', (event) => {
-        const rect = container.getBoundingClientRect();
-        mouseX = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-        mouseY = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-    });
-    
-    // 动画循环
-    let animationId;
-    function animate() {
-        animationId = requestAnimationFrame(animate);
-        
-        // 平滑跟随鼠标
-        targetX += (mouseX * 0.5 - targetX) * 0.02;
-        targetY += (mouseY * 0.5 - targetY) * 0.02;
-        
-        // 旋转星星
-        stars.rotation.y += 0.0003;
-        stars.rotation.x += 0.0001;
-        
-        // 相机跟随鼠标
-        camera.position.x = targetX * 10;
-        camera.position.y = targetY * 10;
-        camera.lookAt(scene.position);
-        
-        // 星云缓慢移动
-        nebulaGroup.rotation.y += 0.0002;
-        nebulaGroup.children.forEach((nebula, i) => {
-            nebula.rotation.x += 0.001 * (i + 1) * 0.1;
-            nebula.rotation.y += 0.001 * (i + 1) * 0.1;
-        });
-        
-        renderer.render(scene, camera);
-    }
-    
-    animate();
-    
-    // 响应式调整
-    const handleResize = Utils.debounce(() => {
-        if (!container) return;
-        
-        camera.aspect = container.clientWidth / container.clientHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(container.clientWidth, container.clientHeight);
-    }, 100);
-    
-    window.addEventListener('resize', handleResize);
-    
-    // 清理函数（页面卸载时）
-    window.addEventListener('beforeunload', () => {
-        cancelAnimationFrame(animationId);
-        renderer.dispose();
-        starGeometry.dispose();
-        starMaterial.dispose();
-    });
-    
-    console.log('✅ Three.js 星空效果初始化完成');
 }
