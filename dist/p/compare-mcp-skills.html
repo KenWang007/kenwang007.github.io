@@ -65,8 +65,8 @@
         "@type": "Person",
         "name": "Ken Wang"
       },
-      "datePublished": "2026-01-26T13:12:32.319818",
-      "dateModified": "2026-01-26T13:12:32.319818",
+      "datePublished": "2026-01-29T20:26:18.607611",
+      "dateModified": "2026-01-29T20:26:18.607611",
       "inLanguage": "zh-CN"
     }
     </script>
@@ -109,31 +109,49 @@
         <section class="content-area">
             <div class="content-wrapper">
                 <article class="markdown-content">
-                    <h1>MCP Server vs Skills 全面对比指南</h1><pre>---
-slug: compare-mcp-skills
-title: MCP Server vs Skills 全面对比指南
----
-# MCP Server vs Skills 全面对比指南
-
-## 概述
-
-在 AI Agent 生态系统中，**MCP Server** 和 **Skills** 是两种重要的能力扩展机制。它们都旨在增强 AI Agent 的功能边界，但在设计理念、实现方式和使用场景上存在显著差异。本文将从多个维度深入对比这两种技术方案。
-
-### 🎯 一句话区分
-
-| 概念 | 核心作用 | 解决的问题 |
-|------|---------|-----------|
-| **MCP（Model Context Protocol）** | 解决"**连接**"问题 | 让 AI 能访问外部世界 |
-| **Agent Skill** | 解决"**方法论**"问题 | 教 AI 怎么做某类任务 |
-
-> 💡 **形象比喻**：
-> - **MCP 是 AI 的"手"** —— 能触碰外部世界，连接各种系统和数据源
-> - **Skill 是 AI 的"技能书"** —— 知道怎么做某件事，包含专业知识和流程
->
-> **核心结论：Skills 让 Agent 更像"专家"，MCP 让 Agent 有"插座"去连世界。**
-
-```
-┌─────────────────────────────────────────────────────────────────────┐
+                    
+<h1 id="mcp-server-vs-skills-全面对比指南">MCP Server vs Skills
+全面对比指南</h1>
+<h2 id="概述">概述</h2>
+<p>在 AI Agent 生态系统中，<strong>MCP Server</strong> 和
+<strong>Skills</strong> 是两种重要的能力扩展机制。它们都旨在增强 AI
+Agent
+的功能边界，但在设计理念、实现方式和使用场景上存在显著差异。本文将从多个维度深入对比这两种技术方案。</p>
+<h3 id="一句话区分">🎯 一句话区分</h3>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 34%" />
+<col style="width: 42%" />
+</colgroup>
+<thead>
+<tr>
+<th>概念</th>
+<th>核心作用</th>
+<th>解决的问题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MCP（Model Context Protocol）</strong></td>
+<td>解决”<strong>连接</strong>”问题</td>
+<td>让 AI 能访问外部世界</td>
+</tr>
+<tr>
+<td><strong>Agent Skill</strong></td>
+<td>解决”<strong>方法论</strong>”问题</td>
+<td>教 AI 怎么做某类任务</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💡 <strong>形象比喻</strong>： - <strong>MCP 是 AI 的”手”</strong> ——
+能触碰外部世界，连接各种系统和数据源 - <strong>Skill 是 AI
+的”技能书”</strong> —— 知道怎么做某件事，包含专业知识和流程</p>
+<p><strong>核心结论：Skills 让 Agent 更像”专家”，MCP 让 Agent
+有”插座”去连世界。</strong></p>
+</blockquote>
+<pre><code>┌─────────────────────────────────────────────────────────────────────┐
 │                    AI Agent 能力扩展方案对比                          │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
@@ -159,26 +177,20 @@ title: MCP Server vs Skills 全面对比指南
 │   │ 数据库/文件   │                 │  工具集合     │               │
 │   └───────────────┘                 └───────────────┘               │
 │                                                                     │
-└─────────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## 1. 基本概念
-
-### 1.1 什么是 MCP Server？
-
-**MCP (Model Context Protocol)** 是由 Anthropic 提出的一种开放标准协议，旨在统一 AI 模型与外部工具、数据源之间的交互方式。MCP Server 是实现该协议的服务端组件。
-
-**技术架构特点：**
-- 基于 **JSON-RPC 2.0** 协议
-- 采用 **客户端-主机-服务器** 三层架构
-- 支持两种传输方式：
-  - **Stdio**（标准输入输出）—— 本地进程通信
-  - **HTTP/SSE**（Server-Sent Events）—— 远程服务通信
-
-```
-┌─────────────────────────────────────────────────────────────────┐
+└─────────────────────────────────────────────────────────────────────┘</code></pre>
+<hr />
+<h2 id="基本概念">1. 基本概念</h2>
+<h3 id="什么是-mcp-server">1.1 什么是 MCP Server？</h3>
+<p><strong>MCP (Model Context Protocol)</strong> 是由 Anthropic
+提出的一种开放标准协议，旨在统一 AI
+模型与外部工具、数据源之间的交互方式。MCP Server
+是实现该协议的服务端组件。</p>
+<p><strong>技术架构特点：</strong> - 基于 <strong>JSON-RPC 2.0</strong>
+协议 - 采用 <strong>客户端-主机-服务器</strong> 三层架构 -
+支持两种传输方式： - <strong>Stdio</strong>（标准输入输出）——
+本地进程通信 - <strong>HTTP/SSE</strong>（Server-Sent Events）——
+远程服务通信</p>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
 │                      MCP 架构                                    │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
@@ -198,25 +210,43 @@ title: MCP Server vs Skills 全面对比指南
 │   │  Cursor IDE │                          │  第三方服务 │     │
 │   └─────────────┘                          └─────────────┘     │
 │                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-**MCP 的核心特性：**
-
-| 特性 | 描述 |
-|------|------|
-| **标准化协议** | 定义了统一的通信格式和交互规范 |
-| **独立进程** | MCP Server 作为独立进程运行 |
-| **动态发现** | 支持工具和资源的动态注册与发现 |
-| **跨平台** | 可与任何支持 MCP 的 AI 应用集成 |
-| **安全隔离** | 进程级别的隔离，增强安全性 |
-
-### 1.2 什么是 Skills？
-
-**Skills（技能）** 是 AI Agent 平台内置或可配置的功能模块，通常以插件或预定义能力的形式存在。Skills 直接集成在 Agent 框架内部，提供即开即用的功能。
-
-```
-┌─────────────────────────────────────────────────────────────────┐
+└─────────────────────────────────────────────────────────────────┘</code></pre>
+<p><strong>MCP 的核心特性：</strong></p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>标准化协议</strong></td>
+<td>定义了统一的通信格式和交互规范</td>
+</tr>
+<tr>
+<td><strong>独立进程</strong></td>
+<td>MCP Server 作为独立进程运行</td>
+</tr>
+<tr>
+<td><strong>动态发现</strong></td>
+<td>支持工具和资源的动态注册与发现</td>
+</tr>
+<tr>
+<td><strong>跨平台</strong></td>
+<td>可与任何支持 MCP 的 AI 应用集成</td>
+</tr>
+<tr>
+<td><strong>安全隔离</strong></td>
+<td>进程级别的隔离，增强安全性</td>
+</tr>
+</tbody>
+</table>
+<h3 id="什么是-skills">1.2 什么是 Skills？</h3>
+<p><strong>Skills（技能）</strong> 是 AI Agent
+平台内置或可配置的功能模块，通常以插件或预定义能力的形式存在。Skills
+直接集成在 Agent 框架内部，提供即开即用的功能。</p>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
 │                      Skills 架构                                 │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
@@ -236,27 +266,42 @@ title: MCP Server vs Skills 全面对比指南
 │   │                                                         │  │
 │   └─────────────────────────────────────────────────────────┘  │
 │                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-**Skills 的核心特性：**
-
-| 特性 | 描述 |
-|------|------|
-| **内置集成** | 直接嵌入 Agent 框架，无需额外部署 |
-| **配置驱动** | 通过配置文件或 UI 启用/禁用 |
-| **预定义行为** | 功能边界明确，行为可预测 |
-| **平台绑定** | 通常与特定 Agent 平台深度绑定 |
-| **即开即用** | 开箱即用，学习成本低 |
-
----
-
-## 2. 核心对比
-
-### 2.1 架构对比
-
-```
-┌─────────────────────────────────────────────────────────────────────┐
+└─────────────────────────────────────────────────────────────────┘</code></pre>
+<p><strong>Skills 的核心特性：</strong></p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>内置集成</strong></td>
+<td>直接嵌入 Agent 框架，无需额外部署</td>
+</tr>
+<tr>
+<td><strong>配置驱动</strong></td>
+<td>通过配置文件或 UI 启用/禁用</td>
+</tr>
+<tr>
+<td><strong>预定义行为</strong></td>
+<td>功能边界明确，行为可预测</td>
+</tr>
+<tr>
+<td><strong>平台绑定</strong></td>
+<td>通常与特定 Agent 平台深度绑定</td>
+</tr>
+<tr>
+<td><strong>即开即用</strong></td>
+<td>开箱即用，学习成本低</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="核心对比">2. 核心对比</h2>
+<h3 id="架构对比">2.1 架构对比</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────────┐
 │                        架构模式对比                                   │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
@@ -280,38 +325,99 @@ title: MCP Server vs Skills 全面对比指南
 │   • 跨进程通信                                                      │
 │   • 松耦合                                                          │
 │                                                                     │
-└─────────────────────────────────────────────────────────────────────┘
-```
-
-### 2.2 详细对比表
-
-| 维度 | MCP Server | Agent Skills |
-|------|------------|--------------|
-| **核心关注点** | 连接与上下文：怎么把外部系统接给模型 | 程序性知识/SOP：怎么做更专业、更一致 |
-| **解决的问题** | 工具/数据源接入碎片化、N×M 集成成本高 | prompt 难复用、流程不统一、输出不稳定 |
-| **形态** | "协议+服务端"：标准化暴露 tools/resources/prompts | "技能包"：指令+脚本+资源，按需加载 |
-| **最适合场景** | 多系统统一接入、跨客户端复用、平台化治理 | 固化流程、模板化产出、稳定写作/审查/分析 |
-| **设计理念** | 开放协议，互操作性优先 | 平台集成，易用性优先 |
-| **部署方式** | 独立进程/服务 | 内置模块/插件 |
-| **通信方式** | JSON-RPC 2.0 over Stdio/HTTP SSE | 进程内函数调用 |
-| **开发语言** | 多语言支持（Python、TypeScript、Go 等） | 通常限定于平台技术栈 |
-| **可扩展性** | 高（独立扩展，不影响主应用） | 中（受平台架构限制） |
-| **性能** | 有通信开销 | 性能较高（无 IPC 开销） |
-| **隔离性** | 强（进程级隔离） | 弱（共享进程空间） |
-| **版本管理** | 独立版本控制 | 随平台版本更新 |
-| **调试复杂度** | 较高（涉及多进程） | 较低（单进程调试） |
-| **社区生态** | 开放生态，可复用 | 平台特定生态 |
-
----
-
-## 3. 功能对比
-
-### 3.1 MCP Server 的三大核心原语
-
-MCP 定义了三个核心原语（Primitives），分别对应不同的控制主体：
-
-```
-┌─────────────────────────────────────────────────────────────────┐
+└─────────────────────────────────────────────────────────────────────┘</code></pre>
+<h3 id="详细对比表">2.2 详细对比表</h3>
+<table>
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 37%" />
+<col style="width: 43%" />
+</colgroup>
+<thead>
+<tr>
+<th>维度</th>
+<th>MCP Server</th>
+<th>Agent Skills</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>核心关注点</strong></td>
+<td>连接与上下文：怎么把外部系统接给模型</td>
+<td>程序性知识/SOP：怎么做更专业、更一致</td>
+</tr>
+<tr>
+<td><strong>解决的问题</strong></td>
+<td>工具/数据源接入碎片化、N×M 集成成本高</td>
+<td>prompt 难复用、流程不统一、输出不稳定</td>
+</tr>
+<tr>
+<td><strong>形态</strong></td>
+<td>“协议+服务端”：标准化暴露 tools/resources/prompts</td>
+<td>“技能包”：指令+脚本+资源，按需加载</td>
+</tr>
+<tr>
+<td><strong>最适合场景</strong></td>
+<td>多系统统一接入、跨客户端复用、平台化治理</td>
+<td>固化流程、模板化产出、稳定写作/审查/分析</td>
+</tr>
+<tr>
+<td><strong>设计理念</strong></td>
+<td>开放协议，互操作性优先</td>
+<td>平台集成，易用性优先</td>
+</tr>
+<tr>
+<td><strong>部署方式</strong></td>
+<td>独立进程/服务</td>
+<td>内置模块/插件</td>
+</tr>
+<tr>
+<td><strong>通信方式</strong></td>
+<td>JSON-RPC 2.0 over Stdio/HTTP SSE</td>
+<td>进程内函数调用</td>
+</tr>
+<tr>
+<td><strong>开发语言</strong></td>
+<td>多语言支持（Python、TypeScript、Go 等）</td>
+<td>通常限定于平台技术栈</td>
+</tr>
+<tr>
+<td><strong>可扩展性</strong></td>
+<td>高（独立扩展，不影响主应用）</td>
+<td>中（受平台架构限制）</td>
+</tr>
+<tr>
+<td><strong>性能</strong></td>
+<td>有通信开销</td>
+<td>性能较高（无 IPC 开销）</td>
+</tr>
+<tr>
+<td><strong>隔离性</strong></td>
+<td>强（进程级隔离）</td>
+<td>弱（共享进程空间）</td>
+</tr>
+<tr>
+<td><strong>版本管理</strong></td>
+<td>独立版本控制</td>
+<td>随平台版本更新</td>
+</tr>
+<tr>
+<td><strong>调试复杂度</strong></td>
+<td>较高（涉及多进程）</td>
+<td>较低（单进程调试）</td>
+</tr>
+<tr>
+<td><strong>社区生态</strong></td>
+<td>开放生态，可复用</td>
+<td>平台特定生态</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="功能对比">3. 功能对比</h2>
+<h3 id="mcp-server-的三大核心原语">3.1 MCP Server 的三大核心原语</h3>
+<p>MCP 定义了三个核心原语（Primitives），分别对应不同的控制主体：</p>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
 │                   MCP Server 三大核心原语                        │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
@@ -325,21 +431,46 @@ MCP 定义了三个核心原语（Primitives），分别对应不同的控制主
 │   │ • 返回执行结果 │  │ • 文件/URI     │  │ • 引导式对话   │   │
 │   └────────────────┘  └────────────────┘  └────────────────┘   │
 │                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-| 原语 | 控制主体 | 描述 | 示例 |
-|------|---------|------|------|
-| **Tools** | 模型控制 | 可执行的函数，AI 可以调用来执行操作 | 执行 SQL 查询、发送邮件、调用 API |
-| **Resources** | 应用控制 | 数据源，为 AI 提供上下文信息 | 读取配置文件、访问数据库表、获取系统状态 |
-| **Prompts** | 用户控制 | 预定义的提示模板，帮助结构化与 AI 的交互 | 代码审查模板、数据分析向导、文档生成器 |
-
-### 3.2 Agent Skills 的组成结构
-
-Agent Skill 是一个"技能包"，由以下三个核心部分组成：
-
-```
-┌─────────────────────────────────────────────────────────────────┐
+└─────────────────────────────────────────────────────────────────┘</code></pre>
+<table>
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 33%" />
+<col style="width: 22%" />
+<col style="width: 22%" />
+</colgroup>
+<thead>
+<tr>
+<th>原语</th>
+<th>控制主体</th>
+<th>描述</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tools</strong></td>
+<td>模型控制</td>
+<td>可执行的函数，AI 可以调用来执行操作</td>
+<td>执行 SQL 查询、发送邮件、调用 API</td>
+</tr>
+<tr>
+<td><strong>Resources</strong></td>
+<td>应用控制</td>
+<td>数据源，为 AI 提供上下文信息</td>
+<td>读取配置文件、访问数据库表、获取系统状态</td>
+</tr>
+<tr>
+<td><strong>Prompts</strong></td>
+<td>用户控制</td>
+<td>预定义的提示模板，帮助结构化与 AI 的交互</td>
+<td>代码审查模板、数据分析向导、文档生成器</td>
+</tr>
+</tbody>
+</table>
+<h3 id="agent-skills-的组成结构">3.2 Agent Skills 的组成结构</h3>
+<p>Agent Skill 是一个”技能包”，由以下三个核心部分组成：</p>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
 │                   Agent Skill 组成结构                           │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
@@ -358,13 +489,9 @@ Agent Skill 是一个"技能包"，由以下三个核心部分组成：
 │   │   特点：可被 Agent 动态发现并按需加载                    │   │
 │   └─────────────────────────────────────────────────────────┘   │
 │                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-### 3.3 Skills 的典型功能分类
-
-```
-┌─────────────────────────────────────────────────────────────────┐
+└─────────────────────────────────────────────────────────────────┘</code></pre>
+<h3 id="skills-的典型功能分类">3.3 Skills 的典型功能分类</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
 │                      Skills 功能分类                             │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
@@ -386,98 +513,79 @@ Agent Skill 是一个"技能包"，由以下三个核心部分组成：
 │   │ • 格式转换  │  │ • API 调用  │  │ • 视频处理  │            │
 │   └─────────────┘  └─────────────┘  └─────────────┘            │
 │                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## 4. 使用方式对比
-
-### 4.1 MCP Server 使用流程
-
-```python
-# 1. 安装 MCP Server SDK
-# pip install mcp
-
-# 2. 定义 MCP Server
-from mcp.server import Server
-from mcp.types import Tool, TextContent
-
-server = Server("my-mcp-server")
-
-# 3. 注册工具
-@server.tool("search_database")
-async def search_database(query: str) -> str:
-    """搜索数据库"""
-    # 执行数据库查询
-    results = await db.query(query)
-    return TextContent(text=str(results))
-
-# 4. 启动服务
-if __name__ == "__main__":
-    server.run()
-```
-
-**配置 MCP Server（以 Claude Desktop 为例）：**
-
-```json
-{
-  "mcpServers": {
-    "my-database-server": {
-      "command": "python",
-      "args": ["/path/to/server.py"],
-      "env": {
-        "DATABASE_URL": "postgresql://..."
-      }
-    }
-  }
-}
-```
-
-### 4.2 Skills 使用流程
-
-```yaml
-# 1. 配置文件启用 Skills（以某 Agent 平台为例）
-agent_config:
-  name: "my-agent"
-  model: "gpt-4"
-  skills:
-    - name: "web_search"
-      enabled: true
-      config:
-        api_key: "${SEARCH_API_KEY}"
-        max_results: 10
-    
-    - name: "code_interpreter"
-      enabled: true
-      config:
-        languages: ["python", "javascript"]
-        sandbox: true
-    
-    - name: "file_operations"
-      enabled: true
-      config:
-        allowed_paths: ["/workspace", "/tmp"]
-```
-
-```python
-# 2. 代码中调用 Skills（框架内置方式）
-from agent_platform import Agent
-
-agent = Agent(config="agent_config.yaml")
-
-# Skills 自动可用，Agent 根据任务自动选择使用
-response = agent.run("搜索最新的 AI 新闻并生成摘要")
-```
-
----
-
-## 5. 优缺点对比
-
-### 5.1 MCP Server 优缺点
-
-```
-┌─────────────────────────────────────────────────────────────────┐
+└─────────────────────────────────────────────────────────────────┘</code></pre>
+<hr />
+<h2 id="使用方式对比">4. 使用方式对比</h2>
+<h3 id="mcp-server-使用流程">4.1 MCP Server 使用流程</h3>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 安装 MCP Server SDK</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pip install mcp</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 定义 MCP Server</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mcp.server <span class="im">import</span> Server</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mcp.types <span class="im">import</span> Tool, TextContent</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>server <span class="op">=</span> Server(<span class="st">&quot;my-mcp-server&quot;</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 注册工具</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="at">@server.tool</span>(<span class="st">&quot;search_database&quot;</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> search_database(query: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;搜索数据库&quot;&quot;&quot;</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 执行数据库查询</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> <span class="cf">await</span> db.query(query)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> TextContent(text<span class="op">=</span><span class="bu">str</span>(results))</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. 启动服务</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&quot;__main__&quot;</span>:</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    server.run()</span></code></pre></div>
+<p><strong>配置 MCP Server（以 Claude Desktop 为例）：</strong></p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;mcpServers&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;my-database-server&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;command&quot;</span><span class="fu">:</span> <span class="st">&quot;python&quot;</span><span class="fu">,</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;args&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;/path/to/server.py&quot;</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;env&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;DATABASE_URL&quot;</span><span class="fu">:</span> <span class="st">&quot;postgresql://...&quot;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="skills-使用流程">4.2 Skills 使用流程</h3>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 配置文件启用 Skills（以某 Agent 平台为例）</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">agent_config</span><span class="kw">:</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;my-agent&quot;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">model</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;gpt-4&quot;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">skills</span><span class="kw">:</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;web_search&quot;</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">enabled</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">config</span><span class="kw">:</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">api_key</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;${SEARCH_API_KEY}&quot;</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">max_results</span><span class="kw">:</span><span class="at"> </span><span class="dv">10</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;code_interpreter&quot;</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">enabled</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">config</span><span class="kw">:</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">languages</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">&quot;python&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;javascript&quot;</span><span class="kw">]</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">sandbox</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="at">    </span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;file_operations&quot;</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">enabled</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">config</span><span class="kw">:</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">allowed_paths</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">&quot;/workspace&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;/tmp&quot;</span><span class="kw">]</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 代码中调用 Skills（框架内置方式）</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> agent_platform <span class="im">import</span> Agent</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>agent <span class="op">=</span> Agent(config<span class="op">=</span><span class="st">&quot;agent_config.yaml&quot;</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Skills 自动可用，Agent 根据任务自动选择使用</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> agent.run(<span class="st">&quot;搜索最新的 AI 新闻并生成摘要&quot;</span>)</span></code></pre></div>
+<hr />
+<h2 id="优缺点对比">5. 优缺点对比</h2>
+<h3 id="mcp-server-优缺点">5.1 MCP Server 优缺点</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
 │                    MCP Server 优缺点分析                         │
 ├────────────────────────────┬────────────────────────────────────┤
 │          ✅ 优点           │           ❌ 缺点                  │
@@ -489,13 +597,9 @@ response = agent.run("搜索最新的 AI 新闻并生成摘要")
 │ • 版本独立管理             │ • 需要处理连接管理、错误恢复       │
 │ • 社区生态丰富             │ • 依赖外部进程的可用性             │
 │ • 适合复杂企业场景         │ • 配置相对繁琐                     │
-└────────────────────────────┴────────────────────────────────────┘
-```
-
-### 5.2 Skills 优缺点
-
-```
-┌─────────────────────────────────────────────────────────────────┐
+└────────────────────────────┴────────────────────────────────────┘</code></pre>
+<h3 id="skills-优缺点">5.2 Skills 优缺点</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
 │                      Skills 优缺点分析                           │
 ├────────────────────────────┬────────────────────────────────────┤
 │          ✅ 优点           │           ❌ 缺点                  │
@@ -507,17 +611,11 @@ response = agent.run("搜索最新的 AI 新闻并生成摘要")
 │ • 配置简洁                 │ • 版本更新依赖平台                 │
 │ • 适合快速原型             │ • 功能边界受平台限制               │
 │ • 文档完善                 │ • 难以跨平台复用                   │
-└────────────────────────────┴────────────────────────────────────┘
-```
-
----
-
-## 6. 适用场景
-
-### 6.1 何时选择 MCP Server？
-
-```
-适合 MCP Server 的场景：
+└────────────────────────────┴────────────────────────────────────┘</code></pre>
+<hr />
+<h2 id="适用场景">6. 适用场景</h2>
+<h3 id="何时选择-mcp-server">6.1 何时选择 MCP Server？</h3>
+<pre><code>适合 MCP Server 的场景：
 
 ┌─────────────────────────────────────────────────────────────────┐
 │                                                                 │
@@ -539,13 +637,9 @@ response = agent.run("搜索最新的 AI 新闻并生成摘要")
 │      • 平台内置功能无法满足需求                                 │
 │      • 需要使用特定技术栈开发工具                               │
 │                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-### 6.2 何时选择 Skills？
-
-```
-适合 Skills 的场景：
+└─────────────────────────────────────────────────────────────────┘</code></pre>
+<h3 id="何时选择-skills">6.2 何时选择 Skills？</h3>
+<pre><code>适合 Skills 的场景：
 
 ┌─────────────────────────────────────────────────────────────────┐
 │                                                                 │
@@ -568,86 +662,99 @@ response = agent.run("搜索最新的 AI 新闻并生成摘要")
 │      • 已重度使用某个 Agent 平台                                │
 │      • 希望与平台生态深度集成                                   │
 │                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## 7. 实际案例对比
-
-### 7.1 案例：实现数据库查询功能
-
-**使用 MCP Server：**
-
-```python
-# database_server.py
-from mcp.server import Server
-from mcp.types import Tool
-import asyncpg
-
-server = Server("database-mcp")
-
-@server.tool("query_sales")
-async def query_sales(start_date: str, end_date: str, region: str = None):
-    """
-    查询销售数据
-    
-    Args:
-        start_date: 开始日期 (YYYY-MM-DD)
-        end_date: 结束日期 (YYYY-MM-DD)  
-        region: 可选，地区筛选
-    """
-    conn = await asyncpg.connect(DATABASE_URL)
-    query = """
-        SELECT * FROM sales 
-        WHERE date BETWEEN $1 AND $2
-    """
-    params = [start_date, end_date]
-    
-    if region:
-        query += " AND region = $3"
-        params.append(region)
-    
-    results = await conn.fetch(query, *params)
-    await conn.close()
-    
-    return format_results(results)
-
-if __name__ == "__main__":
-    server.run()
-```
-
-**使用 Skills：**
-
-```yaml
-# 平台配置
-skills:
-  - name: "database_query"
-    enabled: true
-    config:
-      connection_string: "${DB_CONNECTION}"
-      allowed_tables: ["sales", "products", "customers"]
-      max_rows: 1000
-```
-
-### 7.2 对比总结
-
-| 方面 | MCP Server 实现 | Skills 实现 |
-|------|----------------|-------------|
-| **代码量** | 需要编写完整服务代码 | 只需配置 |
-| **灵活性** | 完全自定义查询逻辑 | 受限于 Skill 功能边界 |
-| **安全控制** | 可精细控制权限 | 依赖平台安全机制 |
-| **维护成本** | 需要维护独立服务 | 平台统一维护 |
-| **复用性** | 可被多个应用使用 | 仅限当前平台 |
-
----
-
-## 8. 混合使用策略
-
-在实际项目中，MCP Server 和 Skills 并非互斥，可以根据需求混合使用：
-
-```
-┌─────────────────────────────────────────────────────────────────────┐
+└─────────────────────────────────────────────────────────────────┘</code></pre>
+<hr />
+<h2 id="实际案例对比">7. 实际案例对比</h2>
+<h3 id="案例实现数据库查询功能">7.1 案例：实现数据库查询功能</h3>
+<p><strong>使用 MCP Server：</strong></p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># database_server.py</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mcp.server <span class="im">import</span> Server</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mcp.types <span class="im">import</span> Tool</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> asyncpg</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>server <span class="op">=</span> Server(<span class="st">&quot;database-mcp&quot;</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="at">@server.tool</span>(<span class="st">&quot;query_sales&quot;</span>)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> query_sales(start_date: <span class="bu">str</span>, end_date: <span class="bu">str</span>, region: <span class="bu">str</span> <span class="op">=</span> <span class="va">None</span>):</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co">    查询销售数据</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="co">        start_date: 开始日期 (YYYY-MM-DD)</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="co">        end_date: 结束日期 (YYYY-MM-DD)  </span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="co">        region: 可选，地区筛选</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    conn <span class="op">=</span> <span class="cf">await</span> asyncpg.<span class="ex">connect</span>(DATABASE_URL)</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>    query <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="st">        SELECT * FROM sales </span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="st">        WHERE date BETWEEN $1 AND $2</span></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="st">    &quot;&quot;&quot;</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>    params <span class="op">=</span> [start_date, end_date]</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> region:</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>        query <span class="op">+=</span> <span class="st">&quot; AND region = $3&quot;</span></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>        params.append(region)</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> <span class="cf">await</span> conn.fetch(query, <span class="op">*</span>params)</span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> conn.close()</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> format_results(results)</span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&quot;__main__&quot;</span>:</span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>    server.run()</span></code></pre></div>
+<p><strong>使用 Skills：</strong></p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 平台配置</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">skills</span><span class="kw">:</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;database_query&quot;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">enabled</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">config</span><span class="kw">:</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">connection_string</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;${DB_CONNECTION}&quot;</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">allowed_tables</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">&quot;sales&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;products&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;customers&quot;</span><span class="kw">]</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">max_rows</span><span class="kw">:</span><span class="at"> </span><span class="dv">1000</span></span></code></pre></div>
+<h3 id="对比总结">7.2 对比总结</h3>
+<table>
+<thead>
+<tr>
+<th>方面</th>
+<th>MCP Server 实现</th>
+<th>Skills 实现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>代码量</strong></td>
+<td>需要编写完整服务代码</td>
+<td>只需配置</td>
+</tr>
+<tr>
+<td><strong>灵活性</strong></td>
+<td>完全自定义查询逻辑</td>
+<td>受限于 Skill 功能边界</td>
+</tr>
+<tr>
+<td><strong>安全控制</strong></td>
+<td>可精细控制权限</td>
+<td>依赖平台安全机制</td>
+</tr>
+<tr>
+<td><strong>维护成本</strong></td>
+<td>需要维护独立服务</td>
+<td>平台统一维护</td>
+</tr>
+<tr>
+<td><strong>复用性</strong></td>
+<td>可被多个应用使用</td>
+<td>仅限当前平台</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="混合使用策略">8. 混合使用策略</h2>
+<p>在实际项目中，MCP Server 和 Skills
+并非互斥，可以根据需求混合使用：</p>
+<pre><code>┌─────────────────────────────────────────────────────────────────────┐
 │                       混合架构示例                                    │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
@@ -673,15 +780,10 @@ skills:
 │   • 第三方服务 → 社区 MCP Server（复用生态）                        │
 │   • 企业私有功能 → 自定义 MCP Server（安全可控）                    │
 │                                                                     │
-└─────────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## 9. 未来趋势
-
-```
-┌─────────────────────────────────────────────────────────────────────┐
+└─────────────────────────────────────────────────────────────────────┘</code></pre>
+<hr />
+<h2 id="未来趋势">9. 未来趋势</h2>
+<pre><code>┌─────────────────────────────────────────────────────────────────────┐
 │                          发展趋势预测                                 │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
@@ -703,17 +805,11 @@ skills:
 │   ├── 无缝切换/混合使用                                             │
 │   └── 智能工具编排与调度                                            │
 │                                                                     │
-└─────────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## 10. 总结
-
-### 决策流程图
-
-```
-                         需要扩展 Agent 能力？
+└─────────────────────────────────────────────────────────────────────┘</code></pre>
+<hr />
+<h2 id="总结">10. 总结</h2>
+<h3 id="决策流程图">决策流程图</h3>
+<pre><code>                         需要扩展 Agent 能力？
                                 │
                                 ▼
                     ┌───────────────────────┐
@@ -749,28 +845,45 @@ skills:
                                   ┌───────────────┐    ┌───────────────┐
                                   │ 使用 MCP      │    │ 根据复杂度    │
                                   │ Server        │    │ 选择方案      │
-                                  └───────────────┘    └───────────────┘
-```
+                                  └───────────────┘    └───────────────┘</code></pre>
+<h3 id="核心要点">核心要点</h3>
+<table>
+<thead>
+<tr>
+<th>选择</th>
+<th>推荐场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MCP Server</strong></td>
+<td>企业集成、跨平台、高安全要求、复杂定制</td>
+</tr>
+<tr>
+<td><strong>Skills</strong></td>
+<td>快速开发、标准功能、简单配置、单平台使用</td>
+</tr>
+<tr>
+<td><strong>混合使用</strong></td>
+<td>大多数实际项目，取长补短</td>
+</tr>
+</tbody>
+</table>
+<p>无论选择哪种方案，核心目标都是让 AI Agent
+更好地服务于业务需求。根据具体场景选择合适的工具扩展方式，往往能事半功倍。</p>
+<hr />
+<h2 id="参考来源">参考来源</h2>
+<ul>
+<li><a href="https://juejin.cn/post/7592410399917522985">Agent Skills 与
+MCP：最新定义、使用场景、优缺点与选型指南 - 稀土掘金</a></li>
+<li><a href="https://www.imgeek.net/article/825369596">别搞混了！MCP 和
+Agent Skill 到底有什么区别？</a></li>
+<li><a href="https://cloud.tencent.com/developer/article/2599897">MCP
+A2A Skills 这三个词搞懂了 再去写你的智能体 - 腾讯云</a></li>
+<li><a href="https://modelcontextprotocol.io/">MCP 官方文档 -
+Anthropic</a></li>
+</ul>
 
-### 核心要点
-
-| 选择 | 推荐场景 |
-|------|---------|
-| **MCP Server** | 企业集成、跨平台、高安全要求、复杂定制 |
-| **Skills** | 快速开发、标准功能、简单配置、单平台使用 |
-| **混合使用** | 大多数实际项目，取长补短 |
-
-无论选择哪种方案，核心目标都是让 AI Agent 更好地服务于业务需求。根据具体场景选择合适的工具扩展方式，往往能事半功倍。
-
----
-
-## 参考来源
-
-- [Agent Skills 与 MCP：最新定义、使用场景、优缺点与选型指南 - 稀土掘金](https://juejin.cn/post/7592410399917522985)
-- [别搞混了！MCP 和 Agent Skill 到底有什么区别？](https://www.imgeek.net/article/825369596)
-- [MCP A2A Skills 这三个词搞懂了 再去写你的智能体 - 腾讯云](https://cloud.tencent.com/developer/article/2599897)
-- [MCP 官方文档 - Anthropic](https://modelcontextprotocol.io/)
-</pre>
                 </article>
             </div>
         </section>

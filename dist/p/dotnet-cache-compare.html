@@ -65,8 +65,8 @@
         "@type": "Person",
         "name": "Ken Wang"
       },
-      "datePublished": "2026-01-26T17:30:32.904037",
-      "dateModified": "2026-01-26T17:30:32.904037",
+      "datePublished": "2026-01-29T20:26:18.620549",
+      "dateModified": "2026-01-29T20:26:18.620549",
       "inLanguage": "zh-CN"
     }
     </script>
@@ -109,29 +109,53 @@
         <section class="content-area">
             <div class="content-wrapper">
                 <article class="markdown-content">
-                    <h1>🔄 .NET 缓存框架全面对比</h1><pre>---
-slug: dotnet-cache-compare
-title: 🔄 .NET 缓存框架全面对比
----
-
-# 🔄 .NET 缓存框架全面对比
-
-## 1. .NET 缓存解决方案概览
-
-### 1.1 缓存方案分类
-
-| 分类 | 方案 | 适用场景 |
-|------|------|----------|
-| **本地缓存** | IMemoryCache、LazyCache | 单机应用、高频访问 |
-| **分布式缓存** | IDistributedCache、Redis、Memcached | 集群部署、数据共享 |
-| **混合缓存** | HybridCache、FusionCache | 多级缓存、高可用 |
-| **HTTP 缓存** | ResponseCaching、OutputCache | API 响应缓存 |
-| **数据访问缓存** | EF Core 二级缓存 | ORM 查询结果缓存 |
-
-### 1.2 技术栈全景图
-
-```
-┌─────────────────────────────────────────────────────────────┐
+                    
+<h1 id="net-缓存框架全面对比">🔄 .NET 缓存框架全面对比</h1>
+<h2 id="net-缓存解决方案概览">1. .NET 缓存解决方案概览</h2>
+<h3 id="缓存方案分类">1.1 缓存方案分类</h3>
+<table>
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 27%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr>
+<th>分类</th>
+<th>方案</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>本地缓存</strong></td>
+<td>IMemoryCache、LazyCache</td>
+<td>单机应用、高频访问</td>
+</tr>
+<tr>
+<td><strong>分布式缓存</strong></td>
+<td>IDistributedCache、Redis、Memcached</td>
+<td>集群部署、数据共享</td>
+</tr>
+<tr>
+<td><strong>混合缓存</strong></td>
+<td>HybridCache、FusionCache</td>
+<td>多级缓存、高可用</td>
+</tr>
+<tr>
+<td><strong>HTTP 缓存</strong></td>
+<td>ResponseCaching、OutputCache</td>
+<td>API 响应缓存</td>
+</tr>
+<tr>
+<td><strong>数据访问缓存</strong></td>
+<td>EF Core 二级缓存</td>
+<td>ORM 查询结果缓存</td>
+</tr>
+</tbody>
+</table>
+<h3 id="技术栈全景图">1.2 技术栈全景图</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
 │                    .NET 缓存技术栈                          │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
@@ -151,527 +175,919 @@ title: 🔄 .NET 缓存框架全面对比
 │  • NCache                                                   │
 │  • Memcached                                                │
 │                                                             │
-└─────────────────────────────────────────────────────────────┘
-```
-
----
-
-## 2. 微软官方缓存框架
-
-### 2.1 IMemoryCache（本地缓存）
-
-**包**: `Microsoft.Extensions.Caching.Memory`
-
-```csharp
-// 注册
-builder.Services.AddMemoryCache();
-
-// 使用
-public class ProductService
-{
-    private readonly IMemoryCache _cache;
-    
-    public Product? GetProduct(int id)
-    {
-        return _cache.GetOrCreate($"product:{id}", entry =>
-        {
-            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1);
-            entry.SlidingExpiration = TimeSpan.FromMinutes(10);
-            entry.Priority = CacheItemPriority.High;
-            
-            return _repository.GetById(id);
-        });
-    }
-}
-```
-
-| 特性 | 说明 |
-|------|------|
-| **存储位置** | 进程内存 |
-| **过期策略** | 绝对过期、滑动过期 |
-| **淘汰策略** | LRU + Priority |
-| **大小限制** | 可配置 SizeLimit |
-| **线程安全** | ✅ 是 |
-| **序列化** | 不需要 |
-
-**限制**：
-- ❌ 不支持分布式
-- ❌ 应用重启数据丢失
-- ❌ 多实例数据不同步
-
-### 2.2 IDistributedCache（分布式缓存抽象）
-
-**包**: `Microsoft.Extensions.Caching.Distributed`
-
-```csharp
-// Redis 实现
-builder.Services.AddStackExchangeRedisCache(options =>
-{
-    options.Configuration = "localhost:6379";
-    options.InstanceName = "MyApp:";
-});
-
-// SQL Server 实现
-builder.Services.AddDistributedSqlServerCache(options =>
-{
-    options.ConnectionString = connectionString;
-    options.SchemaName = "dbo";
-    options.TableName = "CacheTable";
-});
-
-// 使用
-public class ProductService
-{
-    private readonly IDistributedCache _cache;
-    
-    public async Task&lt;Product?> GetProductAsync(int id)
-    {
-        var key = $"product:{id}";
-        var cached = await _cache.GetStringAsync(key);
-        
-        if (cached != null)
-            return JsonSerializer.Deserialize&lt;Product>(cached);
-        
-        var product = await _repository.GetByIdAsync(id);
-        if (product != null)
-        {
-            await _cache.SetStringAsync(key, JsonSerializer.Serialize(product),
-                new DistributedCacheEntryOptions
-                {
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
-                });
-        }
-        
-        return product;
-    }
-}
-```
-
-| 实现 | 包 | 说明 |
-|------|-----|------|
-| **Redis** | `Microsoft.Extensions.Caching.StackExchangeRedis` | 最常用，性能好 |
-| **SQL Server** | `Microsoft.Extensions.Caching.SqlServer` | 利用现有数据库 |
-| **Memory** | `Microsoft.Extensions.Caching.Memory` | 测试/开发用 |
-| **NCache** | `NCache.Microsoft.Extensions.Caching` | 企业级方案 |
-
-**限制**：
-- ❌ API 过于简单，只支持 byte[] 
-- ❌ 不支持防击穿
-- ❌ 不支持多级缓存
-- ❌ 需要手动序列化
-
-### 2.3 HybridCache（.NET 9 新增）
-
-**包**: `Microsoft.Extensions.Caching.Hybrid`
-
-```csharp
-// 注册
-builder.Services.AddHybridCache(options =>
-{
-    options.DefaultEntryOptions = new HybridCacheEntryOptions
-    {
-        Expiration = TimeSpan.FromHours(1),
-        LocalCacheExpiration = TimeSpan.FromMinutes(5)
-    };
-});
-
-// 配置 Redis 作为 L2 缓存
-builder.Services.AddStackExchangeRedisCache(options =>
-{
-    options.Configuration = "localhost:6379";
-});
-
-// 使用
-public class ProductService
-{
-    private readonly HybridCache _cache;
-    
-    public async Task&lt;Product> GetProductAsync(int id)
-    {
-        return await _cache.GetOrCreateAsync(
-            $"product:{id}",
-            async cancel => await _repository.GetByIdAsync(id, cancel)
-        );
-    }
-    
-    // 带标签，支持批量失效
-    public async Task&lt;Product> GetProductWithTagsAsync(int id)
-    {
-        return await _cache.GetOrCreateAsync(
-            $"product:{id}",
-            async cancel => await _repository.GetByIdAsync(id, cancel),
-            new HybridCacheEntryOptions { Expiration = TimeSpan.FromHours(1) },
-            tags: ["products", $"category:{categoryId}"]
-        );
-    }
-    
-    // 按标签批量失效
-    public async Task InvalidateCategoryAsync(int categoryId)
-    {
-        await _cache.RemoveByTagAsync($"category:{categoryId}");
-    }
-}
-```
-
-| 特性 | 说明 |
-|------|------|
-| **多级缓存** | 自动 L1(Memory) + L2(Redis) |
-| **防击穿** | 内置 Stampede Protection |
-| **序列化** | 自动处理 |
-| **标签失效** | 支持按标签批量删除 |
-| **类型安全** | 泛型 API |
-
-**限制**：
-- ❌ 仅 .NET 9+ 支持
-- ❌ 相对较新，生态不如 FusionCache
-
-### 2.4 OutputCache（.NET 7+）
-
-**包**: `Microsoft.AspNetCore.OutputCaching`
-
-```csharp
-// 注册
-builder.Services.AddOutputCache(options =>
-{
-    options.AddBasePolicy(builder => builder.Expire(TimeSpan.FromMinutes(10)));
-    
-    options.AddPolicy("Products", builder => builder
-        .Expire(TimeSpan.FromHours(1))
-        .Tag("products"));
-});
-
-// 使用 Redis 后端
-builder.Services.AddStackExchangeRedisOutputCache(options =>
-{
-    options.Configuration = "localhost:6379";
-});
-
-app.UseOutputCache();
-
-// 控制器中使用
-[OutputCache(PolicyName = "Products")]
-[HttpGet("{id}")]
-public async Task&lt;Product> GetProduct(int id)
-{
-    return await _service.GetProductAsync(id);
-}
-
-// 手动失效
-public async Task UpdateProduct(Product product)
-{
-    await _repository.UpdateAsync(product);
-    await _outputCache.EvictByTagAsync("products", default);
-}
-```
-
-| 特性 | 说明 |
-|------|------|
-| **缓存层级** | HTTP 响应级别 |
-| **存储** | 内存/Redis |
-| **失效机制** | 标签、VaryBy |
-| **自定义策略** | 灵活配置 |
-
----
-
-## 3. 开源缓存框架
-
-### 3.1 FusionCache（⭐ 推荐）
-
-**包**: `ZiggyCreatures.FusionCache`
-
-```csharp
-// 注册
-builder.Services.AddFusionCache()
-    .WithDefaultEntryOptions(new FusionCacheEntryOptions
-    {
-        Duration = TimeSpan.FromHours(1),
-        
-        // 防击穿：故障安全
-        IsFailSafeEnabled = true,
-        FailSafeMaxDuration = TimeSpan.FromDays(1),
-        FailSafeThrottleDuration = TimeSpan.FromSeconds(30),
-        
-        // 防击穿：工厂超时
-        FactorySoftTimeout = TimeSpan.FromMilliseconds(100),
-        FactoryHardTimeout = TimeSpan.FromSeconds(2),
-        
-        // 防雪崩：随机抖动
-        JitterMaxDuration = TimeSpan.FromMinutes(2),
-        
-        // 后台刷新
-        AllowBackgroundDistributedCacheOperations = true,
-        AllowBackgroundBackplaneOperations = true
-    })
-    // L2: Redis
-    .WithDistributedCache(new RedisCache(new RedisCacheOptions
-    {
-        Configuration = "localhost:6379"
-    }))
-    // 序列化
-    .WithSerializer(new FusionCacheSystemTextJsonSerializer())
-    // 背板（多实例同步）
-    .WithBackplane(new RedisBackplane(new RedisBackplaneOptions
-    {
-        Configuration = "localhost:6379"
-    }));
-
-// 使用
-public class ProductService
-{
-    private readonly IFusionCache _cache;
-    
-    public async Task&lt;Product?> GetProductAsync(int id)
-    {
-        return await _cache.GetOrSetAsync(
-            $"product:{id}",
-            async ct => await _repository.GetByIdAsync(id, ct),
-            new FusionCacheEntryOptions
-            {
-                Duration = TimeSpan.FromHours(1),
-                FailSafeMaxDuration = TimeSpan.FromDays(1)
-            }
-        );
-    }
-    
-    // Adaptive Caching：根据数据动态调整缓存策略
-    public async Task&lt;Product?> GetProductAdaptiveAsync(int id)
-    {
-        return await _cache.GetOrSetAsync(
-            $"product:{id}",
-            async (ctx, ct) =>
-            {
-                var product = await _repository.GetByIdAsync(id, ct);
-                
-                // 根据数据特征动态调整缓存时间
-                if (product?.IsHotSale == true)
-                    ctx.Options.Duration = TimeSpan.FromMinutes(5);  // 热销品短缓存
-                else
-                    ctx.Options.Duration = TimeSpan.FromHours(2);    // 普通品长缓存
-                
-                return product;
-            }
-        );
-    }
-}
-```
-
-| 特性 | 支持情况 |
-|------|----------|
-| **多级缓存** | ✅ L1 + L2 |
-| **防击穿** | ✅ 内置锁 + 故障安全 |
-| **防雪崩** | ✅ Jitter |
-| **背板同步** | ✅ Redis/Memory |
-| **Eager Refresh** | ✅ 提前刷新 |
-| **Adaptive Caching** | ✅ 动态策略 |
-| **OpenTelemetry** | ✅ 可观测性 |
-| **最低版本** | .NET Standard 2.0 |
-
-### 3.2 LazyCache
-
-**包**: `LazyCache`
-
-```csharp
-// 注册
-builder.Services.AddLazyCache();
-
-// 使用
-public class ProductService
-{
-    private readonly IAppCache _cache;
-    
-    public async Task&lt;Product?> GetProductAsync(int id)
-    {
-        return await _cache.GetOrAddAsync(
-            $"product:{id}",
-            async entry =>
-            {
-                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1);
-                return await _repository.GetByIdAsync(id);
-            }
-        );
-    }
-}
-```
-
-| 特性 | 支持情况 |
-|------|----------|
-| **多级缓存** | ❌ 仅本地 |
-| **防击穿** | ✅ 内置锁 |
-| **API 简洁度** | ⭐⭐⭐⭐⭐ |
-| **学习曲线** | 低 |
-| **适用场景** | 简单本地缓存 |
-
-### 3.3 EasyCaching
-
-**包**: `EasyCaching.Core`
-
-```csharp
-// 注册多级缓存
-builder.Services.AddEasyCaching(options =>
-{
-    // L1: 内存
-    options.UseInMemory("m1");
-    
-    // L2: Redis
-    options.UseRedis(config =>
-    {
-        config.DBConfig.Endpoints.Add(new ServerEndPoint("localhost", 6379));
-    }, "r1");
-    
-    // 混合缓存
-    options.UseHybrid(config =>
-    {
-        config.TopicName = "cache-sync";
-        config.LocalCacheProviderName = "m1";
-        config.DistributedCacheProviderName = "r1";
-    });
-    
-    // Redis 总线（多实例同步）
-    options.WithRedisBus(config =>
-    {
-        config.Endpoints.Add(new ServerEndPoint("localhost", 6379));
-    });
-});
-
-// 使用
-public class ProductService
-{
-    private readonly IHybridCachingProvider _cache;
-    
-    public async Task&lt;Product?> GetProductAsync(int id)
-    {
-        var result = await _cache.GetAsync&lt;Product>($"product:{id}");
-        
-        if (result.HasValue)
-            return result.Value;
-        
-        var product = await _repository.GetByIdAsync(id);
-        if (product != null)
-        {
-            await _cache.SetAsync($"product:{id}", product, TimeSpan.FromHours(1));
-        }
-        
-        return product;
-    }
-}
-```
-
-| 特性 | 支持情况 |
-|------|----------|
-| **多级缓存** | ✅ Hybrid Provider |
-| **多后端** | ✅ Memory/Redis/Memcached/SQLite |
-| **AOP 拦截** | ✅ 注解式缓存 |
-| **序列化** | ✅ 多种可选 |
-| **响应缓存** | ✅ 支持 |
-
-### 3.4 CacheManager
-
-**包**: `CacheManager.Core`
-
-```csharp
-// 配置
-var cache = CacheFactory.Build&lt;Product>(settings =>
-{
-    settings
-        .WithSystemRuntimeCacheHandle("memory")  // L1
-        .And
-        .WithRedisConfiguration("redis", config =>
-        {
-            config.WithEndpoint("localhost", 6379);
-        })
-        .WithRedisCacheHandle("redis");  // L2
-});
-
-// 使用
-var product = cache.GetOrAdd("product:1", key => _repository.GetById(1));
-
-// 更新
-cache.Put("product:1", updatedProduct);
-
-// 删除
-cache.Remove("product:1");
-```
-
-| 特性 | 支持情况 |
-|------|----------|
-| **多级缓存** | ✅ 多 Handle 链 |
-| **后端支持** | ✅ Memory/Redis/Memcached/Couchbase |
-| **事件系统** | ✅ OnAdd/OnRemove/OnUpdate |
-| **区域(Region)** | ✅ 支持 |
-| **活跃度** | ⚠️ 维护模式 |
-
----
-
-## 4. 多维度横向对比
-
-### 4.1 功能对比
-
-| 功能 | IMemoryCache | IDistributedCache | HybridCache | FusionCache | LazyCache | EasyCaching |
-|------|:------------:|:-----------------:|:-----------:|:-----------:|:---------:|:-----------:|
-| **本地缓存** | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ |
-| **分布式缓存** | ❌ | ✅ | ✅ | ✅ | ❌ | ✅ |
-| **多级缓存** | ❌ | ❌ | ✅ | ✅ | ❌ | ✅ |
-| **防击穿** | ❌ | ❌ | ✅ | ✅ | ✅ | ❌ |
-| **防雪崩(Jitter)** | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |
-| **故障安全** | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |
-| **背板同步** | ❌ | ❌ | ❌ | ✅ | ❌ | ✅ |
-| **标签失效** | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ |
-| **自动序列化** | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ |
-| **OpenTelemetry** | ❌ | ❌ | ✅ | ✅ | ❌ | ❌ |
-
-### 4.2 性能对比
-
-| 框架 | 读取性能 | 写入性能 | 内存占用 | 说明 |
-|------|:--------:|:--------:|:--------:|------|
-| **IMemoryCache** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | 低 | 最快，无额外开销 |
-| **IDistributedCache** | ⭐⭐⭐ | ⭐⭐⭐ | 低 | 网络开销 |
-| **HybridCache** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | 中 | L1 命中快 |
-| **FusionCache** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | 中 | L1 命中快 |
-| **LazyCache** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | 低 | 封装 IMemoryCache |
-| **EasyCaching** | ⭐⭐⭐⭐ | ⭐⭐⭐ | 中 | 功能多，略慢 |
-
-### 4.3 易用性对比
-
-| 框架 | API 简洁度 | 学习曲线 | 文档质量 | 社区活跃度 |
-|------|:----------:|:--------:|:--------:|:----------:|
-| **IMemoryCache** | ⭐⭐⭐ | 低 | ⭐⭐⭐⭐⭐ | 官方 |
-| **IDistributedCache** | ⭐⭐ | 低 | ⭐⭐⭐⭐ | 官方 |
-| **HybridCache** | ⭐⭐⭐⭐⭐ | 低 | ⭐⭐⭐⭐ | 官方(.NET 9) |
-| **FusionCache** | ⭐⭐⭐⭐⭐ | 中 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
-| **LazyCache** | ⭐⭐⭐⭐⭐ | 很低 | ⭐⭐⭐ | ⭐⭐⭐ |
-| **EasyCaching** | ⭐⭐⭐ | 中 | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
-
-### 4.4 框架限制对比
-
-| 框架 | 主要限制 |
-|------|----------|
-| **IMemoryCache** | 不支持分布式；无防击穿；应用重启丢失 |
-| **IDistributedCache** | API 过于简单；需手动序列化；无防击穿 |
-| **HybridCache** | 仅 .NET 9+；较新，生态待完善 |
-| **FusionCache** | 配置项多，需要理解各参数含义 |
-| **LazyCache** | 仅本地缓存；功能相对简单 |
-| **EasyCaching** | 配置复杂；部分功能需要多个包 |
-| **CacheManager** | 已进入维护模式，不推荐新项目使用 |
-
-### 4.5 适用场景
-
-| 场景 | 推荐方案 | 理由 |
-|------|----------|------|
-| **简单本地缓存** | IMemoryCache / LazyCache | 轻量、官方支持 |
-| **纯分布式缓存** | IDistributedCache + Redis | 标准接口、易替换 |
-| **生产级多级缓存** | FusionCache | 功能完善、久经验证 |
-| **.NET 9+ 新项目** | HybridCache | 官方支持、标签失效 |
-| **需要 AOP 缓存** | EasyCaching | 注解式缓存、拦截器 |
-| **单体应用快速开发** | LazyCache | 极简 API |
-
----
-
-## 5. 选型决策指南
-
-### 5.1 决策树
-
-```
-你的需求是什么？
+└─────────────────────────────────────────────────────────────┘</code></pre>
+<hr />
+<h2 id="微软官方缓存框架">2. 微软官方缓存框架</h2>
+<h3 id="imemorycache本地缓存">2.1 IMemoryCache（本地缓存）</h3>
+<p><strong>包</strong>:
+<code>Microsoft.Extensions.Caching.Memory</code></p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 注册</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddMemoryCache</span><span class="op">();</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">// 使用</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> ProductService</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> IMemoryCache _cache<span class="op">;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> Product<span class="op">?</span> <span class="fu">GetProduct</span><span class="op">(</span><span class="dt">int</span> id<span class="op">)</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> _cache<span class="op">.</span><span class="fu">GetOrCreate</span><span class="op">(</span>$<span class="st">&quot;product:{id}&quot;</span><span class="op">,</span> entry <span class="op">=&gt;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>            entry<span class="op">.</span><span class="fu">AbsoluteExpirationRelativeToNow</span> <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>            entry<span class="op">.</span><span class="fu">SlidingExpiration</span> <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromMinutes</span><span class="op">(</span><span class="dv">10</span><span class="op">);</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>            entry<span class="op">.</span><span class="fu">Priority</span> <span class="op">=</span> CacheItemPriority<span class="op">.</span><span class="fu">High</span><span class="op">;</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> _repository<span class="op">.</span><span class="fu">GetById</span><span class="op">(</span>id<span class="op">);</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        <span class="op">});</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>存储位置</strong></td>
+<td>进程内存</td>
+</tr>
+<tr>
+<td><strong>过期策略</strong></td>
+<td>绝对过期、滑动过期</td>
+</tr>
+<tr>
+<td><strong>淘汰策略</strong></td>
+<td>LRU + Priority</td>
+</tr>
+<tr>
+<td><strong>大小限制</strong></td>
+<td>可配置 SizeLimit</td>
+</tr>
+<tr>
+<td><strong>线程安全</strong></td>
+<td>✅ 是</td>
+</tr>
+<tr>
+<td><strong>序列化</strong></td>
+<td>不需要</td>
+</tr>
+</tbody>
+</table>
+<p><strong>限制</strong>： - ❌ 不支持分布式 - ❌ 应用重启数据丢失 - ❌
+多实例数据不同步</p>
+<h3 id="idistributedcache分布式缓存抽象">2.2
+IDistributedCache（分布式缓存抽象）</h3>
+<p><strong>包</strong>:
+<code>Microsoft.Extensions.Caching.Distributed</code></p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Redis 实现</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddStackExchangeRedisCache</span><span class="op">(</span>options <span class="op">=&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">Configuration</span> <span class="op">=</span> <span class="st">&quot;localhost:6379&quot;</span><span class="op">;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">InstanceName</span> <span class="op">=</span> <span class="st">&quot;MyApp:&quot;</span><span class="op">;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">// SQL Server 实现</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddDistributedSqlServerCache</span><span class="op">(</span>options <span class="op">=&gt;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">ConnectionString</span> <span class="op">=</span> connectionString<span class="op">;</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">SchemaName</span> <span class="op">=</span> <span class="st">&quot;dbo&quot;</span><span class="op">;</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">TableName</span> <span class="op">=</span> <span class="st">&quot;CacheTable&quot;</span><span class="op">;</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">// 使用</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> ProductService</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> IDistributedCache _cache<span class="op">;</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> async Task<span class="op">&lt;</span>Product<span class="op">?&gt;</span> <span class="fu">GetProductAsync</span><span class="op">(</span><span class="dt">int</span> id<span class="op">)</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        <span class="dt">var</span> key <span class="op">=</span> $<span class="st">&quot;product:{id}&quot;</span><span class="op">;</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>        <span class="dt">var</span> cached <span class="op">=</span> await _cache<span class="op">.</span><span class="fu">GetStringAsync</span><span class="op">(</span>key<span class="op">);</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> <span class="op">(</span>cached <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> JsonSerializer<span class="op">.</span><span class="fu">Deserialize</span><span class="op">&lt;</span>Product<span class="op">&gt;(</span>cached<span class="op">);</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>        <span class="dt">var</span> product <span class="op">=</span> await _repository<span class="op">.</span><span class="fu">GetByIdAsync</span><span class="op">(</span>id<span class="op">);</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> <span class="op">(</span>product <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>            await _cache<span class="op">.</span><span class="fu">SetStringAsync</span><span class="op">(</span>key<span class="op">,</span> JsonSerializer<span class="op">.</span><span class="fu">Serialize</span><span class="op">(</span>product<span class="op">),</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>                <span class="kw">new</span> DistributedCacheEntryOptions</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>                <span class="op">{</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>                    AbsoluteExpirationRelativeToNow <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">)</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>                <span class="op">});</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> product<span class="op">;</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<table>
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 29%" />
+<col style="width: 35%" />
+</colgroup>
+<thead>
+<tr>
+<th>实现</th>
+<th>包</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Redis</strong></td>
+<td><code>Microsoft.Extensions.Caching.StackExchangeRedis</code></td>
+<td>最常用，性能好</td>
+</tr>
+<tr>
+<td><strong>SQL Server</strong></td>
+<td><code>Microsoft.Extensions.Caching.SqlServer</code></td>
+<td>利用现有数据库</td>
+</tr>
+<tr>
+<td><strong>Memory</strong></td>
+<td><code>Microsoft.Extensions.Caching.Memory</code></td>
+<td>测试/开发用</td>
+</tr>
+<tr>
+<td><strong>NCache</strong></td>
+<td><code>NCache.Microsoft.Extensions.Caching</code></td>
+<td>企业级方案</td>
+</tr>
+</tbody>
+</table>
+<p><strong>限制</strong>： - ❌ API 过于简单，只支持 byte[] - ❌
+不支持防击穿 - ❌ 不支持多级缓存 - ❌ 需要手动序列化</p>
+<h3 id="hybridcache.net-9-新增">2.3 HybridCache（.NET 9 新增）</h3>
+<p><strong>包</strong>:
+<code>Microsoft.Extensions.Caching.Hybrid</code></p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 注册</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddHybridCache</span><span class="op">(</span>options <span class="op">=&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">DefaultEntryOptions</span> <span class="op">=</span> <span class="kw">new</span> HybridCacheEntryOptions</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        Expiration <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">),</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        LocalCacheExpiration <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromMinutes</span><span class="op">(</span><span class="dv">5</span><span class="op">)</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">// 配置 Redis 作为 L2 缓存</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddStackExchangeRedisCache</span><span class="op">(</span>options <span class="op">=&gt;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">Configuration</span> <span class="op">=</span> <span class="st">&quot;localhost:6379&quot;</span><span class="op">;</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">// 使用</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> ProductService</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> HybridCache _cache<span class="op">;</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> async Task<span class="op">&lt;</span>Product<span class="op">&gt;</span> <span class="fu">GetProductAsync</span><span class="op">(</span><span class="dt">int</span> id<span class="op">)</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> await _cache<span class="op">.</span><span class="fu">GetOrCreateAsync</span><span class="op">(</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>            $<span class="st">&quot;product:{id}&quot;</span><span class="op">,</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>            async cancel <span class="op">=&gt;</span> await _repository<span class="op">.</span><span class="fu">GetByIdAsync</span><span class="op">(</span>id<span class="op">,</span> cancel<span class="op">)</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>        <span class="op">);</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 带标签，支持批量失效</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> async Task<span class="op">&lt;</span>Product<span class="op">&gt;</span> <span class="fu">GetProductWithTagsAsync</span><span class="op">(</span><span class="dt">int</span> id<span class="op">)</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> await _cache<span class="op">.</span><span class="fu">GetOrCreateAsync</span><span class="op">(</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>            $<span class="st">&quot;product:{id}&quot;</span><span class="op">,</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>            async cancel <span class="op">=&gt;</span> await _repository<span class="op">.</span><span class="fu">GetByIdAsync</span><span class="op">(</span>id<span class="op">,</span> cancel<span class="op">),</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>            <span class="kw">new</span> HybridCacheEntryOptions <span class="op">{</span> Expiration <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">)</span> <span class="op">},</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>            tags<span class="op">:</span> <span class="op">[</span><span class="st">&quot;products&quot;</span><span class="op">,</span> $<span class="st">&quot;category:{categoryId}&quot;</span><span class="op">]</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>        <span class="op">);</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 按标签批量失效</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> async Task <span class="fu">InvalidateCategoryAsync</span><span class="op">(</span><span class="dt">int</span> categoryId<span class="op">)</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>        await _cache<span class="op">.</span><span class="fu">RemoveByTagAsync</span><span class="op">(</span>$<span class="st">&quot;category:{categoryId}&quot;</span><span class="op">);</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>多级缓存</strong></td>
+<td>自动 L1(Memory) + L2(Redis)</td>
+</tr>
+<tr>
+<td><strong>防击穿</strong></td>
+<td>内置 Stampede Protection</td>
+</tr>
+<tr>
+<td><strong>序列化</strong></td>
+<td>自动处理</td>
+</tr>
+<tr>
+<td><strong>标签失效</strong></td>
+<td>支持按标签批量删除</td>
+</tr>
+<tr>
+<td><strong>类型安全</strong></td>
+<td>泛型 API</td>
+</tr>
+</tbody>
+</table>
+<p><strong>限制</strong>： - ❌ 仅 .NET 9+ 支持 - ❌ 相对较新，生态不如
+FusionCache</p>
+<h3 id="outputcache.net-7">2.4 OutputCache（.NET 7+）</h3>
+<p><strong>包</strong>:
+<code>Microsoft.AspNetCore.OutputCaching</code></p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 注册</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddOutputCache</span><span class="op">(</span>options <span class="op">=&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">AddBasePolicy</span><span class="op">(</span>builder <span class="op">=&gt;</span> builder<span class="op">.</span><span class="fu">Expire</span><span class="op">(</span>TimeSpan<span class="op">.</span><span class="fu">FromMinutes</span><span class="op">(</span><span class="dv">10</span><span class="op">)));</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">AddPolicy</span><span class="op">(</span><span class="st">&quot;Products&quot;</span><span class="op">,</span> builder <span class="op">=&gt;</span> builder</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">Expire</span><span class="op">(</span>TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">))</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">Tag</span><span class="op">(</span><span class="st">&quot;products&quot;</span><span class="op">));</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">// 使用 Redis 后端</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddStackExchangeRedisOutputCache</span><span class="op">(</span>options <span class="op">=&gt;</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">Configuration</span> <span class="op">=</span> <span class="st">&quot;localhost:6379&quot;</span><span class="op">;</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">UseOutputCache</span><span class="op">();</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">// 控制器中使用</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="op">[</span><span class="fu">OutputCache</span><span class="op">(</span>PolicyName <span class="op">=</span> <span class="st">&quot;Products&quot;</span><span class="op">)]</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="op">[</span><span class="fu">HttpGet</span><span class="op">(</span><span class="st">&quot;{id}&quot;</span><span class="op">)]</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> async Task<span class="op">&lt;</span>Product<span class="op">&gt;</span> <span class="fu">GetProduct</span><span class="op">(</span><span class="dt">int</span> id<span class="op">)</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> await _service<span class="op">.</span><span class="fu">GetProductAsync</span><span class="op">(</span>id<span class="op">);</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="co">// 手动失效</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> async Task <span class="fu">UpdateProduct</span><span class="op">(</span>Product product<span class="op">)</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    await _repository<span class="op">.</span><span class="fu">UpdateAsync</span><span class="op">(</span>product<span class="op">);</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    await _outputCache<span class="op">.</span><span class="fu">EvictByTagAsync</span><span class="op">(</span><span class="st">&quot;products&quot;</span><span class="op">,</span> <span class="kw">default</span><span class="op">);</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>缓存层级</strong></td>
+<td>HTTP 响应级别</td>
+</tr>
+<tr>
+<td><strong>存储</strong></td>
+<td>内存/Redis</td>
+</tr>
+<tr>
+<td><strong>失效机制</strong></td>
+<td>标签、VaryBy</td>
+</tr>
+<tr>
+<td><strong>自定义策略</strong></td>
+<td>灵活配置</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="开源缓存框架">3. 开源缓存框架</h2>
+<h3 id="fusioncache-推荐">3.1 FusionCache（⭐ 推荐）</h3>
+<p><strong>包</strong>: <code>ZiggyCreatures.FusionCache</code></p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 注册</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddFusionCache</span><span class="op">()</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">WithDefaultEntryOptions</span><span class="op">(</span><span class="kw">new</span> FusionCacheEntryOptions</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        Duration <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">),</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 防击穿：故障安全</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        IsFailSafeEnabled <span class="op">=</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        FailSafeMaxDuration <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromDays</span><span class="op">(</span><span class="dv">1</span><span class="op">),</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        FailSafeThrottleDuration <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromSeconds</span><span class="op">(</span><span class="dv">30</span><span class="op">),</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 防击穿：工厂超时</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        FactorySoftTimeout <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromMilliseconds</span><span class="op">(</span><span class="dv">100</span><span class="op">),</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        FactoryHardTimeout <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromSeconds</span><span class="op">(</span><span class="dv">2</span><span class="op">),</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 防雪崩：随机抖动</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        JitterMaxDuration <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromMinutes</span><span class="op">(</span><span class="dv">2</span><span class="op">),</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 后台刷新</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>        AllowBackgroundDistributedCacheOperations <span class="op">=</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>        AllowBackgroundBackplaneOperations <span class="op">=</span> <span class="kw">true</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="op">})</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">// L2: Redis</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">WithDistributedCache</span><span class="op">(</span><span class="kw">new</span> <span class="fu">RedisCache</span><span class="op">(</span><span class="kw">new</span> RedisCacheOptions</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>        Configuration <span class="op">=</span> <span class="st">&quot;localhost:6379&quot;</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    <span class="op">}))</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 序列化</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">WithSerializer</span><span class="op">(</span><span class="kw">new</span> <span class="fu">FusionCacheSystemTextJsonSerializer</span><span class="op">())</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 背板（多实例同步）</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">WithBackplane</span><span class="op">(</span><span class="kw">new</span> <span class="fu">RedisBackplane</span><span class="op">(</span><span class="kw">new</span> RedisBackplaneOptions</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>        Configuration <span class="op">=</span> <span class="st">&quot;localhost:6379&quot;</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    <span class="op">}));</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="co">// 使用</span></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> ProductService</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> IFusionCache _cache<span class="op">;</span></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> async Task<span class="op">&lt;</span>Product<span class="op">?&gt;</span> <span class="fu">GetProductAsync</span><span class="op">(</span><span class="dt">int</span> id<span class="op">)</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> await _cache<span class="op">.</span><span class="fu">GetOrSetAsync</span><span class="op">(</span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>            $<span class="st">&quot;product:{id}&quot;</span><span class="op">,</span></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>            async ct <span class="op">=&gt;</span> await _repository<span class="op">.</span><span class="fu">GetByIdAsync</span><span class="op">(</span>id<span class="op">,</span> ct<span class="op">),</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>            <span class="kw">new</span> FusionCacheEntryOptions</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>                Duration <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">),</span></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>                FailSafeMaxDuration <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromDays</span><span class="op">(</span><span class="dv">1</span><span class="op">)</span></span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>        <span class="op">);</span></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Adaptive Caching：根据数据动态调整缓存策略</span></span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> async Task<span class="op">&lt;</span>Product<span class="op">?&gt;</span> <span class="fu">GetProductAdaptiveAsync</span><span class="op">(</span><span class="dt">int</span> id<span class="op">)</span></span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> await _cache<span class="op">.</span><span class="fu">GetOrSetAsync</span><span class="op">(</span></span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>            $<span class="st">&quot;product:{id}&quot;</span><span class="op">,</span></span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>            <span class="fu">async</span> <span class="op">(</span>ctx<span class="op">,</span> ct<span class="op">)</span> <span class="op">=&gt;</span></span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span></span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>                <span class="dt">var</span> product <span class="op">=</span> await _repository<span class="op">.</span><span class="fu">GetByIdAsync</span><span class="op">(</span>id<span class="op">,</span> ct<span class="op">);</span></span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>                <span class="co">// 根据数据特征动态调整缓存时间</span></span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>                <span class="kw">if</span> <span class="op">(</span>product<span class="op">?.</span><span class="fu">IsHotSale</span> <span class="op">==</span> <span class="kw">true</span><span class="op">)</span></span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>                    ctx<span class="op">.</span><span class="fu">Options</span><span class="op">.</span><span class="fu">Duration</span> <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromMinutes</span><span class="op">(</span><span class="dv">5</span><span class="op">);</span>  <span class="co">// 热销品短缓存</span></span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>                <span class="kw">else</span></span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>                    ctx<span class="op">.</span><span class="fu">Options</span><span class="op">.</span><span class="fu">Duration</span> <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">2</span><span class="op">);</span>    <span class="co">// 普通品长缓存</span></span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>                <span class="kw">return</span> product<span class="op">;</span></span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a>        <span class="op">);</span></span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>支持情况</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>多级缓存</strong></td>
+<td>✅ L1 + L2</td>
+</tr>
+<tr>
+<td><strong>防击穿</strong></td>
+<td>✅ 内置锁 + 故障安全</td>
+</tr>
+<tr>
+<td><strong>防雪崩</strong></td>
+<td>✅ Jitter</td>
+</tr>
+<tr>
+<td><strong>背板同步</strong></td>
+<td>✅ Redis/Memory</td>
+</tr>
+<tr>
+<td><strong>Eager Refresh</strong></td>
+<td>✅ 提前刷新</td>
+</tr>
+<tr>
+<td><strong>Adaptive Caching</strong></td>
+<td>✅ 动态策略</td>
+</tr>
+<tr>
+<td><strong>OpenTelemetry</strong></td>
+<td>✅ 可观测性</td>
+</tr>
+<tr>
+<td><strong>最低版本</strong></td>
+<td>.NET Standard 2.0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="lazycache">3.2 LazyCache</h3>
+<p><strong>包</strong>: <code>LazyCache</code></p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 注册</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddLazyCache</span><span class="op">();</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">// 使用</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> ProductService</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> IAppCache _cache<span class="op">;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> async Task<span class="op">&lt;</span>Product<span class="op">?&gt;</span> <span class="fu">GetProductAsync</span><span class="op">(</span><span class="dt">int</span> id<span class="op">)</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> await _cache<span class="op">.</span><span class="fu">GetOrAddAsync</span><span class="op">(</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>            $<span class="st">&quot;product:{id}&quot;</span><span class="op">,</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>            async entry <span class="op">=&gt;</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>                entry<span class="op">.</span><span class="fu">AbsoluteExpirationRelativeToNow</span> <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>                <span class="kw">return</span> await _repository<span class="op">.</span><span class="fu">GetByIdAsync</span><span class="op">(</span>id<span class="op">);</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>        <span class="op">);</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>支持情况</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>多级缓存</strong></td>
+<td>❌ 仅本地</td>
+</tr>
+<tr>
+<td><strong>防击穿</strong></td>
+<td>✅ 内置锁</td>
+</tr>
+<tr>
+<td><strong>API 简洁度</strong></td>
+<td>⭐⭐⭐⭐⭐</td>
+</tr>
+<tr>
+<td><strong>学习曲线</strong></td>
+<td>低</td>
+</tr>
+<tr>
+<td><strong>适用场景</strong></td>
+<td>简单本地缓存</td>
+</tr>
+</tbody>
+</table>
+<h3 id="easycaching">3.3 EasyCaching</h3>
+<p><strong>包</strong>: <code>EasyCaching.Core</code></p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 注册多级缓存</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddEasyCaching</span><span class="op">(</span>options <span class="op">=&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// L1: 内存</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">UseInMemory</span><span class="op">(</span><span class="st">&quot;m1&quot;</span><span class="op">);</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// L2: Redis</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">UseRedis</span><span class="op">(</span>config <span class="op">=&gt;</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        config<span class="op">.</span><span class="fu">DBConfig</span><span class="op">.</span><span class="fu">Endpoints</span><span class="op">.</span><span class="fu">Add</span><span class="op">(</span><span class="kw">new</span> <span class="fu">ServerEndPoint</span><span class="op">(</span><span class="st">&quot;localhost&quot;</span><span class="op">,</span> <span class="dv">6379</span><span class="op">));</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">},</span> <span class="st">&quot;r1&quot;</span><span class="op">);</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 混合缓存</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">UseHybrid</span><span class="op">(</span>config <span class="op">=&gt;</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        config<span class="op">.</span><span class="fu">TopicName</span> <span class="op">=</span> <span class="st">&quot;cache-sync&quot;</span><span class="op">;</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        config<span class="op">.</span><span class="fu">LocalCacheProviderName</span> <span class="op">=</span> <span class="st">&quot;m1&quot;</span><span class="op">;</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>        config<span class="op">.</span><span class="fu">DistributedCacheProviderName</span> <span class="op">=</span> <span class="st">&quot;r1&quot;</span><span class="op">;</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="op">});</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Redis 总线（多实例同步）</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">WithRedisBus</span><span class="op">(</span>config <span class="op">=&gt;</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>        config<span class="op">.</span><span class="fu">Endpoints</span><span class="op">.</span><span class="fu">Add</span><span class="op">(</span><span class="kw">new</span> <span class="fu">ServerEndPoint</span><span class="op">(</span><span class="st">&quot;localhost&quot;</span><span class="op">,</span> <span class="dv">6379</span><span class="op">));</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="op">});</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="co">// 使用</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> ProductService</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> IHybridCachingProvider _cache<span class="op">;</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> async Task<span class="op">&lt;</span>Product<span class="op">?&gt;</span> <span class="fu">GetProductAsync</span><span class="op">(</span><span class="dt">int</span> id<span class="op">)</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>        <span class="dt">var</span> result <span class="op">=</span> await _cache<span class="op">.</span><span class="fu">GetAsync</span><span class="op">&lt;</span>Product<span class="op">&gt;(</span>$<span class="st">&quot;product:{id}&quot;</span><span class="op">);</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> <span class="op">(</span>result<span class="op">.</span><span class="fu">HasValue</span><span class="op">)</span></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> result<span class="op">.</span><span class="fu">Value</span><span class="op">;</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>        <span class="dt">var</span> product <span class="op">=</span> await _repository<span class="op">.</span><span class="fu">GetByIdAsync</span><span class="op">(</span>id<span class="op">);</span></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> <span class="op">(</span>product <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>            await _cache<span class="op">.</span><span class="fu">SetAsync</span><span class="op">(</span>$<span class="st">&quot;product:{id}&quot;</span><span class="op">,</span> product<span class="op">,</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">));</span></span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> product<span class="op">;</span></span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>支持情况</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>多级缓存</strong></td>
+<td>✅ Hybrid Provider</td>
+</tr>
+<tr>
+<td><strong>多后端</strong></td>
+<td>✅ Memory/Redis/Memcached/SQLite</td>
+</tr>
+<tr>
+<td><strong>AOP 拦截</strong></td>
+<td>✅ 注解式缓存</td>
+</tr>
+<tr>
+<td><strong>序列化</strong></td>
+<td>✅ 多种可选</td>
+</tr>
+<tr>
+<td><strong>响应缓存</strong></td>
+<td>✅ 支持</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cachemanager">3.4 CacheManager</h3>
+<p><strong>包</strong>: <code>CacheManager.Core</code></p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 配置</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="dt">var</span> cache <span class="op">=</span> CacheFactory<span class="op">.</span><span class="fu">Build</span><span class="op">&lt;</span>Product<span class="op">&gt;(</span>settings <span class="op">=&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    settings</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">WithSystemRuntimeCacheHandle</span><span class="op">(</span><span class="st">&quot;memory&quot;</span><span class="op">)</span>  <span class="co">// L1</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">And</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">WithRedisConfiguration</span><span class="op">(</span><span class="st">&quot;redis&quot;</span><span class="op">,</span> config <span class="op">=&gt;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>            config<span class="op">.</span><span class="fu">WithEndpoint</span><span class="op">(</span><span class="st">&quot;localhost&quot;</span><span class="op">,</span> <span class="dv">6379</span><span class="op">);</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        <span class="op">})</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">WithRedisCacheHandle</span><span class="op">(</span><span class="st">&quot;redis&quot;</span><span class="op">);</span>  <span class="co">// L2</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">// 使用</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="dt">var</span> product <span class="op">=</span> cache<span class="op">.</span><span class="fu">GetOrAdd</span><span class="op">(</span><span class="st">&quot;product:1&quot;</span><span class="op">,</span> key <span class="op">=&gt;</span> _repository<span class="op">.</span><span class="fu">GetById</span><span class="op">(</span><span class="dv">1</span><span class="op">));</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">// 更新</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>cache<span class="op">.</span><span class="fu">Put</span><span class="op">(</span><span class="st">&quot;product:1&quot;</span><span class="op">,</span> updatedProduct<span class="op">);</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">// 删除</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>cache<span class="op">.</span><span class="fu">Remove</span><span class="op">(</span><span class="st">&quot;product:1&quot;</span><span class="op">);</span></span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>支持情况</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>多级缓存</strong></td>
+<td>✅ 多 Handle 链</td>
+</tr>
+<tr>
+<td><strong>后端支持</strong></td>
+<td>✅ Memory/Redis/Memcached/Couchbase</td>
+</tr>
+<tr>
+<td><strong>事件系统</strong></td>
+<td>✅ OnAdd/OnRemove/OnUpdate</td>
+</tr>
+<tr>
+<td><strong>区域(Region)</strong></td>
+<td>✅ 支持</td>
+</tr>
+<tr>
+<td><strong>活跃度</strong></td>
+<td>⚠️ 维护模式</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="多维度横向对比">4. 多维度横向对比</h2>
+<h3 id="功能对比">4.1 功能对比</h3>
+<table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 15%" />
+<col style="width: 21%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 12%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr>
+<th>功能</th>
+<th style="text-align: center;">IMemoryCache</th>
+<th style="text-align: center;">IDistributedCache</th>
+<th style="text-align: center;">HybridCache</th>
+<th style="text-align: center;">FusionCache</th>
+<th style="text-align: center;">LazyCache</th>
+<th style="text-align: center;">EasyCaching</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>本地缓存</strong></td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td><strong>分布式缓存</strong></td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td><strong>多级缓存</strong></td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td><strong>防击穿</strong></td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌</td>
+</tr>
+<tr>
+<td><strong>防雪崩(Jitter)</strong></td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+</tr>
+<tr>
+<td><strong>故障安全</strong></td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+</tr>
+<tr>
+<td><strong>背板同步</strong></td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td><strong>标签失效</strong></td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+</tr>
+<tr>
+<td><strong>自动序列化</strong></td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td><strong>OpenTelemetry</strong></td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+</tr>
+</tbody>
+</table>
+<h3 id="性能对比">4.2 性能对比</h3>
+<table>
+<thead>
+<tr>
+<th>框架</th>
+<th style="text-align: center;">读取性能</th>
+<th style="text-align: center;">写入性能</th>
+<th style="text-align: center;">内存占用</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>IMemoryCache</strong></td>
+<td style="text-align: center;">⭐⭐⭐⭐⭐</td>
+<td style="text-align: center;">⭐⭐⭐⭐⭐</td>
+<td style="text-align: center;">低</td>
+<td>最快，无额外开销</td>
+</tr>
+<tr>
+<td><strong>IDistributedCache</strong></td>
+<td style="text-align: center;">⭐⭐⭐</td>
+<td style="text-align: center;">⭐⭐⭐</td>
+<td style="text-align: center;">低</td>
+<td>网络开销</td>
+</tr>
+<tr>
+<td><strong>HybridCache</strong></td>
+<td style="text-align: center;">⭐⭐⭐⭐</td>
+<td style="text-align: center;">⭐⭐⭐⭐</td>
+<td style="text-align: center;">中</td>
+<td>L1 命中快</td>
+</tr>
+<tr>
+<td><strong>FusionCache</strong></td>
+<td style="text-align: center;">⭐⭐⭐⭐</td>
+<td style="text-align: center;">⭐⭐⭐⭐</td>
+<td style="text-align: center;">中</td>
+<td>L1 命中快</td>
+</tr>
+<tr>
+<td><strong>LazyCache</strong></td>
+<td style="text-align: center;">⭐⭐⭐⭐⭐</td>
+<td style="text-align: center;">⭐⭐⭐⭐⭐</td>
+<td style="text-align: center;">低</td>
+<td>封装 IMemoryCache</td>
+</tr>
+<tr>
+<td><strong>EasyCaching</strong></td>
+<td style="text-align: center;">⭐⭐⭐⭐</td>
+<td style="text-align: center;">⭐⭐⭐</td>
+<td style="text-align: center;">中</td>
+<td>功能多，略慢</td>
+</tr>
+</tbody>
+</table>
+<h3 id="易用性对比">4.3 易用性对比</h3>
+<table>
+<thead>
+<tr>
+<th>框架</th>
+<th style="text-align: center;">API 简洁度</th>
+<th style="text-align: center;">学习曲线</th>
+<th style="text-align: center;">文档质量</th>
+<th style="text-align: center;">社区活跃度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>IMemoryCache</strong></td>
+<td style="text-align: center;">⭐⭐⭐</td>
+<td style="text-align: center;">低</td>
+<td style="text-align: center;">⭐⭐⭐⭐⭐</td>
+<td style="text-align: center;">官方</td>
+</tr>
+<tr>
+<td><strong>IDistributedCache</strong></td>
+<td style="text-align: center;">⭐⭐</td>
+<td style="text-align: center;">低</td>
+<td style="text-align: center;">⭐⭐⭐⭐</td>
+<td style="text-align: center;">官方</td>
+</tr>
+<tr>
+<td><strong>HybridCache</strong></td>
+<td style="text-align: center;">⭐⭐⭐⭐⭐</td>
+<td style="text-align: center;">低</td>
+<td style="text-align: center;">⭐⭐⭐⭐</td>
+<td style="text-align: center;">官方(.NET 9)</td>
+</tr>
+<tr>
+<td><strong>FusionCache</strong></td>
+<td style="text-align: center;">⭐⭐⭐⭐⭐</td>
+<td style="text-align: center;">中</td>
+<td style="text-align: center;">⭐⭐⭐⭐⭐</td>
+<td style="text-align: center;">⭐⭐⭐⭐⭐</td>
+</tr>
+<tr>
+<td><strong>LazyCache</strong></td>
+<td style="text-align: center;">⭐⭐⭐⭐⭐</td>
+<td style="text-align: center;">很低</td>
+<td style="text-align: center;">⭐⭐⭐</td>
+<td style="text-align: center;">⭐⭐⭐</td>
+</tr>
+<tr>
+<td><strong>EasyCaching</strong></td>
+<td style="text-align: center;">⭐⭐⭐</td>
+<td style="text-align: center;">中</td>
+<td style="text-align: center;">⭐⭐⭐⭐</td>
+<td style="text-align: center;">⭐⭐⭐⭐</td>
+</tr>
+</tbody>
+</table>
+<h3 id="框架限制对比">4.4 框架限制对比</h3>
+<table>
+<thead>
+<tr>
+<th>框架</th>
+<th>主要限制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>IMemoryCache</strong></td>
+<td>不支持分布式；无防击穿；应用重启丢失</td>
+</tr>
+<tr>
+<td><strong>IDistributedCache</strong></td>
+<td>API 过于简单；需手动序列化；无防击穿</td>
+</tr>
+<tr>
+<td><strong>HybridCache</strong></td>
+<td>仅 .NET 9+；较新，生态待完善</td>
+</tr>
+<tr>
+<td><strong>FusionCache</strong></td>
+<td>配置项多，需要理解各参数含义</td>
+</tr>
+<tr>
+<td><strong>LazyCache</strong></td>
+<td>仅本地缓存；功能相对简单</td>
+</tr>
+<tr>
+<td><strong>EasyCaching</strong></td>
+<td>配置复杂；部分功能需要多个包</td>
+</tr>
+<tr>
+<td><strong>CacheManager</strong></td>
+<td>已进入维护模式，不推荐新项目使用</td>
+</tr>
+</tbody>
+</table>
+<h3 id="适用场景">4.5 适用场景</h3>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>推荐方案</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>简单本地缓存</strong></td>
+<td>IMemoryCache / LazyCache</td>
+<td>轻量、官方支持</td>
+</tr>
+<tr>
+<td><strong>纯分布式缓存</strong></td>
+<td>IDistributedCache + Redis</td>
+<td>标准接口、易替换</td>
+</tr>
+<tr>
+<td><strong>生产级多级缓存</strong></td>
+<td>FusionCache</td>
+<td>功能完善、久经验证</td>
+</tr>
+<tr>
+<td><strong>.NET 9+ 新项目</strong></td>
+<td>HybridCache</td>
+<td>官方支持、标签失效</td>
+</tr>
+<tr>
+<td><strong>需要 AOP 缓存</strong></td>
+<td>EasyCaching</td>
+<td>注解式缓存、拦截器</td>
+</tr>
+<tr>
+<td><strong>单体应用快速开发</strong></td>
+<td>LazyCache</td>
+<td>极简 API</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="选型决策指南">5. 选型决策指南</h2>
+<h3 id="决策树">5.1 决策树</h3>
+<pre><code>你的需求是什么？
 │
 ├── 仅需本地缓存？
 │   ├── 需要极简 API？ → LazyCache
@@ -691,211 +1107,265 @@ cache.Remove("product:1");
 │   └── EasyCaching + Redis Bus
 │
 └── 需要 AOP 注解式缓存？
-    └── EasyCaching
-```
+    └── EasyCaching</code></pre>
+<h3 id="版本兼容性">5.2 版本兼容性</h3>
+<table>
+<thead>
+<tr>
+<th>框架</th>
+<th>最低 .NET 版本</th>
+<th>推荐版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>IMemoryCache</strong></td>
+<td>.NET Standard 2.0</td>
+<td>任意</td>
+</tr>
+<tr>
+<td><strong>IDistributedCache</strong></td>
+<td>.NET Standard 2.0</td>
+<td>任意</td>
+</tr>
+<tr>
+<td><strong>HybridCache</strong></td>
+<td>.NET 9</td>
+<td>.NET 9+</td>
+</tr>
+<tr>
+<td><strong>FusionCache</strong></td>
+<td>.NET Standard 2.0</td>
+<td>.NET 6+</td>
+</tr>
+<tr>
+<td><strong>LazyCache</strong></td>
+<td>.NET Standard 2.0</td>
+<td>任意</td>
+</tr>
+<tr>
+<td><strong>EasyCaching</strong></td>
+<td>.NET Standard 2.0</td>
+<td>.NET 6+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="nuget-包清单">5.3 NuGet 包清单</h3>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode xml"><code class="sourceCode xml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- 微软官方 --&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">PackageReference</span><span class="ot"> Include=</span><span class="st">&quot;Microsoft.Extensions.Caching.Memory&quot;</span><span class="ot"> Version=</span><span class="st">&quot;8.0.0&quot;</span> /&gt;</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">PackageReference</span><span class="ot"> Include=</span><span class="st">&quot;Microsoft.Extensions.Caching.StackExchangeRedis&quot;</span><span class="ot"> Version=</span><span class="st">&quot;8.0.0&quot;</span> /&gt;</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">PackageReference</span><span class="ot"> Include=</span><span class="st">&quot;Microsoft.Extensions.Caching.Hybrid&quot;</span><span class="ot"> Version=</span><span class="st">&quot;9.0.0&quot;</span> /&gt; <span class="co">&lt;!-- .NET 9 --&gt;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- FusionCache --&gt;</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">PackageReference</span><span class="ot"> Include=</span><span class="st">&quot;ZiggyCreatures.FusionCache&quot;</span><span class="ot"> Version=</span><span class="st">&quot;1.2.0&quot;</span> /&gt;</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">PackageReference</span><span class="ot"> Include=</span><span class="st">&quot;ZiggyCreatures.FusionCache.Serialization.SystemTextJson&quot;</span><span class="ot"> Version=</span><span class="st">&quot;1.2.0&quot;</span> /&gt;</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">PackageReference</span><span class="ot"> Include=</span><span class="st">&quot;ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis&quot;</span><span class="ot"> Version=</span><span class="st">&quot;1.2.0&quot;</span> /&gt;</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- LazyCache --&gt;</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">PackageReference</span><span class="ot"> Include=</span><span class="st">&quot;LazyCache&quot;</span><span class="ot"> Version=</span><span class="st">&quot;2.4.0&quot;</span> /&gt;</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">PackageReference</span><span class="ot"> Include=</span><span class="st">&quot;LazyCache.AspNetCore&quot;</span><span class="ot"> Version=</span><span class="st">&quot;2.4.0&quot;</span> /&gt;</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- EasyCaching --&gt;</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">PackageReference</span><span class="ot"> Include=</span><span class="st">&quot;EasyCaching.Core&quot;</span><span class="ot"> Version=</span><span class="st">&quot;1.9.2&quot;</span> /&gt;</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">PackageReference</span><span class="ot"> Include=</span><span class="st">&quot;EasyCaching.InMemory&quot;</span><span class="ot"> Version=</span><span class="st">&quot;1.9.2&quot;</span> /&gt;</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">PackageReference</span><span class="ot"> Include=</span><span class="st">&quot;EasyCaching.Redis&quot;</span><span class="ot"> Version=</span><span class="st">&quot;1.9.2&quot;</span> /&gt;</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">PackageReference</span><span class="ot"> Include=</span><span class="st">&quot;EasyCaching.HybridCache&quot;</span><span class="ot"> Version=</span><span class="st">&quot;1.9.2&quot;</span> /&gt;</span></code></pre></div>
+<hr />
+<h2 id="最佳实践示例">6. 最佳实践示例</h2>
+<h3 id="生产级配置fusioncache">6.1 生产级配置（FusionCache）</h3>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">static</span> <span class="kw">class</span> CacheConfiguration</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">static</span> IServiceCollection <span class="fu">AddProductionCache</span><span class="op">(</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">this</span> IServiceCollection services<span class="op">,</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        IConfiguration configuration<span class="op">)</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        <span class="dt">var</span> redisConnection <span class="op">=</span> configuration<span class="op">.</span><span class="fu">GetConnectionString</span><span class="op">(</span><span class="st">&quot;Redis&quot;</span><span class="op">);</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>        services<span class="op">.</span><span class="fu">AddFusionCache</span><span class="op">()</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">WithDefaultEntryOptions</span><span class="op">(</span><span class="kw">new</span> FusionCacheEntryOptions</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>                <span class="co">// 默认缓存时间</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>                Duration <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">),</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>                <span class="co">// 故障安全：Redis 不可用时返回过期数据</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>                IsFailSafeEnabled <span class="op">=</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>                FailSafeMaxDuration <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromDays</span><span class="op">(</span><span class="dv">1</span><span class="op">),</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>                FailSafeThrottleDuration <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromSeconds</span><span class="op">(</span><span class="dv">30</span><span class="op">),</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>                <span class="co">// 防击穿：软超时后返回旧数据，后台继续加载</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>                FactorySoftTimeout <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromMilliseconds</span><span class="op">(</span><span class="dv">100</span><span class="op">),</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>                FactoryHardTimeout <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromSeconds</span><span class="op">(</span><span class="dv">2</span><span class="op">),</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>                <span class="co">// 防雪崩：随机抖动</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>                JitterMaxDuration <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromMinutes</span><span class="op">(</span><span class="dv">2</span><span class="op">),</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>                <span class="co">// 后台操作</span></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>                AllowBackgroundDistributedCacheOperations <span class="op">=</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>                AllowBackgroundBackplaneOperations <span class="op">=</span> <span class="kw">true</span></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>            <span class="op">})</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>            <span class="co">// L2 缓存</span></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">WithDistributedCache</span><span class="op">(</span></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>                <span class="kw">new</span> <span class="fu">RedisCache</span><span class="op">(</span><span class="kw">new</span> RedisCacheOptions <span class="op">{</span> Configuration <span class="op">=</span> redisConnection <span class="op">}))</span></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 序列化</span></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">WithSerializer</span><span class="op">(</span><span class="kw">new</span> <span class="fu">FusionCacheSystemTextJsonSerializer</span><span class="op">())</span></span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 背板：多实例同步</span></span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">WithBackplane</span><span class="op">(</span></span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>                <span class="kw">new</span> <span class="fu">RedisBackplane</span><span class="op">(</span><span class="kw">new</span> RedisBackplaneOptions <span class="op">{</span> Configuration <span class="op">=</span> redisConnection <span class="op">}))</span></span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>            <span class="co">// OpenTelemetry</span></span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">WithRegisteredLogger</span><span class="op">();</span></span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> services<span class="op">;</span></span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="生产级配置hybridcache-.net-9">6.2 生产级配置（HybridCache .NET
+9）</h3>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">static</span> <span class="kw">class</span> CacheConfiguration</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">static</span> IServiceCollection <span class="fu">AddProductionHybridCache</span><span class="op">(</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">this</span> IServiceCollection services<span class="op">,</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>        IConfiguration configuration<span class="op">)</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        <span class="co">// L2: Redis</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>        services<span class="op">.</span><span class="fu">AddStackExchangeRedisCache</span><span class="op">(</span>options <span class="op">=&gt;</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>            options<span class="op">.</span><span class="fu">Configuration</span> <span class="op">=</span> configuration<span class="op">.</span><span class="fu">GetConnectionString</span><span class="op">(</span><span class="st">&quot;Redis&quot;</span><span class="op">);</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>        <span class="op">});</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>        <span class="co">// HybridCache</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>        services<span class="op">.</span><span class="fu">AddHybridCache</span><span class="op">(</span>options <span class="op">=&gt;</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>            options<span class="op">.</span><span class="fu">DefaultEntryOptions</span> <span class="op">=</span> <span class="kw">new</span> HybridCacheEntryOptions</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>                Expiration <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">),</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>                LocalCacheExpiration <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromMinutes</span><span class="op">(</span><span class="dv">5</span><span class="op">),</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>                Flags <span class="op">=</span> HybridCacheEntryFlags<span class="op">.</span><span class="fu">DisableUnderlyingData</span> <span class="co">// 可选：禁用某些功能</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>            <span class="op">};</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>            options<span class="op">.</span><span class="fu">MaximumKeyLength</span> <span class="op">=</span> <span class="dv">512</span><span class="op">;</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>            options<span class="op">.</span><span class="fu">MaximumPayloadBytes</span> <span class="op">=</span> <span class="dv">1024</span> <span class="op">*</span> <span class="dv">1024</span><span class="op">;</span> <span class="co">// 1MB</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>        <span class="op">});</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> services<span class="op">;</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="缓存服务封装">6.3 缓存服务封装</h3>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">interface</span> ICacheService</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    Task<span class="op">&lt;</span>T<span class="op">?&gt;</span> GetOrSetAsync<span class="op">&lt;</span>T<span class="op">&gt;(</span><span class="dt">string</span> key<span class="op">,</span> Func<span class="op">&lt;</span>CancellationToken<span class="op">,</span> Task<span class="op">&lt;</span>T<span class="op">?&gt;&gt;</span> factory<span class="op">,</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>        TimeSpan<span class="op">?</span> duration <span class="op">=</span> <span class="kw">null</span><span class="op">,</span> CancellationToken ct <span class="op">=</span> <span class="kw">default</span><span class="op">);</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    Task <span class="fu">RemoveAsync</span><span class="op">(</span><span class="dt">string</span> key<span class="op">,</span> CancellationToken ct <span class="op">=</span> <span class="kw">default</span><span class="op">);</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    Task <span class="fu">RemoveByPrefixAsync</span><span class="op">(</span><span class="dt">string</span> prefix<span class="op">,</span> CancellationToken ct <span class="op">=</span> <span class="kw">default</span><span class="op">);</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> FusionCacheService <span class="op">:</span> ICacheService</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> IFusionCache _cache<span class="op">;</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> ILogger<span class="op">&lt;</span>FusionCacheService<span class="op">&gt;</span> _logger<span class="op">;</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">FusionCacheService</span><span class="op">(</span>IFusionCache cache<span class="op">,</span> ILogger<span class="op">&lt;</span>FusionCacheService<span class="op">&gt;</span> logger<span class="op">)</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>        _cache <span class="op">=</span> cache<span class="op">;</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>        _logger <span class="op">=</span> logger<span class="op">;</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> async Task<span class="op">&lt;</span>T<span class="op">?&gt;</span> GetOrSetAsync<span class="op">&lt;</span>T<span class="op">&gt;(</span><span class="dt">string</span> key<span class="op">,</span> Func<span class="op">&lt;</span>CancellationToken<span class="op">,</span> Task<span class="op">&lt;</span>T<span class="op">?&gt;&gt;</span> factory<span class="op">,</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>        TimeSpan<span class="op">?</span> duration <span class="op">=</span> <span class="kw">null</span><span class="op">,</span> CancellationToken ct <span class="op">=</span> <span class="kw">default</span><span class="op">)</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> await _cache<span class="op">.</span><span class="fu">GetOrSetAsync</span><span class="op">(</span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>            key<span class="op">,</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>            factory<span class="op">,</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>            duration<span class="op">.</span><span class="fu">HasValue</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>                <span class="op">?</span> <span class="kw">new</span> FusionCacheEntryOptions <span class="op">{</span> Duration <span class="op">=</span> duration<span class="op">.</span><span class="fu">Value</span> <span class="op">}</span></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>                <span class="op">:</span> <span class="kw">null</span><span class="op">,</span></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>            ct</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>        <span class="op">);</span></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> async Task <span class="fu">RemoveAsync</span><span class="op">(</span><span class="dt">string</span> key<span class="op">,</span> CancellationToken ct <span class="op">=</span> <span class="kw">default</span><span class="op">)</span></span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>        await _cache<span class="op">.</span><span class="fu">RemoveAsync</span><span class="op">(</span>key<span class="op">,</span> token<span class="op">:</span> ct<span class="op">);</span></span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>        _logger<span class="op">.</span><span class="fu">LogDebug</span><span class="op">(</span><span class="st">&quot;Cache removed: {Key}&quot;</span><span class="op">,</span> key<span class="op">);</span></span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> async Task <span class="fu">RemoveByPrefixAsync</span><span class="op">(</span><span class="dt">string</span> prefix<span class="op">,</span> CancellationToken ct <span class="op">=</span> <span class="kw">default</span><span class="op">)</span></span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>        <span class="co">// FusionCache 不直接支持前缀删除</span></span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 需要结合 Redis SCAN 命令或使用标签</span></span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>        _logger<span class="op">.</span><span class="fu">LogWarning</span><span class="op">(</span><span class="st">&quot;RemoveByPrefix not implemented for FusionCache&quot;</span><span class="op">);</span></span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<hr />
+<h2 id="总结">7. 总结</h2>
+<h3 id="推荐方案">推荐方案</h3>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>首选</th>
+<th>备选</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>新项目 (.NET 9+)</strong></td>
+<td>HybridCache</td>
+<td>FusionCache</td>
+</tr>
+<tr>
+<td><strong>现有项目 (.NET 6/7/8)</strong></td>
+<td>FusionCache</td>
+<td>EasyCaching</td>
+</tr>
+<tr>
+<td><strong>简单本地缓存</strong></td>
+<td>LazyCache</td>
+<td>IMemoryCache</td>
+</tr>
+<tr>
+<td><strong>仅分布式缓存</strong></td>
+<td>IDistributedCache + Redis</td>
+<td>-</td>
+</tr>
+<tr>
+<td><strong>需要 AOP</strong></td>
+<td>EasyCaching</td>
+<td>-</td>
+</tr>
+<tr>
+<td><strong>企业级/高可用</strong></td>
+<td>FusionCache</td>
+<td>NCache</td>
+</tr>
+</tbody>
+</table>
+<h3 id="核心要点">核心要点</h3>
+<ol type="1">
+<li><strong>官方方案趋势</strong>：HybridCache 是微软的未来方向，.NET 9+
+项目首选</li>
+<li><strong>成熟稳定</strong>：FusionCache 功能最完善，生产环境首选</li>
+<li><strong>简单场景</strong>：LazyCache 或 IMemoryCache 足够</li>
+<li><strong>避免过度设计</strong>：根据实际需求选择，不要为了”完善”而引入复杂性</li>
+</ol>
+<h3 id="参考资源">参考资源</h3>
+<ul>
+<li><a
+href="https://learn.microsoft.com/en-us/aspnet/core/performance/caching">Microsoft
+Caching Documentation</a></li>
+<li><a
+href="https://learn.microsoft.com/en-us/aspnet/core/performance/caching/hybrid">HybridCache
+in .NET 9</a></li>
+<li><a href="https://github.com/ZiggyCreatures/FusionCache">FusionCache
+GitHub</a></li>
+<li><a href="https://github.com/dotnetcore/EasyCaching">EasyCaching
+GitHub</a></li>
+<li><a href="https://github.com/alastairtree/LazyCache">LazyCache
+GitHub</a></li>
+</ul>
 
-### 5.2 版本兼容性
-
-| 框架 | 最低 .NET 版本 | 推荐版本 |
-|------|---------------|----------|
-| **IMemoryCache** | .NET Standard 2.0 | 任意 |
-| **IDistributedCache** | .NET Standard 2.0 | 任意 |
-| **HybridCache** | .NET 9 | .NET 9+ |
-| **FusionCache** | .NET Standard 2.0 | .NET 6+ |
-| **LazyCache** | .NET Standard 2.0 | 任意 |
-| **EasyCaching** | .NET Standard 2.0 | .NET 6+ |
-
-### 5.3 NuGet 包清单
-
-```xml
-&lt;!-- 微软官方 -->
-&lt;PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
-&lt;PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.0" />
-&lt;PackageReference Include="Microsoft.Extensions.Caching.Hybrid" Version="9.0.0" /> &lt;!-- .NET 9 -->
-
-&lt;!-- FusionCache -->
-&lt;PackageReference Include="ZiggyCreatures.FusionCache" Version="1.2.0" />
-&lt;PackageReference Include="ZiggyCreatures.FusionCache.Serialization.SystemTextJson" Version="1.2.0" />
-&lt;PackageReference Include="ZiggyCreatures.FusionCache.Backplane.StackExchangeRedis" Version="1.2.0" />
-
-&lt;!-- LazyCache -->
-&lt;PackageReference Include="LazyCache" Version="2.4.0" />
-&lt;PackageReference Include="LazyCache.AspNetCore" Version="2.4.0" />
-
-&lt;!-- EasyCaching -->
-&lt;PackageReference Include="EasyCaching.Core" Version="1.9.2" />
-&lt;PackageReference Include="EasyCaching.InMemory" Version="1.9.2" />
-&lt;PackageReference Include="EasyCaching.Redis" Version="1.9.2" />
-&lt;PackageReference Include="EasyCaching.HybridCache" Version="1.9.2" />
-```
-
----
-
-## 6. 最佳实践示例
-
-### 6.1 生产级配置（FusionCache）
-
-```csharp
-public static class CacheConfiguration
-{
-    public static IServiceCollection AddProductionCache(
-        this IServiceCollection services,
-        IConfiguration configuration)
-    {
-        var redisConnection = configuration.GetConnectionString("Redis");
-        
-        services.AddFusionCache()
-            .WithDefaultEntryOptions(new FusionCacheEntryOptions
-            {
-                // 默认缓存时间
-                Duration = TimeSpan.FromHours(1),
-                
-                // 故障安全：Redis 不可用时返回过期数据
-                IsFailSafeEnabled = true,
-                FailSafeMaxDuration = TimeSpan.FromDays(1),
-                FailSafeThrottleDuration = TimeSpan.FromSeconds(30),
-                
-                // 防击穿：软超时后返回旧数据，后台继续加载
-                FactorySoftTimeout = TimeSpan.FromMilliseconds(100),
-                FactoryHardTimeout = TimeSpan.FromSeconds(2),
-                
-                // 防雪崩：随机抖动
-                JitterMaxDuration = TimeSpan.FromMinutes(2),
-                
-                // 后台操作
-                AllowBackgroundDistributedCacheOperations = true,
-                AllowBackgroundBackplaneOperations = true
-            })
-            // L2 缓存
-            .WithDistributedCache(
-                new RedisCache(new RedisCacheOptions { Configuration = redisConnection }))
-            // 序列化
-            .WithSerializer(new FusionCacheSystemTextJsonSerializer())
-            // 背板：多实例同步
-            .WithBackplane(
-                new RedisBackplane(new RedisBackplaneOptions { Configuration = redisConnection }))
-            // OpenTelemetry
-            .WithRegisteredLogger();
-        
-        return services;
-    }
-}
-```
-
-### 6.2 生产级配置（HybridCache .NET 9）
-
-```csharp
-public static class CacheConfiguration
-{
-    public static IServiceCollection AddProductionHybridCache(
-        this IServiceCollection services,
-        IConfiguration configuration)
-    {
-        // L2: Redis
-        services.AddStackExchangeRedisCache(options =>
-        {
-            options.Configuration = configuration.GetConnectionString("Redis");
-        });
-        
-        // HybridCache
-        services.AddHybridCache(options =>
-        {
-            options.DefaultEntryOptions = new HybridCacheEntryOptions
-            {
-                Expiration = TimeSpan.FromHours(1),
-                LocalCacheExpiration = TimeSpan.FromMinutes(5),
-                Flags = HybridCacheEntryFlags.DisableUnderlyingData // 可选：禁用某些功能
-            };
-            
-            options.MaximumKeyLength = 512;
-            options.MaximumPayloadBytes = 1024 * 1024; // 1MB
-        });
-        
-        return services;
-    }
-}
-```
-
-### 6.3 缓存服务封装
-
-```csharp
-public interface ICacheService
-{
-    Task&lt;T?> GetOrSetAsync&lt;T>(string key, Func&lt;CancellationToken, Task&lt;T?>> factory,
-        TimeSpan? duration = null, CancellationToken ct = default);
-    Task RemoveAsync(string key, CancellationToken ct = default);
-    Task RemoveByPrefixAsync(string prefix, CancellationToken ct = default);
-}
-
-public class FusionCacheService : ICacheService
-{
-    private readonly IFusionCache _cache;
-    private readonly ILogger&lt;FusionCacheService> _logger;
-    
-    public FusionCacheService(IFusionCache cache, ILogger&lt;FusionCacheService> logger)
-    {
-        _cache = cache;
-        _logger = logger;
-    }
-    
-    public async Task&lt;T?> GetOrSetAsync&lt;T>(string key, Func&lt;CancellationToken, Task&lt;T?>> factory,
-        TimeSpan? duration = null, CancellationToken ct = default)
-    {
-        return await _cache.GetOrSetAsync(
-            key,
-            factory,
-            duration.HasValue
-                ? new FusionCacheEntryOptions { Duration = duration.Value }
-                : null,
-            ct
-        );
-    }
-    
-    public async Task RemoveAsync(string key, CancellationToken ct = default)
-    {
-        await _cache.RemoveAsync(key, token: ct);
-        _logger.LogDebug("Cache removed: {Key}", key);
-    }
-    
-    public async Task RemoveByPrefixAsync(string prefix, CancellationToken ct = default)
-    {
-        // FusionCache 不直接支持前缀删除
-        // 需要结合 Redis SCAN 命令或使用标签
-        _logger.LogWarning("RemoveByPrefix not implemented for FusionCache");
-    }
-}
-```
-
----
-
-## 7. 总结
-
-### 推荐方案
-
-| 场景 | 首选 | 备选 |
-|------|------|------|
-| **新项目 (.NET 9+)** | HybridCache | FusionCache |
-| **现有项目 (.NET 6/7/8)** | FusionCache | EasyCaching |
-| **简单本地缓存** | LazyCache | IMemoryCache |
-| **仅分布式缓存** | IDistributedCache + Redis | - |
-| **需要 AOP** | EasyCaching | - |
-| **企业级/高可用** | FusionCache | NCache |
-
-### 核心要点
-
-1. **官方方案趋势**：HybridCache 是微软的未来方向，.NET 9+ 项目首选
-2. **成熟稳定**：FusionCache 功能最完善，生产环境首选
-3. **简单场景**：LazyCache 或 IMemoryCache 足够
-4. **避免过度设计**：根据实际需求选择，不要为了"完善"而引入复杂性
-
-### 参考资源
-
-- [Microsoft Caching Documentation](https://learn.microsoft.com/en-us/aspnet/core/performance/caching)
-- [HybridCache in .NET 9](https://learn.microsoft.com/en-us/aspnet/core/performance/caching/hybrid)
-- [FusionCache GitHub](https://github.com/ZiggyCreatures/FusionCache)
-- [EasyCaching GitHub](https://github.com/dotnetcore/EasyCaching)
-- [LazyCache GitHub](https://github.com/alastairtree/LazyCache)
-</pre>
                 </article>
             </div>
         </section>

@@ -65,8 +65,8 @@
         "@type": "Person",
         "name": "Ken Wang"
       },
-      "datePublished": "2026-01-25T20:51:19.502366",
-      "dateModified": "2026-01-25T20:51:19.502366",
+      "datePublished": "2026-01-29T20:26:18.610146",
+      "dateModified": "2026-01-29T20:26:18.610146",
       "inLanguage": "zh-CN"
     }
     </script>
@@ -109,21 +109,14 @@
         <section class="content-area">
             <div class="content-wrapper">
                 <article class="markdown-content">
-                    <h1>🤖 LLM Agent 与工具生态</h1><pre>---
-slug: llm-agent-and-tools
-title: 🤖 LLM Agent 与工具生态
----
-
-# 🤖 LLM Agent 与工具生态
-
-## 1. 什么是 LLM Agent？
-
-### 1.1 Agent 定义
-
-**LLM Agent**（智能体）是一种能够自主感知环境、做出决策并采取行动的 AI 系统。它以大型语言模型为"大脑"，通过工具调用、记忆管理和自主规划来完成复杂任务。
-
-```
-┌─────────────────────────────────────────────────────────┐
+                    
+<h1 id="llm-agent-与工具生态">🤖 LLM Agent 与工具生态</h1>
+<h2 id="什么是-llm-agent">1. 什么是 LLM Agent？</h2>
+<h3 id="agent-定义">1.1 Agent 定义</h3>
+<p><strong>LLM
+Agent</strong>（智能体）是一种能够自主感知环境、做出决策并采取行动的 AI
+系统。它以大型语言模型为”大脑”，通过工具调用、记忆管理和自主规划来完成复杂任务。</p>
+<pre><code>┌─────────────────────────────────────────────────────────┐
 │                    LLM Agent 架构                       │
 ├─────────────────────────────────────────────────────────┤
 │                                                         │
@@ -145,62 +138,118 @@ title: 🤖 LLM Agent 与工具生态
 │   │   记忆   │      │   工具   │      │  执行    │    │
 │   └──────────┘      └──────────┘      └──────────┘    │
 │                                                         │
-└─────────────────────────────────────────────────────────┘
-```
-
-### 1.2 Agent vs 普通 LLM 对话
-
-| 维度 | 普通 LLM 对话 | LLM Agent |
-|------|--------------|-----------|
-| **交互模式** | 单轮问答 | 多轮自主迭代 |
-| **能力边界** | 仅限文本生成 | 可调用外部工具 |
-| **任务复杂度** | 简单任务 | 复杂多步骤任务 |
-| **状态管理** | 无状态/短期记忆 | 长期记忆 + 上下文 |
-| **执行方式** | 被动响应 | 主动规划执行 |
-| **环境交互** | 无 | 可操作外部系统 |
-
-### 1.3 Agent 的核心组件
-
-```python
-# Agent 核心组件概念模型
-class LLMAgent:
-    def __init__(self):
-        self.llm = "大语言模型 - 推理和决策的核心"
-        self.memory = {
-            "short_term": "对话历史、当前任务上下文",
-            "long_term": "持久化知识、用户偏好、历史经验"
-        }
-        self.tools = "外部工具集 - 扩展能力边界"
-        self.planning = "任务分解、执行策略制定"
-        
-    def run(self, task):
-        # 1. 理解任务
-        # 2. 制定计划
-        # 3. 循环执行：思考 → 行动 → 观察
-        # 4. 返回结果
-        pass
-```
-
-### 1.4 Agent 的典型应用场景
-
-| 场景 | 描述 | 示例 |
-|------|------|------|
-| **代码开发** | 自动编写、调试、重构代码 | Cursor Agent、GitHub Copilot |
-| **数据分析** | 自动查询、分析、可视化数据 | Code Interpreter |
-| **自动化办公** | 邮件处理、日程管理、文档生成 | AutoGPT |
-| **客户服务** | 多轮对话、工单处理、问题解决 | 智能客服系统 |
-| **研究助手** | 文献检索、信息整合、报告生成 | Perplexity AI |
-
----
-
-## 2. ReAct 框架
-
-### 2.1 什么是 ReAct？
-
-**ReAct**（Reasoning + Acting）是一种将推理和行动交织进行的 Agent 框架。它让模型在执行任务时交替进行"思考"和"行动"，形成 **Thought → Action → Observation** 的循环。
-
-```
-┌─────────────────────────────────────────────────────────┐
+└─────────────────────────────────────────────────────────┘</code></pre>
+<h3 id="agent-vs-普通-llm-对话">1.2 Agent vs 普通 LLM 对话</h3>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>普通 LLM 对话</th>
+<th>LLM Agent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>交互模式</strong></td>
+<td>单轮问答</td>
+<td>多轮自主迭代</td>
+</tr>
+<tr>
+<td><strong>能力边界</strong></td>
+<td>仅限文本生成</td>
+<td>可调用外部工具</td>
+</tr>
+<tr>
+<td><strong>任务复杂度</strong></td>
+<td>简单任务</td>
+<td>复杂多步骤任务</td>
+</tr>
+<tr>
+<td><strong>状态管理</strong></td>
+<td>无状态/短期记忆</td>
+<td>长期记忆 + 上下文</td>
+</tr>
+<tr>
+<td><strong>执行方式</strong></td>
+<td>被动响应</td>
+<td>主动规划执行</td>
+</tr>
+<tr>
+<td><strong>环境交互</strong></td>
+<td>无</td>
+<td>可操作外部系统</td>
+</tr>
+</tbody>
+</table>
+<h3 id="agent-的核心组件">1.3 Agent 的核心组件</h3>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Agent 核心组件概念模型</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> LLMAgent:</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.llm <span class="op">=</span> <span class="st">&quot;大语言模型 - 推理和决策的核心&quot;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.memory <span class="op">=</span> {</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;short_term&quot;</span>: <span class="st">&quot;对话历史、当前任务上下文&quot;</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;long_term&quot;</span>: <span class="st">&quot;持久化知识、用户偏好、历史经验&quot;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.tools <span class="op">=</span> <span class="st">&quot;外部工具集 - 扩展能力边界&quot;</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.planning <span class="op">=</span> <span class="st">&quot;任务分解、执行策略制定&quot;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> run(<span class="va">self</span>, task):</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 1. 理解任务</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2. 制定计划</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 3. 循环执行：思考 → 行动 → 观察</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 4. 返回结果</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span></code></pre></div>
+<h3 id="agent-的典型应用场景">1.4 Agent 的典型应用场景</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>场景</th>
+<th>描述</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>代码开发</strong></td>
+<td>自动编写、调试、重构代码</td>
+<td>Cursor Agent、GitHub Copilot</td>
+</tr>
+<tr>
+<td><strong>数据分析</strong></td>
+<td>自动查询、分析、可视化数据</td>
+<td>Code Interpreter</td>
+</tr>
+<tr>
+<td><strong>自动化办公</strong></td>
+<td>邮件处理、日程管理、文档生成</td>
+<td>AutoGPT</td>
+</tr>
+<tr>
+<td><strong>客户服务</strong></td>
+<td>多轮对话、工单处理、问题解决</td>
+<td>智能客服系统</td>
+</tr>
+<tr>
+<td><strong>研究助手</strong></td>
+<td>文献检索、信息整合、报告生成</td>
+<td>Perplexity AI</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="react-框架">2. ReAct 框架</h2>
+<h3 id="什么是-react">2.1 什么是 ReAct？</h3>
+<p><strong>ReAct</strong>（Reasoning +
+Acting）是一种将推理和行动交织进行的 Agent
+框架。它让模型在执行任务时交替进行”思考”和”行动”，形成 <strong>Thought →
+Action → Observation</strong> 的循环。</p>
+<pre><code>┌─────────────────────────────────────────────────────────┐
 │                    ReAct 循环                           │
 ├─────────────────────────────────────────────────────────┤
 │                                                         │
@@ -233,83 +282,87 @@ class LLMAgent:
 │     │  Answer  │ ←───────┘                            │
 │     └──────────┘                                       │
 │                                                         │
-└─────────────────────────────────────────────────────────┘
-```
-
-### 2.2 ReAct 示例
-
-假设任务是：**"查询北京今天的天气，并根据天气推荐穿搭"**
-
-```
-Task: 查询北京今天的天气，并根据天气推荐穿搭
+└─────────────────────────────────────────────────────────┘</code></pre>
+<h3 id="react-示例">2.2 ReAct 示例</h3>
+<p>假设任务是：<strong>“查询北京今天的天气，并根据天气推荐穿搭”</strong></p>
+<pre><code>Task: 查询北京今天的天气，并根据天气推荐穿搭
 
 Thought 1: 我需要先查询北京今天的天气情况
-Action 1: search_weather(city="北京")
+Action 1: search_weather(city=&quot;北京&quot;)
 Observation 1: 北京今日天气：晴，气温 -2°C ~ 8°C，北风3-4级
 
 Thought 2: 今天北京比较冷，气温在零下到8度，有风。我需要推荐保暖的穿搭
-Action 2: generate_recommendation(weather="晴，-2°C~8°C，北风")
+Action 2: generate_recommendation(weather=&quot;晴，-2°C~8°C，北风&quot;)
 Observation 2: 推荐穿搭：羽绒服+毛衣+保暖内衣，围巾手套帽子三件套
 
 Thought 3: 我已经获得了天气信息和穿搭推荐，可以给出最终答案了
 Answer: 北京今天天气晴朗，但气温较低（-2°C ~ 8°C），有北风3-4级。
-        建议穿着：羽绒服搭配毛衣和保暖内衣，外出时带上围巾、手套和帽子防风保暖。
-```
-
-### 2.3 ReAct 的优势
-
-| 优势 | 说明 |
-|------|------|
-| **可解释性强** | 每一步思考过程都清晰可见 |
-| **灵活适应** | 可根据观察结果动态调整策略 |
-| **减少幻觉** | 通过工具获取真实信息，而非纯靠模型生成 |
-| **错误可追溯** | 容易定位问题发生在哪个步骤 |
-
-### 2.4 ReAct 代码实现
-
-```python
-from langchain.agents import AgentExecutor, create_react_agent
-from langchain_openai import ChatOpenAI
-from langchain.tools import Tool
-from langchain import hub
-
-# 1. 定义工具
-def search_weather(city: str) -> str:
-    """查询城市天气"""
-    # 实际应调用天气 API
-    return f"{city}今日：晴，5°C ~ 15°C"
-
-def calculate(expression: str) -> str:
-    """计算数学表达式"""
-    return str(eval(expression))
-
-tools = [
-    Tool(name="Weather", func=search_weather, description="查询城市天气"),
-    Tool(name="Calculator", func=calculate, description="计算数学表达式"),
-]
-
-# 2. 创建 ReAct Agent
-llm = ChatOpenAI(model="gpt-4", temperature=0)
-prompt = hub.pull("hwchase17/react")  # 官方 ReAct prompt 模板
-
-agent = create_react_agent(llm, tools, prompt)
-agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
-
-# 3. 执行任务
-result = agent_executor.invoke({
-    "input": "北京今天天气怎么样？如果气温低于10度，计算穿3层衣服每层保暖2度能抵御多少寒冷"
-})
-print(result["output"])
-```
-
----
-
-## 3. 搭建 Agent 智能体系统
-
-### 3.1 搭建流程概览
-
-```
-┌─────────────────────────────────────────────────────────┐
+        建议穿着：羽绒服搭配毛衣和保暖内衣，外出时带上围巾、手套和帽子防风保暖。</code></pre>
+<h3 id="react-的优势">2.3 ReAct 的优势</h3>
+<table>
+<thead>
+<tr>
+<th>优势</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>可解释性强</strong></td>
+<td>每一步思考过程都清晰可见</td>
+</tr>
+<tr>
+<td><strong>灵活适应</strong></td>
+<td>可根据观察结果动态调整策略</td>
+</tr>
+<tr>
+<td><strong>减少幻觉</strong></td>
+<td>通过工具获取真实信息，而非纯靠模型生成</td>
+</tr>
+<tr>
+<td><strong>错误可追溯</strong></td>
+<td>容易定位问题发生在哪个步骤</td>
+</tr>
+</tbody>
+</table>
+<h3 id="react-代码实现">2.4 ReAct 代码实现</h3>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.agents <span class="im">import</span> AgentExecutor, create_react_agent</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_openai <span class="im">import</span> ChatOpenAI</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.tools <span class="im">import</span> Tool</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain <span class="im">import</span> hub</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 定义工具</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> search_weather(city: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;查询城市天气&quot;&quot;&quot;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 实际应调用天气 API</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f&quot;</span><span class="sc">{</span>city<span class="sc">}</span><span class="ss">今日：晴，5°C ~ 15°C&quot;</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate(expression: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;计算数学表达式&quot;&quot;&quot;</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">str</span>(<span class="bu">eval</span>(expression))</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>tools <span class="op">=</span> [</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    Tool(name<span class="op">=</span><span class="st">&quot;Weather&quot;</span>, func<span class="op">=</span>search_weather, description<span class="op">=</span><span class="st">&quot;查询城市天气&quot;</span>),</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    Tool(name<span class="op">=</span><span class="st">&quot;Calculator&quot;</span>, func<span class="op">=</span>calculate, description<span class="op">=</span><span class="st">&quot;计算数学表达式&quot;</span>),</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 创建 ReAct Agent</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>llm <span class="op">=</span> ChatOpenAI(model<span class="op">=</span><span class="st">&quot;gpt-4&quot;</span>, temperature<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>prompt <span class="op">=</span> hub.pull(<span class="st">&quot;hwchase17/react&quot;</span>)  <span class="co"># 官方 ReAct prompt 模板</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>agent <span class="op">=</span> create_react_agent(llm, tools, prompt)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>agent_executor <span class="op">=</span> AgentExecutor(agent<span class="op">=</span>agent, tools<span class="op">=</span>tools, verbose<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 执行任务</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> agent_executor.invoke({</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;input&quot;</span>: <span class="st">&quot;北京今天天气怎么样？如果气温低于10度，计算穿3层衣服每层保暖2度能抵御多少寒冷&quot;</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result[<span class="st">&quot;output&quot;</span>])</span></code></pre></div>
+<hr />
+<h2 id="搭建-agent-智能体系统">3. 搭建 Agent 智能体系统</h2>
+<h3 id="搭建流程概览">3.1 搭建流程概览</h3>
+<pre><code>┌─────────────────────────────────────────────────────────┐
 │              Agent 系统搭建流程                          │
 ├─────────────────────────────────────────────────────────┤
 │                                                         │
@@ -325,215 +378,201 @@ print(result["output"])
 │  组装工具链           端到端测试            性能调优    │
 │  配置记忆模块         异常处理              成本控制    │
 │                                                         │
-└─────────────────────────────────────────────────────────┘
-```
-
-### 3.2 方案一：使用 LangChain 构建
-
-```python
-from langchain.agents import AgentExecutor, create_openai_tools_agent
-from langchain_openai import ChatOpenAI
-from langchain.tools import tool
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain.memory import ConversationBufferMemory
-
-# 1. 定义工具
-@tool
-def search_database(query: str) -> str:
-    """在数据库中搜索信息"""
-    # 实现数据库查询逻辑
-    return f"搜索结果: {query} 的相关信息..."
-
-@tool  
-def send_email(to: str, subject: str, body: str) -> str:
-    """发送邮件"""
-    # 实现邮件发送逻辑
-    return f"邮件已发送给 {to}"
-
-@tool
-def create_file(filename: str, content: str) -> str:
-    """创建文件"""
-    with open(filename, 'w') as f:
-        f.write(content)
-    return f"文件 {filename} 创建成功"
-
-tools = [search_database, send_email, create_file]
-
-# 2. 创建 Prompt
-prompt = ChatPromptTemplate.from_messages([
-    ("system", """你是一个智能助手，可以帮助用户完成各种任务。
-    你可以使用以下工具：搜索数据库、发送邮件、创建文件。
-    请根据用户需求，选择合适的工具完成任务。"""),
-    MessagesPlaceholder(variable_name="chat_history"),
-    ("user", "{input}"),
-    MessagesPlaceholder(variable_name="agent_scratchpad"),
-])
-
-# 3. 创建 Agent
-llm = ChatOpenAI(model="gpt-4", temperature=0)
-agent = create_openai_tools_agent(llm, tools, prompt)
-
-# 4. 添加记忆
-memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
-
-# 5. 创建执行器
-agent_executor = AgentExecutor(
-    agent=agent,
-    tools=tools,
-    memory=memory,
-    verbose=True,
-    max_iterations=10,  # 防止无限循环
-    handle_parsing_errors=True
-)
-
-# 6. 运行
-result = agent_executor.invoke({"input": "帮我查询销售数据并发邮件给老板汇报"})
-```
-
-### 3.3 方案二：使用 OpenAI Function Calling
-
-```python
-from openai import OpenAI
-import json
-
-client = OpenAI()
-
-# 1. 定义工具 Schema
-tools = [
-    {
-        "type": "function",
-        "function": {
-            "name": "get_weather",
-            "description": "获取指定城市的天气信息",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "city": {"type": "string", "description": "城市名称"},
-                    "unit": {"type": "string", "enum": ["celsius", "fahrenheit"]}
-                },
-                "required": ["city"]
-            }
-        }
-    },
-    {
-        "type": "function", 
-        "function": {
-            "name": "search_web",
-            "description": "在网络上搜索信息",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "query": {"type": "string", "description": "搜索关键词"}
-                },
-                "required": ["query"]
-            }
-        }
-    }
-]
-
-# 2. 实现工具函数
-def get_weather(city: str, unit: str = "celsius") -> str:
-    return f"{city}天气：晴，25°C"
-
-def search_web(query: str) -> str:
-    return f"搜索'{query}'的结果：..."
-
-available_functions = {
-    "get_weather": get_weather,
-    "search_web": search_web
-}
-
-# 3. Agent 执行循环
-def run_agent(user_message: str):
-    messages = [{"role": "user", "content": user_message}]
-    
-    while True:
-        response = client.chat.completions.create(
-            model="gpt-4",
-            messages=messages,
-            tools=tools,
-            tool_choice="auto"
-        )
-        
-        assistant_message = response.choices[0].message
-        messages.append(assistant_message)
-        
-        # 检查是否需要调用工具
-        if assistant_message.tool_calls:
-            for tool_call in assistant_message.tool_calls:
-                func_name = tool_call.function.name
-                func_args = json.loads(tool_call.function.arguments)
-                
-                # 执行工具
-                func = available_functions[func_name]
-                result = func(**func_args)
-                
-                # 将结果加入消息
-                messages.append({
-                    "role": "tool",
-                    "tool_call_id": tool_call.id,
-                    "content": result
-                })
-        else:
-            # 没有工具调用，返回最终结果
-            return assistant_message.content
-
-# 4. 运行
-print(run_agent("北京天气怎么样？"))
-```
-
-### 3.4 方案三：多 Agent 协作系统
-
-```python
-# 使用 LangGraph 构建多Agent系统
-from langgraph.graph import StateGraph, END
-from typing import TypedDict, Annotated
-import operator
-
-class AgentState(TypedDict):
-    messages: Annotated[list, operator.add]
-    next_agent: str
-
-# 定义专业Agent
-def researcher_agent(state: AgentState) -> AgentState:
-    """研究员Agent - 负责信息搜集"""
-    # 实现研究逻辑
-    return {"messages": ["研究结果..."], "next_agent": "writer"}
-
-def writer_agent(state: AgentState) -> AgentState:
-    """写作Agent - 负责内容生成"""
-    # 实现写作逻辑
-    return {"messages": ["生成的内容..."], "next_agent": "reviewer"}
-
-def reviewer_agent(state: AgentState) -> AgentState:
-    """审核Agent - 负责质量把控"""
-    # 实现审核逻辑
-    return {"messages": ["审核意见..."], "next_agent": "end"}
-
-# 构建工作流图
-workflow = StateGraph(AgentState)
-workflow.add_node("researcher", researcher_agent)
-workflow.add_node("writer", writer_agent)
-workflow.add_node("reviewer", reviewer_agent)
-
-workflow.set_entry_point("researcher")
-workflow.add_edge("researcher", "writer")
-workflow.add_edge("writer", "reviewer")
-workflow.add_edge("reviewer", END)
-
-# 编译并运行
-app = workflow.compile()
-result = app.invoke({"messages": ["请写一篇关于AI的文章"], "next_agent": "researcher"})
-```
-
----
-
-## 4. LLM / Agent 常用工具
-
-### 4.1 工具分类概览
-
-```
-┌─────────────────────────────────────────────────────────┐
+└─────────────────────────────────────────────────────────┘</code></pre>
+<h3 id="方案一使用-langchain-构建">3.2 方案一：使用 LangChain 构建</h3>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.agents <span class="im">import</span> AgentExecutor, create_openai_tools_agent</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_openai <span class="im">import</span> ChatOpenAI</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.tools <span class="im">import</span> tool</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_core.prompts <span class="im">import</span> ChatPromptTemplate, MessagesPlaceholder</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.memory <span class="im">import</span> ConversationBufferMemory</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 定义工具</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="at">@tool</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> search_database(query: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;在数据库中搜索信息&quot;&quot;&quot;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 实现数据库查询逻辑</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f&quot;搜索结果: </span><span class="sc">{</span>query<span class="sc">}</span><span class="ss"> 的相关信息...&quot;</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="at">@tool</span>  </span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> send_email(to: <span class="bu">str</span>, subject: <span class="bu">str</span>, body: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;发送邮件&quot;&quot;&quot;</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 实现邮件发送逻辑</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f&quot;邮件已发送给 </span><span class="sc">{</span>to<span class="sc">}</span><span class="ss">&quot;</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="at">@tool</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_file(filename: <span class="bu">str</span>, content: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;创建文件&quot;&quot;&quot;</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(filename, <span class="st">&#39;w&#39;</span>) <span class="im">as</span> f:</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>        f.write(content)</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f&quot;文件 </span><span class="sc">{</span>filename<span class="sc">}</span><span class="ss"> 创建成功&quot;</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>tools <span class="op">=</span> [search_database, send_email, create_file]</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 创建 Prompt</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>prompt <span class="op">=</span> ChatPromptTemplate.from_messages([</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    (<span class="st">&quot;system&quot;</span>, <span class="st">&quot;&quot;&quot;你是一个智能助手，可以帮助用户完成各种任务。</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="st">    你可以使用以下工具：搜索数据库、发送邮件、创建文件。</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="st">    请根据用户需求，选择合适的工具完成任务。&quot;&quot;&quot;</span>),</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    MessagesPlaceholder(variable_name<span class="op">=</span><span class="st">&quot;chat_history&quot;</span>),</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>    (<span class="st">&quot;user&quot;</span>, <span class="st">&quot;</span><span class="sc">{input}</span><span class="st">&quot;</span>),</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>    MessagesPlaceholder(variable_name<span class="op">=</span><span class="st">&quot;agent_scratchpad&quot;</span>),</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 创建 Agent</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>llm <span class="op">=</span> ChatOpenAI(model<span class="op">=</span><span class="st">&quot;gpt-4&quot;</span>, temperature<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>agent <span class="op">=</span> create_openai_tools_agent(llm, tools, prompt)</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. 添加记忆</span></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>memory <span class="op">=</span> ConversationBufferMemory(memory_key<span class="op">=</span><span class="st">&quot;chat_history&quot;</span>, return_messages<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. 创建执行器</span></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>agent_executor <span class="op">=</span> AgentExecutor(</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>    agent<span class="op">=</span>agent,</span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>    tools<span class="op">=</span>tools,</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>    memory<span class="op">=</span>memory,</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>    verbose<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>    max_iterations<span class="op">=</span><span class="dv">10</span>,  <span class="co"># 防止无限循环</span></span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>    handle_parsing_errors<span class="op">=</span><span class="va">True</span></span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a><span class="co"># 6. 运行</span></span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> agent_executor.invoke({<span class="st">&quot;input&quot;</span>: <span class="st">&quot;帮我查询销售数据并发邮件给老板汇报&quot;</span>})</span></code></pre></div>
+<h3 id="方案二使用-openai-function-calling">3.3 方案二：使用 OpenAI
+Function Calling</h3>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openai <span class="im">import</span> OpenAI</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> OpenAI()</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 定义工具 Schema</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>tools <span class="op">=</span> [</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;type&quot;</span>: <span class="st">&quot;function&quot;</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;function&quot;</span>: {</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;name&quot;</span>: <span class="st">&quot;get_weather&quot;</span>,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;description&quot;</span>: <span class="st">&quot;获取指定城市的天气信息&quot;</span>,</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;parameters&quot;</span>: {</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;type&quot;</span>: <span class="st">&quot;object&quot;</span>,</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;properties&quot;</span>: {</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;city&quot;</span>: {<span class="st">&quot;type&quot;</span>: <span class="st">&quot;string&quot;</span>, <span class="st">&quot;description&quot;</span>: <span class="st">&quot;城市名称&quot;</span>},</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;unit&quot;</span>: {<span class="st">&quot;type&quot;</span>: <span class="st">&quot;string&quot;</span>, <span class="st">&quot;enum&quot;</span>: [<span class="st">&quot;celsius&quot;</span>, <span class="st">&quot;fahrenheit&quot;</span>]}</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>                },</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;required&quot;</span>: [<span class="st">&quot;city&quot;</span>]</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>            }</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;type&quot;</span>: <span class="st">&quot;function&quot;</span>, </span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;function&quot;</span>: {</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;name&quot;</span>: <span class="st">&quot;search_web&quot;</span>,</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;description&quot;</span>: <span class="st">&quot;在网络上搜索信息&quot;</span>,</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;parameters&quot;</span>: {</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;type&quot;</span>: <span class="st">&quot;object&quot;</span>,</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;properties&quot;</span>: {</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;query&quot;</span>: {<span class="st">&quot;type&quot;</span>: <span class="st">&quot;string&quot;</span>, <span class="st">&quot;description&quot;</span>: <span class="st">&quot;搜索关键词&quot;</span>}</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>                },</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;required&quot;</span>: [<span class="st">&quot;query&quot;</span>]</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>            }</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 实现工具函数</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_weather(city: <span class="bu">str</span>, unit: <span class="bu">str</span> <span class="op">=</span> <span class="st">&quot;celsius&quot;</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f&quot;</span><span class="sc">{</span>city<span class="sc">}</span><span class="ss">天气：晴，25°C&quot;</span></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> search_web(query: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f&quot;搜索&#39;</span><span class="sc">{</span>query<span class="sc">}</span><span class="ss">&#39;的结果：...&quot;</span></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>available_functions <span class="op">=</span> {</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;get_weather&quot;</span>: get_weather,</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;search_web&quot;</span>: search_web</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Agent 执行循环</span></span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_agent(user_message: <span class="bu">str</span>):</span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>    messages <span class="op">=</span> [{<span class="st">&quot;role&quot;</span>: <span class="st">&quot;user&quot;</span>, <span class="st">&quot;content&quot;</span>: user_message}]</span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>        response <span class="op">=</span> client.chat.completions.create(</span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>            model<span class="op">=</span><span class="st">&quot;gpt-4&quot;</span>,</span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>            messages<span class="op">=</span>messages,</span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>            tools<span class="op">=</span>tools,</span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>            tool_choice<span class="op">=</span><span class="st">&quot;auto&quot;</span></span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a>        assistant_message <span class="op">=</span> response.choices[<span class="dv">0</span>].message</span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a>        messages.append(assistant_message)</span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 检查是否需要调用工具</span></span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> assistant_message.tool_calls:</span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> tool_call <span class="kw">in</span> assistant_message.tool_calls:</span>
+<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a>                func_name <span class="op">=</span> tool_call.function.name</span>
+<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a>                func_args <span class="op">=</span> json.loads(tool_call.function.arguments)</span>
+<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a>                <span class="co"># 执行工具</span></span>
+<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a>                func <span class="op">=</span> available_functions[func_name]</span>
+<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a>                result <span class="op">=</span> func(<span class="op">**</span>func_args)</span>
+<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a>                <span class="co"># 将结果加入消息</span></span>
+<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a>                messages.append({</span>
+<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;role&quot;</span>: <span class="st">&quot;tool&quot;</span>,</span>
+<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;tool_call_id&quot;</span>: tool_call.<span class="bu">id</span>,</span>
+<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;content&quot;</span>: result</span>
+<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a>                })</span>
+<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a>            <span class="co"># 没有工具调用，返回最终结果</span></span>
+<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> assistant_message.content</span>
+<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. 运行</span></span>
+<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(run_agent(<span class="st">&quot;北京天气怎么样？&quot;</span>))</span></code></pre></div>
+<h3 id="方案三多-agent-协作系统">3.4 方案三：多 Agent 协作系统</h3>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用 LangGraph 构建多Agent系统</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langgraph.graph <span class="im">import</span> StateGraph, END</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> TypedDict, Annotated</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> operator</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AgentState(TypedDict):</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    messages: Annotated[<span class="bu">list</span>, operator.add]</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    next_agent: <span class="bu">str</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义专业Agent</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> researcher_agent(state: AgentState) <span class="op">-&gt;</span> AgentState:</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;研究员Agent - 负责信息搜集&quot;&quot;&quot;</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 实现研究逻辑</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">&quot;messages&quot;</span>: [<span class="st">&quot;研究结果...&quot;</span>], <span class="st">&quot;next_agent&quot;</span>: <span class="st">&quot;writer&quot;</span>}</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> writer_agent(state: AgentState) <span class="op">-&gt;</span> AgentState:</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;写作Agent - 负责内容生成&quot;&quot;&quot;</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 实现写作逻辑</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">&quot;messages&quot;</span>: [<span class="st">&quot;生成的内容...&quot;</span>], <span class="st">&quot;next_agent&quot;</span>: <span class="st">&quot;reviewer&quot;</span>}</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reviewer_agent(state: AgentState) <span class="op">-&gt;</span> AgentState:</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;审核Agent - 负责质量把控&quot;&quot;&quot;</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 实现审核逻辑</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">&quot;messages&quot;</span>: [<span class="st">&quot;审核意见...&quot;</span>], <span class="st">&quot;next_agent&quot;</span>: <span class="st">&quot;end&quot;</span>}</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co"># 构建工作流图</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>workflow <span class="op">=</span> StateGraph(AgentState)</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>workflow.add_node(<span class="st">&quot;researcher&quot;</span>, researcher_agent)</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>workflow.add_node(<span class="st">&quot;writer&quot;</span>, writer_agent)</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>workflow.add_node(<span class="st">&quot;reviewer&quot;</span>, reviewer_agent)</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>workflow.set_entry_point(<span class="st">&quot;researcher&quot;</span>)</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>workflow.add_edge(<span class="st">&quot;researcher&quot;</span>, <span class="st">&quot;writer&quot;</span>)</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>workflow.add_edge(<span class="st">&quot;writer&quot;</span>, <span class="st">&quot;reviewer&quot;</span>)</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>workflow.add_edge(<span class="st">&quot;reviewer&quot;</span>, END)</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a><span class="co"># 编译并运行</span></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> workflow.<span class="bu">compile</span>()</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> app.invoke({<span class="st">&quot;messages&quot;</span>: [<span class="st">&quot;请写一篇关于AI的文章&quot;</span>], <span class="st">&quot;next_agent&quot;</span>: <span class="st">&quot;researcher&quot;</span>})</span></code></pre></div>
+<hr />
+<h2 id="llm-agent-常用工具">4. LLM / Agent 常用工具</h2>
+<h3 id="工具分类概览">4.1 工具分类概览</h3>
+<pre><code>┌─────────────────────────────────────────────────────────┐
 │                  Agent 工具生态                         │
 ├─────────────────────────────────────────────────────────┤
 │                                                         │
@@ -548,152 +587,304 @@ result = app.invoke({"messages": ["请写一篇关于AI的文章"], "next_agent"
 │  ├─ 目录管理            ├─ 语音合成          ├─ 日历     │
 │  └─ 压缩解压            └─ 视频处理          └─ 翻译     │
 │                                                         │
-└─────────────────────────────────────────────────────────┘
-```
-
-### 4.2 常用工具详解
-
-#### 4.2.1 搜索与检索工具
-
-| 工具 | 用途 | 框架支持 |
-|------|------|----------|
-| **Tavily Search** | AI 优化的网页搜索 | LangChain, LlamaIndex |
-| **SerpAPI** | Google 搜索结果 | LangChain |
-| **DuckDuckGo** | 隐私搜索 | LangChain |
-| **Wikipedia** | 百科知识检索 | LangChain |
-| **Arxiv** | 学术论文搜索 | LangChain |
-| **Retriever** | 向量库检索 | LangChain, LlamaIndex |
-
-```python
-# Tavily 搜索示例
-from langchain_community.tools.tavily_search import TavilySearchResults
-
-search = TavilySearchResults(max_results=5)
-results = search.invoke("LLM Agent 最新进展")
-```
-
-#### 4.2.2 代码执行工具
-
-| 工具 | 用途 | 特点 |
-|------|------|------|
-| **Python REPL** | 执行 Python 代码 | 简单直接 |
-| **Shell** | 执行系统命令 | 功能强大，需注意安全 |
-| **E2B Sandbox** | 云端安全沙箱 | 隔离执行，安全性高 |
-| **Code Interpreter** | OpenAI 官方 | 集成 GPT，自带沙箱 |
-
-```python
-# Python REPL 工具
-from langchain_experimental.tools import PythonREPLTool
-
-python_tool = PythonREPLTool()
-result = python_tool.invoke("print(2 + 2)")
-```
-
-#### 4.2.3 文件与文档工具
-
-| 工具 | 用途 | 支持格式 |
-|------|------|----------|
-| **FileManagement** | 文件读写操作 | 所有文本文件 |
-| **PDFLoader** | PDF 文档解析 | PDF |
-| **DocxLoader** | Word 文档解析 | DOCX |
-| **CSVLoader** | CSV 数据读取 | CSV |
-| **UnstructuredLoader** | 通用文档解析 | 多种格式 |
-
-```python
-# 文件工具示例
-from langchain.tools import ReadFileTool, WriteFileTool
-
-read_tool = ReadFileTool()
-write_tool = WriteFileTool()
-```
-
-#### 4.2.4 数据库工具
-
-| 工具 | 用途 | 支持数据库 |
-|------|------|------------|
-| **SQLDatabaseToolkit** | SQL 查询 | MySQL, PostgreSQL, SQLite |
-| **Chroma** | 向量检索 | Chroma DB |
-| **Pinecone** | 向量检索 | Pinecone |
-| **Neo4j** | 图数据库查询 | Neo4j |
-
-```python
-# SQL 工具示例
-from langchain_community.utilities import SQLDatabase
-from langchain_community.agent_toolkits import SQLDatabaseToolkit
-
-db = SQLDatabase.from_uri("sqlite:///data.db")
-toolkit = SQLDatabaseToolkit(db=db, llm=llm)
-tools = toolkit.get_tools()
-```
-
-#### 4.2.5 API 与网络工具
-
-| 工具 | 用途 | 示例 |
-|------|------|------|
-| **RequestsWrapper** | HTTP 请求 | 调用任意 API |
-| **OpenWeatherMap** | 天气查询 | 获取天气信息 |
-| **Gmail** | 邮件操作 | 发送/读取邮件 |
-| **Slack** | 消息发送 | 团队通知 |
-| **GitHub** | 代码仓库操作 | PR、Issue 管理 |
-
-```python
-# HTTP 请求工具
-from langchain_community.utilities import RequestsWrapper
-
-requests = RequestsWrapper()
-response = requests.get("https://api.example.com/data")
-```
-
-### 4.3 自定义工具开发
-
-```python
-from langchain.tools import BaseTool, tool
-from pydantic import BaseModel, Field
-from typing import Type
-
-# 方式一：使用装饰器（简单）
-@tool
-def multiply(a: int, b: int) -> int:
-    """将两个数字相乘"""
-    return a * b
-
-# 方式二：继承 BaseTool（复杂场景）
-class CalculatorInput(BaseModel):
-    expression: str = Field(description="数学表达式")
-
-class CalculatorTool(BaseTool):
-    name: str = "calculator"
-    description: str = "用于计算数学表达式"
-    args_schema: Type[BaseModel] = CalculatorInput
-    
-    def _run(self, expression: str) -> str:
-        try:
-            result = eval(expression)
-            return f"计算结果: {result}"
-        except Exception as e:
-            return f"计算错误: {str(e)}"
-    
-    async def _arun(self, expression: str) -> str:
-        return self._run(expression)
-```
-
-### 4.4 主流 Agent 平台与框架
-
-| 平台/框架 | 特点 | 适用场景 |
-|-----------|------|----------|
-| **LangChain** | 功能全面，工具丰富 | 通用 Agent 开发 |
-| **LangGraph** | 支持复杂工作流 | 多 Agent 协作 |
-| **AutoGPT** | 自主任务执行 | 自动化任务 |
-| **CrewAI** | 多角色协作 | 团队模拟 |
-| **MetaGPT** | 软件开发流程 | 自动编程 |
-| **Dify** | 低代码平台 | 快速原型 |
-| **Coze** | 字节跳动出品 | Bot 快速搭建 |
-| **OpenAI Assistants** | 官方 API | 简单集成 |
-
-### 4.5 工具选择最佳实践
-
-```
-工具选择决策树：
+└─────────────────────────────────────────────────────────┘</code></pre>
+<h3 id="常用工具详解">4.2 常用工具详解</h3>
+<h4 id="搜索与检索工具">4.2.1 搜索与检索工具</h4>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>用途</th>
+<th>框架支持</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tavily Search</strong></td>
+<td>AI 优化的网页搜索</td>
+<td>LangChain, LlamaIndex</td>
+</tr>
+<tr>
+<td><strong>SerpAPI</strong></td>
+<td>Google 搜索结果</td>
+<td>LangChain</td>
+</tr>
+<tr>
+<td><strong>DuckDuckGo</strong></td>
+<td>隐私搜索</td>
+<td>LangChain</td>
+</tr>
+<tr>
+<td><strong>Wikipedia</strong></td>
+<td>百科知识检索</td>
+<td>LangChain</td>
+</tr>
+<tr>
+<td><strong>Arxiv</strong></td>
+<td>学术论文搜索</td>
+<td>LangChain</td>
+</tr>
+<tr>
+<td><strong>Retriever</strong></td>
+<td>向量库检索</td>
+<td>LangChain, LlamaIndex</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tavily 搜索示例</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_community.tools.tavily_search <span class="im">import</span> TavilySearchResults</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>search <span class="op">=</span> TavilySearchResults(max_results<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> search.invoke(<span class="st">&quot;LLM Agent 最新进展&quot;</span>)</span></code></pre></div>
+<h4 id="代码执行工具">4.2.2 代码执行工具</h4>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>用途</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Python REPL</strong></td>
+<td>执行 Python 代码</td>
+<td>简单直接</td>
+</tr>
+<tr>
+<td><strong>Shell</strong></td>
+<td>执行系统命令</td>
+<td>功能强大，需注意安全</td>
+</tr>
+<tr>
+<td><strong>E2B Sandbox</strong></td>
+<td>云端安全沙箱</td>
+<td>隔离执行，安全性高</td>
+</tr>
+<tr>
+<td><strong>Code Interpreter</strong></td>
+<td>OpenAI 官方</td>
+<td>集成 GPT，自带沙箱</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Python REPL 工具</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_experimental.tools <span class="im">import</span> PythonREPLTool</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>python_tool <span class="op">=</span> PythonREPLTool()</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> python_tool.invoke(<span class="st">&quot;print(2 + 2)&quot;</span>)</span></code></pre></div>
+<h4 id="文件与文档工具">4.2.3 文件与文档工具</h4>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>用途</th>
+<th>支持格式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FileManagement</strong></td>
+<td>文件读写操作</td>
+<td>所有文本文件</td>
+</tr>
+<tr>
+<td><strong>PDFLoader</strong></td>
+<td>PDF 文档解析</td>
+<td>PDF</td>
+</tr>
+<tr>
+<td><strong>DocxLoader</strong></td>
+<td>Word 文档解析</td>
+<td>DOCX</td>
+</tr>
+<tr>
+<td><strong>CSVLoader</strong></td>
+<td>CSV 数据读取</td>
+<td>CSV</td>
+</tr>
+<tr>
+<td><strong>UnstructuredLoader</strong></td>
+<td>通用文档解析</td>
+<td>多种格式</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 文件工具示例</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.tools <span class="im">import</span> ReadFileTool, WriteFileTool</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>read_tool <span class="op">=</span> ReadFileTool()</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>write_tool <span class="op">=</span> WriteFileTool()</span></code></pre></div>
+<h4 id="数据库工具">4.2.4 数据库工具</h4>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>用途</th>
+<th>支持数据库</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SQLDatabaseToolkit</strong></td>
+<td>SQL 查询</td>
+<td>MySQL, PostgreSQL, SQLite</td>
+</tr>
+<tr>
+<td><strong>Chroma</strong></td>
+<td>向量检索</td>
+<td>Chroma DB</td>
+</tr>
+<tr>
+<td><strong>Pinecone</strong></td>
+<td>向量检索</td>
+<td>Pinecone</td>
+</tr>
+<tr>
+<td><strong>Neo4j</strong></td>
+<td>图数据库查询</td>
+<td>Neo4j</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SQL 工具示例</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_community.utilities <span class="im">import</span> SQLDatabase</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_community.agent_toolkits <span class="im">import</span> SQLDatabaseToolkit</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> SQLDatabase.from_uri(<span class="st">&quot;sqlite:///data.db&quot;</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>toolkit <span class="op">=</span> SQLDatabaseToolkit(db<span class="op">=</span>db, llm<span class="op">=</span>llm)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>tools <span class="op">=</span> toolkit.get_tools()</span></code></pre></div>
+<h4 id="api-与网络工具">4.2.5 API 与网络工具</h4>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>用途</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RequestsWrapper</strong></td>
+<td>HTTP 请求</td>
+<td>调用任意 API</td>
+</tr>
+<tr>
+<td><strong>OpenWeatherMap</strong></td>
+<td>天气查询</td>
+<td>获取天气信息</td>
+</tr>
+<tr>
+<td><strong>Gmail</strong></td>
+<td>邮件操作</td>
+<td>发送/读取邮件</td>
+</tr>
+<tr>
+<td><strong>Slack</strong></td>
+<td>消息发送</td>
+<td>团队通知</td>
+</tr>
+<tr>
+<td><strong>GitHub</strong></td>
+<td>代码仓库操作</td>
+<td>PR、Issue 管理</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># HTTP 请求工具</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_community.utilities <span class="im">import</span> RequestsWrapper</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>requests <span class="op">=</span> RequestsWrapper()</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(<span class="st">&quot;https://api.example.com/data&quot;</span>)</span></code></pre></div>
+<h3 id="自定义工具开发">4.3 自定义工具开发</h3>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.tools <span class="im">import</span> BaseTool, tool</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel, Field</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Type</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 方式一：使用装饰器（简单）</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="at">@tool</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> multiply(a: <span class="bu">int</span>, b: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;将两个数字相乘&quot;&quot;&quot;</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a <span class="op">*</span> b</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 方式二：继承 BaseTool（复杂场景）</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CalculatorInput(BaseModel):</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    expression: <span class="bu">str</span> <span class="op">=</span> Field(description<span class="op">=</span><span class="st">&quot;数学表达式&quot;</span>)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CalculatorTool(BaseTool):</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    name: <span class="bu">str</span> <span class="op">=</span> <span class="st">&quot;calculator&quot;</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    description: <span class="bu">str</span> <span class="op">=</span> <span class="st">&quot;用于计算数学表达式&quot;</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    args_schema: Type[BaseModel] <span class="op">=</span> CalculatorInput</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _run(<span class="va">self</span>, expression: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>            result <span class="op">=</span> <span class="bu">eval</span>(expression)</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="ss">f&quot;计算结果: </span><span class="sc">{</span>result<span class="sc">}</span><span class="ss">&quot;</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="ss">f&quot;计算错误: </span><span class="sc">{</span><span class="bu">str</span>(e)<span class="sc">}</span><span class="ss">&quot;</span></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">async</span> <span class="kw">def</span> _arun(<span class="va">self</span>, expression: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>._run(expression)</span></code></pre></div>
+<h3 id="主流-agent-平台与框架">4.4 主流 Agent 平台与框架</h3>
+<table>
+<thead>
+<tr>
+<th>平台/框架</th>
+<th>特点</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>LangChain</strong></td>
+<td>功能全面，工具丰富</td>
+<td>通用 Agent 开发</td>
+</tr>
+<tr>
+<td><strong>LangGraph</strong></td>
+<td>支持复杂工作流</td>
+<td>多 Agent 协作</td>
+</tr>
+<tr>
+<td><strong>AutoGPT</strong></td>
+<td>自主任务执行</td>
+<td>自动化任务</td>
+</tr>
+<tr>
+<td><strong>CrewAI</strong></td>
+<td>多角色协作</td>
+<td>团队模拟</td>
+</tr>
+<tr>
+<td><strong>MetaGPT</strong></td>
+<td>软件开发流程</td>
+<td>自动编程</td>
+</tr>
+<tr>
+<td><strong>Dify</strong></td>
+<td>低代码平台</td>
+<td>快速原型</td>
+</tr>
+<tr>
+<td><strong>Coze</strong></td>
+<td>字节跳动出品</td>
+<td>Bot 快速搭建</td>
+</tr>
+<tr>
+<td><strong>OpenAI Assistants</strong></td>
+<td>官方 API</td>
+<td>简单集成</td>
+</tr>
+</tbody>
+</table>
+<h3 id="工具选择最佳实践">4.5 工具选择最佳实践</h3>
+<pre><code>工具选择决策树：
 
 需要什么能力？
 ├── 信息获取
@@ -709,26 +900,38 @@ class CalculatorTool(BaseTool):
 │   └── 复杂格式 → Unstructured
 └── 外部交互
     ├── 通用 API → RequestsWrapper
-    └── 特定服务 → 专用工具（Gmail, Slack等）
-```
-
----
-
-## 5. 总结
-
-### 5.1 核心要点回顾
-
-| 主题 | 关键点 |
-|------|--------|
-| **LLM Agent** | 以 LLM 为大脑，具备感知、规划、行动能力的智能系统 |
-| **ReAct 框架** | Thought → Action → Observation 循环，推理与行动交织 |
-| **系统搭建** | 工具定义 → Prompt 设计 → Agent 组装 → 执行器配置 |
-| **工具生态** | 搜索、代码、文件、数据库、API 等多类工具支持 |
-
-### 5.2 学习路径建议
-
-```
-入门 → 进阶 → 精通
+    └── 特定服务 → 专用工具（Gmail, Slack等）</code></pre>
+<hr />
+<h2 id="总结">5. 总结</h2>
+<h3 id="核心要点回顾">5.1 核心要点回顾</h3>
+<table>
+<thead>
+<tr>
+<th>主题</th>
+<th>关键点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>LLM Agent</strong></td>
+<td>以 LLM 为大脑，具备感知、规划、行动能力的智能系统</td>
+</tr>
+<tr>
+<td><strong>ReAct 框架</strong></td>
+<td>Thought → Action → Observation 循环，推理与行动交织</td>
+</tr>
+<tr>
+<td><strong>系统搭建</strong></td>
+<td>工具定义 → Prompt 设计 → Agent 组装 → 执行器配置</td>
+</tr>
+<tr>
+<td><strong>工具生态</strong></td>
+<td>搜索、代码、文件、数据库、API 等多类工具支持</td>
+</tr>
+</tbody>
+</table>
+<h3 id="学习路径建议">5.2 学习路径建议</h3>
+<pre><code>入门 → 进阶 → 精通
 
 1️⃣ 入门阶段
    • 理解 Agent 基本概念
@@ -743,17 +946,22 @@ class CalculatorTool(BaseTool):
 3️⃣ 精通阶段
    • 复杂工作流编排
    • 性能优化与成本控制
-   • 安全与可靠性保障
-```
+   • 安全与可靠性保障</code></pre>
+<h3 id="参考资源">5.3 参考资源</h3>
+<ul>
+<li><a
+href="https://python.langchain.com/docs/modules/agents/">LangChain Agent
+文档</a></li>
+<li><a href="https://arxiv.org/abs/2210.03629">ReAct 论文</a></li>
+<li><a
+href="https://platform.openai.com/docs/guides/function-calling">OpenAI
+Function Calling</a></li>
+<li><a href="https://langchain-ai.github.io/langgraph/">LangGraph
+教程</a></li>
+<li><a href="https://github.com/Significant-Gravitas/AutoGPT">AutoGPT
+项目</a></li>
+</ul>
 
-### 5.3 参考资源
-
-- [LangChain Agent 文档](https://python.langchain.com/docs/modules/agents/)
-- [ReAct 论文](https://arxiv.org/abs/2210.03629)
-- [OpenAI Function Calling](https://platform.openai.com/docs/guides/function-calling)
-- [LangGraph 教程](https://langchain-ai.github.io/langgraph/)
-- [AutoGPT 项目](https://github.com/Significant-Gravitas/AutoGPT)
-</pre>
                 </article>
             </div>
         </section>

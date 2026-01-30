@@ -65,8 +65,8 @@
         "@type": "Person",
         "name": "Ken Wang"
       },
-      "datePublished": "2026-01-24T22:54:41.194660",
-      "dateModified": "2026-01-24T22:54:41.194660",
+      "datePublished": "2026-01-29T20:26:18.622678",
+      "dateModified": "2026-01-29T20:26:18.622678",
       "inLanguage": "zh-CN"
     }
     </script>
@@ -110,44 +110,41 @@
             <div class="content-wrapper">
                 <article class="markdown-content">
                     <div id="directory-page" data-dir-id="1744c5c25a1f"></div>
-<h1>🏗️ 架构随笔</h1>
-                    <p>记录架构设计相关的学习与思考。</p>
-                    
-                    <h2>文章列表</h2>
-                    
-                    <h3>手动方式（推荐，简单可靠）</h3>
-                    <ul>
-                        <li><a href="/dist/p/post-99d4eddda91e.html">Python-learning</a></li>
-                    </ul>
-                    
-                    <h3>自动生成方式（Jekyll 环境下）</h3>
-                    
-                    <p>要在 Jekyll 中自动生成目录下的文件列表，可以使用以下 Liquid 模板语法：</p>
-                    
-                    <pre><code>{% assign current_dir = page.dir %}
-{% assign files = site.pages | where_exp: "p", "p.dir == current_dir" %}
+
+<h1 id="架构随笔">🏗️ 架构随笔</h1>
+<p>记录架构设计相关的学习与思考。</p>
+<h2 id="文章列表">文章列表</h2>
+<h3 id="手动方式推荐简单可靠">手动方式（推荐，简单可靠）</h3>
+<ul>
+<li><a href="/dist/p/post-99d4eddda91e.html">Python-learning</a></li>
+</ul>
+<h3 id="自动生成方式jekyll-环境下">自动生成方式（Jekyll 环境下）</h3>
+<p>要在 Jekyll 中自动生成目录下的文件列表，可以使用以下 Liquid
+模板语法：</p>
+<pre class="liquid"><code>{% assign current_dir = page.dir %}
+{% assign files = site.pages | where_exp: &quot;p&quot;, &quot;p.dir == current_dir&quot; %}
 {% for file in files %}
-{% if file.name != "index.md" %}
-- [{{ file.title | default: file.name | remove: ".md" }}]({{ file.name }})
+{% if file.name != &quot;index.md&quot; %}
+- [{{ file.title | default: file.name | remove: &quot;.md&quot; }}]({{ file.name }})
 {% endif %}
 {% endfor %}</code></pre>
-                    
-                    <p>将上述代码添加到 index.md 文件中，Jekyll 会在构建时自动生成目录下的所有 Markdown 文件列表。</p>
-                    
-                    <h3>工作原理</h3>
-                    <ol>
-                        <li><code>page.dir</code> 获取当前页面所在目录</li>
-                        <li><code>site.pages</code> 包含所有 Jekyll 生成的页面</li>
-                        <li><code>where_exp</code> 过滤出当前目录下的所有页面</li>
-                        <li>遍历所有页面，排除 index.md 文件，生成链接列表</li>
-                    </ol>
-                    
-                    <h3>注意事项</h3>
-                    <ul>
-                        <li>只有在 Jekyll 环境下（如 GitHub Pages）才会自动生成</li>
-                        <li>本地直接打开文件不会显示自动生成的列表</li>
-                        <li>每个 Markdown 文件的前置元数据中的 <code>title</code> 会作为链接文本，否则使用文件名</li>
-                    </ul>
+<p>将上述代码添加到 index.md 文件中，Jekyll
+会在构建时自动生成目录下的所有 Markdown 文件列表。</p>
+<h3 id="工作原理">工作原理</h3>
+<ol type="1">
+<li><code>page.dir</code> 获取当前页面所在目录</li>
+<li><code>site.pages</code> 包含所有 Jekyll 生成的页面</li>
+<li><code>where_exp</code> 过滤出当前目录下的所有页面</li>
+<li>遍历所有页面，排除 index.md 文件，生成链接列表</li>
+</ol>
+<h3 id="注意事项">注意事项</h3>
+<ul>
+<li>只有在 Jekyll 环境下（如 GitHub Pages）才会自动生成</li>
+<li>本地直接打开文件不会显示自动生成的列表</li>
+<li>每个 Markdown 文件的前置元数据中的 <code>title</code>
+会作为链接文本，否则使用文件名</li>
+</ul>
+
                 </article>
             </div>
         </section>

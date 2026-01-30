@@ -173,8 +173,8 @@
       "url": "dist/p/post-bdc928dcc6fb.html",
       "original_path": "notes/AI相关/Tools/Ollama/OpenwebUI/how-cursor-help-software-delivery.html",
       "keywords": [
-        "Cursor",
         "AI",
+        "Cursor",
         "驱动的代码编辑器"
       ]
     },
@@ -189,6 +189,19 @@
         "WebUI",
         "Web",
         "什么是"
+      ]
+    },
+    {
+      "title": "如何使用HybridCache来解决缓存问题",
+      "id": "3524e8d458de",
+      "slug": null,
+      "url": "dist/p/3524e8d458de.html",
+      "original_path": "notes/软件设计/Cache/How-to-use-HybridCache.html",
+      "keywords": [
+        "HybridCache来解决缓存问题",
+        "HybridCache",
+        "如何使用",
+        "来解决缓存问题"
       ]
     },
     {
@@ -427,5 +440,5 @@
       "subdirs": []
     }
   ],
-  "generated_at": 1769697657.550963
+  "generated_at": 1769782858.131889
 }
