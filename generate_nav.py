@@ -1,393 +1,94 @@
 #!/usr/bin/env python3
-"""
-导航数据自动生成脚本
-用于扫描notes目录结构，生成导航菜单和博客文章数据
-同时将Markdown文件转换为HTML格式，生成sitemap.xml和RSS feed
-"""
+"""导航数据自动生成脚本（基于 site_builder 模块化管道）。"""
 
-import os
-import json
-import re
-import subprocess
 import argparse
+import json
 import logging
-from pathlib import Path
-from typing import Dict, List, Tuple, Optional, Set
 from datetime import datetime
-import hashlib
-import xml.etree.ElementTree as ET
-from xml.dom import minidom
+from typing import Any, Dict
 
-# ====== 配置 ======
-class Config:
-    """配置类"""
-    # 项目根目录
-    ROOT_DIR = Path(__file__).parent
-    # Notes目录
-    NOTES_DIR = ROOT_DIR / "notes"
-    # HTML模板文件
-    TEMPLATE_FILE = ROOT_DIR / "template.html"
-    # 输出JSON文件
-    OUTPUT_FILE = ROOT_DIR / "nav_data.json"
-    # Sitemap输出文件
-    SITEMAP_FILE = ROOT_DIR / "sitemap.xml"
-    # RSS Feed输出文件
-    RSS_FILE = ROOT_DIR / "rss.xml"
+from site_builder import config
+from site_builder.feeds import generate_rss_feed, generate_sitemap
+from site_builder.renderers import generate_directory_page
+from site_builder.scanner import collect_markdown_posts, scan_notes_structure, slug_report
 
-    # New ASCII-only output roots (under dist/ for cleaner separation)
-    DIST_DIR = ROOT_DIR / "dist"
-    POSTS_OUT_DIR = DIST_DIR / "p"
-    CATEGORIES_OUT_DIR = DIST_DIR / "c"
-    
-    # 网站配置
-    SITE_URL = "https://kenwang007.github.io"
-    SITE_NAME = "Ken的知识库"
-    SITE_DESCRIPTION = "记录AI学习、架构设计、编程技术和读书心得的个人知识库"
-    AUTHOR_NAME = "Ken Wang"
-    AUTHOR_EMAIL = "ken@example.com"
-    
-    # 关键词提取配置
-    MAX_KEYWORDS_PER_POST = 5
-    MIN_KEYWORD_LENGTH = 2
-    
-    # 核心主题词（这些词如果出现，应该优先作为关键词）
-    CORE_TOPICS = {
-        'RAG', '检索增强生成', 'LLM', '大语言模型', '向量数据库',
-        'AI', 'Python', 'JavaScript', 'TypeScript', '架构', '设计模式',
-        '微服务', 'Docker', 'Kubernetes', '数据库', 'Redis', 'MongoDB',
-        '算法', '数据结构', '机器学习', '深度学习', 'NLP', 'Ollama',
-        'OpenWebUI', 'Cursor', 'Prompt', 'Fine-tuning', '提示工程'
-    }
-    
-    # 要移除的修饰词
-    MODIFIER_WORDS = {
-        '全面', '详细', '深入', '最新', '完整', '简明', '快速', 
-        '实战', '入门', '进阶', '高级', '基础', '初级', '中级',
-        '介绍', '教程', '指南', '学习', '技术'
-    }
-    
-    # 停用词（在关键词提取时忽略）
-    STOP_WORDS = {
-        '的', '了', '和', '是', '在', '与', '或', '等', '及',
-        '这', '那', '其', '此', '为', '有', '将', '可', '能',
-        'How', 'What', 'When', 'Where', 'Why', 'to', 'is', 'in',
-        'the', 'a', 'an', 'and', 'or', 'but', 'of', 'at', 'by'
-    }
 
-# ====== 日志配置 ======
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S'
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
 )
 logger = logging.getLogger(__name__)
 
-_PANDOC_AVAILABLE: Optional[bool] = None
 
-def pandoc_available() -> bool:
-    global _PANDOC_AVAILABLE
-    if _PANDOC_AVAILABLE is not None:
-        return _PANDOC_AVAILABLE
-    try:
-        subprocess.run(['pandoc', '--version'], capture_output=True, check=True)
-        _PANDOC_AVAILABLE = True
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        _PANDOC_AVAILABLE = False
-    return _PANDOC_AVAILABLE
+def build_site(args: argparse.Namespace) -> Dict[str, Any]:
+    md_files = collect_markdown_posts()
+    if args.slugs_report:
+        raise SystemExit(slug_report(md_files))
 
-def extract_markdown_content_from_legacy_html(legacy_html_path: Path) -> str:
-    """
-    Extract the inner HTML of <article class="markdown-content">...</article> from an existing legacy HTML page.
-    Falls back to <body> content if not found.
-    """
-    try:
-        with open(legacy_html_path, 'r', encoding='utf-8') as f:
-            html = f.read()
-        article_match = re.search(
-            r'<article[^>]*class="[^"]*markdown-content[^"]*"[^>]*>([\s\S]*?)</article>',
-            html,
-            re.IGNORECASE
-        )
-        if article_match:
-            return article_match.group(1).strip()
-        body_match = re.search(r'<body[^>]*>([\s\S]*?)</body>', html, re.IGNORECASE)
-        if body_match:
-            return body_match.group(1).strip()
-        return html
-    except Exception:
-        return ""
+    scan_result = scan_notes_structure(md_files)
 
-def stable_id(text: str, length: int = 12) -> str:
-    """Create a stable ASCII id from an arbitrary unicode string."""
-    h = hashlib.sha1(text.encode("utf-8")).hexdigest()
-    return h[:length]
+    dir_pages_ok = 0
+    for directory in scan_result.flat_directories:
+        if generate_directory_page(directory, scan_result.legacy_to_new):
+            dir_pages_ok += 1
+    logger.info("目录页生成完成: %s/%s", dir_pages_ok, len(scan_result.flat_directories))
 
-_FRONT_MATTER_RE = re.compile(r'^\s*---\s*\n([\s\S]*?)\n---\s*\n', re.MULTILINE)
+    nav_data = {
+        "nav_menu": scan_result.nav_menu,
+        "blog_posts": scan_result.blog_posts,
+        "directory_structure": scan_result.directory_structure,
+        "generated_at": datetime.now().timestamp(),
+    }
+    config.OUTPUT_FILE.write_text(json.dumps(nav_data, ensure_ascii=False, indent=2), encoding="utf-8")
+    logger.info("✅ 导航数据已保存: %s", config.OUTPUT_FILE)
 
-def parse_front_matter(md_text: str) -> Tuple[Dict[str, str], str]:
-    """
-    Very small YAML front-matter parser.
-    Supports top-of-file:
-      ---
-      key: value
-      ---
-    Returns (meta, content_without_front_matter).
-    """
-    m = _FRONT_MATTER_RE.match(md_text)
-    if not m:
-        return {}, md_text
+    if not args.no_sitemap:
+        generate_sitemap(scan_result.blog_posts)
+    if not args.no_rss:
+        generate_rss_feed(scan_result.blog_posts)
 
-    raw = m.group(1)
-    meta: Dict[str, str] = {}
-    for line in raw.splitlines():
-        line = line.strip()
-        if not line or line.startswith('#'):
-            continue
-        if ':' not in line:
-            continue
-        k, v = line.split(':', 1)
-        k = k.strip()
-        v = v.strip().strip('"').strip("'")
-        if k:
-            meta[k] = v
-    return meta, md_text[m.end():]
-
-def validate_slug(slug: str) -> str:
-    slug = (slug or '').strip()
-    if not slug:
-        raise ValueError("slug is empty")
-    if not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*', slug):
-        raise ValueError(f"invalid slug: {slug} (allowed: a-z0-9 and '-')")
-    return slug
+    return nav_data
 
 
-def slug_report(md_files: List[Path]) -> int:
-    """
-    Print a report of post/directory slugs:
-    - missing slug
-    - invalid slug
-    - duplicate slug
-    Returns process exit code (0 if OK, 1 if issues found).
-    """
-    missing_posts: List[Tuple[str, str]] = []   # (rel_md, suggested_slug)
-    invalid_posts: List[Tuple[str, str]] = []   # (rel_md, slug)
-    dup_posts: Dict[str, List[str]] = {}        # slug -> [rel_md]
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="导航数据自动生成工具")
+    parser.add_argument("--no-sitemap", action="store_true", help="不生成sitemap.xml")
+    parser.add_argument("--no-rss", action="store_true", help="不生成RSS feed")
+    parser.add_argument("--verbose", "-v", action="store_true", help="详细输出模式")
+    parser.add_argument("--slugs-report", action="store_true", help="输出 slug 检查报告（缺失/非法/重复）并退出")
+    return parser.parse_args()
 
-    missing_dirs: List[Tuple[str, str]] = []    # (rel_dir_index_md, suggested_slug)
-    invalid_dirs: List[Tuple[str, str]] = []    # (rel_dir_index_md, slug)
-    dup_dirs: Dict[str, List[str]] = {}         # slug -> [rel_dir_index_md]
 
-    seen_post: Dict[str, List[str]] = {}
-    seen_dir: Dict[str, List[str]] = {}
+def main() -> int:
+    args = parse_args()
+    if args.verbose:
+        logger.setLevel(logging.DEBUG)
 
-    # Posts
-    for md in md_files:
-        rel_md = str(md.relative_to(Config.ROOT_DIR))
-        text = md.read_text(encoding='utf-8')
-        meta, _ = parse_front_matter(text)
-        slug = meta.get('slug')
-        if not slug:
-            missing_posts.append((rel_md, f"post-{stable_id(rel_md)}"))
-            continue
-        try:
-            slug = validate_slug(slug)
-            seen_post.setdefault(slug, []).append(rel_md)
-        except Exception:
-            invalid_posts.append((rel_md, slug))
+    print("=== 导航数据自动生成工具 ===")
+    print(f"开始时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
 
-    for slug, files in seen_post.items():
-        if len(files) > 1:
-            dup_posts[slug] = files
+    nav_data = build_site(args)
 
-    # Directories (index.md only)
-    for root, _, files in os.walk(Config.NOTES_DIR):
-        if "index.md" not in files:
-            continue
-        idx = Path(root) / "index.md"
-        rel_idx = str(idx.relative_to(Config.ROOT_DIR))
-        text = idx.read_text(encoding='utf-8')
-        meta, _ = parse_front_matter(text)
-        slug = meta.get('slug')
-        if not slug:
-            # Suggest a stable placeholder based on directory path
-            rel_dir = str(Path(root).relative_to(Config.ROOT_DIR))
-            missing_dirs.append((rel_idx, f"cat-{stable_id(rel_dir)}"))
-            continue
-        try:
-            slug = validate_slug(slug)
-            seen_dir.setdefault(slug, []).append(rel_idx)
-        except Exception:
-            invalid_dirs.append((rel_idx, slug))
+    print("\n" + "=" * 50)
+    print("生成完成！")
+    print("=" * 50)
+    print(f"📁 导航菜单数量: {len(nav_data['nav_menu'])}")
+    print(f"📝 博客文章数量: {len(nav_data['blog_posts'])}")
+    print(f"🗂️  目录结构数量: {len(nav_data['directory_structure'])}")
+    print("\n输出文件:")
+    print(f"  • {config.OUTPUT_FILE}")
+    if not args.no_sitemap:
+        print(f"  • {config.SITEMAP_FILE}")
+    if not args.no_rss:
+        print(f"  • {config.RSS_FILE}")
+    print(f"\n完成时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
-    for slug, files in seen_dir.items():
-        if len(files) > 1:
-            dup_dirs[slug] = files
+    return 0
 
-    issues = (
-        len(missing_posts) + len(invalid_posts) + len(dup_posts) +
-        len(missing_dirs) + len(invalid_dirs) + len(dup_dirs)
-    )
 
-    print("=== Slug Report ===")
-    print(f"Posts scanned: {len(md_files)}")
-    print()
-
-    if missing_posts:
-        print(f"[Posts missing slug] {len(missing_posts)}")
-        for rel_md, sug in missing_posts:
-            print(f"  - {rel_md}")
-            print(f"    suggested: slug: {sug}")
-        print()
-
-    if invalid_posts:
-        print(f"[Posts invalid slug] {len(invalid_posts)}")
-        for rel_md, bad in invalid_posts:
-            print(f"  - {rel_md}")
-            print(f"    found: slug: {bad}")
-            print("    rule: a-z 0-9 and '-' only (lowercase)")
-        print()
-
-    if dup_posts:
-        print(f"[Posts duplicate slug] {len(dup_posts)}")
-        for slug, files in dup_posts.items():
-            print(f"  - slug: {slug}")
-            for f in files:
-                print(f"    * {f}")
-        print()
-
-    if missing_dirs:
-        print(f"[Dirs missing slug] {len(missing_dirs)} (optional)")
-        for rel_idx, sug in missing_dirs:
-            print(f"  - {rel_idx}")
-            print(f"    suggested: slug: {sug}")
-        print()
-
-    if invalid_dirs:
-        print(f"[Dirs invalid slug] {len(invalid_dirs)}")
-        for rel_idx, bad in invalid_dirs:
-            print(f"  - {rel_idx}")
-            print(f"    found: slug: {bad}")
-            print("    rule: a-z 0-9 and '-' only (lowercase)")
-        print()
-
-    if dup_dirs:
-        print(f"[Dirs duplicate slug] {len(dup_dirs)}")
-        for slug, files in dup_dirs.items():
-            print(f"  - slug: {slug}")
-            for f in files:
-                print(f"    * {f}")
-        print()
-
-    if issues == 0:
-        print("✅ No slug issues found.")
-        return 0
-
-    print(f"❌ Found {issues} issue(s).")
-    return 1
-
-def collect_markdown_posts() -> List[Path]:
-    """Collect all markdown posts under notes/ excluding index.md."""
-    md_files: List[Path] = []
-    for root, _, files in os.walk(Config.NOTES_DIR):
-        for file in files:
-            if not file.endswith(".md"):
-                continue
-            if file == "index.md":
-                continue
-            md_files.append(Path(root) / file)
-    return sorted(md_files)
-
-def build_directory_structure_from_md(md_files: List[Path]) -> List[Dict]:
-    """
-    Build directory structure tree (only directories that contain posts or index.md or have subdirs with posts).
-    Each node has: {name, path(original), id, url, has_posts, subdirs[]}
-    """
-    # Build a set of directories that should exist as nodes
-    dir_set: Set[Path] = set()
-    for md in md_files:
-        dir_set.add(md.parent)
-        # include all parents up to notes
-        p = md.parent
-        while p != Config.NOTES_DIR and Config.NOTES_DIR in p.parents:
-            p = p.parent
-            dir_set.add(p)
-
-    # also include directories that have index.md
-    for root, dirs, files in os.walk(Config.NOTES_DIR):
-        if "index.md" in files:
-            dir_set.add(Path(root))
-
-    # directory slug mapping from index.md front matter (manual)
-    dir_slug_by_rel: Dict[str, str] = {}
-    used_dir_slugs: Set[str] = set()
-    for d in list(dir_set):
-        index_md = d / "index.md"
-        if not index_md.exists():
-            continue
-        try:
-            text = index_md.read_text(encoding='utf-8')
-            meta, _ = parse_front_matter(text)
-            if meta.get('slug'):
-                slug = validate_slug(meta['slug'])
-                if slug in used_dir_slugs:
-                    raise ValueError(f"duplicate directory slug: {slug}")
-                used_dir_slugs.add(slug)
-                rel_dir = str(d.relative_to(Config.ROOT_DIR))
-                dir_slug_by_rel[rel_dir] = slug
-        except Exception as e:
-            logger.warning(f"目录 slug 解析失败 {index_md}: {e}")
-
-    def node_for_dir(dir_path: Path) -> Dict:
-        rel_dir = str(dir_path.relative_to(Config.ROOT_DIR))
-        dir_id = stable_id(rel_dir)
-        slug = dir_slug_by_rel.get(rel_dir)
-        url = f"dist/c/{slug}/index.html" if slug else f"dist/c/{dir_id}/index.html"
-        name = dir_path.name
-        has_posts = any((p.parent == dir_path) for p in md_files) or (dir_path / "index.md").exists()
-        return {
-            "name": name,
-            "path": rel_dir,
-            "id": dir_id,
-            "slug": slug,
-            "url": url,
-            "has_posts": has_posts,
-            "subdirs": []
-        }
-
-    # Build tree under notes
-    def build_children(parent: Path) -> List[Dict]:
-        children = []
-        for child in sorted(parent.iterdir()):
-            if not child.is_dir():
-                continue
-            if child not in dir_set:
-                # But keep if it has any descendant in dir_set
-                if not any((d != child and child in d.parents) for d in dir_set):
-                    continue
-            child_node = node_for_dir(child)
-            child_node["subdirs"] = build_children(child)
-            # Include node if it has posts or any included subdirs
-            if child_node["has_posts"] or child_node["subdirs"]:
-                children.append(child_node)
-        return children
-
-    roots = []
-    for top in sorted(Config.NOTES_DIR.iterdir()):
-        if not top.is_dir():
-            continue
-        if top not in dir_set and not any((d != top and top in d.parents) for d in dir_set):
-            continue
-        top_node = node_for_dir(top)
-        top_node["subdirs"] = build_children(top)
-        if top_node["has_posts"] or top_node["subdirs"]:
-            roots.append(top_node)
-    return roots
-
-def flatten_directories(dirs: List[Dict]) -> List[Dict]:
-    """Flatten directory tree into a list."""
-    out: List[Dict] = []
-    def walk(nodes: List[Dict]):
-        for n in nodes:
+if __name__ == "__main__":
+    raise SystemExit(main())
             out.append(n)
             walk(n.get("subdirs", []))
     walk(dirs)
@@ -396,101 +97,6 @@ def flatten_directories(dirs: List[Dict]) -> List[Dict]:
 
 def scan_notes_directory() -> Tuple[List[Dict], List[Dict], List[Dict]]:
     """
-    扫描 notes 目录结构（ASCII-only URL 输出）
-
-    Returns:
-        nav_menu: 顶层导航（使用 /c/<id>/index.html）
-        blog_posts: 文章列表（使用 /p/<id>.html）
-        directory_structure: 目录树（每个节点包含 id/url/path/subdirs）
-    """
-    logger.info("开始扫描notes目录（ASCII-only URL）...")
-
-    if not Config.NOTES_DIR.exists():
-        logger.warning(f"Notes目录不存在: {Config.NOTES_DIR}")
-        return [], [], []
-
-    md_files = collect_markdown_posts()
-    logger.info(f"找到 Markdown 文章: {len(md_files)}")
-
-    # Build directory structure from Markdown sources
-    directory_structure = build_directory_structure_from_md(md_files)
-    flat_dirs = flatten_directories(directory_structure)
-
-    # Top nav uses top-level nodes
-    nav_menu = [
-        {"name": d["name"], "id": d["id"], "url": d["url"], "path": d["path"]}
-        for d in directory_structure
-    ]
-
-    # Build post records and legacy->new url map (for link rewriting)
-    blog_posts: List[Dict] = []
-    legacy_to_new: Dict[str, str] = {}
-    used_post_slugs: Set[str] = set()
-
-    for md in md_files:
-        rel_md = str(md.relative_to(Config.ROOT_DIR))
-        # original html path (legacy)
-        rel_html_legacy = str(md.with_suffix(".html").relative_to(Config.ROOT_DIR))
-        post_id = stable_id(rel_md)
-
-        # Read markdown to support manual slug/title in front matter
-        md_text = md.read_text(encoding='utf-8')
-        meta, md_text_wo_fm = parse_front_matter(md_text)
-        manual_slug = None
-        if meta.get('slug'):
-            manual_slug = validate_slug(meta['slug'])
-            if manual_slug in used_post_slugs:
-                raise ValueError(f"duplicate post slug: {manual_slug}")
-            used_post_slugs.add(manual_slug)
-
-        post_url = f"dist/p/{manual_slug}.html" if manual_slug else f"dist/p/{post_id}.html"
-
-        # Title / keywords (prefer front matter title if provided)
-        title, keywords = extract_metadata(md)
-        if meta.get('title'):
-            title = meta['title']
-
-        blog_posts.append({
-            "title": title or md.stem,
-            "id": post_id,
-            "slug": manual_slug,
-            "url": post_url,
-            "original_path": rel_html_legacy,
-            "keywords": keywords
-        })
-
-        # map both md/html legacy references to new url
-        legacy_to_new[rel_html_legacy] = post_url
-        legacy_to_new["/" + rel_html_legacy] = post_url
-        legacy_to_new[rel_md] = post_url
-        legacy_to_new["/" + rel_md] = post_url
-
-    # Directory legacy index mapping (notes/.../index.html -> /c/<id>/index.html)
-    for d in flat_dirs:
-        legacy_index = f"{d['path']}/index.html"
-        legacy_to_new[legacy_index] = d["url"]
-        legacy_to_new["/" + legacy_index] = d["url"]
-
-    # Build helper: md -> post record
-    id_to_post = {p["id"]: p for p in blog_posts}
-    md_to_post: Dict[str, Dict] = {}
-    for md in md_files:
-        rel_md = str(md.relative_to(Config.ROOT_DIR))
-        pid = stable_id(rel_md)
-        md_to_post[rel_md] = id_to_post.get(pid)
-
-    converted_ok = 0
-    for md in md_files:
-        rel_md = str(md.relative_to(Config.ROOT_DIR))
-        post = md_to_post.get(rel_md)
-        if not post:
-            continue
-        out_path = Config.ROOT_DIR / post["url"]
-        try:
-            if convert_markdown_to_html(md, out_path, legacy_to_new):
-                converted_ok += 1
-        except Exception as e:
-            logger.error(f"转换失败: {md} - {e}")
 
     logger.info(f"文章页生成完成: {converted_ok}/{len(md_files)}")
 
@@ -500,131 +106,8 @@ def scan_notes_directory() -> Tuple[List[Dict], List[Dict], List[Dict]]:
     for d in flat_dirs:
         try:
             if generate_directory_page(d, legacy_to_new):
-                dir_pages_ok += 1
-        except Exception as e:
-            logger.error(f"目录页生成失败 {d.get('path')}: {e}")
-    logger.info(f"目录页生成完成: {dir_pages_ok}/{len(flat_dirs)}")
-
-    logger.info(f"扫描完成: 导航 {len(nav_menu)}，文章 {len(blog_posts)}，目录节点 {len(flat_dirs)}")
-    return nav_menu, blog_posts, directory_structure
-
-def convert_all_markdown_files() -> None:
-    """转换所有Markdown文件为HTML"""
-    converted_count = 0
-    failed_count = 0
-    
-    for root, _, files in os.walk(Config.NOTES_DIR):
-        for file in files:
-            if file.endswith('.md') and file != 'index.md':
-                md_file_path = Path(root) / file
-                try:
-                    if convert_markdown_to_html(md_file_path):
-                        converted_count += 1
-                except Exception as e:
-                    logger.error(f"转换失败: {md_file_path} - {e}")
-                    failed_count += 1
-    
     logger.info(f"转换完成: {converted_count} 个成功, {failed_count} 个失败")
 
-
-def check_directory_has_html(directory: Path) -> bool:
-    """
-    检查目录下是否有.html文件（包括子目录）
-    
-    Args:
-        directory: 目录路径
-        
-    Returns:
-        bool: 是否包含HTML文件
-    """
-    try:
-        for root, _, files in os.walk(directory):
-            for file in files:
-                if file.endswith(".html"):
-                    return True
-    except (PermissionError, OSError) as e:
-        logger.warning(f"无法访问目录 {directory}: {e}")
-    
-    return False
-
-
-def scan_directory_structure(directory: Path) -> List[Dict]:
-    """
-    扫描目录结构，返回子目录列表（递归）
-    
-    Args:
-        directory: 目录路径
-        
-    Returns:
-        List[Dict]: 子目录列表
-    """
-    subdirs = []
-    
-    try:
-        for item in sorted(directory.iterdir()):
-            if not item.is_dir():
-                continue
-                
-            dir_rel_path = str(item.relative_to(Config.ROOT_DIR))
-            has_html = check_directory_has_html(item)
-            subdirs_structure = scan_directory_structure(item)
-            
-            # 只有当目录本身有.html文件或有包含.html文件的子目录时才添加
-            if has_html or subdirs_structure:
-                subdirs.append({
-                    "path": dir_rel_path,
-                    "has_html": has_html,
-                    "subdirs": subdirs_structure
-                })
-    except (PermissionError, OSError) as e:
-        logger.warning(f"无法扫描目录 {directory}: {e}")
-    
-    return subdirs
-
-
-def scan_blog_posts(directory: Path, blog_posts: List[Dict]) -> None:
-    """
-    扫描目录下的博客文章
-    
-    Args:
-        directory: 目录路径
-        blog_posts: 博客文章列表（会被修改）
-    """
-    processed_files = set()
-    
-    try:
-        for root, _, files in os.walk(directory):
-            for file in files:
-                # 只处理.html文件，跳过index.html
-                if not file.endswith('.html') or file.lower() == "index.html":
-                    continue
-                
-                file_path = Path(root) / file
-                file_rel_path = str(file_path.relative_to(Config.ROOT_DIR))
-                
-                # 确保每个.html文件只处理一次
-                if file_rel_path in processed_files:
-                    continue
-                
-                try:
-                    # 提取标题和关键词
-                    title, keywords = extract_metadata(file_path)
-                    
-                    # 添加到博客文章数据
-                    blog_posts.append({
-                        "title": title or file_path.stem,
-                        "path": file_rel_path,
-                        "keywords": keywords
-                    })
-                    
-                    processed_files.add(file_rel_path)
-                except Exception as e:
-                    logger.warning(f"处理文章失败 {file_path}: {e}")
-    except (PermissionError, OSError) as e:
-        logger.error(f"扫描目录失败 {directory}: {e}")
-
-
-def extract_metadata(file_path: Path) -> Tuple[Optional[str], List[str]]:
     """
     从文件中提取标题和关键词
     
