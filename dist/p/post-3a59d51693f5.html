@@ -29,6 +29,10 @@
     <link rel="canonical" href="https://kenwang007.github.io/dist/p/post-3a59d51693f5.html">
     <link rel="manifest" href="/manifest.json">
     
+    <!-- Highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
     <!-- RSS Feed -->
     <link rel="alternate" type="application/rss+xml" title="Ken的知识库 RSS Feed" href="/rss.xml">
     
@@ -358,5 +362,15 @@ id="六在工作与生活中的例子对照理解更具体一点">六、在工�
 
     <!-- JavaScript -->
     <script type="module" src="/script.js?v=2.2.0"></script>
+    
+    <!-- Initialize Highlight.js -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Highlight all code blocks
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        });
+    </script>
 </body>
 </html>

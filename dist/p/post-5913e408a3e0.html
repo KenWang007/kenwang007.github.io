@@ -29,6 +29,10 @@
     <link rel="canonical" href="https://kenwang007.github.io/dist/p/post-5913e408a3e0.html">
     <link rel="manifest" href="/manifest.json">
     
+    <!-- Highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
     <!-- RSS Feed -->
     <link rel="alternate" type="application/rss+xml" title="Ken的知识库 RSS Feed" href="/rss.xml">
     
@@ -279,8 +283,7 @@ Database）中</li>
 </table>
 <h3 id="常见实现方案">6.2 常见实现方案</h3>
 <h4 id="基于langchain的rag">6.2.1 基于LangChain的RAG</h4>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.embeddings <span class="im">import</span> OpenAIEmbeddings</span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.embeddings <span class="im">import</span> OpenAIEmbeddings</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.vectorstores <span class="im">import</span> Chroma</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.chains <span class="im">import</span> RetrievalQA</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.llms <span class="im">import</span> OpenAI</span>
@@ -310,8 +313,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a hr
 <span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> qa.run(<span class="st">&quot;什么是RAG？&quot;</span>)</span>
 <span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result)</span></code></pre></div>
 <h4 id="基于llamaindex的rag">6.2.2 基于LlamaIndex的RAG</h4>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> llama_index <span class="im">import</span> VectorStoreIndex, SimpleDirectoryReader</span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> llama_index <span class="im">import</span> VectorStoreIndex, SimpleDirectoryReader</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 加载文档</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>documents <span class="op">=</span> SimpleDirectoryReader(<span class="st">&quot;./docs&quot;</span>).load_data()</span>
@@ -402,5 +404,15 @@ Embeddings</a></li>
 
     <!-- JavaScript -->
     <script type="module" src="/script.js?v=2.2.0"></script>
+    
+    <!-- Initialize Highlight.js -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Highlight all code blocks
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        });
+    </script>
 </body>
 </html>

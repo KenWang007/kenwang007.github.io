@@ -29,6 +29,10 @@
     <link rel="canonical" href="https://kenwang007.github.io/dist/p/what-is-agent.html">
     <link rel="manifest" href="/manifest.json">
     
+    <!-- Highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
     <!-- RSS Feed -->
     <link rel="alternate" type="application/rss+xml" title="Ken的知识库 RSS Feed" href="/rss.xml">
     
@@ -228,8 +232,7 @@
 └─────────────────────────────────────────────────────────┘</code></pre>
 <h3 id="典型应用场景">2.2 典型应用场景</h3>
 <h4 id="场景一智能客服">场景一：智能客服</h4>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 智能客服 Agent 工作流</span></span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 智能客服 Agent 工作流</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>customer_service_agent <span class="op">=</span> {</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;输入&quot;</span>: <span class="st">&quot;用户问题&quot;</span>,</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;流程&quot;</span>: [</span>
@@ -289,8 +292,7 @@ Agent 执行流程:
 </tbody>
 </table>
 <h4 id="场景四自动化运维">场景四：自动化运维</h4>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DevOps Agent 示例能力</span></span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DevOps Agent 示例能力</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>devops_agent_capabilities <span class="op">=</span> {</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;监控告警&quot;</span>: <span class="st">&quot;分析日志，识别异常，自动告警&quot;</span>,</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;故障诊断&quot;</span>: <span class="st">&quot;根据症状定位问题根因&quot;</span>,</span>
@@ -576,8 +578,7 @@ LLM 提供:                    Agent 增强:
 </tbody>
 </table>
 <h3 id="框架选型指南">4.3 框架选型指南</h3>
-<div class="sourceCode" id="cb12"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 框架选择决策</span></span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 框架选择决策</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> choose_framework(requirements):</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> requirements[<span class="st">&quot;快速原型验证&quot;</span>]:</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&quot;Dify 或 Coze&quot;</span></span>
@@ -605,8 +606,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a h
 <span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">&quot;LangChain&quot;</span>  <span class="co"># 默认选择</span></span></code></pre></div>
 <h3 id="代码示例对比">4.4 代码示例对比</h3>
 <h4 id="langchain-agent">LangChain Agent</h4>
-<div class="sourceCode" id="cb13"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.agents <span class="im">import</span> AgentExecutor, create_openai_tools_agent</span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.agents <span class="im">import</span> AgentExecutor, create_openai_tools_agent</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_openai <span class="im">import</span> ChatOpenAI</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.tools <span class="im">import</span> tool</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_core.prompts <span class="im">import</span> ChatPromptTemplate, MessagesPlaceholder</span>
@@ -629,8 +629,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a h
 <span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>executor <span class="op">=</span> AgentExecutor(agent<span class="op">=</span>agent, tools<span class="op">=</span>tools)</span>
 <span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> executor.invoke({<span class="st">&quot;input&quot;</span>: <span class="st">&quot;搜索今天的新闻&quot;</span>})</span></code></pre></div>
 <h4 id="crewai-multi-agent">CrewAI Multi-Agent</h4>
-<div class="sourceCode" id="cb14"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> crewai <span class="im">import</span> Agent, Task, Crew</span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> crewai <span class="im">import</span> Agent, Task, Crew</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义 Agent</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>researcher <span class="op">=</span> Agent(</span>
@@ -665,8 +664,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a h
 <span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> crew.kickoff()</span></code></pre></div>
 <h4 id="autogen-conversation">AutoGen Conversation</h4>
-<div class="sourceCode" id="cb15"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> autogen <span class="im">import</span> AssistantAgent, UserProxyAgent</span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> autogen <span class="im">import</span> AssistantAgent, UserProxyAgent</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建助手 Agent</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>assistant <span class="op">=</span> AssistantAgent(</span>
@@ -944,8 +942,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a h
 </tbody>
 </table>
 <h3 id="实践案例软件开发团队">6.3 实践案例：软件开发团队</h3>
-<div class="sourceCode" id="cb21"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用 MetaGPT 模拟软件开发团队</span></span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用 MetaGPT 模拟软件开发团队</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co">&quot;&quot;&quot;</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co">角色定义：</span></span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co">- 产品经理 (PM): 分析需求，编写PRD</span></span>
@@ -994,8 +991,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a h
    ↓ 如有Bug，返回工程师修复
    ↓ 通过测试，项目完成</code></pre>
 <h3 id="实践案例研究团队">6.4 实践案例：研究团队</h3>
-<div class="sourceCode" id="cb23"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> crewai <span class="im">import</span> Agent, Task, Crew, Process</span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> crewai <span class="im">import</span> Agent, Task, Crew, Process</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义专业角色</span></span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>researcher <span class="op">=</span> Agent(</span>
@@ -1124,8 +1120,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a h
 </tbody>
 </table>
 <h3 id="agent-评估指标">7.2 Agent 评估指标</h3>
-<div class="sourceCode" id="cb25"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Agent 评估维度</span></span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Agent 评估维度</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>evaluation_metrics <span class="op">=</span> {</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;任务完成率&quot;</span>: <span class="st">&quot;成功完成任务的比例&quot;</span>,</span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;步骤效率&quot;</span>: <span class="st">&quot;完成任务所需的平均步骤数&quot;</span>,</span>
@@ -1307,5 +1302,15 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a h
 
     <!-- JavaScript -->
     <script type="module" src="/script.js?v=2.2.0"></script>
+    
+    <!-- Initialize Highlight.js -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Highlight all code blocks
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        });
+    </script>
 </body>
 </html>

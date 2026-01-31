@@ -29,6 +29,10 @@
     <link rel="canonical" href="https://kenwang007.github.io/dist/p/8781ed35006f.html">
     <link rel="manifest" href="/manifest.json">
     
+    <!-- Highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
     <!-- RSS Feed -->
     <link rel="alternate" type="application/rss+xml" title="Ken的知识库 RSS Feed" href="/rss.xml">
     
@@ -159,8 +163,7 @@ href="#2-为什么能通过命令行操作本地电脑">为什么能通过命令
 └─────────────────────────────────────────────────────┘</code></pre>
 <hr />
 <h3 id="gateway-的核心组件">1.2 Gateway 的核心组件</h3>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Gateway (Node.js) 是一个本地运行的守护进程</span></span>
+<pre><code class="language-javascript"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Gateway (Node.js) 是一个本地运行的守护进程</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> Gateway <span class="op">=</span> {</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">// 1. WebSocket 服务器</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">server</span><span class="op">:</span> {</span>
@@ -217,8 +220,7 @@ class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb2-
 系统调用</h3>
 <h4 id="gateway-作为本地服务">2.1.1 Gateway 作为本地服务</h4>
 <p><strong>启动方式：</strong></p>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 方式 1: 作为系统服务（macOS）</span></span>
+<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 方式 1: 作为系统服务（macOS）</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">clawdbot</span> gateway <span class="at">--port</span> 18789</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ↑ 通过 launchd 自动启动，开机自启</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -229,8 +231,7 @@ shell 命令执行权限（exec 工具） - ✅ 通过 AppleScript/D-Bus 调用�
 - ✅ 持久化配置存储（~/.clawdbot/）</p>
 <hr />
 <h4 id="exec-工具的实现">2.1.2 exec 工具的实现</h4>
-<div class="sourceCode" id="cb4"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># exec 工具提供了什么能力</span></span>
+<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># exec 工具提供了什么能力</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 执行任意 shell 命令</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">clawdbot</span> agent <span class="at">--message</span> <span class="st">&quot;列出当前目录的文件&quot;</span></span>
@@ -266,8 +267,7 @@ tell application &quot;System Events&quot;
   display notification &quot;任务完成&quot;
 end tell</code></pre>
 <p><strong>完整流程示例（添加提醒）：</strong></p>
-<div class="sourceCode" id="cb6"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 步骤 1: 用户在 WebChat 中发送消息</span></span>
+<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 步骤 1: 用户在 WebChat 中发送消息</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">用户:</span> <span class="st">&quot;添加明天中午12点的提醒&quot;</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 步骤 2: WebChat 通过 WebSocket 发送到 Gateway</span></span>
@@ -396,8 +396,7 @@ Clawdbot 本地优先:
 调用本身仍然是云端的（除非配置本地模型）</p>
 <hr />
 <h3 id="实际运行示例">2.3 实际运行示例</h3>
-<div class="sourceCode" id="cb8"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 启动 Gateway（作为系统服务）</span></span>
+<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 启动 Gateway（作为系统服务）</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">clawdbot</span> gateway <span class="at">--port</span> 18789</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 查看状态</span></span>
@@ -470,8 +469,7 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="
 └─────────────────────────────────────┘</code></pre>
 <hr />
 <h4 id="客户端简化为傻瓜终端">3.2.2 客户端简化为”傻瓜终端”</h4>
-<div class="sourceCode" id="cb11"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 所有客户端只需要做一件事：连接 Gateway</span></span>
+<pre><code class="language-javascript"><code class="sourceCode javascript"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 所有客户端只需要做一件事：连接 Gateway</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> WebChat {</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">constructor</span>() {</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">this</span><span class="op">.</span><span class="at">ws</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">WebSocket</span>(<span class="st">&#39;ws://127.0.0.1:18789/webchat&#39;</span>)</span>
@@ -505,8 +503,7 @@ class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb11
 <strong>自动更新</strong>：Gateway 更新，所有客户端自动受益</p>
 <hr />
 <h4 id="会话统一和共享">3.2.3 会话统一和共享</h4>
-<div class="sourceCode" id="cb12"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Gateway 统一管理会话状态</span></span>
+<pre><code class="language-javascript"><code class="sourceCode javascript"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Gateway 统一管理会话状态</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>Gateway 的会话管理器：</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>┌─────────────────────────────────────┐</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>│  Session State                   │</span>
@@ -528,8 +525,7 @@ class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb12
 统一的上下文和记忆</p>
 <hr />
 <h4 id="安全和权限集中管理">3.2.4 安全和权限集中管理</h4>
-<div class="sourceCode" id="cb13"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Gateway 中处理所有安全问题</span></span>
+<pre><code class="language-javascript"><code class="sourceCode javascript"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Gateway 中处理所有安全问题</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>Gateway 安全层：</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>┌─────────────────────────────────────┐</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>│  认证管理器                       │</span>
@@ -551,8 +547,7 @@ class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb13
 容易出现安全漏洞（某个客户端漏了）</p>
 <hr />
 <h4 id="工具系统的统一调度">3.2.5 工具系统的统一调度</h4>
-<div class="sourceCode" id="cb14"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Gateway 作为工具调度中心</span></span>
+<pre><code class="language-javascript"><code class="sourceCode javascript"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Gateway 作为工具调度中心</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>工具调用流程：</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fl">1.</span> AI Agent 分析需要什么工具</span>
@@ -648,8 +643,7 @@ API。</strong></p>
 <hr />
 <h3 id="到底会泄漏什么">4.2 到底会泄漏什么？</h3>
 <h4 id="对话历史最大的风险">4.2.1 对话历史（最大的风险）</h4>
-<div class="sourceCode" id="cb16"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Gateway 会话管理器发送给 LLM 的内容</span></span>
+<pre><code class="language-javascript"><code class="sourceCode javascript"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Gateway 会话管理器发送给 LLM 的内容</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>{</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;messages&quot;</span><span class="op">:</span> [</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    { <span class="st">&quot;role&quot;</span><span class="op">:</span> <span class="st">&quot;user&quot;</span><span class="op">,</span> <span class="st">&quot;content&quot;</span><span class="op">:</span> <span class="st">&quot;帮我修改 /etc/hosts&quot;</span> }<span class="op">,</span></span>
@@ -661,15 +655,13 @@ class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb16
 包括之前讨论的敏感信息 - 即使你”忘记”了，云端 API 记录可能还在</p>
 <hr />
 <h4 id="系统提示词">4.2.2 系统提示词</h4>
-<div class="sourceCode" id="cb17"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">// AGENTS.md、SOUL.md、TOOLS.md 等文件内容</span></span>
+<pre><code class="language-javascript"><code class="sourceCode javascript"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">// AGENTS.md、SOUL.md、TOOLS.md 等文件内容</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> systemPrompt <span class="op">=</span> <span class="fu">loadFile</span>(<span class="st">&#39;AGENTS.md&#39;</span>) <span class="op">+</span> <span class="fu">loadFile</span>(<span class="st">&#39;SOUL.md&#39;</span>)</span></code></pre></div>
 <p><strong>风险：</strong> - 所有注入到 Agent 的配置都会发送给 LLM -
 包括你定义的工作空间、偏好设置等</p>
 <hr />
 <h4 id="工具执行结果">4.2.3 工具执行结果</h4>
-<div class="sourceCode" id="cb18"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Agent 调用 exec 读取文件后</span></span>
+<pre><code class="language-javascript"><code class="sourceCode javascript"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Agent 调用 exec 读取文件后</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> toolResult <span class="op">=</span> <span class="fu">exec</span>(<span class="st">&#39;cat /Users/jianwang/secret.txt&#39;</span>)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">// 这个结果会被发送回 LLM 用于上下文</span></span></code></pre></div>
 <p><strong>风险：</strong> - 如果 Agent 读取了敏感文件，内容会出现在 LLM
@@ -678,8 +670,7 @@ class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb18
 <h3 id="clawdbot-的安全措施">4.3 Clawdbot 的安全措施</h3>
 <p>尽管有风险，Clawdbot <strong>确实实现了多项安全机制</strong>：</p>
 <h4 id="配置层面的控制">4.3.1 配置层面的控制</h4>
-<div class="sourceCode" id="cb19"><pre
-class="sourceCode json"><code class="sourceCode json"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<pre><code class="language-json"><code class="sourceCode json"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;agents&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;defaults&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;contextTokens&quot;</span><span class="fu">:</span> <span class="dv">100000</span><span class="fu">,</span>  <span class="er">//</span> <span class="er">限制上下文大小</span></span>
@@ -696,15 +687,13 @@ class="sourceCode json"><code class="sourceCode json"><span id="cb19-1"><a href=
 <span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 <hr />
 <h4 id="模型提供商选择">4.3.2 模型提供商选择</h4>
-<div class="sourceCode" id="cb20"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 可以选择不同提供商</span></span>
+<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 可以选择不同提供商</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="ex">anthropic/claude-opus-4-5</span>      <span class="co"># Anthropic 承诺不训练数据</span></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="ex">openai/gpt-4</span>                  <span class="co"># OpenAI 的隐私政策</span></span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="ex">zai/glm-4.7</span>                    <span class="co"># 可能是本地/中国模型</span></span></code></pre></div>
 <hr />
 <h4 id="本地模型选项">4.3.3 本地模型选项</h4>
-<div class="sourceCode" id="cb21"><pre
-class="sourceCode json"><code class="sourceCode json"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<pre><code class="language-json"><code class="sourceCode json"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;models&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;providers&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;ollama&quot;</span><span class="fu">:</span> <span class="fu">{</span>  <span class="er">//</span> <span class="er">本地</span> <span class="er">LLM，数据不离开设备</span></span>
@@ -716,8 +705,7 @@ class="sourceCode json"><code class="sourceCode json"><span id="cb21-1"><a href=
 <span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 <hr />
 <h4 id="工具权限控制">4.3.4 工具权限控制</h4>
-<div class="sourceCode" id="cb22"><pre
-class="sourceCode json"><code class="sourceCode json"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<pre><code class="language-json"><code class="sourceCode json"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;tools&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;exec&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;ask&quot;</span><span class="fu">:</span> <span class="st">&quot;on-miss&quot;</span>  <span class="er">//</span> <span class="er">敏感命令需要确认</span></span>
@@ -727,8 +715,7 @@ class="sourceCode json"><code class="sourceCode json"><span id="cb22-1"><a href=
 <span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 <hr />
 <h4 id="沙箱隔离">4.3.5 沙箱隔离</h4>
-<div class="sourceCode" id="cb23"><pre
-class="sourceCode json"><code class="sourceCode json"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<pre><code class="language-json"><code class="sourceCode json"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;agents&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;defaults&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;sandbox&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
@@ -804,37 +791,32 @@ class="sourceCode json"><code class="sourceCode json"><span id="cb23-1"><a href=
 <hr />
 <h3 id="如何最大程度降低风险">4.6 如何最大程度降低风险？</h3>
 <h4 id="使用本地模型最佳">4.6.1 使用本地模型（最佳）</h4>
-<div class="sourceCode" id="cb25"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 配置本地 Ollama</span></span>
+<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 配置本地 Ollama</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="ex">clawdbot</span> config set models.providers.ollama.baseUrl http://localhost:11434</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="ex">clawdbot</span> config set models.providers.ollama.apiKey local</span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 之后所有对话都在本地完成</span></span></code></pre></div>
 <hr />
 <h4 id="敏感信息不要写在对话中">4.6.2 敏感信息不要写在对话中</h4>
-<div class="sourceCode" id="cb26"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">// ❌ 不推荐</span></span>
+<pre><code class="language-javascript"><code class="sourceCode javascript"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">// ❌ 不推荐</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;我的密码是 abc123，帮我登录&quot;</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co">// ✅ 推荐（通过本地工具）</span></span>
 <span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;请在本地输入密码&quot;</span></span></code></pre></div>
 <hr />
 <h4 id="定期重置会话">4.6.3 定期重置会话</h4>
-<div class="sourceCode" id="cb27"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">clawdbot</span> config set agents.defaults.session.reset.mode daily</span>
+<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">clawdbot</span> config set agents.defaults.session.reset.mode daily</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 每天清除历史，旧对话不会持续发送</span></span></code></pre></div>
 <hr />
 <h4 id="禁用某些工具">4.6.4 禁用某些工具</h4>
-<div class="sourceCode" id="cb28"><pre
-class="sourceCode json"><code class="sourceCode json"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<pre><code class="language-json"><code class="sourceCode json"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;tools&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;deny&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;exec&quot;</span><span class="ot">,</span> <span class="st">&quot;read&quot;</span><span class="ot">]</span>  <span class="er">//</span> <span class="er">禁止文件操作</span></span>
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
 <span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 <hr />
 <h4 id="选择隐私优先的提供商">4.6.5 选择隐私优先的提供商</h4>
-<div class="sourceCode" id="cb29"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Anthropic 承诺不使用客户数据训练</span></span>
+<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Anthropic 承诺不使用客户数据训练</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="ex">clawdbot</span> config set agent.model anthropic/claude-opus-4-5</span></code></pre></div>
 <hr />
 <h2 id="总结">总结</h2>
@@ -853,8 +835,7 @@ LLM（Ollama/Llamafile）</strong></li>
 <hr />
 <h2 id="附录快速参考">附录：快速参考</h2>
 <h3 id="常用命令">常用命令</h3>
-<div class="sourceCode" id="cb30"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gateway 管理</span></span>
+<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gateway 管理</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="ex">clawdbot</span> gateway start     <span class="co"># 启动 Gateway</span></span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="ex">clawdbot</span> gateway stop      <span class="co"># 停止 Gateway</span></span>
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="ex">clawdbot</span> gateway restart   <span class="co"># 重启 Gateway</span></span>
@@ -871,8 +852,7 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb30-1"><a href=
 <span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 调试</span></span>
 <span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a><span class="ex">clawdbot</span> doctor              <span class="co"># 诊断问题</span></span></code></pre></div>
 <h3 id="配置文件路径">配置文件路径</h3>
-<div class="sourceCode" id="cb31"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 主配置文件</span></span>
+<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 主配置文件</span></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="ex">~/.clawdbot/clawdbot.json</span></span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 工作区（默认）</span></span>
@@ -917,5 +897,15 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb31-1"><a href=
 
     <!-- JavaScript -->
     <script type="module" src="/script.js?v=2.2.0"></script>
+    
+    <!-- Initialize Highlight.js -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Highlight all code blocks
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        });
+    </script>
 </body>
 </html>

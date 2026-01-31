@@ -29,6 +29,10 @@
     <link rel="canonical" href="https://kenwang007.github.io/dist/p/security-in-ai-agent.html">
     <link rel="manifest" href="/manifest.json">
     
+    <!-- Highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
     <!-- RSS Feed -->
     <link rel="alternate" type="application/rss+xml" title="Ken的知识库 RSS Feed" href="/rss.xml">
     
@@ -194,8 +198,7 @@ Injection)</h3>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 工具滥用示例</span></span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 工具滥用示例</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 攻击者可能诱导 Agent 执行危险操作</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 危险：直接执行用户提供的命令</span></span>
@@ -236,8 +239,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a hr
 <li><strong>安全建议误导</strong>：提供有安全漏洞的代码实现</li>
 <li><strong>虚假引用</strong>：捏造不存在的文档或参考资料</li>
 </ul>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 幻觉示例：Agent 可能生成不存在的安全方法</span></span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 幻觉示例：Agent 可能生成不存在的安全方法</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ❌ 错误代码 - 方法不存在</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> security <span class="im">import</span> auto_sanitize_all_inputs  <span class="co"># 不存在的库</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -263,8 +265,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a hr
 <li><strong>成本攻击</strong>：大量调用付费 API 造成经济损失</li>
 <li><strong>无限循环</strong>：诱导 Agent 进入无限执行循环</li>
 </ul>
-<div class="sourceCode" id="cb9"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DoS 攻击示例</span></span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DoS 攻击示例</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>malicious_prompt <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="st">请执行以下任务直到完成：</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="st">1. 搜索互联网上的所有信息</span></span>
@@ -276,8 +277,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a hr
 <h2 id="agent-应用最佳安全实践">2. Agent 应用最佳安全实践</h2>
 <h3 id="输入验证与过滤">2.1 输入验证与过滤</h3>
 <h4 id="多层输入验证">多层输入验证</h4>
-<div class="sourceCode" id="cb10"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SecureInputValidator:</span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SecureInputValidator:</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.max_length <span class="op">=</span> <span class="dv">10000</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.blocked_patterns <span class="op">=</span> [</span>
@@ -324,8 +324,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a h
                 └──────────┘   └──────────┘</code></pre>
 <h3 id="最小权限原则">2.2 最小权限原则</h3>
 <h4 id="工具权限分级">工具权限分级</h4>
-<div class="sourceCode" id="cb12"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> enum <span class="im">import</span> Enum</span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> enum <span class="im">import</span> Enum</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Set</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> PermissionLevel(Enum):</span>
@@ -368,8 +367,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a h
 <span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;&quot;&quot;检查命令是否包含危险操作&quot;&quot;&quot;</span></span>
 <span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="kw">not</span> <span class="bu">any</span>(blocked <span class="kw">in</span> cmd <span class="cf">for</span> blocked <span class="kw">in</span> <span class="va">self</span>.blocked_commands)</span></code></pre></div>
 <h4 id="沙箱执行环境">沙箱执行环境</h4>
-<div class="sourceCode" id="cb13"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> subprocess</span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> subprocess</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> resource</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SecureSandbox:</span>
@@ -417,8 +415,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a h
 <span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> {<span class="st">&quot;success&quot;</span>: <span class="va">False</span>, <span class="st">&quot;error&quot;</span>: <span class="bu">str</span>(e)}</span></code></pre></div>
 <h3 id="输出过滤与审查">2.3 输出过滤与审查</h3>
 <h4 id="敏感信息过滤">敏感信息过滤</h4>
-<div class="sourceCode" id="cb14"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> List, Tuple</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> OutputSanitizer:</span>
@@ -457,8 +454,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a h
 <span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="va">True</span></span>
 <span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">False</span></span></code></pre></div>
 <h4 id="响应内容审核">响应内容审核</h4>
-<div class="sourceCode" id="cb15"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ResponseAuditor:</span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ResponseAuditor:</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;响应内容审核器&quot;&quot;&quot;</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
@@ -501,8 +497,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a h
 <span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a>        }</span></code></pre></div>
 <h3 id="认证与访问控制">2.4 认证与访问控制</h3>
 <h4 id="多层认证机制">多层认证机制</h4>
-<div class="sourceCode" id="cb16"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime, timedelta</span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime, timedelta</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jwt</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> hashlib</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -554,8 +549,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a h
 <span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.rate_limits[user_id].append(now)</span>
 <span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span></code></pre></div>
 <h4 id="基于角色的访问控制-rbac">基于角色的访问控制 (RBAC)</h4>
-<div class="sourceCode" id="cb17"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> RBACManager:</span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> RBACManager:</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;基于角色的访问控制&quot;&quot;&quot;</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
@@ -587,8 +581,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a h
 <span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> tool <span class="kw">in</span> permissions[<span class="st">&quot;tools&quot;</span>]</span></code></pre></div>
 <h3 id="日志与审计">2.5 日志与审计</h3>
 <h4 id="全面的日志记录">全面的日志记录</h4>
-<div class="sourceCode" id="cb18"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> logging</span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> logging</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Any</span>
@@ -664,8 +657,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a h
 <span id="cb18-74"><a href="#cb18-74" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&quot;LOW&quot;</span></span></code></pre></div>
 <h3 id="安全的提示工程">2.6 安全的提示工程</h3>
 <h4 id="系统提示防护">系统提示防护</h4>
-<div class="sourceCode" id="cb19"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>SECURE_SYSTEM_PROMPT <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span></span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>SECURE_SYSTEM_PROMPT <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="st">你是一个安全的 AI 助手，请遵循以下安全准则：</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="st">## 核心安全规则</span></span>
@@ -743,8 +735,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a h
 │  └─────────────┘  └─────────────┘  └─────────────────────┘   │
 └────────────────────────────────────────────────────────────────┘</code></pre>
 <h4 id="安全检查清单">安全检查清单</h4>
-<div class="sourceCode" id="cb21"><pre
-class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agent 安全部署检查清单</span></span>
+<pre><code class="language-markdown"><code class="sourceCode markdown"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agent 安全部署检查清单</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">### 输入安全 ✓</span></span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> 实施输入长度限制</span>
@@ -777,8 +768,7 @@ class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb21-1">
 <span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> 制定应急预案</span></code></pre></div>
 <h3 id="合规与隐私">3.2 合规与隐私</h3>
 <h4 id="数据处理合规框架">数据处理合规框架</h4>
-<div class="sourceCode" id="cb22"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> DataComplianceManager:</span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> DataComplianceManager:</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;数据合规管理器&quot;&quot;&quot;</span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    GDPR_REQUIREMENTS <span class="op">=</span> {</span>
@@ -820,8 +810,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a h
 <span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> hashlib.sha256(value.encode()).hexdigest()[:<span class="dv">16</span>]</span></code></pre></div>
 <h3 id="安全测试与红队演练">3.3 安全测试与红队演练</h3>
 <h4 id="agent-安全测试框架">Agent 安全测试框架</h4>
-<div class="sourceCode" id="cb23"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AgentSecurityTester:</span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AgentSecurityTester:</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Agent 安全测试器&quot;&quot;&quot;</span></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, agent_endpoint: <span class="bu">str</span>):</span>
@@ -915,8 +904,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a h
 <span id="cb23-92"><a href="#cb23-92" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">any</span>(re.search(p, response) <span class="cf">for</span> p <span class="kw">in</span> patterns)</span></code></pre></div>
 <h3 id="应急响应流程">3.4 应急响应流程</h3>
 <h4 id="安全事件响应计划">安全事件响应计划</h4>
-<div class="sourceCode" id="cb24"><pre
-class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agent 安全事件响应流程</span></span>
+<pre><code class="language-markdown"><code class="sourceCode markdown"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## Agent 安全事件响应流程</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1. 检测与识别</span></span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>监控系统告警</span>
@@ -1063,5 +1051,15 @@ AI Security Guidelines</a></li>
 
     <!-- JavaScript -->
     <script type="module" src="/script.js?v=2.2.0"></script>
+    
+    <!-- Initialize Highlight.js -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Highlight all code blocks
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        });
+    </script>
 </body>
 </html>

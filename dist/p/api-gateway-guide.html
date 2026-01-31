@@ -29,6 +29,10 @@
     <link rel="canonical" href="https://kenwang007.github.io/dist/p/api-gateway-guide.html">
     <link rel="manifest" href="/manifest.json">
     
+    <!-- Highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
     <!-- RSS Feed -->
     <link rel="alternate" type="application/rss+xml" title="Ken的知识库 RSS Feed" href="/rss.xml">
     
@@ -191,8 +195,7 @@
 <h2 id="网关在分布式系统中的应用">2. 网关在分布式系统中的应用</h2>
 <h3 id="核心功能">2.1 核心功能</h3>
 <h4 id="路由与负载均衡">路由与负载均衡</h4>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// YARP 路由配置示例</span></span>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// YARP 路由配置示例</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;ReverseProxy&quot;</span><span class="op">:</span> <span class="op">{</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Routes&quot;</span><span class="op">:</span> <span class="op">{</span></span>
@@ -217,8 +220,7 @@ class="sourceCode csharp"><code class="sourceCode cs"><span id="cb3-1"><a href="
 <span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
 <span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h4 id="认证与授权">认证与授权</h4>
-<div class="sourceCode" id="cb4"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">// JWT 认证中间件</span></span>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">// JWT 认证中间件</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddAuthentication</span><span class="op">(</span>JwtBearerDefaults<span class="op">.</span><span class="fu">AuthenticationScheme</span><span class="op">)</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">AddJwtBearer</span><span class="op">(</span>options <span class="op">=&gt;</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
@@ -230,8 +232,7 @@ class="sourceCode csharp"><code class="sourceCode cs"><span id="cb4-1"><a href="
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">UseAuthentication</span><span class="op">();</span></span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">UseAuthorization</span><span class="op">();</span></span></code></pre></div>
 <h4 id="限流与熔断">限流与熔断</h4>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 使用 Polly 实现熔断</span></span>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 使用 Polly 实现熔断</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddReverseProxy</span><span class="op">()</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">LoadFromConfig</span><span class="op">(</span>builder<span class="op">.</span><span class="fu">Configuration</span><span class="op">.</span><span class="fu">GetSection</span><span class="op">(</span><span class="st">&quot;ReverseProxy&quot;</span><span class="op">))</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">AddTransforms</span><span class="op">(</span>context <span class="op">=&gt;</span></span>
@@ -243,8 +244,7 @@ class="sourceCode csharp"><code class="sourceCode cs"><span id="cb5-1"><a href="
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="op">});</span></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">});</span></span></code></pre></div>
 <h4 id="请求聚合bff-模式">请求聚合（BFF 模式）</h4>
-<div class="sourceCode" id="cb6"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">// GraphQL 聚合多个服务</span></span>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">// GraphQL 聚合多个服务</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> Query</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> async Task<span class="op">&lt;</span>OrderWithUser<span class="op">&gt;</span> <span class="fu">GetOrderDetail</span><span class="op">(</span></span>
@@ -386,8 +386,7 @@ Client → API Gateway → [Service Mesh (Istio/Linkerd)]
 <h3 id="yarpyet-another-reverse-proxy">3.2 YARP（Yet Another Reverse
 Proxy）</h3>
 <p><strong>包</strong>: <code>Yarp.ReverseProxy</code></p>
-<div class="sourceCode" id="cb10"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Program.cs</span></span>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Program.cs</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="dt">var</span> builder <span class="op">=</span> WebApplication<span class="op">.</span><span class="fu">CreateBuilder</span><span class="op">(</span>args<span class="op">);</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddReverseProxy</span><span class="op">()</span></span>
@@ -397,8 +396,7 @@ class="sourceCode csharp"><code class="sourceCode cs"><span id="cb10-1"><a href=
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">MapReverseProxy</span><span class="op">();</span></span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">Run</span><span class="op">();</span></span></code></pre></div>
 <p><strong>appsettings.json</strong>:</p>
-<div class="sourceCode" id="cb11"><pre
-class="sourceCode json"><code class="sourceCode json"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<pre><code class="language-json"><code class="sourceCode json"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;ReverseProxy&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;Routes&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;api-route&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
@@ -428,8 +426,7 @@ class="sourceCode json"><code class="sourceCode json"><span id="cb11-1"><a href=
 <span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
 <span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 <p><strong>自定义中间件</strong>:</p>
-<div class="sourceCode" id="cb12"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddReverseProxy</span><span class="op">()</span></span>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddReverseProxy</span><span class="op">()</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">LoadFromConfig</span><span class="op">(</span>builder<span class="op">.</span><span class="fu">Configuration</span><span class="op">.</span><span class="fu">GetSection</span><span class="op">(</span><span class="st">&quot;ReverseProxy&quot;</span><span class="op">))</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">AddTransforms</span><span class="op">(</span>context <span class="op">=&gt;</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
@@ -448,8 +445,7 @@ class="sourceCode csharp"><code class="sourceCode cs"><span id="cb12-1"><a href=
 <span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">});</span></span></code></pre></div>
 <h3 id="ocelot">3.3 Ocelot</h3>
 <p><strong>包</strong>: <code>Ocelot</code></p>
-<div class="sourceCode" id="cb13"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Program.cs</span></span>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Program.cs</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="dt">var</span> builder <span class="op">=</span> WebApplication<span class="op">.</span><span class="fu">CreateBuilder</span><span class="op">(</span>args<span class="op">);</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Configuration</span><span class="op">.</span><span class="fu">AddJsonFile</span><span class="op">(</span><span class="st">&quot;ocelot.json&quot;</span><span class="op">);</span></span>
@@ -459,8 +455,7 @@ class="sourceCode csharp"><code class="sourceCode cs"><span id="cb13-1"><a href=
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>await app<span class="op">.</span><span class="fu">UseOcelot</span><span class="op">();</span></span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">Run</span><span class="op">();</span></span></code></pre></div>
 <p><strong>ocelot.json</strong>:</p>
-<div class="sourceCode" id="cb14"><pre
-class="sourceCode json"><code class="sourceCode json"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<pre><code class="language-json"><code class="sourceCode json"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;Routes&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;DownstreamPathTemplate&quot;</span><span class="fu">:</span> <span class="st">&quot;/api/users/{everything}&quot;</span><span class="fu">,</span></span>
@@ -496,11 +491,9 @@ class="sourceCode json"><code class="sourceCode json"><span id="cb14-1"><a href=
 <span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
 <span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 <p><strong>服务发现（Consul）</strong>:</p>
-<div class="sourceCode" id="cb15"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddOcelot</span><span class="op">()</span></span>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddOcelot</span><span class="op">()</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">AddConsul</span><span class="op">();</span></span></code></pre></div>
-<div class="sourceCode" id="cb16"><pre
-class="sourceCode json"><code class="sourceCode json"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<pre><code class="language-json"><code class="sourceCode json"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;Routes&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;DownstreamPathTemplate&quot;</span><span class="fu">:</span> <span class="st">&quot;/api/{everything}&quot;</span><span class="fu">,</span></span>
@@ -520,8 +513,7 @@ class="sourceCode json"><code class="sourceCode json"><span id="cb16-1"><a href=
 <span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
 <span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 <h3 id="自研网关asp.net-core">3.4 自研网关（ASP.NET Core）</h3>
-<div class="sourceCode" id="cb17"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 简单反向代理实现</span></span>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 简单反向代理实现</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> ProxyMiddleware</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> RequestDelegate _next<span class="op">;</span></span>
@@ -904,8 +896,7 @@ class="sourceCode csharp"><code class="sourceCode cs"><span id="cb17-1"><a href=
 <p><strong>关键点</strong>： - ✅ 多实例部署，跨可用区 - ✅
 无状态设计，支持水平扩展 - ✅ 健康检查配置 - ✅ 会话保持（如需要）</p>
 <h3 id="安全设计">5.2 安全设计</h3>
-<div class="sourceCode" id="cb19"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 1. HTTPS 强制</span></span>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 1. HTTPS 强制</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">UseHttpsRedirection</span><span class="op">();</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">UseHsts</span><span class="op">();</span></span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -939,8 +930,7 @@ class="sourceCode csharp"><code class="sourceCode cs"><span id="cb19-1"><a href=
 <span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">Limits</span><span class="op">.</span><span class="fu">MaxRequestBodySize</span> <span class="op">=</span> <span class="dv">10</span> <span class="op">*</span> <span class="dv">1024</span> <span class="op">*</span> <span class="dv">1024</span><span class="op">;</span> <span class="co">// 10MB</span></span>
 <span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span></code></pre></div>
 <h3 id="限流与熔断-1">5.3 限流与熔断</h3>
-<div class="sourceCode" id="cb20"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 使用 ASP.NET Core Rate Limiting (.NET 7+)</span></span>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 使用 ASP.NET Core Rate Limiting (.NET 7+)</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddRateLimiter</span><span class="op">(</span>options <span class="op">=&gt;</span></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 全局限流</span></span>
@@ -979,8 +969,7 @@ class="sourceCode csharp"><code class="sourceCode cs"><span id="cb20-1"><a href=
 <span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">UseRateLimiter</span><span class="op">();</span></span></code></pre></div>
 <h3 id="可观测性">5.4 可观测性</h3>
-<div class="sourceCode" id="cb21"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">// OpenTelemetry 集成</span></span>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">// OpenTelemetry 集成</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddOpenTelemetry</span><span class="op">()</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">WithTracing</span><span class="op">(</span>tracing <span class="op">=&gt;</span></span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
@@ -1013,8 +1002,7 @@ class="sourceCode csharp"><code class="sourceCode cs"><span id="cb21-1"><a href=
 <span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>    ResponseWriter <span class="op">=</span> UIResponseWriter<span class="op">.</span><span class="fu">WriteHealthCheckUIResponse</span></span>
 <span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span></code></pre></div>
 <h3 id="配置管理">5.5 配置管理</h3>
-<div class="sourceCode" id="cb22"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 动态配置（无需重启）</span></span>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 动态配置（无需重启）</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddReverseProxy</span><span class="op">()</span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">LoadFromConfig</span><span class="op">(</span>builder<span class="op">.</span><span class="fu">Configuration</span><span class="op">.</span><span class="fu">GetSection</span><span class="op">(</span><span class="st">&quot;ReverseProxy&quot;</span><span class="op">))</span></span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">ConfigureHttpClient</span><span class="op">((</span>context<span class="op">,</span> handler<span class="op">)</span> <span class="op">=&gt;</span></span>
@@ -1037,8 +1025,7 @@ class="sourceCode csharp"><code class="sourceCode cs"><span id="cb22-1"><a href=
 <span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span></code></pre></div>
 <h3 id="容器化部署">5.6 容器化部署</h3>
 <p><strong>Dockerfile</strong>:</p>
-<div class="sourceCode" id="cb23"><pre
-class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> mcr.microsoft.com/dotnet/aspnet:8.0 <span class="kw">AS</span> base</span>
+<pre><code class="language-dockerfile"><code class="sourceCode dockerfile"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> mcr.microsoft.com/dotnet/aspnet:8.0 <span class="kw">AS</span> base</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> /app</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="kw">EXPOSE</span> 80</span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="kw">EXPOSE</span> 443</span>
@@ -1064,8 +1051,7 @@ class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb23
 <span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a><span class="kw">ENTRYPOINT</span> [<span class="st">&quot;dotnet&quot;</span>, <span class="st">&quot;Gateway.dll&quot;</span>]</span></code></pre></div>
 <p><strong>Kubernetes 部署</strong>:</p>
-<div class="sourceCode" id="cb24"><pre
-class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> apps/v1</span></span>
+<pre><code class="language-yaml"><code class="sourceCode yaml"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> apps/v1</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Deployment</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> api-gateway</span></span>
@@ -1259,5 +1245,15 @@ Management</a></li>
 
     <!-- JavaScript -->
     <script type="module" src="/script.js?v=2.2.0"></script>
+    
+    <!-- Initialize Highlight.js -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Highlight all code blocks
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        });
+    </script>
 </body>
 </html>

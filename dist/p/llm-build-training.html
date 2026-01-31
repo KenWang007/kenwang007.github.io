@@ -29,6 +29,10 @@
     <link rel="canonical" href="https://kenwang007.github.io/dist/p/llm-build-training.html">
     <link rel="manifest" href="/manifest.json">
     
+    <!-- Highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
     <!-- RSS Feed -->
     <link rel="alternate" type="application/rss+xml" title="Ken的知识库 RSS Feed" href="/rss.xml">
     
@@ -257,8 +261,7 @@ Encoder-Decoder (T5):
 </tbody>
 </table>
 <h4 id="位置编码">1.4.2 位置编码</h4>
-<div class="sourceCode" id="cb4"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 主流位置编码方案</span></span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 主流位置编码方案</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>位置编码方案对比：</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>┌────────────────┬─────────────────────────────────────┐</span>
@@ -329,8 +332,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a hr
 </tbody>
 </table>
 <h3 id="预训练代码示例">1.5 预训练代码示例</h3>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用 Hugging Face Transformers 预训练示例</span></span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用 Hugging Face Transformers 预训练示例</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> (</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    AutoModelForCausalLM,</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    AutoTokenizer,</span>
@@ -416,8 +418,7 @@ RLHF（基于人类反馈的强化学习）</h3>
 └─────────────────────────────────────────────────────────┘</code></pre>
 <h3 id="dpo直接偏好优化">2.3 DPO（直接偏好优化）</h3>
 <p>DPO 是 RLHF 的简化替代方案，无需单独训练奖励模型。</p>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DPO 核心思想</span></span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DPO 核心思想</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">&quot;&quot;&quot;</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">RLHF: SFT Model → Reward Model → PPO → Aligned Model</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">DPO:  SFT Model → 直接优化 → Aligned Model</span></span>
@@ -492,8 +493,7 @@ Engineering）</h3>
 │                                                         │
 └─────────────────────────────────────────────────────────┘</code></pre>
 <h4 id="prompt-模板示例">2.4.2 Prompt 模板示例</h4>
-<div class="sourceCode" id="cb9"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 系统级 Prompt 模板</span></span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 系统级 Prompt 模板</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>SYSTEM_PROMPT <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="st">你是一个专业的</span><span class="sc">{role}</span><span class="st">，具有以下特点：</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="st">1. </span><span class="sc">{characteristic_1}</span></span>
@@ -626,8 +626,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a hr
 └─────────────────────────────────────────────────────────┘</code></pre>
 <h3 id="微调实践代码">3.3 微调实践代码</h3>
 <h4 id="使用-peft-lora-微调">3.3.1 使用 PEFT + LoRA 微调</h4>
-<div class="sourceCode" id="cb12"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> AutoModelForCausalLM, AutoTokenizer, TrainingArguments</span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> AutoModelForCausalLM, AutoTokenizer, TrainingArguments</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> peft <span class="im">import</span> LoraConfig, get_peft_model, TaskType</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> trl <span class="im">import</span> SFTTrainer</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datasets <span class="im">import</span> load_dataset</span>
@@ -696,8 +695,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a h
 <span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a><span class="co"># 7. 保存 LoRA 权重</span></span>
 <span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a>model.save_pretrained(<span class="st">&quot;./lora_weights&quot;</span>)</span></code></pre></div>
 <h4 id="使用-qlora-微调显存更省">3.3.2 使用 QLoRA 微调（显存更省）</h4>
-<div class="sourceCode" id="cb13"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> BitsAndBytesConfig</span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> BitsAndBytesConfig</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 4-bit 量化配置</span></span>
@@ -766,8 +764,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a h
 </tbody>
 </table>
 <h3 id="微调数据格式">3.5 微调数据格式</h3>
-<div class="sourceCode" id="cb14"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Alpaca 格式（最常用）</span></span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Alpaca 格式（最常用）</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>{</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;instruction&quot;</span>: <span class="st">&quot;将以下句子翻译成英文&quot;</span>,</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;input&quot;</span>: <span class="st">&quot;今天天气很好&quot;</span>,</span>
@@ -885,8 +882,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a h
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb16"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用 bitsandbytes 量化加载</span></span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用 bitsandbytes 量化加载</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> AutoModelForCausalLM, BitsAndBytesConfig</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># INT8 量化</span></span>
@@ -951,8 +947,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a h
 </tbody>
 </table>
 <h4 id="vllm-部署示例">4.3.2 vLLM 部署示例</h4>
-<div class="sourceCode" id="cb17"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装：pip install vllm</span></span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装：pip install vllm</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> vllm <span class="im">import</span> LLM, SamplingParams</span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -977,15 +972,13 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a h
 <span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> output <span class="kw">in</span> outputs:</span>
 <span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(output.outputs[<span class="dv">0</span>].text)</span></code></pre></div>
-<div class="sourceCode" id="cb18"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># vLLM 启动 API 服务</span></span>
+<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># vLLM 启动 API 服务</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> vllm.entrypoints.openai.api_server <span class="dt">\</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">--model</span> meta-llama/Llama-2-7b-chat-hf <span class="dt">\</span></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">--port</span> 8000 <span class="dt">\</span></span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">--tensor-parallel-size</span> 1</span></code></pre></div>
 <h4 id="ollama-本地部署">4.3.3 Ollama 本地部署</h4>
-<div class="sourceCode" id="cb19"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装 Ollama</span></span>
+<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装 Ollama</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-fsSL</span> https://ollama.com/install.sh <span class="kw">|</span> <span class="fu">sh</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 下载并运行模型</span></span>
@@ -997,8 +990,7 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href=
 <span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="st">  &quot;model&quot;: &quot;llama3&quot;,</span></span>
 <span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="st">  &quot;prompt&quot;: &quot;什么是大语言模型？&quot;</span></span>
 <span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="st">}&#39;</span></span></code></pre></div>
-<div class="sourceCode" id="cb20"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Python 调用 Ollama</span></span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Python 调用 Ollama</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ollama</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> ollama.chat(</span>
@@ -1056,8 +1048,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a h
         │         │     量大质低，需要清洗
         └─────────┘</code></pre>
 <h4 id="数据处理流程">5.1.2 数据处理流程</h4>
-<div class="sourceCode" id="cb23"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 数据处理 Pipeline</span></span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 数据处理 Pipeline</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>data_pipeline <span class="op">=</span> {</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;1. 数据收集&quot;</span>: [</span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;爬取网页数据&quot;</span>,</span>
@@ -1140,8 +1131,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a h
 </tbody>
 </table>
 <h4 id="评估代码示例">5.2.2 评估代码示例</h4>
-<div class="sourceCode" id="cb24"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用 lm-evaluation-harness 评估</span></span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用 lm-evaluation-harness 评估</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pip install lm-eval</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> lm_eval <span class="im">import</span> evaluator</span>
@@ -1205,8 +1195,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a h
 </tbody>
 </table>
 <h3 id="训练资源估算">5.4 训练资源估算</h3>
-<div class="sourceCode" id="cb25"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 显存估算公式（近似）</span></span>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 显存估算公式（近似）</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> estimate_memory(params_billion, precision<span class="op">=</span><span class="st">&quot;fp16&quot;</span>, training<span class="op">=</span><span class="va">True</span>):</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;</span></span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co">    params_billion: 参数量（十亿）</span></span>
@@ -1345,5 +1334,15 @@ href="https://github.com/hiyouga/LLaMA-Factory">LLaMA-Factory</a></li>
 
     <!-- JavaScript -->
     <script type="module" src="/script.js?v=2.2.0"></script>
+    
+    <!-- Initialize Highlight.js -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Highlight all code blocks
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        });
+    </script>
 </body>
 </html>

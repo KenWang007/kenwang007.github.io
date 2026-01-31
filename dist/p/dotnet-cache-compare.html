@@ -29,6 +29,10 @@
     <link rel="canonical" href="https://kenwang007.github.io/dist/p/dotnet-cache-compare.html">
     <link rel="manifest" href="/manifest.json">
     
+    <!-- Highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
     <!-- RSS Feed -->
     <link rel="alternate" type="application/rss+xml" title="Ken的知识库 RSS Feed" href="/rss.xml">
     
@@ -181,8 +185,7 @@
 <h3 id="imemorycache本地缓存">2.1 IMemoryCache（本地缓存）</h3>
 <p><strong>包</strong>:
 <code>Microsoft.Extensions.Caching.Memory</code></p>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 注册</span></span>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 注册</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddMemoryCache</span><span class="op">();</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">// 使用</span></span>
@@ -242,8 +245,7 @@ class="sourceCode csharp"><code class="sourceCode cs"><span id="cb2-1"><a href="
 IDistributedCache（分布式缓存抽象）</h3>
 <p><strong>包</strong>:
 <code>Microsoft.Extensions.Caching.Distributed</code></p>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Redis 实现</span></span>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Redis 实现</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddStackExchangeRedisCache</span><span class="op">(</span>options <span class="op">=&gt;</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">Configuration</span> <span class="op">=</span> <span class="st">&quot;localhost:6379&quot;</span><span class="op">;</span></span>
@@ -325,8 +327,7 @@ class="sourceCode csharp"><code class="sourceCode cs"><span id="cb3-1"><a href="
 <h3 id="hybridcache.net-9-新增">2.3 HybridCache（.NET 9 新增）</h3>
 <p><strong>包</strong>:
 <code>Microsoft.Extensions.Caching.Hybrid</code></p>
-<div class="sourceCode" id="cb4"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 注册</span></span>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 注册</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddHybridCache</span><span class="op">(</span>options <span class="op">=&gt;</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">DefaultEntryOptions</span> <span class="op">=</span> <span class="kw">new</span> HybridCacheEntryOptions</span>
@@ -407,8 +408,7 @@ FusionCache</p>
 <h3 id="outputcache.net-7">2.4 OutputCache（.NET 7+）</h3>
 <p><strong>包</strong>:
 <code>Microsoft.AspNetCore.OutputCaching</code></p>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 注册</span></span>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 注册</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddOutputCache</span><span class="op">(</span>options <span class="op">=&gt;</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">AddBasePolicy</span><span class="op">(</span>builder <span class="op">=&gt;</span> builder<span class="op">.</span><span class="fu">Expire</span><span class="op">(</span>TimeSpan<span class="op">.</span><span class="fu">FromMinutes</span><span class="op">(</span><span class="dv">10</span><span class="op">)));</span></span>
@@ -470,8 +470,7 @@ class="sourceCode csharp"><code class="sourceCode cs"><span id="cb5-1"><a href="
 <h2 id="开源缓存框架">3. 开源缓存框架</h2>
 <h3 id="fusioncache-推荐">3.1 FusionCache（⭐ 推荐）</h3>
 <p><strong>包</strong>: <code>ZiggyCreatures.FusionCache</code></p>
-<div class="sourceCode" id="cb6"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 注册</span></span>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 注册</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddFusionCache</span><span class="op">()</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">WithDefaultEntryOptions</span><span class="op">(</span><span class="kw">new</span> FusionCacheEntryOptions</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
@@ -588,8 +587,7 @@ class="sourceCode csharp"><code class="sourceCode cs"><span id="cb6-1"><a href="
 </table>
 <h3 id="lazycache">3.2 LazyCache</h3>
 <p><strong>包</strong>: <code>LazyCache</code></p>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 注册</span></span>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 注册</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddLazyCache</span><span class="op">();</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">// 使用</span></span>
@@ -641,8 +639,7 @@ class="sourceCode csharp"><code class="sourceCode cs"><span id="cb7-1"><a href="
 </table>
 <h3 id="easycaching">3.3 EasyCaching</h3>
 <p><strong>包</strong>: <code>EasyCaching.Core</code></p>
-<div class="sourceCode" id="cb8"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 注册多级缓存</span></span>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 注册多级缓存</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddEasyCaching</span><span class="op">(</span>options <span class="op">=&gt;</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// L1: 内存</span></span>
@@ -722,8 +719,7 @@ class="sourceCode csharp"><code class="sourceCode cs"><span id="cb8-1"><a href="
 </table>
 <h3 id="cachemanager">3.4 CacheManager</h3>
 <p><strong>包</strong>: <code>CacheManager.Core</code></p>
-<div class="sourceCode" id="cb9"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 配置</span></span>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 配置</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="dt">var</span> cache <span class="op">=</span> CacheFactory<span class="op">.</span><span class="fu">Build</span><span class="op">&lt;</span>Product<span class="op">&gt;(</span>settings <span class="op">=&gt;</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    settings</span>
@@ -1151,8 +1147,7 @@ class="sourceCode csharp"><code class="sourceCode cs"><span id="cb9-1"><a href="
 </tbody>
 </table>
 <h3 id="nuget-包清单">5.3 NuGet 包清单</h3>
-<div class="sourceCode" id="cb11"><pre
-class="sourceCode xml"><code class="sourceCode xml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- 微软官方 --&gt;</span></span>
+<pre><code class="language-xml"><code class="sourceCode xml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- 微软官方 --&gt;</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">PackageReference</span><span class="ot"> Include=</span><span class="st">&quot;Microsoft.Extensions.Caching.Memory&quot;</span><span class="ot"> Version=</span><span class="st">&quot;8.0.0&quot;</span> /&gt;</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">PackageReference</span><span class="ot"> Include=</span><span class="st">&quot;Microsoft.Extensions.Caching.StackExchangeRedis&quot;</span><span class="ot"> Version=</span><span class="st">&quot;8.0.0&quot;</span> /&gt;</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">PackageReference</span><span class="ot"> Include=</span><span class="st">&quot;Microsoft.Extensions.Caching.Hybrid&quot;</span><span class="ot"> Version=</span><span class="st">&quot;9.0.0&quot;</span> /&gt; <span class="co">&lt;!-- .NET 9 --&gt;</span></span>
@@ -1174,8 +1169,7 @@ class="sourceCode xml"><code class="sourceCode xml"><span id="cb11-1"><a href="#
 <hr />
 <h2 id="最佳实践示例">6. 最佳实践示例</h2>
 <h3 id="生产级配置fusioncache">6.1 生产级配置（FusionCache）</h3>
-<div class="sourceCode" id="cb12"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">static</span> <span class="kw">class</span> CacheConfiguration</span>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">static</span> <span class="kw">class</span> CacheConfiguration</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">static</span> IServiceCollection <span class="fu">AddProductionCache</span><span class="op">(</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">this</span> IServiceCollection services<span class="op">,</span></span>
@@ -1221,8 +1215,7 @@ class="sourceCode csharp"><code class="sourceCode cs"><span id="cb12-1"><a href=
 <span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h3 id="生产级配置hybridcache-.net-9">6.2 生产级配置（HybridCache .NET
 9）</h3>
-<div class="sourceCode" id="cb13"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">static</span> <span class="kw">class</span> CacheConfiguration</span>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">static</span> <span class="kw">class</span> CacheConfiguration</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">static</span> IServiceCollection <span class="fu">AddProductionHybridCache</span><span class="op">(</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">this</span> IServiceCollection services<span class="op">,</span></span>
@@ -1252,8 +1245,7 @@ class="sourceCode csharp"><code class="sourceCode cs"><span id="cb13-1"><a href=
 <span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h3 id="缓存服务封装">6.3 缓存服务封装</h3>
-<div class="sourceCode" id="cb14"><pre
-class="sourceCode csharp"><code class="sourceCode cs"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">interface</span> ICacheService</span>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">interface</span> ICacheService</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    Task<span class="op">&lt;</span>T<span class="op">?&gt;</span> GetOrSetAsync<span class="op">&lt;</span>T<span class="op">&gt;(</span><span class="dt">string</span> key<span class="op">,</span> Func<span class="op">&lt;</span>CancellationToken<span class="op">,</span> Task<span class="op">&lt;</span>T<span class="op">?&gt;&gt;</span> factory<span class="op">,</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>        TimeSpan<span class="op">?</span> duration <span class="op">=</span> <span class="kw">null</span><span class="op">,</span> CancellationToken ct <span class="op">=</span> <span class="kw">default</span><span class="op">);</span></span>
@@ -1383,5 +1375,15 @@ GitHub</a></li>
 
     <!-- JavaScript -->
     <script type="module" src="/script.js?v=2.2.0"></script>
+    
+    <!-- Initialize Highlight.js -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Highlight all code blocks
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        });
+    </script>
 </body>
 </html>

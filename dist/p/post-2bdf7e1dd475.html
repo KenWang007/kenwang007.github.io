@@ -29,6 +29,10 @@
     <link rel="canonical" href="https://kenwang007.github.io/dist/p/post-2bdf7e1dd475.html">
     <link rel="manifest" href="/manifest.json">
     
+    <!-- Highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
     <!-- RSS Feed -->
     <link rel="alternate" type="application/rss+xml" title="Ken的知识库 RSS Feed" href="/rss.xml">
     
@@ -137,21 +141,17 @@ ARM64）、Windows</li>
 支持才能正常工作，请确保您的网络配置允许 WebSocket 连接。</p>
 </blockquote>
 <h3 id="如果-ollama-已在本机运行">如果 Ollama 已在本机运行</h3>
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="at">-p</span> 3000:8080 <span class="at">--add-host</span><span class="op">=</span>host.docker.internal:host-gateway <span class="at">-v</span> open-webui:/app/backend/data <span class="at">--name</span> open-webui <span class="at">--restart</span> always ghcr.io/open-webui/open-webui:main</span></code></pre></div>
+<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="at">-p</span> 3000:8080 <span class="at">--add-host</span><span class="op">=</span>host.docker.internal:host-gateway <span class="at">-v</span> open-webui:/app/backend/data <span class="at">--name</span> open-webui <span class="at">--restart</span> always ghcr.io/open-webui/open-webui:main</span></code></pre></div>
 <h3 id="使用-nvidia-gpu-支持">使用 Nvidia GPU 支持</h3>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="at">-p</span> 3000:8080 <span class="at">--gpus</span> all <span class="at">--add-host</span><span class="op">=</span>host.docker.internal:host-gateway <span class="at">-v</span> open-webui:/app/backend/data <span class="at">--name</span> open-webui <span class="at">--restart</span> always ghcr.io/open-webui/open-webui:cuda</span></code></pre></div>
+<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="at">-p</span> 3000:8080 <span class="at">--gpus</span> all <span class="at">--add-host</span><span class="op">=</span>host.docker.internal:host-gateway <span class="at">-v</span> open-webui:/app/backend/data <span class="at">--name</span> open-webui <span class="at">--restart</span> always ghcr.io/open-webui/open-webui:cuda</span></code></pre></div>
 <h3 id="open-webui-与-ollama-捆绑安装">Open WebUI 与 Ollama
 捆绑安装</h3>
 <p>这种方式将 Open WebUI 和 Ollama
 打包在一个容器中，一条命令即可完成安装：</p>
 <p><strong>带 GPU 支持：</strong></p>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="at">-p</span> 3000:8080 <span class="at">--gpus</span><span class="op">=</span>all <span class="at">-v</span> ollama:/root/.ollama <span class="at">-v</span> open-webui:/app/backend/data <span class="at">--name</span> open-webui <span class="at">--restart</span> always ghcr.io/open-webui/open-webui:ollama</span></code></pre></div>
+<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="at">-p</span> 3000:8080 <span class="at">--gpus</span><span class="op">=</span>all <span class="at">-v</span> ollama:/root/.ollama <span class="at">-v</span> open-webui:/app/backend/data <span class="at">--name</span> open-webui <span class="at">--restart</span> always ghcr.io/open-webui/open-webui:ollama</span></code></pre></div>
 <p><strong>仅 CPU：</strong></p>
-<div class="sourceCode" id="cb4"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="at">-p</span> 3000:8080 <span class="at">-v</span> ollama:/root/.ollama <span class="at">-v</span> open-webui:/app/backend/data <span class="at">--name</span> open-webui <span class="at">--restart</span> always ghcr.io/open-webui/open-webui:ollama</span></code></pre></div>
+<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="at">-p</span> 3000:8080 <span class="at">-v</span> ollama:/root/.ollama <span class="at">-v</span> open-webui:/app/backend/data <span class="at">--name</span> open-webui <span class="at">--restart</span> always ghcr.io/open-webui/open-webui:ollama</span></code></pre></div>
 <p>安装完成后，访问 <strong>http://localhost:3000</strong>
 即可使用！</p>
 <hr />
@@ -159,22 +159,17 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="
 安装（推荐的手动安装方式）</h2>
 <h3 id="安装-uv">1. 安装 uv</h3>
 <p><strong>macOS/Linux：</strong></p>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-LsSf</span> https://astral.sh/uv/install.sh <span class="kw">|</span> <span class="fu">sh</span></span></code></pre></div>
+<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-LsSf</span> https://astral.sh/uv/install.sh <span class="kw">|</span> <span class="fu">sh</span></span></code></pre></div>
 <p><strong>Windows：</strong></p>
-<div class="sourceCode" id="cb6"><pre
-class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>powershell <span class="op">-</span>ExecutionPolicy ByPass <span class="op">-</span>c <span class="st">&quot;irm https://astral.sh/uv/install.ps1 | iex&quot;</span></span></code></pre></div>
+<pre><code class="language-powershell"><code class="sourceCode powershell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>powershell <span class="op">-</span>ExecutionPolicy ByPass <span class="op">-</span>c <span class="st">&quot;irm https://astral.sh/uv/install.ps1 | iex&quot;</span></span></code></pre></div>
 <h3 id="运行-open-webui">2. 运行 Open WebUI</h3>
 <p><strong>macOS/Linux：</strong></p>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="va">DATA_DIR</span><span class="op">=</span>~/.open-webui <span class="ex">uvx</span> <span class="at">--python</span> 3.11 open-webui@latest serve</span></code></pre></div>
+<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="va">DATA_DIR</span><span class="op">=</span>~/.open-webui <span class="ex">uvx</span> <span class="at">--python</span> 3.11 open-webui@latest serve</span></code></pre></div>
 <p><strong>Windows：</strong></p>
-<div class="sourceCode" id="cb8"><pre
-class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="va">$env</span><span class="op">:</span><span class="va">DATA_DIR</span><span class="op">=</span><span class="st">&quot;C:\open-webui\data&quot;</span><span class="op">;</span> uvx <span class="op">--</span>python <span class="dv">3.11</span> open-webui@latest serve</span></code></pre></div>
+<pre><code class="language-powershell"><code class="sourceCode powershell"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="va">$env</span><span class="op">:</span><span class="va">DATA_DIR</span><span class="op">=</span><span class="st">&quot;C:\open-webui\data&quot;</span><span class="op">;</span> uvx <span class="op">--</span>python <span class="dv">3.11</span> open-webui@latest serve</span></code></pre></div>
 <hr />
 <h2 id="方式三使用-pip-安装">方式三：使用 pip 安装</h2>
-<div class="sourceCode" id="cb9"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装</span></span>
+<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install open-webui</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 启动</span></span>
@@ -188,11 +183,9 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="
 <h2 id="更新-open-webui">更新 Open WebUI</h2>
 <h3 id="docker-手动更新">Docker 手动更新</h3>
 <p>使用 Watchtower 更新容器：</p>
-<div class="sourceCode" id="cb10"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">-v</span> /var/run/docker.sock:/var/run/docker.sock nickfedor/watchtower <span class="at">--run-once</span> open-webui</span></code></pre></div>
+<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">-v</span> /var/run/docker.sock:/var/run/docker.sock nickfedor/watchtower <span class="at">--run-once</span> open-webui</span></code></pre></div>
 <h3 id="pip-更新">pip 更新</h3>
-<div class="sourceCode" id="cb11"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">--upgrade</span> open-webui</span></code></pre></div>
+<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">--upgrade</span> open-webui</span></code></pre></div>
 <hr />
 <h2 id="参考资料">参考资料</h2>
 <ul>
@@ -218,5 +211,15 @@ GitHub</a></li>
 
     <!-- JavaScript -->
     <script type="module" src="/script.js?v=2.2.0"></script>
+    
+    <!-- Initialize Highlight.js -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Highlight all code blocks
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        });
+    </script>
 </body>
 </html>

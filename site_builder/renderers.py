@@ -19,6 +19,19 @@ from .utils import (
 logger = logging.getLogger(__name__)
 
 
+def convert_code_blocks_for_highlightjs(html_content: str) -> str:
+    """Convert pandoc-generated code blocks to highlight.js compatible format."""
+    # Find all pre blocks with sourceCode class (handle multiline)
+    pattern = r'<div class="sourceCode"[^>]*>\s*<pre\s+class="sourceCode\s+([^"]+)">'
+    
+    def replace_code_block(match: re.Match) -> str:
+        language = match.group(1)
+        # Convert to standard <pre><code> format for highlight.js
+        return f'<pre><code class="language-{language}">'
+    
+    return re.sub(pattern, replace_code_block, html_content)
+
+
 def rewrite_internal_links(html_fragment: str, current_md: Path, legacy_to_new: Dict[str, str]) -> str:
     """Rewrite links that point to legacy markdown/html files into ASCII-only URLs."""
     current_rel_dir = Path(current_md.relative_to(config.ROOT_DIR)).parent
@@ -46,13 +59,11 @@ def rewrite_internal_links(html_fragment: str, current_md: Path, legacy_to_new: 
         candidate = resolve_candidate(href)
         if not candidate:
             return match.group(0)
-
         candidates = [candidate]
         if candidate.endswith(".md"):
             candidates.append(candidate[:-3] + ".html")
         if candidate.endswith(".html"):
             candidates.append(candidate[:-5] + ".md")
-
         for option in candidates:
             if option in legacy_to_new:
                 return f"href={quote}/{legacy_to_new[option]}{quote}"
@@ -67,7 +78,6 @@ def rewrite_internal_links(html_fragment: str, current_md: Path, legacy_to_new: 
 def convert_markdown_to_html(md_file_path: Path, out_html_path: Path, legacy_to_new: Dict[str, str]) -> bool:
     """Convert markdown into final HTML using template + internal link rewriting."""
     temp_html_path = md_file_path.with_suffix(".temp.html")
-
     try:
         out_html_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -93,6 +103,7 @@ def convert_markdown_to_html(md_file_path: Path, out_html_path: Path, legacy_to_
                 text=True,
                 timeout=30,
             )
+
             if result.returncode != 0:
                 logger.error("Pandoc转换失败: %s", result.stderr)
                 body_content = ""
@@ -100,6 +111,10 @@ def convert_markdown_to_html(md_file_path: Path, out_html_path: Path, legacy_to_
                 temp_html_content = temp_html_path.read_text(encoding="utf-8")
                 body_match = re.search(r"<body[^>]*>([\s\S]*?)</body>", temp_html_content, re.IGNORECASE)
                 body_content = body_match.group(1) if body_match else temp_html_content
+
+                # Convert code blocks to highlight.js compatible format
+                body_content = convert_code_blocks_for_highlightjs(body_content)
+
         else:
             legacy_html_path = md_file_path.with_suffix(".html")
             if legacy_html_path.exists():
@@ -172,10 +187,15 @@ def generate_directory_page(dir_node: Dict, legacy_to_new: Dict[str, str]) -> bo
                 text=True,
                 timeout=30,
             )
+
             if result.returncode == 0 and temp_html_path.exists():
                 temp_html_content = temp_html_path.read_text(encoding="utf-8")
                 body_match = re.search(r"<body[^>]*>([\s\S]*?)</body>", temp_html_content, re.IGNORECASE)
                 body_content = body_match.group(1) if body_match else temp_html_content
+
+                # Convert code blocks to highlight.js compatible format
+                body_content = convert_code_blocks_for_highlightjs(body_content)
+
                 body_content = rewrite_internal_links(body_content, index_md, legacy_to_new)
         except Exception:
             body_content = ""
