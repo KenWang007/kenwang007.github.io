@@ -946,7 +946,7 @@ body.left-collapsed.right-collapsed .footer {
 
 .markdown-content h2 {
     color: var(--color-primary-light);
-    font-size: var(--font-size-2xl);
+    font-size: 1.6rem;
     margin: var(--spacing-lg) 0 15px;
     padding-bottom: 10px;
     border-bottom: 1px solid var(--color-border);
@@ -954,13 +954,14 @@ body.left-collapsed.right-collapsed .footer {
 
 .markdown-content h3 {
     color: #a78bfa;
-    font-size: var(--font-size-xl);
+    font-size: 1.6rem;
     margin: 25px 0 var(--spacing-sm);
 }
 
 .markdown-content p {
     margin-bottom: 15px;
     color: var(--color-text-secondary);
+    font-size: 1.2rem;
 }
 
 .markdown-content ul,
@@ -1026,7 +1027,7 @@ body.left-collapsed.right-collapsed .footer {
     background: none;
     color: #e0e0e0;
     padding: 0;
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     line-height: 1.5;
 }
 

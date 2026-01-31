@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="page-article">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="什么是 SignalR：从“实时 Web”到可规模化的双向推送（.NET 技术栈） - 关键词: SignalR, Web, NET">
+    <meta name="keywords" content="SignalR, Web, NET, Signal, 什么是">
+    <meta name="author" content="Ken Wang">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://kenwang007.github.io/dist/p/8a945725d4ac.html">
+    <meta property="og:title" content="什么是 SignalR：从“实时 Web”到可规模化的双向推送（.NET 技术栈） - Ken的知识库">
+    <meta property="og:description" content="什么是 SignalR：从“实时 Web”到可规模化的双向推送（.NET 技术栈） - 关键词: SignalR, Web, NET">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://kenwang007.github.io/dist/p/8a945725d4ac.html">
+    <meta property="twitter:title" content="什么是 SignalR：从“实时 Web”到可规模化的双向推送（.NET 技术栈） - Ken的知识库">
+    <meta property="twitter:description" content="什么是 SignalR：从“实时 Web”到可规模化的双向推送（.NET 技术栈） - 关键词: SignalR, Web, NET">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#6366f1">
+    
+    <title>什么是 SignalR：从“实时 Web”到可规模化的双向推送（.NET 技术栈） - Ken的知识库</title>
+    <link rel="stylesheet" href="/style.css?v=2.1.2">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%236366f1%22>📚</text></svg>">
+    <link rel="canonical" href="https://kenwang007.github.io/dist/p/8a945725d4ac.html">
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
+    <!-- RSS Feed -->
+    <link rel="alternate" type="application/rss+xml" title="Ken的知识库 RSS Feed" href="/rss.xml">
+    
+    <!-- Breadcrumb Navigation -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "首页",
+          "item": "https://kenwang007.github.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "什么是 SignalR：从“实时 Web”到可规模化的双向推送（.NET 技术栈）",
+          "item": "https://kenwang007.github.io/dist/p/8a945725d4ac.html"
+        }
+      ]
+    }
+    </script>
+    
+    <!-- Article Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "什么是 SignalR：从“实时 Web”到可规模化的双向推送（.NET 技术栈）",
+      "description": "什么是 SignalR：从“实时 Web”到可规模化的双向推送（.NET 技术栈） - 关键词: SignalR, Web, NET",
+      "author": {
+        "@type": "Person",
+        "name": "Ken Wang"
+      },
+      "datePublished": "2026-01-31T18:26:36.520202",
+      "dateModified": "2026-01-31T18:26:36.520202",
+      "inLanguage": "zh-CN"
+    }
+    </script>
+</head>
+<body>
+    <!-- 星空背景 -->
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+
+    <!-- 顶部固定导航 -->
+    <header class="top-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="/index.html">
+                    <span class="logo-text">📚 Ken的知识库</span>
+                </a>
+            </div>
+            <nav class="main-nav">
+                <ul id="nav-menu" class="nav-menu">
+                    <!-- 动态生成的导航菜单项 -->
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <!-- 左侧固定关键词索引 -->
+        <aside class="keyword-sidebar">
+            <div class="keyword-header">
+                <h3>关键词索引</h3>
+            </div>
+            <div class="keyword-list" id="keyword-list">
+                <!-- 动态生成的关键词 -->
+            </div>
+        </aside>
+
+        <!-- 中间主内容 -->
+        <section class="content-area">
+            <div class="content-wrapper">
+                <article class="markdown-content">
+                    
+<h1 id="什么是-signalr从实时-web到可规模化的双向推送.net-技术栈">什么是
+SignalR：从“实时 Web”到可规模化的双向推送（.NET 技术栈）</h1>
+<h2 id="导读">0. 导读</h2>
+<p>在传统 HTTP
+请求/响应模型里，客户端发起请求，服务端返回响应；<strong>服务端很难在“没有新请求”的情况下主动把更新推给客户端</strong>。为了解决“实时”需求，工程上常见的办法包括：轮询、长轮询、Server-Sent
+Events（SSE）或 WebSocket。</p>
+<p><strong>ASP.NET Core SignalR</strong>
+的定位是：一个开源库，用更高层的抽象（Hub、RPC、连接管理、分组、回退传输、扩缩容方案）来简化“实时
+Web 功能”的实现，使得服务端代码可以“即时推送”内容到客户端。</p>
+<hr />
+<h2 id="什么是-signalr从根源到现状从现象到本质">1. 什么是
+SignalR：从根源到现状，从现象到本质</h2>
+<h3 id="从现象理解你想要的是实时你得到的是推送-双向调用">1.1
+从现象理解：你想要的是“实时”，你得到的是“推送 + 双向调用”</h3>
+<p>当业务说“实时”，通常背后至少包含以下一类需求：</p>
+<ul>
+<li>高并发且高频的数据刷新（看板、监控、竞价、投票等）</li>
+<li>通知（站内信、告警、状态变更）</li>
+<li>协作（白板、会议协作、多人编辑）</li>
+<li>聊天</li>
+</ul>
+<p>SignalR 在官方文档中明确列出这类场景属于“适合使用 SignalR
+的候选”。</p>
+<h3 id="从根源理解实时通信的几条物理规律">1.2
+从根源理解：实时通信的几条“物理规律”</h3>
+<p>实时通信之所以难，不是因为“发消息”难，而是因为以下约束：</p>
+<ul>
+<li><strong>连接必须长期存在</strong>：否则就只能靠“不断发请求”（轮询）来“猜”有没有更新。</li>
+<li><strong>网络与浏览器环境差异</strong>：代理、企业网关、老旧浏览器、移动网络切换等，会导致某些传输不可用。</li>
+<li><strong>分布式部署下的广播一致性</strong>：多实例部署时，每台机器只知道自己维护的连接；如果你要给“所有客户端”广播，必须有跨实例的消息分发机制。</li>
+</ul>
+<p>SignalR
+的设计正是围绕这些约束把复杂度封装成可复用能力（Hub/传输回退/扩缩容方案等）。</p>
+<h3 id="signalr-的本质一个面向实时场景的-rpc-连接管理-广播模型">1.3
+SignalR 的本质：一个“面向实时场景的 RPC + 连接管理 + 广播模型”</h3>
+<p>SignalR 的本质可以总结为：</p>
+<ul>
+<li><strong>通信抽象</strong>：用 Hub
+作为高层管道，让客户端与服务端可以互相调用方法（跨机器边界的 dispatch 由
+SignalR 处理）。</li>
+<li><strong>实时传输</strong>：优先使用 WebSocket，必要时回退到 SSE/Long
+Polling。</li>
+<li><strong>连接与拓扑管理</strong>：自动管理连接、分组、向所有连接或指定连接/组发消息。</li>
+</ul>
+<h3 id="signalr-为什么不是普通服务调用框架">1.4 SignalR
+为什么不是“普通服务调用框架”？</h3>
+<p>SignalR 面向的是“在线连接上的实时交互”，而不是一般意义上的“服务到服务
+RPC”。</p>
+<hr />
+<h2 id="signalr-与其他服务调用通信方式本质差异是什么">2. SignalR
+与其他服务调用/通信方式：本质差异是什么？</h2>
+<h3 id="signalr-vs-传统-rest请求驱动-vs-推送驱动">2.1 SignalR vs 传统
+REST：请求驱动 vs 推送驱动</h3>
+<ul>
+<li>REST/HTTP：典型交互以“客户端请求驱动”为主。</li>
+<li>SignalR：典型交互以“服务端推送驱动”为主（当然也支持客户端调用服务端方法）。</li>
+</ul>
+<p>SignalR 的核心价值在于让服务端能“即时推送”内容到客户端。</p>
+<h3 id="signalr-vs-轮询资源浪费-vs-事件驱动">2.2 SignalR vs
+轮询：资源浪费 vs 事件驱动</h3>
+<p>轮询/长轮询属于“用请求模拟实时”的方式：客户端为了拿到更新不得不持续发起请求，即使大多数时候没有变化也会产生额外负载，并且更新有天然的时间粒度（取决于轮询间隔）。</p>
+<p>SignalR（以及 SSE/WebSocket
+这类推送模型）从交互模型上减少了“为了实时而不断请求”的无效开销：只有在有消息/状态变化时才发送。</p>
+<h3 id="signalr-vs-websocket原生协议能力-vs-工程能力">2.3 SignalR vs
+WebSocket（原生）：协议能力 vs 工程能力</h3>
+<p>WebSocket
+提供双向、持久的通信通道，适用于聊天、看板、游戏等需要快速实时通信的场景。</p>
+<p>而 SignalR 属于“在 WebSocket 之上”的工程抽象层：连接管理、RPC
+模型、分组广播、传输回退、扩缩容等。</p>
+<h3 id="signalr-vs-sseeventsource双向-vs-单向">2.4 SignalR vs
+SSE（EventSource）：双向 vs 单向</h3>
+<p>SSE（EventSource）常用于“服务器向浏览器单向推送”的场景。</p>
+<p>SSE 的典型特点：</p>
+<ul>
+<li><strong>服务器 -&gt; 客户端单向流式推送</strong>（浏览器端通过
+<code>EventSource</code> 接收）。</li>
+<li>客户端如果要“发数据给服务端”，通常还需要额外的 HTTP 请求通道。</li>
+</ul>
+<p>SignalR 则明确提供“客户端与服务端互相调用方法”的 Hub 模型。</p>
+<h3 id="signalr-vs-grpc-streaming浏览器生态与协议栈差异">2.5 SignalR vs
+gRPC streaming：浏览器生态与协议栈差异</h3>
+<p>SignalR 面向的主要是浏览器与多种客户端 SDK 的“实时交互”。而 gRPC
+streaming 更偏向“强契约 RPC +
+流式数据”，两者在协议栈与生态侧重点上不同。</p>
+<h3 id="多维度对比表工程选型视角">2.6 多维度对比表（工程选型视角）</h3>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr>
+<th>维度</th>
+<th>SignalR</th>
+<th>原生 WebSocket</th>
+<th>SSE (EventSource)</th>
+<th>轮询/长轮询</th>
+<th>gRPC streaming</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>目标场景</td>
+<td>Web 实时交互 + 广播 + 分组 + RPC 模型</td>
+<td>双向字节流通道</td>
+<td>服务器推送到浏览器（单向）</td>
+<td>“模拟实时”</td>
+<td>服务间/多语言 RPC，支持 streaming</td>
+</tr>
+<tr>
+<td>传输</td>
+<td>WebSockets/SSE/Long Polling 自动选择与回退</td>
+<td>WebSocket（RFC6455）</td>
+<td>HTTP + text/event-stream</td>
+<td>HTTP</td>
+<td>HTTP/2（硬性要求）</td>
+</tr>
+<tr>
+<td>抽象层级</td>
+<td>Hub（双向方法调用）、连接/组</td>
+<td>低层通信通道</td>
+<td>EventSource 事件流</td>
+<td>请求/响应</td>
+<td>IDL+stub+streaming</td>
+</tr>
+<tr>
+<td>典型收益</td>
+<td>工程能力强、上手快、适配复杂网络</td>
+<td>最灵活、最可控</td>
+<td>简单、浏览器原生支持</td>
+<td>最简单</td>
+<td>性能强、强契约</td>
+</tr>
+<tr>
+<td>典型代价</td>
+<td>需要理解连接/扩缩容/粘性会话等</td>
+<td>需要自建连接管理与协议</td>
+<td>单向，回传需额外通道</td>
+<td>资源浪费、数据滞后</td>
+<td>浏览器直连受限、协议栈要求高</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="signalr-的实现方案从-hub-到传输到扩缩容">3. SignalR
+的实现方案：从 Hub 到传输，到扩缩容</h2>
+<h3 id="核心组件与数据流">3.1 核心组件与数据流</h3>
+<p>从 Microsoft Learn 的描述抽象出最关键的组件：</p>
+<ul>
+<li><strong>Hub</strong>：高层管道，允许客户端与服务端互相调用方法；SignalR
+负责跨机器边界的 dispatch。</li>
+<li><strong>Hub Protocol</strong>：SignalR 内置 JSON（文本）与
+MessagePack（二进制）协议。</li>
+<li><strong>Transports</strong>：WebSockets / Server-Sent Events / Long
+Polling。</li>
+</ul>
+<p>结构图（单实例）：</p>
+<pre><code class="language-mermaid">flowchart LR
+  subgraph Client[客户端]
+    C1[Browser/Native Client] --&gt; C2[SignalR Client SDK]
+  end
+
+  subgraph Server[ASP.NET Core]
+    S1[HTTP Endpoint / Negotiation]
+    S2[Hub Pipeline]
+    S3[Hub Methods]
+  end
+
+  C2 --&gt; S1
+  S1 --&gt;|Select Transport| T[WebSockets / SSE / Long Polling]
+  T --&gt; S2
+  S2 --&gt; S3
+  S3 --&gt;|Clients.*.SendAsync / Invoke| S2
+  S2 --&gt; T
+  T --&gt; C2</pre>
+<h3 id="传输选择与回退transport-fallback">3.2 传输选择与回退（Transport
+Fallback）</h3>
+<p>SignalR 支持的传输（按“优雅降级”顺序）：</p>
+<ul>
+<li>WebSockets</li>
+<li>Server-Sent Events</li>
+<li>Long Polling</li>
+</ul>
+<p>并且会在服务端与客户端能力范围内自动选择最佳传输。</p>
+<h3 id="hub双向方法调用抽象">3.3 Hub：双向“方法调用”抽象</h3>
+<p>Hub 是 SignalR 的核心抽象：</p>
+<ul>
+<li>客户端调用服务端方法</li>
+<li>服务端调用客户端方法（通过向客户端发送包含“方法名+参数”的消息）</li>
+<li>支持强类型参数并启用模型绑定（文档描述）</li>
+</ul>
+<h3 id="连接管理分组与广播">3.4 连接管理、分组与广播</h3>
+<p>SignalR 文档在特性列表中明确提到：</p>
+<ul>
+<li>自动处理连接管理</li>
+<li>可向所有连接同时发送消息</li>
+<li>可向特定连接/组发送消息</li>
+</ul>
+<h3 id="规模化部署为什么需要-backplane或托管服务">3.5
+规模化部署：为什么需要 Backplane（或托管服务）</h3>
+<p>SignalR 扩缩容文档指出：</p>
+<ul>
+<li>在多实例（server farm）中，SignalR 需要让同一个连接的所有 HTTP
+请求由同一进程处理（sticky sessions）。</li>
+<li>规模化问题的本质是：每台服务器只知道自己维护的连接，广播只会发到本机连接。</li>
+<li>解决方案包括 Azure SignalR Service 和 Redis backplane。</li>
+</ul>
+<p>结构图（多实例 + Redis backplane）：</p>
+<pre><code class="language-mermaid">flowchart TB
+  subgraph LB[Load Balancer]
+  end
+
+  subgraph AppServers[App Servers]
+    A1[SignalR App #1]
+    A2[SignalR App #2]
+  end
+
+  subgraph Backplane[Redis Backplane]
+    R[(Redis Pub/Sub)]
+  end
+
+  C[Clients] --&gt; LB
+  LB --&gt; A1
+  LB --&gt; A2
+
+  A1 &lt;--&gt; R
+  A2 &lt;--&gt; R
+
+  A1 --&gt;|Publish| R
+  R --&gt;|Fanout| A2</pre>
+<ul>
+<li>Redis backplane 通过 Redis 的 pub/sub 转发消息到其他服务器。</li>
+</ul>
+<p>结构图（Azure SignalR Service）：</p>
+<pre><code class="language-mermaid">flowchart TB
+  C[Clients] --&gt; S[Azure SignalR Service]
+  S &lt;--&gt; A1[App Server #1]
+  S &lt;--&gt; A2[App Server #2]</pre>
+<p>SignalR 扩缩容文档明确指出：</p>
+<ul>
+<li>Azure SignalR Service 作为实时流量代理（proxy），并在多服务器下起到
+backplane 的作用；客户端会被重定向到服务。</li>
+<li>并且推荐：<strong>在 Azure 上托管的 ASP.NET Core SignalR
+应用，推荐使用 Azure SignalR Service</strong>。</li>
+</ul>
+<hr />
+<h2 id="net-技术栈下类似替代-signalr-的方案有哪些">4. .NET
+技术栈下类似/替代 SignalR 的方案有哪些？</h2>
+<h3 id="典型候选与定位">4.1 典型候选与定位</h3>
+<p>这里的“类似/替代”指的是：在 .NET
+场景中，用于实现“实时推送/双向通信/广播”的技术选项。</p>
+<ul>
+<li><strong>原生 WebSocket（ASP.NET Core
+WebSockets）</strong>：最低层通信通道。</li>
+<li><strong>SSE（EventSource）</strong>：浏览器原生的服务器推送机制（单向）。</li>
+<li><strong>gRPC streaming（.NET）</strong>：强契约的流式 RPC（需要
+HTTP/2）。</li>
+<li><strong>Azure SignalR Service</strong>：SignalR
+的托管扩缩容/代理方案。</li>
+<li><strong>Azure Web PubSub</strong>：Azure
+托管实时消息服务，面向实时与 pub/sub 模式。</li>
+</ul>
+<h3 id="azure-web-pubsub更偏托管实时-pubsub-模式的服务">4.2 Azure Web
+PubSub：更偏“托管实时 + Pub/Sub 模式”的服务</h3>
+<p>Azure Web PubSub
+文档强调：它让构建“服务端与客户端需要实时交换数据”的应用更容易，并指出小规模时常用轮询实现实时，但轮询有
+outdated/inconsistent data 与资源浪费等缺点。</p>
+<p>同时文档在“Benefits”中描述其面向大规模连接与高可用架构的能力（如单资源可扩展到大量并发连接、支持多区域等）。</p>
+<h3 id="多维度对比表.net-选型">4.3 多维度对比表（.NET 选型）</h3>
+<table>
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 16%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+</colgroup>
+<thead>
+<tr>
+<th>方案</th>
+<th style="text-align: right;">是否双向</th>
+<th>工程抽象</th>
+<th>扩缩容</th>
+<th>浏览器适配</th>
+<th>集成方式（典型）</th>
+<th>主要优点</th>
+<th>主要限制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ASP.NET Core SignalR</td>
+<td style="text-align: right;">是</td>
+<td>Hub + RPC + 连接/组 + 回退传输</td>
+<td>可配 Redis backplane；Azure 上推荐 Azure SignalR Service</td>
+<td>好（自动选择传输）</td>
+<td><code>AddSignalR()</code> + <code>MapHub()</code></td>
+<td>上手快、工程能力完整</td>
+<td>多实例需考虑 sticky sessions / backplane</td>
+</tr>
+<tr>
+<td>原生 WebSockets（ASP.NET Core）</td>
+<td style="text-align: right;">是</td>
+<td>低层通道</td>
+<td>自己做</td>
+<td>取决于环境</td>
+<td><code>UseWebSockets()</code> + 手写协议</td>
+<td>最灵活可控</td>
+<td>连接/重连/广播/鉴权等需自建</td>
+</tr>
+<tr>
+<td>SSE (EventSource)</td>
+<td style="text-align: right;">否（服务端→客户端）</td>
+<td>事件流</td>
+<td>自己做</td>
+<td>浏览器原生</td>
+<td>服务端返回 <code>text/event-stream</code></td>
+<td>简单、适合单向推送</td>
+<td>回传需额外通道</td>
+</tr>
+<tr>
+<td>gRPC streaming</td>
+<td style="text-align: right;">是</td>
+<td>强契约 RPC</td>
+<td>自己做（或基于平台能力）</td>
+<td>浏览器直连受限</td>
+<td><code>.proto</code> + gRPC server/client</td>
+<td>性能与类型系统强</td>
+<td>requires HTTP/2，浏览器生态限制</td>
+</tr>
+<tr>
+<td>Azure SignalR Service</td>
+<td style="text-align: right;">是</td>
+<td>SignalR 托管化</td>
+<td>服务管理连接与 backplane</td>
+<td>好</td>
+<td><code>AddSignalR().AddAzureSignalR()</code></td>
+<td>降低扩缩容与连接压力</td>
+<td>依赖 Azure 资源</td>
+</tr>
+<tr>
+<td>Azure Web PubSub</td>
+<td style="text-align: right;">是（服务与客户端实时交换）</td>
+<td>托管实时 + pub/sub + REST API</td>
+<td>面向大规模连接</td>
+<td>依赖 WebSocket（服务支持标准 WebSocket）</td>
+<td>SDK/REST API/Functions 集成</td>
+<td>大规模连接、托管能力强</td>
+<td>引入云服务依赖</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="选择-asp.net-core-signalr-做代码示例官方推荐路径">5. 选择
+ASP.NET Core SignalR 做代码示例（官方推荐路径）</h2>
+<blockquote>
+<p>选择理由：SignalR 官方定位就是“简化实时 Web 功能”；并提供
+Hub（双向方法调用）、连接/组、传输回退等能力。</p>
+<p>示例与集成方式以 Microsoft Learn 的 ASP.NET Core SignalR
+官方文档与教程为准。</p>
+</blockquote>
+<h3 id="服务端定义-hub最小可用的广播示例">5.1 服务端：定义
+Hub（最小可用的广播示例）</h3>
+<p>Microsoft Learn 的入门教程给出典型 Hub 写法：继承
+<code>Hub</code>，在 Hub 方法里通过
+<code>Clients.All.SendAsync(...)</code> 调用所有客户端的某个方法名（如
+<code>ReceiveMessage</code>）。</p>
+<p>最小 Hub 示例（纯 C#）：</p>
+<pre><code class="language-csharp">using Microsoft.AspNetCore.SignalR;
+
+public sealed class ChatHub : Hub
+{
+    public Task SendMessage(string user, string message)
+    {
+        return Clients.All.SendAsync(&quot;ReceiveMessage&quot;, user, message);
+    }
+}</pre>
+<h3 id="服务端注册与路由addsignalr-maphub">5.2
+服务端：注册与路由（AddSignalR + MapHub）</h3>
+<p>同一教程给出在 <code>Program.cs</code> 中配置 SignalR：</p>
+<ul>
+<li><code>builder.Services.AddSignalR();</code></li>
+<li><code>app.MapHub&lt;ChatHub&gt;("/chatHub");</code></li>
+</ul>
+<p>并明确指出：该代码把 SignalR 加入到 ASP.NET Core
+的依赖注入与路由系统。</p>
+<p>最小 <code>Program.cs</code>（可运行）：</p>
+<pre><code class="language-csharp">var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSignalR();
+
+var app = builder.Build();
+
+app.MapHub&lt;ChatHub&gt;(&quot;/chatHub&quot;);
+
+app.Run();</pre>
+<h3 id="客户端.net-控制台最小可运行">5.3 客户端：.NET
+控制台（最小可运行）</h3>
+<p>下面示例演示：</p>
+<ul>
+<li>连接 Hub</li>
+<li>订阅服务端广播的 <code>ReceiveMessage</code></li>
+<li>调用服务端 Hub 方法 <code>SendMessage</code></li>
+</ul>
+<pre><code class="language-csharp">using Microsoft.AspNetCore.SignalR.Client;
+
+var hubUrl = new UriBuilder
+{
+    Scheme = Uri.UriSchemeHttp,
+    Host = &quot;localhost&quot;,
+    Port = 5000,
+    Path = &quot;/chatHub&quot;
+}.Uri;
+
+var connection = new HubConnectionBuilder()
+    .WithUrl(hubUrl)
+    .WithAutomaticReconnect()
+    .Build();
+
+connection.On&lt;string, string&gt;(&quot;ReceiveMessage&quot;, (user, message) =&gt;
+{
+    Console.WriteLine($&quot;{user}: {message}&quot;);
+});
+
+await connection.StartAsync();
+
+await connection.InvokeAsync(&quot;SendMessage&quot;, &quot;client&quot;, &quot;hello&quot;);
+
+Console.WriteLine(&quot;Press Enter to exit...&quot;);
+Console.ReadLine();
+
+await connection.DisposeAsync();</pre>
+<h3 id="上云azure-signalr-service推荐在-azure-上使用">5.4 上云：Azure
+SignalR Service（推荐在 Azure 上使用）</h3>
+<p>SignalR 扩缩容文档推荐 Azure 上使用 Azure SignalR Service；Azure
+SignalR Service 文档也给出典型集成方式：</p>
+<ul>
+<li>安装 <code>Microsoft.Azure.SignalR</code></li>
+<li>在 <code>AddSignalR()</code> 后追加
+<code>.AddAzureSignalR()</code></li>
+</ul>
+<hr />
+<h2 id="参考资料">参考资料</h2>
+<ol type="1">
+<li>Microsoft Learn - Overview of ASP.NET Core SignalR
+<ul>
+<li>https://learn.microsoft.com/en-us/aspnet/core/signalr/introduction?view=aspnetcore-10.0</li>
+</ul></li>
+<li>Microsoft Learn - Tutorial: Get started with ASP.NET Core SignalR
+<ul>
+<li>https://learn.microsoft.com/en-us/aspnet/core/tutorials/signalr?view=aspnetcore-10.0</li>
+</ul></li>
+<li>Microsoft Learn - ASP.NET Core SignalR hosting and scaling
+<ul>
+<li>https://learn.microsoft.com/en-us/aspnet/core/signalr/scale?view=aspnetcore-10.0</li>
+</ul></li>
+<li>Microsoft Learn - Use Azure SignalR Service
+<ul>
+<li>https://learn.microsoft.com/en-us/azure/azure-signalr/signalr-howto-use</li>
+</ul></li>
+<li>Microsoft Learn - WebSockets support in ASP.NET Core
+<ul>
+<li>https://learn.microsoft.com/en-us/aspnet/core/fundamentals/websockets?view=aspnetcore-10.0</li>
+</ul></li>
+</ol>
+
+                </article>
+            </div>
+        </section>
+
+        <!-- 右侧热门文章 -->
+        <aside class="popular-sidebar">
+            <div class="popular-header">
+                <h3>热门文章</h3>
+            </div>
+            <div class="popular-list" id="popular-list">
+                <!-- 动态生成的热门文章列表 -->
+            </div>
+        </aside>
+    </main>
+
+    <!-- JavaScript -->
+    <script type="module" src="/script.js?v=2.2.0"></script>
+    
+    <!-- Initialize Highlight.js -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Highlight all code blocks
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -141,7 +141,7 @@ AI 编程工具领域的重要玩家。</p>
 │   │ 100万token    │     │ 200K上下文    │     │ 灵活配置      │    │
 │   └───────────────┘     └───────────────┘     └───────────────┘    │
 │                                                                     │
-└─────────────────────────────────────────────────────────────────────┘</code></pre>
+└─────────────────────────────────────────────────────────────────────┘</pre>
 <blockquote>
 <p>💡 <strong>一句话总结</strong>：Gemini CLI
 让你在终端里拥有一个理解代码、能读写文件、能执行命令的 AI
@@ -186,7 +186,7 @@ AI 编程工具领域的重要玩家。</p>
 │   │         (100万 token 上下文窗口)                       │    │
 │   └───────────────────────────────────────────────────────┘    │
 │                                                                 │
-└─────────────────────────────────────────────────────────────────┘</code></pre>
+└─────────────────────────────────────────────────────────────────┘</pre>
 <h3 id="核心特性">1.3 核心特性</h3>
 <table>
 <thead>
@@ -245,41 +245,41 @@ AI 编程工具领域的重要玩家。</p>
 │   │ • MCP 扩展      │  │ • 技术探索      │  │ • 知识分享      ││
 │   └─────────────────┘  └─────────────────┘  └─────────────────┘│
 │                                                                 │
-└─────────────────────────────────────────────────────────────────┘</code></pre>
+└─────────────────────────────────────────────────────────────────┘</pre>
 <h3 id="典型使用场景">2.2 典型使用场景</h3>
 <h4 id="场景-1快速项目初始化">场景 1：快速项目初始化</h4>
-<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> gemini <span class="st">&quot;创建一个 FastAPI 项目，包含用户认证、数据库连接和 Docker 配置&quot;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Gemini CLI 会：</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 创建项目结构</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 生成 requirements.txt</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 编写 main.py 和路由</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. 配置 Dockerfile 和 docker-compose.yml</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. 生成 .env 示例文件</span></span></code></pre></div>
+<pre><code class="language-bash">$ gemini &quot;创建一个 FastAPI 项目，包含用户认证、数据库连接和 Docker 配置&quot;
+
+# Gemini CLI 会：
+# 1. 创建项目结构
+# 2. 生成 requirements.txt
+# 3. 编写 main.py 和路由
+# 4. 配置 Dockerfile 和 docker-compose.yml
+# 5. 生成 .env 示例文件</pre>
 <h4 id="场景-2代码调试">场景 2：代码调试</h4>
-<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> gemini <span class="st">&quot;这段代码为什么会报 TypeError？&quot;</span> <span class="op">&lt;</span> buggy_code.py</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Gemini CLI 会：</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 分析代码逻辑</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 定位错误原因</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 提供修复建议</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. 生成修复后的代码</span></span></code></pre></div>
+<pre><code class="language-bash">$ gemini &quot;这段代码为什么会报 TypeError？&quot; &lt; buggy_code.py
+
+# Gemini CLI 会：
+# 1. 分析代码逻辑
+# 2. 定位错误原因
+# 3. 提供修复建议
+# 4. 生成修复后的代码</pre>
 <h4 id="场景-3代码重构">场景 3：代码重构</h4>
-<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> gemini <span class="st">&quot;将这个类重构为使用依赖注入模式&quot;</span> <span class="at">-f</span> legacy_service.py</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Gemini CLI 会：</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 理解现有代码结构</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 设计重构方案</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 生成重构后的代码</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. 保持功能兼容</span></span></code></pre></div>
+<pre><code class="language-bash">$ gemini &quot;将这个类重构为使用依赖注入模式&quot; -f legacy_service.py
+
+# Gemini CLI 会：
+# 1. 理解现有代码结构
+# 2. 设计重构方案
+# 3. 生成重构后的代码
+# 4. 保持功能兼容</pre>
 <h4 id="场景-4多模态开发">场景 4：多模态开发</h4>
-<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> gemini <span class="st">&quot;根据这个 UI 截图生成 React 组件&quot;</span> <span class="at">-i</span> ui_design.png</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Gemini CLI 会：</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 分析 UI 设计</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 识别组件结构</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 生成 React/TSX 代码</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. 添加基础样式</span></span></code></pre></div>
+<pre><code class="language-bash">$ gemini &quot;根据这个 UI 截图生成 React 组件&quot; -i ui_design.png
+
+# Gemini CLI 会：
+# 1. 分析 UI 设计
+# 2. 识别组件结构
+# 3. 生成 React/TSX 代码
+# 4. 添加基础样式</pre>
 <h3 id="与开发工作流集成">2.3 与开发工作流集成</h3>
 <pre><code>日常开发工作流 + Gemini CLI：
 
@@ -291,54 +291,54 @@ AI 编程工具领域的重要玩家。</p>
 ┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐
 │ Gemini  │    │ Gemini  │    │ Gemini  │    │ Gemini  │
 │ 需求分析│    │ 架构建议│    │ 代码生成│    │ 测试用例│
-└─────────┘    └─────────┘    └─────────┘    └─────────┘</code></pre>
+└─────────┘    └─────────┘    └─────────┘    └─────────┘</pre>
 <hr />
 <h2 id="快速开始">3. 快速开始</h2>
 <h3 id="安装">3.1 安装</h3>
-<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用 npm 安装（推荐）</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> install <span class="at">-g</span> @anthropic-ai/gemini-cli</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 或使用 Homebrew (macOS)</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install gemini-cli</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 或直接下载二进制</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-fsSL</span> https://cli.gemini.google.com/install.sh <span class="kw">|</span> <span class="fu">bash</span></span></code></pre></div>
+<pre><code class="language-bash"># 使用 npm 安装（推荐）
+npm install -g @anthropic-ai/gemini-cli
+
+# 或使用 Homebrew (macOS)
+brew install gemini-cli
+
+# 或直接下载二进制
+curl -fsSL https://cli.gemini.google.com/install.sh | bash</pre>
 <h3 id="配置">3.2 配置</h3>
-<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 首次运行会引导登录 Google 账号</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gemini</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 或使用 API Key（适用于 CI/CD）</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">GEMINI_API_KEY</span><span class="op">=</span><span class="st">&quot;your-api-key&quot;</span></span></code></pre></div>
+<pre><code class="language-bash"># 首次运行会引导登录 Google 账号
+gemini
+
+# 或使用 API Key（适用于 CI/CD）
+export GEMINI_API_KEY=&quot;your-api-key&quot;</pre>
 <h3 id="基础使用">3.3 基础使用</h3>
-<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 交互模式</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gemini</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 单次查询</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ex">gemini</span> <span class="st">&quot;解释这段代码&quot;</span> <span class="op">&lt;</span> code.py</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 指定文件</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="ex">gemini</span> <span class="at">-f</span> main.py <span class="st">&quot;添加错误处理&quot;</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 带图片输入</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="ex">gemini</span> <span class="at">-i</span> screenshot.png <span class="st">&quot;根据截图实现这个界面&quot;</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 执行 Shell 命令（需确认）</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="ex">gemini</span> <span class="st">&quot;列出当前目录的 Python 文件并统计行数&quot;</span></span></code></pre></div>
+<pre><code class="language-bash"># 交互模式
+gemini
+
+# 单次查询
+gemini &quot;解释这段代码&quot; &lt; code.py
+
+# 指定文件
+gemini -f main.py &quot;添加错误处理&quot;
+
+# 带图片输入
+gemini -i screenshot.png &quot;根据截图实现这个界面&quot;
+
+# 执行 Shell 命令（需确认）
+gemini &quot;列出当前目录的 Python 文件并统计行数&quot;</pre>
 <h3 id="高级配置">3.4 高级配置</h3>
-<pre><code class="language-yaml"><code class="sourceCode yaml"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ~/.gemini/config.yaml</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">model</span><span class="kw">:</span><span class="at"> gemini-2.5-pro</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">temperature</span><span class="kw">:</span><span class="at"> </span><span class="fl">0.7</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">max_tokens</span><span class="kw">:</span><span class="at"> </span><span class="dv">8192</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">safety_settings</span><span class="kw">:</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">harassment</span><span class="kw">:</span><span class="at"> block_none</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">hate_speech</span><span class="kw">:</span><span class="at"> block_medium_and_above</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">tools</span><span class="kw">:</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">shell</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">file_write</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">file_read</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="fu">mcp_servers</span><span class="kw">:</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> github</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">command</span><span class="kw">:</span><span class="at"> npx @anthropic-ai/mcp-server-github</span></span></code></pre></div>
+<pre><code class="language-yaml"># ~/.gemini/config.yaml
+model: gemini-2.5-pro
+temperature: 0.7
+max_tokens: 8192
+safety_settings:
+  harassment: block_none
+  hate_speech: block_medium_and_above
+tools:
+  shell: true
+  file_write: true
+  file_read: true
+mcp_servers:
+  - name: github
+    command: npx @anthropic-ai/mcp-server-github</pre>
 <hr />
 <h2 id="同类工具多维度对比">4. 同类工具多维度对比</h2>
 <h3 id="主要竞品概览">4.1 主要竞品概览</h3>
@@ -360,7 +360,7 @@ AI 编程工具领域的重要玩家。</p>
 │   • 脚本友好               • 实时补全               • 无需配置       │
 │   • 终端原生               • 可视化编辑             • 通用场景       │
 │                                                                     │
-└─────────────────────────────────────────────────────────────────────┘</code></pre>
+└─────────────────────────────────────────────────────────────────────┘</pre>
 <h3 id="核心功能对比">4.2 核心功能对比</h3>
 <table>
 <colgroup>
@@ -543,7 +543,7 @@ AI 编程工具领域的重要玩家。</p>
 │                                                                     │
 │   💡 结论：Gemini CLI 对个人开发者最友好，完全免费且功能完整         │
 │                                                                     │
-└─────────────────────────────────────────────────────────────────────┘</code></pre>
+└─────────────────────────────────────────────────────────────────────┘</pre>
 <h3 id="底层模型对比">4.5 底层模型对比</h3>
 <table>
 <colgroup>
@@ -607,7 +607,7 @@ Claude Code</h2>
 │   • 多模态能力强                 │   • 代码质量稳定                  │
 │   • 上下文窗口超大               │   • 安全性考量周全                │
 │                                  │                                  │
-└──────────────────────────────────┴──────────────────────────────────┘</code></pre>
+└──────────────────────────────────┴──────────────────────────────────┘</pre>
 <h3 id="功能详细对比">5.2 功能详细对比</h3>
 <table>
 <thead>
@@ -684,28 +684,28 @@ Claude Code</h2>
 <h3 id="实际使用案例对比">5.3 实际使用案例对比</h3>
 <h4 id="案例实现一个-rest-api">案例：实现一个 REST API</h4>
 <p><strong>Gemini CLI 表现：</strong></p>
-<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> gemini <span class="st">&quot;用 Python FastAPI 实现一个用户管理 REST API，包含 CRUD 操作&quot;</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 优点：</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ✅ 快速生成完整代码</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ✅ 自动创建多个文件</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ✅ 包含基础测试</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 缺点：</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co"># ⚠️ 错误处理不够完善</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co"># ⚠️ 缺少输入验证</span></span></code></pre></div>
+<pre><code class="language-bash">$ gemini &quot;用 Python FastAPI 实现一个用户管理 REST API，包含 CRUD 操作&quot;
+
+# 优点：
+# ✅ 快速生成完整代码
+# ✅ 自动创建多个文件
+# ✅ 包含基础测试
+
+# 缺点：
+# ⚠️ 错误处理不够完善
+# ⚠️ 缺少输入验证</pre>
 <p><strong>Claude Code 表现：</strong></p>
-<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> claude <span class="st">&quot;用 Python FastAPI 实现一个用户管理 REST API，包含 CRUD 操作&quot;</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 优点：</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ✅ 代码结构清晰</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ✅ 完善的错误处理</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ✅ 类型注解完整</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># ✅ 安全考虑周全</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 缺点：</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co"># ⚠️ 需要付费使用</span></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co"># ⚠️ 生成速度稍慢</span></span></code></pre></div>
+<pre><code class="language-bash">$ claude &quot;用 Python FastAPI 实现一个用户管理 REST API，包含 CRUD 操作&quot;
+
+# 优点：
+# ✅ 代码结构清晰
+# ✅ 完善的错误处理
+# ✅ 类型注解完整
+# ✅ 安全考虑周全
+
+# 缺点：
+# ⚠️ 需要付费使用
+# ⚠️ 生成速度稍慢</pre>
 <hr />
 <h2 id="优劣势总结">6. 优劣势总结</h2>
 <h3 id="gemini-cli">6.1 Gemini CLI</h3>
@@ -721,7 +721,7 @@ Claude Code</h2>
 │ • 开源，可自定义           │ • 企业级功能较少                   │
 │ • 安装配置简单             │ • 某些场景可能被限流               │
 │ • MCP 原生支持             │ • 中文支持一般                     │
-└────────────────────────────┴────────────────────────────────────┘</code></pre>
+└────────────────────────────┴────────────────────────────────────┘</pre>
 <h3 id="claude-code">6.2 Claude Code</h3>
 <pre><code>┌─────────────────────────────────────────────────────────────────┐
 │                    Claude Code 优劣势分析                        │
@@ -735,7 +735,7 @@ Claude Code</h2>
 │ • 文档详尽                 │ • Google 生态集成较弱              │
 │ • 社区活跃                 │ • 多模态能力略逊                   │
 │ • 企业级支持               │ •                                  │
-└────────────────────────────┴────────────────────────────────────┘</code></pre>
+└────────────────────────────┴────────────────────────────────────┘</pre>
 <hr />
 <h2 id="选型建议">7. 选型建议</h2>
 <h3 id="决策流程图">7.1 决策流程图</h3>
@@ -765,7 +765,7 @@ Claude Code</h2>
                       ┌───────────────┐    ┌───────────────┐
                       │  Claude Code  │    │    Cursor     │
                       │  (质量优先)   │    │  (效率优先)   │
-                      └───────────────┘    └───────────────┘</code></pre>
+                      └───────────────┘    └───────────────┘</pre>
 <h3 id="场景推荐">7.2 场景推荐</h3>
 <table>
 <thead>
@@ -833,7 +833,7 @@ Claude Code</h2>
 │   ├── 辅助：Claude Code（安全要求场景）                              │
 │   └── 工具：Gemini CLI（脚本自动化）                                 │
 │                                                                     │
-└─────────────────────────────────────────────────────────────────────┘</code></pre>
+└─────────────────────────────────────────────────────────────────────┘</pre>
 <hr />
 <h2 id="未来展望">8. 未来展望</h2>
 <pre><code>┌─────────────────────────────────────────────────────────────────────┐
@@ -854,7 +854,7 @@ Claude Code</h2>
 │   ├── 垂直领域专业化                                                 │
 │   └── 与 DevOps 工具链深度集成                                       │
 │                                                                     │
-└─────────────────────────────────────────────────────────────────────┘</code></pre>
+└─────────────────────────────────────────────────────────────────────┘</pre>
 <hr />
 <h2 id="总结">9. 总结</h2>
 <h3 id="核心结论">核心结论</h3>

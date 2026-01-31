@@ -173,8 +173,8 @@
       "url": "dist/p/post-bdc928dcc6fb.html",
       "original_path": "notes/AI相关/Tools/Ollama/OpenwebUI/how-cursor-help-software-delivery.html",
       "keywords": [
-        "Cursor",
         "AI",
+        "Cursor",
         "驱动的代码编辑器"
       ]
     },
@@ -242,13 +242,27 @@
     },
     {
       "title": "🚪 API 网关设计指南",
-      "id": "a3939ca25bc8",
+      "id": "9cbe4bbf44d4",
       "slug": "api-gateway-guide",
       "url": "dist/p/api-gateway-guide.html",
-      "original_path": "notes/软件设计/Cache/Need-to-know-gw.html",
+      "original_path": "notes/软件设计/Pattern/Need-to-know-gw.html",
       "keywords": [
         "API",
         "网关设计指南"
+      ]
+    },
+    {
+      "title": "什么是 SignalR：从“实时 Web”到可规模化的双向推送（.NET 技术栈）",
+      "id": "8a945725d4ac",
+      "slug": null,
+      "url": "dist/p/8a945725d4ac.html",
+      "original_path": "notes/软件设计/Pattern/什么是SignalR.html",
+      "keywords": [
+        "SignalR",
+        "Web",
+        "NET",
+        "Signal",
+        "什么是"
       ]
     },
     {
@@ -456,6 +470,15 @@
           "subdirs": []
         },
         {
+          "name": "Pattern",
+          "path": "notes/软件设计/Pattern",
+          "id": "69531ab14396",
+          "slug": null,
+          "url": "dist/c/69531ab14396/index.html",
+          "has_posts": true,
+          "subdirs": []
+        },
+        {
           "name": "RPC",
           "path": "notes/软件设计/RPC",
           "id": "57ec901bbf8f",
@@ -476,5 +499,5 @@
       "subdirs": []
     }
   ],
-  "generated_at": 1769837466.234129
+  "generated_at": 1769864381.89258
 }

@@ -149,7 +149,7 @@ Agent（人工智能代理）是一种能够自主感知环境、做出决策并
 │    │  [搜索] [代码执行] [文件操作] [API调用] [...]   │  │
 │    └────────────────────────────────────────────────┘  │
 │                                                         │
-└─────────────────────────────────────────────────────────┘</code></pre>
+└─────────────────────────────────────────────────────────┘</pre>
 <h3 id="大语言模型-llm">2.1 大语言模型 (LLM)</h3>
 <p>Agent 的”大脑”，负责理解、推理和生成。常用模型包括： - GPT-4 / GPT-4o
 - Claude 3.5 Sonnet / Opus - Gemini Pro - Llama 3 - Qwen</p>
@@ -175,20 +175,20 @@ Agent（人工智能代理）是一种能够自主感知环境、做出决策并
 文件”</p>
 <h3 id="提供充足的上下文">3.2 提供充足的上下文</h3>
 <p>好的上下文应该包含：</p>
-<pre><code class="language-markdown"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## 背景信息</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>项目类型：<span class="co">[</span><span class="ot">Web应用/数据分析/自动化脚本...</span><span class="co">]</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>技术栈：<span class="co">[</span><span class="ot">Python/JavaScript/Go...</span><span class="co">]</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>环境：<span class="co">[</span><span class="ot">本地开发/生产环境/Docker...</span><span class="co">]</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">## 具体需求</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>功能描述：<span class="co">[</span><span class="ot">详细说明要实现什么</span><span class="co">]</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>输入输出：<span class="co">[</span><span class="ot">期望的输入格式和输出结果</span><span class="co">]</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>约束条件：<span class="co">[</span><span class="ot">性能要求/安全限制/兼容性...</span><span class="co">]</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## 参考资料</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>相关文档链接</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>示例代码</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>已有的实现</span></code></pre></div>
+<pre><code class="language-markdown">## 背景信息
+- 项目类型：[Web应用/数据分析/自动化脚本...]
+- 技术栈：[Python/JavaScript/Go...]
+- 环境：[本地开发/生产环境/Docker...]
+
+## 具体需求
+- 功能描述：[详细说明要实现什么]
+- 输入输出：[期望的输入格式和输出结果]
+- 约束条件：[性能要求/安全限制/兼容性...]
+
+## 参考资料
+- 相关文档链接
+- 示例代码
+- 已有的实现</pre>
 <h3 id="分步骤迭代">3.3 分步骤迭代</h3>
 <p>不要期望一次性完成所有任务。采用迭代方式：</p>
 <ol type="1">
@@ -199,7 +199,7 @@ Agent（人工智能代理）是一种能够自主感知环境、做出决策并
 <li><strong>第五轮</strong>：完善文档</li>
 </ol>
 <h3 id="善用反馈循环">3.4 善用反馈循环</h3>
-<pre><code>用户输入 -&gt; Agent 输出 -&gt; 用户反馈 -&gt; Agent 改进 -&gt; 循环...</code></pre>
+<pre><code>用户输入 -&gt; Agent 输出 -&gt; 用户反馈 -&gt; Agent 改进 -&gt; 循环...</pre>
 <p>有效的反馈示例： - “这个函数的逻辑是对的，但需要添加输入验证” -
 “运行时出现了这个错误：[错误信息]，请修复” -
 “功能可以工作，但代码风格需要改成 PEP8 规范”</p>
@@ -207,13 +207,13 @@ Agent（人工智能代理）是一种能够自主感知环境、做出决策并
 <h3 id="prompt-工程技巧">4.1 Prompt 工程技巧</h3>
 <h4 id="角色设定">角色设定</h4>
 <pre><code>你是一位资深的后端工程师，专注于高并发系统设计，
-熟悉 Go、Python 和分布式架构。</code></pre>
+熟悉 Go、Python 和分布式架构。</pre>
 <h4 id="思维链-chain-of-thought">思维链 (Chain of Thought)</h4>
 <pre><code>请一步步思考这个问题：
 1. 首先分析需求...
 2. 然后设计架构...
 3. 接着实现代码...
-4. 最后进行测试...</code></pre>
+4. 最后进行测试...</pre>
 <h4 id="few-shot-示例">Few-shot 示例</h4>
 <pre><code>这是输入输出的示例：
 输入: &quot;hello world&quot;
@@ -222,45 +222,45 @@ Agent（人工智能代理）是一种能够自主感知环境、做出决策并
 输入: &quot;ai agent&quot;
 输出: &quot;AI AGENT&quot;
 
-现在处理: &quot;machine learning&quot;</code></pre>
+现在处理: &quot;machine learning&quot;</pre>
 <h3 id="任务模板">4.2 任务模板</h3>
 <h4 id="代码编写任务">代码编写任务</h4>
-<pre><code class="language-markdown"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## 任务：[任务名称]</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">### 需求描述</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">详细描述需要实现的功能</span><span class="co">]</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">### 技术要求</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>语言：<span class="co">[</span><span class="ot">编程语言</span><span class="co">]</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>框架：<span class="co">[</span><span class="ot">使用的框架</span><span class="co">]</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>依赖：<span class="co">[</span><span class="ot">需要的库</span><span class="co">]</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">### 输入输出</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>输入：<span class="co">[</span><span class="ot">输入格式和示例</span><span class="co">]</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>输出：<span class="co">[</span><span class="ot">期望的输出格式</span><span class="co">]</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="fu">### 约束条件</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">性能要求</span><span class="co">]</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">代码规范</span><span class="co">]</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">其他限制</span><span class="co">]</span></span></code></pre></div>
+<pre><code class="language-markdown">## 任务：[任务名称]
+
+### 需求描述
+[详细描述需要实现的功能]
+
+### 技术要求
+- 语言：[编程语言]
+- 框架：[使用的框架]
+- 依赖：[需要的库]
+
+### 输入输出
+- 输入：[输入格式和示例]
+- 输出：[期望的输出格式]
+
+### 约束条件
+- [性能要求]
+- [代码规范]
+- [其他限制]</pre>
 <h4 id="文档编写任务">文档编写任务</h4>
-<pre><code class="language-markdown"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## 任务：编写 [主题] 的技术文档</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">### 目标读者</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">初学者/中级开发者/架构师...</span><span class="co">]</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">### 文档结构</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>概述</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>核心概念</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>使用方法</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>示例代码</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>最佳实践</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>常见问题</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="fu">### 风格要求</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">正式/轻松</span><span class="co">]</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">技术深度</span><span class="co">]</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">示例数量</span><span class="co">]</span></span></code></pre></div>
+<pre><code class="language-markdown">## 任务：编写 [主题] 的技术文档
+
+### 目标读者
+[初学者/中级开发者/架构师...]
+
+### 文档结构
+1. 概述
+2. 核心概念
+3. 使用方法
+4. 示例代码
+5. 最佳实践
+6. 常见问题
+
+### 风格要求
+- [正式/轻松]
+- [技术深度]
+- [示例数量]</pre>
 <h3 id="调试与问题解决">4.3 调试与问题解决</h3>
 <p>当 Agent 输出不符合预期时：</p>
 <ol type="1">
@@ -369,55 +369,55 @@ Agent（人工智能代理）是一种能够自主感知环境、做出决策并
 </table>
 <h2 id="实战案例">6. 实战案例</h2>
 <h3 id="案例自动化代码审查">6.1 案例：自动化代码审查</h3>
-<pre><code class="language-python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用 Agent 进行代码审查的示例流程</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>任务描述 <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="st">请审查以下 Python 代码，关注：</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="st">1. 代码风格是否符合 PEP8</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="st">2. 是否存在潜在的 bug</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="st">3. 性能优化建议</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="st">4. 安全漏洞检查</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="st">代码：</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="st">[粘贴代码]</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Agent 会：</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 分析代码结构</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 检查各项指标</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 生成详细报告</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. 提供改进建议</span></span></code></pre></div>
+<pre><code class="language-python"># 使用 Agent 进行代码审查的示例流程
+
+任务描述 = &quot;&quot;&quot;
+请审查以下 Python 代码，关注：
+1. 代码风格是否符合 PEP8
+2. 是否存在潜在的 bug
+3. 性能优化建议
+4. 安全漏洞检查
+
+代码：
+[粘贴代码]
+&quot;&quot;&quot;
+
+# Agent 会：
+# 1. 分析代码结构
+# 2. 检查各项指标
+# 3. 生成详细报告
+# 4. 提供改进建议</pre>
 <h3 id="案例技术文档生成">6.2 案例：技术文档生成</h3>
-<pre><code class="language-markdown"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>任务：为我的 API 生成完整的技术文档</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>输入：</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>OpenAPI/Swagger 规范文件</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>代码注释</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>使用示例</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>期望输出：</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>API 概述</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>认证方式</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>端点详情</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>请求/响应示例</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>错误码说明</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>SDK 使用指南</span></code></pre></div>
+<pre><code class="language-markdown">任务：为我的 API 生成完整的技术文档
+
+输入：
+- OpenAPI/Swagger 规范文件
+- 代码注释
+- 使用示例
+
+期望输出：
+- API 概述
+- 认证方式
+- 端点详情
+- 请求/响应示例
+- 错误码说明
+- SDK 使用指南</pre>
 <h3 id="案例数据分析助手">6.3 案例：数据分析助手</h3>
-<pre><code class="language-markdown"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>任务：分析销售数据并生成报告</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>数据源：sales_2024.csv</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>分析维度：</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>月度销售趋势</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>产品类别分布</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>地区销售对比</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>同比/环比增长</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>输出要求：</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>数据可视化图表</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>关键指标摘要</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>异常点分析</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>改进建议</span></code></pre></div>
+<pre><code class="language-markdown">任务：分析销售数据并生成报告
+
+数据源：sales_2024.csv
+
+分析维度：
+1. 月度销售趋势
+2. 产品类别分布
+3. 地区销售对比
+4. 同比/环比增长
+
+输出要求：
+- 数据可视化图表
+- 关键指标摘要
+- 异常点分析
+- 改进建议</pre>
 <h2 id="注意事项与局限性">7. 注意事项与局限性</h2>
 <h3 id="agent-的局限性">7.1 Agent 的局限性</h3>
 <ul>

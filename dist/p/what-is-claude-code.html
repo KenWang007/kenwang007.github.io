@@ -144,7 +144,7 @@
 │                                                                     │
 │   💡 Claude Code：以代码质量和推理能力著称，是专业开发者的首选       │
 │                                                                     │
-└─────────────────────────────────────────────────────────────────────┘</code></pre>
+└─────────────────────────────────────────────────────────────────────┘</pre>
 <blockquote>
 <p>💡 <strong>一句话总结</strong>：Claude Code
 是目前代码质量最高、推理能力最强的 AI
@@ -190,7 +190,7 @@ CLI</h3>
 │   │                                                         │  │
 │   └─────────────────────────────────────────────────────────┘  │
 │                                                                 │
-└─────────────────────────────────────────────────────────────────┘</code></pre>
+└─────────────────────────────────────────────────────────────────┘</pre>
 <p><strong>Claude Code CLI</strong> 是 Claude Code
 的命令行实现，它让开发者可以：</p>
 <table>
@@ -257,7 +257,7 @@ CLI</h3>
 │   │              (200K token 上下文窗口)                    │    │
 │   └───────────────────────────────────────────────────────┘    │
 │                                                                 │
-└─────────────────────────────────────────────────────────────────┘</code></pre>
+└─────────────────────────────────────────────────────────────────┘</pre>
 <h3 id="核心特性">1.4 核心特性</h3>
 <table>
 <thead>
@@ -316,44 +316,44 @@ CLI</h3>
 │   │ • 重构辅助      │  │ • 最佳实践      │  │ • CI/CD 集成    ││
 │   └─────────────────┘  └─────────────────┘  └─────────────────┘│
 │                                                                 │
-└─────────────────────────────────────────────────────────────────┘</code></pre>
+└─────────────────────────────────────────────────────────────────┘</pre>
 <h3 id="典型使用场景">2.2 典型使用场景</h3>
 <h4 id="场景-1复杂代码重构">场景 1：复杂代码重构</h4>
-<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> claude <span class="st">&quot;将这个 500 行的单体函数重构为模块化设计，使用 SOLID 原则&quot;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Claude Code 会：</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 分析现有代码结构和依赖关系</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 设计模块化方案</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 逐步重构，保持功能不变</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. 添加完善的错误处理</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. 生成单元测试</span></span></code></pre></div>
+<pre><code class="language-bash">$ claude &quot;将这个 500 行的单体函数重构为模块化设计，使用 SOLID 原则&quot;
+
+# Claude Code 会：
+# 1. 分析现有代码结构和依赖关系
+# 2. 设计模块化方案
+# 3. 逐步重构，保持功能不变
+# 4. 添加完善的错误处理
+# 5. 生成单元测试</pre>
 <h4 id="场景-2bug-诊断与修复">场景 2：Bug 诊断与修复</h4>
-<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> claude <span class="st">&quot;这个 API 调用有时会返回空数据，帮我找出原因并修复&quot;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Claude Code 会：</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 分析代码执行路径</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 识别潜在的竞态条件或边界情况</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 提供详细的问题分析</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. 生成修复代码和防御性检查</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. 建议相关的测试用例</span></span></code></pre></div>
+<pre><code class="language-bash">$ claude &quot;这个 API 调用有时会返回空数据，帮我找出原因并修复&quot;
+
+# Claude Code 会：
+# 1. 分析代码执行路径
+# 2. 识别潜在的竞态条件或边界情况
+# 3. 提供详细的问题分析
+# 4. 生成修复代码和防御性检查
+# 5. 建议相关的测试用例</pre>
 <h4 id="场景-3架构设计咨询">场景 3：架构设计咨询</h4>
-<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> claude <span class="st">&quot;设计一个支持百万用户的实时消息系统架构&quot;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Claude Code 会：</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 分析需求和约束</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 提出多种架构方案</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 对比各方案优缺点</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. 推荐最佳方案并解释原因</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. 提供实现路线图</span></span></code></pre></div>
+<pre><code class="language-bash">$ claude &quot;设计一个支持百万用户的实时消息系统架构&quot;
+
+# Claude Code 会：
+# 1. 分析需求和约束
+# 2. 提出多种架构方案
+# 3. 对比各方案优缺点
+# 4. 推荐最佳方案并解释原因
+# 5. 提供实现路线图</pre>
 <h4 id="场景-4代码审查">场景 4：代码审查</h4>
-<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> claude <span class="st">&quot;审查这个 PR，关注安全性和性能问题&quot;</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Claude Code 会：</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 全面分析代码变更</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 识别潜在安全漏洞</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 发现性能瓶颈</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. 检查代码风格一致性</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. 提供改进建议</span></span></code></pre></div>
+<pre><code class="language-bash">$ claude &quot;审查这个 PR，关注安全性和性能问题&quot;
+
+# Claude Code 会：
+# 1. 全面分析代码变更
+# 2. 识别潜在安全漏洞
+# 3. 发现性能瓶颈
+# 4. 检查代码风格一致性
+# 5. 提供改进建议</pre>
 <h3 id="与开发工作流集成">2.3 与开发工作流集成</h3>
 <pre><code>日常开发工作流 + Claude Code：
 
@@ -366,67 +366,67 @@ CLI</h3>
 │   Claude    │    │   Claude    │    │   Claude    │    │   Claude    │
 │  需求拆解   │    │  方案对比   │    │  代码生成   │    │  安全审计   │
 │  风险评估   │    │  技术选型   │    │  测试编写   │    │  性能分析   │
-└─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘</code></pre>
+└─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘</pre>
 <hr />
 <h2 id="快速开始">3. 快速开始</h2>
 <h3 id="安装">3.1 安装</h3>
-<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用 npm 安装</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> install <span class="at">-g</span> @anthropic-ai/claude-code</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 或使用 Homebrew (macOS)</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install claude-code</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 或直接下载</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-fsSL</span> https://cli.anthropic.com/install.sh <span class="kw">|</span> <span class="fu">bash</span></span></code></pre></div>
+<pre><code class="language-bash"># 使用 npm 安装
+npm install -g @anthropic-ai/claude-code
+
+# 或使用 Homebrew (macOS)
+brew install claude-code
+
+# 或直接下载
+curl -fsSL https://cli.anthropic.com/install.sh | bash</pre>
 <h3 id="配置">3.2 配置</h3>
-<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 首次运行，设置 API Key</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">claude</span> config set api_key <span class="st">&quot;your-anthropic-api-key&quot;</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 或使用环境变量</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">ANTHROPIC_API_KEY</span><span class="op">=</span><span class="st">&quot;your-api-key&quot;</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 选择默认模型</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="ex">claude</span> config set model claude-3-5-sonnet</span></code></pre></div>
+<pre><code class="language-bash"># 首次运行，设置 API Key
+claude config set api_key &quot;your-anthropic-api-key&quot;
+
+# 或使用环境变量
+export ANTHROPIC_API_KEY=&quot;your-api-key&quot;
+
+# 选择默认模型
+claude config set model claude-3-5-sonnet</pre>
 <h3 id="基础使用">3.3 基础使用</h3>
-<pre><code class="language-bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 启动交互模式</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">claude</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 单次查询</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="ex">claude</span> <span class="st">&quot;解释这段代码的作用&quot;</span> <span class="op">&lt;</span> code.py</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 指定文件操作</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="ex">claude</span> <span class="at">-f</span> main.py <span class="st">&quot;添加类型注解和文档字符串&quot;</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 项目级分析</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="ex">claude</span> <span class="at">--project</span> <span class="st">&quot;分析这个项目的架构并提出改进建议&quot;</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 执行 shell 命令（需确认）</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="ex">claude</span> <span class="st">&quot;运行测试并分析失败的用例&quot;</span></span></code></pre></div>
+<pre><code class="language-bash"># 启动交互模式
+claude
+
+# 单次查询
+claude &quot;解释这段代码的作用&quot; &lt; code.py
+
+# 指定文件操作
+claude -f main.py &quot;添加类型注解和文档字符串&quot;
+
+# 项目级分析
+claude --project &quot;分析这个项目的架构并提出改进建议&quot;
+
+# 执行 shell 命令（需确认）
+claude &quot;运行测试并分析失败的用例&quot;</pre>
 <h3 id="高级配置">3.4 高级配置</h3>
-<pre><code class="language-yaml"><code class="sourceCode yaml"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ~/.claude/config.yaml</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">model</span><span class="kw">:</span><span class="at"> claude-3-5-sonnet</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">max_tokens</span><span class="kw">:</span><span class="at"> </span><span class="dv">8192</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">temperature</span><span class="kw">:</span><span class="at"> </span><span class="fl">0.3</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 安全设置</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">safety</span><span class="kw">:</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">confirm_file_write</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">confirm_shell_exec</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">allowed_paths</span><span class="kw">:</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> ~/projects</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> /tmp</span></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co"># MCP 服务器配置</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="fu">mcp_servers</span><span class="kw">:</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> github</span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">command</span><span class="kw">:</span><span class="at"> npx @anthropic-ai/mcp-server-github</span></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> postgres</span></span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">command</span><span class="kw">:</span><span class="at"> npx @anthropic-ai/mcp-server-postgres</span></span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 自定义提示</span></span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="fu">system_prompt</span><span class="kw">: </span><span class="ch">|</span></span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>  你是一个专业的软件工程师，擅长 Python、TypeScript 和系统设计。</span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>  请始终遵循最佳实践，注重代码质量和安全性。</span></code></pre></div>
+<pre><code class="language-yaml"># ~/.claude/config.yaml
+model: claude-3-5-sonnet
+max_tokens: 8192
+temperature: 0.3
+
+# 安全设置
+safety:
+  confirm_file_write: true
+  confirm_shell_exec: true
+  allowed_paths:
+    - ~/projects
+    - /tmp
+
+# MCP 服务器配置
+mcp_servers:
+  - name: github
+    command: npx @anthropic-ai/mcp-server-github
+  - name: postgres
+    command: npx @anthropic-ai/mcp-server-postgres
+
+# 自定义提示
+system_prompt: |
+  你是一个专业的软件工程师，擅长 Python、TypeScript 和系统设计。
+  请始终遵循最佳实践，注重代码质量和安全性。</pre>
 <hr />
 <h2 id="多维度工具对比">4. 多维度工具对比</h2>
 <h3 id="主要竞品概览">4.1 主要竞品概览</h3>
@@ -452,7 +452,7 @@ CLI</h3>
 │   │   └─────────────┘  └─────────────┘  └─────────────┘         │ │
 │   └──────────────────────────────────────────────────────────────┘ │
 │                                                                     │
-└─────────────────────────────────────────────────────────────────────┘</code></pre>
+└─────────────────────────────────────────────────────────────────────┘</pre>
 <h3 id="核心功能对比">4.2 核心功能对比</h3>
 <table>
 <colgroup>
@@ -653,7 +653,7 @@ CLI</h3>
 │                                                                     │
 │   💡 结论：Claude Code 价格较高，但代码质量和推理能力物有所值        │
 │                                                                     │
-└─────────────────────────────────────────────────────────────────────┘</code></pre>
+└─────────────────────────────────────────────────────────────────────┘</pre>
 <h3 id="底层模型对比">4.5 底层模型对比</h3>
 <table>
 <colgroup>
@@ -722,7 +722,7 @@ CLI</h3>
 │   专业开发者、企业用户           │   个人开发者、预算有限            │
 │   追求代码质量                   │   快速原型、学习探索              │
 │                                  │                                  │
-└──────────────────────────────────┴──────────────────────────────────┘</code></pre>
+└──────────────────────────────────┴──────────────────────────────────┘</pre>
 <h3 id="claude-code-vs-cursor">5.2 Claude Code vs Cursor</h3>
 <pre><code>┌─────────────────────────────────────────────────────────────────────┐
 │                      Claude Code vs Cursor                           │
@@ -747,7 +747,7 @@ CLI</h3>
 │   🎮 使用方式：                   │   🎮 使用方式：                   │
 │   终端命令行                     │   图形化 IDE                     │
 │                                  │                                  │
-└──────────────────────────────────┴──────────────────────────────────┘</code></pre>
+└──────────────────────────────────┴──────────────────────────────────┘</pre>
 <h3 id="claude-code-vs-github-copilot">5.3 Claude Code vs GitHub
 Copilot</h3>
 <table>
@@ -827,7 +827,7 @@ Copilot</h3>
 │   ├── 扩展能力强                                                │
 │   └── 标准化工具接入                                            │
 │                                                                 │
-└─────────────────────────────────────────────────────────────────┘</code></pre>
+└─────────────────────────────────────────────────────────────────┘</pre>
 <h3 id="claude-code-劣势">6.2 Claude Code 劣势</h3>
 <pre><code>┌─────────────────────────────────────────────────────────────────┐
 │                    Claude Code 主要劣势                          │
@@ -854,7 +854,7 @@ Copilot</h3>
 │   ├── 不适合快速编码场景                                        │
 │   └── 需配合其他工具使用                                        │
 │                                                                 │
-└─────────────────────────────────────────────────────────────────┘</code></pre>
+└─────────────────────────────────────────────────────────────────┘</pre>
 <hr />
 <h2 id="选型建议">7. 选型建议</h2>
 <h3 id="决策流程图">7.1 决策流程图</h3>
@@ -894,7 +894,7 @@ Copilot</h3>
            ┌───────────────┐    ┌───────────────┐
            │    Cursor     │    │    Aider      │
            │  (IDE 集成)   │    │  (开源灵活)   │
-           └───────────────┘    └───────────────┘</code></pre>
+           └───────────────┘    └───────────────┘</pre>
 <h3 id="场景推荐">7.2 场景推荐</h3>
 <table>
 <thead>
@@ -967,7 +967,7 @@ Copilot</h3>
 │   ├── 补全：GitHub Copilot Business                                 │
 │   └── 扩展：自定义 MCP Server                                       │
 │                                                                     │
-└─────────────────────────────────────────────────────────────────────┘</code></pre>
+└─────────────────────────────────────────────────────────────────────┘</pre>
 <hr />
 <h2 id="未来展望">8. 未来展望</h2>
 <pre><code>┌─────────────────────────────────────────────────────────────────────┐
@@ -988,7 +988,7 @@ Copilot</h3>
 │   ├── 本地化部署需求增长                                             │
 │   └── 与 DevOps 工具链深度融合                                       │
 │                                                                     │
-└─────────────────────────────────────────────────────────────────────┘</code></pre>
+└─────────────────────────────────────────────────────────────────────┘</pre>
 <hr />
 <h2 id="总结">9. 总结</h2>
 <h3 id="核心结论">核心结论</h3>
