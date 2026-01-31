@@ -69,7 +69,7 @@
         "@type": "Person",
         "name": "Ken Wang"
       },
-      "datePublished": "2026-01-31T15:35:02.718365",
+      "datePublished": "2026-01-29T20:26:18.620897",
       "dateModified": "2026-01-29T20:26:18.620897",
       "inLanguage": "zh-CN"
     }
@@ -134,7 +134,7 @@
 • 每个服务都要实现认证、限流、日志
 • 跨域、协议转换等重复处理
 • 服务变更客户端需要同步修改
-• 安全边界模糊，攻击面大</pre>
+• 安全边界模糊，攻击面大</code></pre>
 <h3 id="网关解决的核心问题">1.2 网关解决的核心问题</h3>
 <table>
 <thead>
@@ -190,74 +190,74 @@
         ▼               ▼               ▼
 ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
 │  Service A  │ │  Service B  │ │  Service C  │
-└─────────────┘ └─────────────┘ └─────────────┘</pre>
+└─────────────┘ └─────────────┘ └─────────────┘</code></pre>
 <hr />
 <h2 id="网关在分布式系统中的应用">2. 网关在分布式系统中的应用</h2>
 <h3 id="核心功能">2.1 核心功能</h3>
 <h4 id="路由与负载均衡">路由与负载均衡</h4>
-<pre><code class="language-csharp">// YARP 路由配置示例
-{
-  &quot;ReverseProxy&quot;: {
-    &quot;Routes&quot;: {
-      &quot;orders-route&quot;: {
-        &quot;ClusterId&quot;: &quot;orders-cluster&quot;,
-        &quot;Match&quot;: { &quot;Path&quot;: &quot;/api/orders/{**catch-all}&quot; }
-      },
-      &quot;users-route&quot;: {
-        &quot;ClusterId&quot;: &quot;users-cluster&quot;,
-        &quot;Match&quot;: { &quot;Path&quot;: &quot;/api/users/{**catch-all}&quot; }
-      }
-    },
-    &quot;Clusters&quot;: {
-      &quot;orders-cluster&quot;: {
-        &quot;LoadBalancingPolicy&quot;: &quot;RoundRobin&quot;,
-        &quot;Destinations&quot;: {
-          &quot;d1&quot;: { &quot;Address&quot;: &quot;http://orders-service-1:5000&quot; },
-          &quot;d2&quot;: { &quot;Address&quot;: &quot;http://orders-service-2:5000&quot; }
-        }
-      }
-    }
-  }
-}</pre>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// YARP 路由配置示例</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;ReverseProxy&quot;</span><span class="op">:</span> <span class="op">{</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Routes&quot;</span><span class="op">:</span> <span class="op">{</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;orders-route&quot;</span><span class="op">:</span> <span class="op">{</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;ClusterId&quot;</span><span class="op">:</span> <span class="st">&quot;orders-cluster&quot;</span><span class="op">,</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Match&quot;</span><span class="op">:</span> <span class="op">{</span> <span class="st">&quot;Path&quot;</span><span class="op">:</span> <span class="st">&quot;/api/orders/{**catch-all}&quot;</span> <span class="op">}</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>      <span class="op">},</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;users-route&quot;</span><span class="op">:</span> <span class="op">{</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;ClusterId&quot;</span><span class="op">:</span> <span class="st">&quot;users-cluster&quot;</span><span class="op">,</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Match&quot;</span><span class="op">:</span> <span class="op">{</span> <span class="st">&quot;Path&quot;</span><span class="op">:</span> <span class="st">&quot;/api/users/{**catch-all}&quot;</span> <span class="op">}</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">},</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Clusters&quot;</span><span class="op">:</span> <span class="op">{</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;orders-cluster&quot;</span><span class="op">:</span> <span class="op">{</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;LoadBalancingPolicy&quot;</span><span class="op">:</span> <span class="st">&quot;RoundRobin&quot;</span><span class="op">,</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Destinations&quot;</span><span class="op">:</span> <span class="op">{</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;d1&quot;</span><span class="op">:</span> <span class="op">{</span> <span class="st">&quot;Address&quot;</span><span class="op">:</span> <span class="st">&quot;http://orders-service-1:5000&quot;</span> <span class="op">},</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;d2&quot;</span><span class="op">:</span> <span class="op">{</span> <span class="st">&quot;Address&quot;</span><span class="op">:</span> <span class="st">&quot;http://orders-service-2:5000&quot;</span> <span class="op">}</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h4 id="认证与授权">认证与授权</h4>
-<pre><code class="language-csharp">// JWT 认证中间件
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =&gt;
-    {
-        options.Authority = &quot;https://identity-server&quot;;
-        options.Audience = &quot;api-gateway&quot;;
-    });
-
-// 网关统一验证，下游服务信任网关
-app.UseAuthentication();
-app.UseAuthorization();</pre>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">// JWT 认证中间件</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddAuthentication</span><span class="op">(</span>JwtBearerDefaults<span class="op">.</span><span class="fu">AuthenticationScheme</span><span class="op">)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">AddJwtBearer</span><span class="op">(</span>options <span class="op">=&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        options<span class="op">.</span><span class="fu">Authority</span> <span class="op">=</span> <span class="st">&quot;https://identity-server&quot;</span><span class="op">;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        options<span class="op">.</span><span class="fu">Audience</span> <span class="op">=</span> <span class="st">&quot;api-gateway&quot;</span><span class="op">;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">});</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">// 网关统一验证，下游服务信任网关</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">UseAuthentication</span><span class="op">();</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">UseAuthorization</span><span class="op">();</span></span></code></pre></div>
 <h4 id="限流与熔断">限流与熔断</h4>
-<pre><code class="language-csharp">// 使用 Polly 实现熔断
-builder.Services.AddReverseProxy()
-    .LoadFromConfig(builder.Configuration.GetSection(&quot;ReverseProxy&quot;))
-    .AddTransforms(context =&gt;
-    {
-        context.AddRequestTransform(async transformContext =&gt;
-        {
-            // 添加限流逻辑
-            await _rateLimiter.WaitAsync(transformContext.HttpContext.RequestAborted);
-        });
-    });</pre>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 使用 Polly 实现熔断</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddReverseProxy</span><span class="op">()</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">LoadFromConfig</span><span class="op">(</span>builder<span class="op">.</span><span class="fu">Configuration</span><span class="op">.</span><span class="fu">GetSection</span><span class="op">(</span><span class="st">&quot;ReverseProxy&quot;</span><span class="op">))</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">AddTransforms</span><span class="op">(</span>context <span class="op">=&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        context<span class="op">.</span><span class="fu">AddRequestTransform</span><span class="op">(</span>async transformContext <span class="op">=&gt;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 添加限流逻辑</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>            await _rateLimiter<span class="op">.</span><span class="fu">WaitAsync</span><span class="op">(</span>transformContext<span class="op">.</span><span class="fu">HttpContext</span><span class="op">.</span><span class="fu">RequestAborted</span><span class="op">);</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="op">});</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">});</span></span></code></pre></div>
 <h4 id="请求聚合bff-模式">请求聚合（BFF 模式）</h4>
-<pre><code class="language-csharp">// GraphQL 聚合多个服务
-public class Query
-{
-    public async Task&lt;OrderWithUser&gt; GetOrderDetail(
-        [Service] IOrderService orderService,
-        [Service] IUserService userService,
-        int orderId)
-    {
-        var order = await orderService.GetOrderAsync(orderId);
-        var user = await userService.GetUserAsync(order.UserId);
-        
-        return new OrderWithUser { Order = order, User = user };
-    }
-}</pre>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">// GraphQL 聚合多个服务</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> Query</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> async Task<span class="op">&lt;</span>OrderWithUser<span class="op">&gt;</span> <span class="fu">GetOrderDetail</span><span class="op">(</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">[</span>Service<span class="op">]</span> IOrderService orderService<span class="op">,</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">[</span>Service<span class="op">]</span> IUserService userService<span class="op">,</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> orderId<span class="op">)</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        <span class="dt">var</span> order <span class="op">=</span> await orderService<span class="op">.</span><span class="fu">GetOrderAsync</span><span class="op">(</span>orderId<span class="op">);</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        <span class="dt">var</span> user <span class="op">=</span> await userService<span class="op">.</span><span class="fu">GetUserAsync</span><span class="op">(</span>order<span class="op">.</span><span class="fu">UserId</span><span class="op">);</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> <span class="kw">new</span> OrderWithUser <span class="op">{</span> Order <span class="op">=</span> order<span class="op">,</span> User <span class="op">=</span> user <span class="op">};</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h3 id="常见架构模式">2.2 常见架构模式</h3>
 <h4 id="单一网关">单一网关</h4>
 <pre><code>适用：中小型系统
@@ -266,7 +266,7 @@ public class Query
          └────┬─────┘
     ┌─────────┼─────────┐
     ▼         ▼         ▼
-  Users    Orders    Products</pre>
+  Users    Orders    Products</code></pre>
 <h4 id="多网关按客户端分">多网关（按客户端分）</h4>
 <pre><code>适用：多端应用（Web/Mobile/第三方）
 
@@ -278,7 +278,7 @@ public class Query
 └────┬─────┘  └────┬─────┘  └────┬─────┘
      └─────────────┼─────────────┘
                    ▼
-            Internal Services</pre>
+            Internal Services</code></pre>
 <h4 id="网关-service-mesh">网关 + Service Mesh</h4>
 <pre><code>适用：大型微服务系统
 
@@ -290,7 +290,7 @@ Client → API Gateway → [Service Mesh (Istio/Linkerd)]
          │Sidecar │      │Sidecar │      │Sidecar │
          │   +    │      │   +    │      │   +    │
          │Service │      │Service │      │Service │
-         └────────┘      └────────┘      └────────┘</pre>
+         └────────┘      └────────┘      └────────┘</code></pre>
 <h3 id="网关-vs-service-mesh">2.3 网关 vs Service Mesh</h3>
 <table>
 <thead>
@@ -386,195 +386,195 @@ Client → API Gateway → [Service Mesh (Istio/Linkerd)]
 <h3 id="yarpyet-another-reverse-proxy">3.2 YARP（Yet Another Reverse
 Proxy）</h3>
 <p><strong>包</strong>: <code>Yarp.ReverseProxy</code></p>
-<pre><code class="language-csharp">// Program.cs
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddReverseProxy()
-    .LoadFromConfig(builder.Configuration.GetSection(&quot;ReverseProxy&quot;));
-
-var app = builder.Build();
-app.MapReverseProxy();
-app.Run();</pre>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Program.cs</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="dt">var</span> builder <span class="op">=</span> WebApplication<span class="op">.</span><span class="fu">CreateBuilder</span><span class="op">(</span>args<span class="op">);</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddReverseProxy</span><span class="op">()</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">LoadFromConfig</span><span class="op">(</span>builder<span class="op">.</span><span class="fu">Configuration</span><span class="op">.</span><span class="fu">GetSection</span><span class="op">(</span><span class="st">&quot;ReverseProxy&quot;</span><span class="op">));</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="dt">var</span> app <span class="op">=</span> builder<span class="op">.</span><span class="fu">Build</span><span class="op">();</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">MapReverseProxy</span><span class="op">();</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">Run</span><span class="op">();</span></span></code></pre></div>
 <p><strong>appsettings.json</strong>:</p>
-<pre><code class="language-json">{
-  &quot;ReverseProxy&quot;: {
-    &quot;Routes&quot;: {
-      &quot;api-route&quot;: {
-        &quot;ClusterId&quot;: &quot;api-cluster&quot;,
-        &quot;Match&quot;: { &quot;Path&quot;: &quot;/api/{**catch-all}&quot; },
-        &quot;Transforms&quot;: [
-          { &quot;PathRemovePrefix&quot;: &quot;/api&quot; }
-        ]
-      }
-    },
-    &quot;Clusters&quot;: {
-      &quot;api-cluster&quot;: {
-        &quot;LoadBalancingPolicy&quot;: &quot;RoundRobin&quot;,
-        &quot;HealthCheck&quot;: {
-          &quot;Active&quot;: {
-            &quot;Enabled&quot;: true,
-            &quot;Interval&quot;: &quot;00:00:10&quot;,
-            &quot;Path&quot;: &quot;/health&quot;
-          }
-        },
-        &quot;Destinations&quot;: {
-          &quot;d1&quot;: { &quot;Address&quot;: &quot;http://backend-1:5000&quot; },
-          &quot;d2&quot;: { &quot;Address&quot;: &quot;http://backend-2:5000&quot; }
-        }
-      }
-    }
-  }
-}</pre>
+<pre><code class="language-json"><code class="sourceCode json"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;ReverseProxy&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;Routes&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;api-route&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;ClusterId&quot;</span><span class="fu">:</span> <span class="st">&quot;api-cluster&quot;</span><span class="fu">,</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;Match&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;Path&quot;</span><span class="fu">:</span> <span class="st">&quot;/api/{**catch-all}&quot;</span> <span class="fu">},</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;Transforms&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>          <span class="fu">{</span> <span class="dt">&quot;PathRemovePrefix&quot;</span><span class="fu">:</span> <span class="st">&quot;/api&quot;</span> <span class="fu">}</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        <span class="ot">]</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;Clusters&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;api-cluster&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;LoadBalancingPolicy&quot;</span><span class="fu">:</span> <span class="st">&quot;RoundRobin&quot;</span><span class="fu">,</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;HealthCheck&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;Active&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&quot;Enabled&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&quot;Interval&quot;</span><span class="fu">:</span> <span class="st">&quot;00:00:10&quot;</span><span class="fu">,</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&quot;Path&quot;</span><span class="fu">:</span> <span class="st">&quot;/health&quot;</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>          <span class="fu">}</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>        <span class="fu">},</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;Destinations&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;d1&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;Address&quot;</span><span class="fu">:</span> <span class="st">&quot;http://backend-1:5000&quot;</span> <span class="fu">},</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&quot;d2&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;Address&quot;</span><span class="fu">:</span> <span class="st">&quot;http://backend-2:5000&quot;</span> <span class="fu">}</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>        <span class="fu">}</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 <p><strong>自定义中间件</strong>:</p>
-<pre><code class="language-csharp">builder.Services.AddReverseProxy()
-    .LoadFromConfig(builder.Configuration.GetSection(&quot;ReverseProxy&quot;))
-    .AddTransforms(context =&gt;
-    {
-        // 添加请求头
-        context.AddRequestHeader(&quot;X-Forwarded-Host&quot;, context.HttpContext.Request.Host.Value);
-        
-        // 自定义转换
-        context.AddRequestTransform(async transformContext =&gt;
-        {
-            var userId = transformContext.HttpContext.User.FindFirst(&quot;sub&quot;)?.Value;
-            if (userId != null)
-            {
-                transformContext.ProxyRequest.Headers.Add(&quot;X-User-Id&quot;, userId);
-            }
-        });
-    });</pre>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddReverseProxy</span><span class="op">()</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">LoadFromConfig</span><span class="op">(</span>builder<span class="op">.</span><span class="fu">Configuration</span><span class="op">.</span><span class="fu">GetSection</span><span class="op">(</span><span class="st">&quot;ReverseProxy&quot;</span><span class="op">))</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">AddTransforms</span><span class="op">(</span>context <span class="op">=&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 添加请求头</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>        context<span class="op">.</span><span class="fu">AddRequestHeader</span><span class="op">(</span><span class="st">&quot;X-Forwarded-Host&quot;</span><span class="op">,</span> context<span class="op">.</span><span class="fu">HttpContext</span><span class="op">.</span><span class="fu">Request</span><span class="op">.</span><span class="fu">Host</span><span class="op">.</span><span class="fu">Value</span><span class="op">);</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 自定义转换</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>        context<span class="op">.</span><span class="fu">AddRequestTransform</span><span class="op">(</span>async transformContext <span class="op">=&gt;</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>            <span class="dt">var</span> userId <span class="op">=</span> transformContext<span class="op">.</span><span class="fu">HttpContext</span><span class="op">.</span><span class="fu">User</span><span class="op">.</span><span class="fu">FindFirst</span><span class="op">(</span><span class="st">&quot;sub&quot;</span><span class="op">)?.</span><span class="fu">Value</span><span class="op">;</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>            <span class="kw">if</span> <span class="op">(</span>userId <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>                transformContext<span class="op">.</span><span class="fu">ProxyRequest</span><span class="op">.</span><span class="fu">Headers</span><span class="op">.</span><span class="fu">Add</span><span class="op">(</span><span class="st">&quot;X-User-Id&quot;</span><span class="op">,</span> userId<span class="op">);</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>        <span class="op">});</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">});</span></span></code></pre></div>
 <h3 id="ocelot">3.3 Ocelot</h3>
 <p><strong>包</strong>: <code>Ocelot</code></p>
-<pre><code class="language-csharp">// Program.cs
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Configuration.AddJsonFile(&quot;ocelot.json&quot;);
-builder.Services.AddOcelot();
-
-var app = builder.Build();
-await app.UseOcelot();
-app.Run();</pre>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Program.cs</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="dt">var</span> builder <span class="op">=</span> WebApplication<span class="op">.</span><span class="fu">CreateBuilder</span><span class="op">(</span>args<span class="op">);</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Configuration</span><span class="op">.</span><span class="fu">AddJsonFile</span><span class="op">(</span><span class="st">&quot;ocelot.json&quot;</span><span class="op">);</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddOcelot</span><span class="op">();</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="dt">var</span> app <span class="op">=</span> builder<span class="op">.</span><span class="fu">Build</span><span class="op">();</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>await app<span class="op">.</span><span class="fu">UseOcelot</span><span class="op">();</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">Run</span><span class="op">();</span></span></code></pre></div>
 <p><strong>ocelot.json</strong>:</p>
-<pre><code class="language-json">{
-  &quot;Routes&quot;: [
-    {
-      &quot;DownstreamPathTemplate&quot;: &quot;/api/users/{everything}&quot;,
-      &quot;DownstreamScheme&quot;: &quot;http&quot;,
-      &quot;DownstreamHostAndPorts&quot;: [
-        { &quot;Host&quot;: &quot;users-service&quot;, &quot;Port&quot;: 5001 }
-      ],
-      &quot;UpstreamPathTemplate&quot;: &quot;/users/{everything}&quot;,
-      &quot;UpstreamHttpMethod&quot;: [ &quot;Get&quot;, &quot;Post&quot;, &quot;Put&quot;, &quot;Delete&quot; ],
-      &quot;AuthenticationOptions&quot;: {
-        &quot;AuthenticationProviderKey&quot;: &quot;Bearer&quot;
-      },
-      &quot;RateLimitOptions&quot;: {
-        &quot;EnableRateLimiting&quot;: true,
-        &quot;Period&quot;: &quot;1s&quot;,
-        &quot;Limit&quot;: 100
-      }
-    },
-    {
-      &quot;DownstreamPathTemplate&quot;: &quot;/api/orders/{everything}&quot;,
-      &quot;DownstreamScheme&quot;: &quot;http&quot;,
-      &quot;DownstreamHostAndPorts&quot;: [
-        { &quot;Host&quot;: &quot;orders-service&quot;, &quot;Port&quot;: 5002 }
-      ],
-      &quot;UpstreamPathTemplate&quot;: &quot;/orders/{everything}&quot;,
-      &quot;LoadBalancerOptions&quot;: {
-        &quot;Type&quot;: &quot;RoundRobin&quot;
-      }
-    }
-  ],
-  &quot;GlobalConfiguration&quot;: {
-    &quot;BaseUrl&quot;: &quot;https://api.example.com&quot;
-  }
-}</pre>
+<pre><code class="language-json"><code class="sourceCode json"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;Routes&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;DownstreamPathTemplate&quot;</span><span class="fu">:</span> <span class="st">&quot;/api/users/{everything}&quot;</span><span class="fu">,</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;DownstreamScheme&quot;</span><span class="fu">:</span> <span class="st">&quot;http&quot;</span><span class="fu">,</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;DownstreamHostAndPorts&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span> <span class="dt">&quot;Host&quot;</span><span class="fu">:</span> <span class="st">&quot;users-service&quot;</span><span class="fu">,</span> <span class="dt">&quot;Port&quot;</span><span class="fu">:</span> <span class="dv">5001</span> <span class="fu">}</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>      <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;UpstreamPathTemplate&quot;</span><span class="fu">:</span> <span class="st">&quot;/users/{everything}&quot;</span><span class="fu">,</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;UpstreamHttpMethod&quot;</span><span class="fu">:</span> <span class="ot">[</span> <span class="st">&quot;Get&quot;</span><span class="ot">,</span> <span class="st">&quot;Post&quot;</span><span class="ot">,</span> <span class="st">&quot;Put&quot;</span><span class="ot">,</span> <span class="st">&quot;Delete&quot;</span> <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;AuthenticationOptions&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;AuthenticationProviderKey&quot;</span><span class="fu">:</span> <span class="st">&quot;Bearer&quot;</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">},</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;RateLimitOptions&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;EnableRateLimiting&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;Period&quot;</span><span class="fu">:</span> <span class="st">&quot;1s&quot;</span><span class="fu">,</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;Limit&quot;</span><span class="fu">:</span> <span class="dv">100</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;DownstreamPathTemplate&quot;</span><span class="fu">:</span> <span class="st">&quot;/api/orders/{everything}&quot;</span><span class="fu">,</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;DownstreamScheme&quot;</span><span class="fu">:</span> <span class="st">&quot;http&quot;</span><span class="fu">,</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;DownstreamHostAndPorts&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span> <span class="dt">&quot;Host&quot;</span><span class="fu">:</span> <span class="st">&quot;orders-service&quot;</span><span class="fu">,</span> <span class="dt">&quot;Port&quot;</span><span class="fu">:</span> <span class="dv">5002</span> <span class="fu">}</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>      <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;UpstreamPathTemplate&quot;</span><span class="fu">:</span> <span class="st">&quot;/orders/{everything}&quot;</span><span class="fu">,</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;LoadBalancerOptions&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;Type&quot;</span><span class="fu">:</span> <span class="st">&quot;RoundRobin&quot;</span></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;GlobalConfiguration&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;BaseUrl&quot;</span><span class="fu">:</span> <span class="st">&quot;https://api.example.com&quot;</span></span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 <p><strong>服务发现（Consul）</strong>:</p>
-<pre><code class="language-csharp">builder.Services.AddOcelot()
-    .AddConsul();</pre>
-<pre><code class="language-json">{
-  &quot;Routes&quot;: [
-    {
-      &quot;DownstreamPathTemplate&quot;: &quot;/api/{everything}&quot;,
-      &quot;DownstreamScheme&quot;: &quot;http&quot;,
-      &quot;UpstreamPathTemplate&quot;: &quot;/users/{everything}&quot;,
-      &quot;ServiceName&quot;: &quot;users-service&quot;,
-      &quot;LoadBalancerOptions&quot;: { &quot;Type&quot;: &quot;RoundRobin&quot; }
-    }
-  ],
-  &quot;GlobalConfiguration&quot;: {
-    &quot;ServiceDiscoveryProvider&quot;: {
-      &quot;Scheme&quot;: &quot;http&quot;,
-      &quot;Host&quot;: &quot;consul&quot;,
-      &quot;Port&quot;: 8500,
-      &quot;Type&quot;: &quot;Consul&quot;
-    }
-  }
-}</pre>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddOcelot</span><span class="op">()</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">AddConsul</span><span class="op">();</span></span></code></pre></div>
+<pre><code class="language-json"><code class="sourceCode json"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;Routes&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;DownstreamPathTemplate&quot;</span><span class="fu">:</span> <span class="st">&quot;/api/{everything}&quot;</span><span class="fu">,</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;DownstreamScheme&quot;</span><span class="fu">:</span> <span class="st">&quot;http&quot;</span><span class="fu">,</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;UpstreamPathTemplate&quot;</span><span class="fu">:</span> <span class="st">&quot;/users/{everything}&quot;</span><span class="fu">,</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;ServiceName&quot;</span><span class="fu">:</span> <span class="st">&quot;users-service&quot;</span><span class="fu">,</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;LoadBalancerOptions&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;Type&quot;</span><span class="fu">:</span> <span class="st">&quot;RoundRobin&quot;</span> <span class="fu">}</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;GlobalConfiguration&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;ServiceDiscoveryProvider&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;Scheme&quot;</span><span class="fu">:</span> <span class="st">&quot;http&quot;</span><span class="fu">,</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;Host&quot;</span><span class="fu">:</span> <span class="st">&quot;consul&quot;</span><span class="fu">,</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;Port&quot;</span><span class="fu">:</span> <span class="dv">8500</span><span class="fu">,</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;Type&quot;</span><span class="fu">:</span> <span class="st">&quot;Consul&quot;</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 <h3 id="自研网关asp.net-core">3.4 自研网关（ASP.NET Core）</h3>
-<pre><code class="language-csharp">// 简单反向代理实现
-public class ProxyMiddleware
-{
-    private readonly RequestDelegate _next;
-    private readonly IHttpClientFactory _clientFactory;
-    private readonly IServiceDiscovery _discovery;
-    
-    public ProxyMiddleware(RequestDelegate next, IHttpClientFactory clientFactory, 
-        IServiceDiscovery discovery)
-    {
-        _next = next;
-        _clientFactory = clientFactory;
-        _discovery = discovery;
-    }
-    
-    public async Task InvokeAsync(HttpContext context)
-    {
-        var path = context.Request.Path.Value;
-        
-        // 路由匹配
-        var service = ResolveService(path);
-        if (service == null)
-        {
-            await _next(context);
-            return;
-        }
-        
-        // 服务发现
-        var endpoint = await _discovery.GetEndpointAsync(service);
-        
-        // 转发请求
-        var client = _clientFactory.CreateClient();
-        var request = CreateProxyRequest(context, endpoint);
-        var response = await client.SendAsync(request);
-        
-        // 复制响应
-        await CopyResponseAsync(context, response);
-    }
-    
-    private HttpRequestMessage CreateProxyRequest(HttpContext context, string endpoint)
-    {
-        var request = new HttpRequestMessage
-        {
-            Method = new HttpMethod(context.Request.Method),
-            RequestUri = new Uri($&quot;{endpoint}{context.Request.Path}{context.Request.QueryString}&quot;)
-        };
-        
-        // 复制请求头
-        foreach (var header in context.Request.Headers)
-        {
-            request.Headers.TryAddWithoutValidation(header.Key, header.Value.ToArray());
-        }
-        
-        // 复制请求体
-        if (context.Request.ContentLength &gt; 0)
-        {
-            request.Content = new StreamContent(context.Request.Body);
-        }
-        
-        return request;
-    }
-}</pre>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 简单反向代理实现</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> ProxyMiddleware</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> RequestDelegate _next<span class="op">;</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> IHttpClientFactory _clientFactory<span class="op">;</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> IServiceDiscovery _discovery<span class="op">;</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">ProxyMiddleware</span><span class="op">(</span>RequestDelegate next<span class="op">,</span> IHttpClientFactory clientFactory<span class="op">,</span> </span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>        IServiceDiscovery discovery<span class="op">)</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>        _next <span class="op">=</span> next<span class="op">;</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>        _clientFactory <span class="op">=</span> clientFactory<span class="op">;</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>        _discovery <span class="op">=</span> discovery<span class="op">;</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> async Task <span class="fu">InvokeAsync</span><span class="op">(</span>HttpContext context<span class="op">)</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>        <span class="dt">var</span> path <span class="op">=</span> context<span class="op">.</span><span class="fu">Request</span><span class="op">.</span><span class="fu">Path</span><span class="op">.</span><span class="fu">Value</span><span class="op">;</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 路由匹配</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>        <span class="dt">var</span> service <span class="op">=</span> <span class="fu">ResolveService</span><span class="op">(</span>path<span class="op">);</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> <span class="op">(</span>service <span class="op">==</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>            await <span class="fu">_next</span><span class="op">(</span>context<span class="op">);</span></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span><span class="op">;</span></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 服务发现</span></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>        <span class="dt">var</span> endpoint <span class="op">=</span> await _discovery<span class="op">.</span><span class="fu">GetEndpointAsync</span><span class="op">(</span>service<span class="op">);</span></span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 转发请求</span></span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>        <span class="dt">var</span> client <span class="op">=</span> _clientFactory<span class="op">.</span><span class="fu">CreateClient</span><span class="op">();</span></span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>        <span class="dt">var</span> request <span class="op">=</span> <span class="fu">CreateProxyRequest</span><span class="op">(</span>context<span class="op">,</span> endpoint<span class="op">);</span></span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>        <span class="dt">var</span> response <span class="op">=</span> await client<span class="op">.</span><span class="fu">SendAsync</span><span class="op">(</span>request<span class="op">);</span></span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 复制响应</span></span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>        await <span class="fu">CopyResponseAsync</span><span class="op">(</span>context<span class="op">,</span> response<span class="op">);</span></span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> HttpRequestMessage <span class="fu">CreateProxyRequest</span><span class="op">(</span>HttpContext context<span class="op">,</span> <span class="dt">string</span> endpoint<span class="op">)</span></span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a>        <span class="dt">var</span> request <span class="op">=</span> <span class="kw">new</span> HttpRequestMessage</span>
+<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a>            Method <span class="op">=</span> <span class="kw">new</span> <span class="fu">HttpMethod</span><span class="op">(</span>context<span class="op">.</span><span class="fu">Request</span><span class="op">.</span><span class="fu">Method</span><span class="op">),</span></span>
+<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a>            RequestUri <span class="op">=</span> <span class="kw">new</span> <span class="fu">Uri</span><span class="op">(</span>$<span class="st">&quot;{endpoint}{context.Request.Path}{context.Request.QueryString}&quot;</span><span class="op">)</span></span>
+<span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a>        <span class="op">};</span></span>
+<span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb17-48"><a href="#cb17-48" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 复制请求头</span></span>
+<span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a>        <span class="kw">foreach</span> <span class="op">(</span><span class="dt">var</span> header <span class="kw">in</span> context<span class="op">.</span><span class="fu">Request</span><span class="op">.</span><span class="fu">Headers</span><span class="op">)</span></span>
+<span id="cb17-50"><a href="#cb17-50" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb17-51"><a href="#cb17-51" aria-hidden="true" tabindex="-1"></a>            request<span class="op">.</span><span class="fu">Headers</span><span class="op">.</span><span class="fu">TryAddWithoutValidation</span><span class="op">(</span>header<span class="op">.</span><span class="fu">Key</span><span class="op">,</span> header<span class="op">.</span><span class="fu">Value</span><span class="op">.</span><span class="fu">ToArray</span><span class="op">());</span></span>
+<span id="cb17-52"><a href="#cb17-52" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb17-53"><a href="#cb17-53" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb17-54"><a href="#cb17-54" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 复制请求体</span></span>
+<span id="cb17-55"><a href="#cb17-55" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> <span class="op">(</span>context<span class="op">.</span><span class="fu">Request</span><span class="op">.</span><span class="fu">ContentLength</span> <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span></span>
+<span id="cb17-56"><a href="#cb17-56" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb17-57"><a href="#cb17-57" aria-hidden="true" tabindex="-1"></a>            request<span class="op">.</span><span class="fu">Content</span> <span class="op">=</span> <span class="kw">new</span> <span class="fu">StreamContent</span><span class="op">(</span>context<span class="op">.</span><span class="fu">Request</span><span class="op">.</span><span class="fu">Body</span><span class="op">);</span></span>
+<span id="cb17-58"><a href="#cb17-58" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb17-59"><a href="#cb17-59" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb17-60"><a href="#cb17-60" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> request<span class="op">;</span></span>
+<span id="cb17-61"><a href="#cb17-61" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb17-62"><a href="#cb17-62" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <hr />
 <h2 id="net-网关框架对比">4. .NET 网关框架对比</h2>
 <h3 id="功能对比">4.1 功能对比</h3>
@@ -892,237 +892,237 @@ public class ProxyMiddleware
     ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
     │   Gateway    │ │   Gateway    │ │   Gateway    │
     │  (Zone A)    │ │  (Zone B)    │ │  (Zone C)    │
-    └──────────────┘ └──────────────┘ └──────────────┘</pre>
+    └──────────────┘ └──────────────┘ └──────────────┘</code></pre>
 <p><strong>关键点</strong>： - ✅ 多实例部署，跨可用区 - ✅
 无状态设计，支持水平扩展 - ✅ 健康检查配置 - ✅ 会话保持（如需要）</p>
 <h3 id="安全设计">5.2 安全设计</h3>
-<pre><code class="language-csharp">// 1. HTTPS 强制
-app.UseHttpsRedirection();
-app.UseHsts();
-
-// 2. 请求头安全
-app.Use(async (context, next) =&gt;
-{
-    context.Response.Headers.Add(&quot;X-Content-Type-Options&quot;, &quot;nosniff&quot;);
-    context.Response.Headers.Add(&quot;X-Frame-Options&quot;, &quot;DENY&quot;);
-    context.Response.Headers.Add(&quot;X-XSS-Protection&quot;, &quot;1; mode=block&quot;);
-    await next();
-});
-
-// 3. IP 白名单（内部服务）
-builder.Services.AddReverseProxy()
-    .AddTransforms(context =&gt;
-    {
-        context.AddRequestTransform(async transformContext =&gt;
-        {
-            var clientIp = transformContext.HttpContext.Connection.RemoteIpAddress;
-            if (!IsAllowedIp(clientIp))
-            {
-                transformContext.HttpContext.Response.StatusCode = 403;
-                return;
-            }
-        });
-    });
-
-// 4. 请求大小限制
-builder.WebHost.ConfigureKestrel(options =&gt;
-{
-    options.Limits.MaxRequestBodySize = 10 * 1024 * 1024; // 10MB
-});</pre>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 1. HTTPS 强制</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">UseHttpsRedirection</span><span class="op">();</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">UseHsts</span><span class="op">();</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co">// 2. 请求头安全</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">Use</span><span class="op">(</span><span class="fu">async</span> <span class="op">(</span>context<span class="op">,</span> next<span class="op">)</span> <span class="op">=&gt;</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    context<span class="op">.</span><span class="fu">Response</span><span class="op">.</span><span class="fu">Headers</span><span class="op">.</span><span class="fu">Add</span><span class="op">(</span><span class="st">&quot;X-Content-Type-Options&quot;</span><span class="op">,</span> <span class="st">&quot;nosniff&quot;</span><span class="op">);</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    context<span class="op">.</span><span class="fu">Response</span><span class="op">.</span><span class="fu">Headers</span><span class="op">.</span><span class="fu">Add</span><span class="op">(</span><span class="st">&quot;X-Frame-Options&quot;</span><span class="op">,</span> <span class="st">&quot;DENY&quot;</span><span class="op">);</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    context<span class="op">.</span><span class="fu">Response</span><span class="op">.</span><span class="fu">Headers</span><span class="op">.</span><span class="fu">Add</span><span class="op">(</span><span class="st">&quot;X-XSS-Protection&quot;</span><span class="op">,</span> <span class="st">&quot;1; mode=block&quot;</span><span class="op">);</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    await <span class="fu">next</span><span class="op">();</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="co">// 3. IP 白名单（内部服务）</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddReverseProxy</span><span class="op">()</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">AddTransforms</span><span class="op">(</span>context <span class="op">=&gt;</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>        context<span class="op">.</span><span class="fu">AddRequestTransform</span><span class="op">(</span>async transformContext <span class="op">=&gt;</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>            <span class="dt">var</span> clientIp <span class="op">=</span> transformContext<span class="op">.</span><span class="fu">HttpContext</span><span class="op">.</span><span class="fu">Connection</span><span class="op">.</span><span class="fu">RemoteIpAddress</span><span class="op">;</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>            <span class="kw">if</span> <span class="op">(!</span><span class="fu">IsAllowedIp</span><span class="op">(</span>clientIp<span class="op">))</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>                transformContext<span class="op">.</span><span class="fu">HttpContext</span><span class="op">.</span><span class="fu">Response</span><span class="op">.</span><span class="fu">StatusCode</span> <span class="op">=</span> <span class="dv">403</span><span class="op">;</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>                <span class="kw">return</span><span class="op">;</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>        <span class="op">});</span></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>    <span class="op">});</span></span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a><span class="co">// 4. 请求大小限制</span></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">WebHost</span><span class="op">.</span><span class="fu">ConfigureKestrel</span><span class="op">(</span>options <span class="op">=&gt;</span></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">Limits</span><span class="op">.</span><span class="fu">MaxRequestBodySize</span> <span class="op">=</span> <span class="dv">10</span> <span class="op">*</span> <span class="dv">1024</span> <span class="op">*</span> <span class="dv">1024</span><span class="op">;</span> <span class="co">// 10MB</span></span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span></code></pre></div>
 <h3 id="限流与熔断-1">5.3 限流与熔断</h3>
-<pre><code class="language-csharp">// 使用 ASP.NET Core Rate Limiting (.NET 7+)
-builder.Services.AddRateLimiter(options =&gt;
-{
-    // 全局限流
-    options.GlobalLimiter = PartitionedRateLimiter.Create&lt;HttpContext, string&gt;(context =&gt;
-        RateLimitPartition.GetFixedWindowLimiter(
-            partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? &quot;unknown&quot;,
-            factory: _ =&gt; new FixedWindowRateLimiterOptions
-            {
-                PermitLimit = 100,
-                Window = TimeSpan.FromMinutes(1),
-                QueueLimit = 10
-            }));
-    
-    // 按路由限流
-    options.AddPolicy(&quot;api&quot;, context =&gt;
-        RateLimitPartition.GetSlidingWindowLimiter(
-            partitionKey: context.User.Identity?.Name ?? &quot;anonymous&quot;,
-            factory: _ =&gt; new SlidingWindowRateLimiterOptions
-            {
-                PermitLimit = 1000,
-                Window = TimeSpan.FromMinutes(1),
-                SegmentsPerWindow = 6
-            }));
-    
-    options.OnRejected = async (context, token) =&gt;
-    {
-        context.HttpContext.Response.StatusCode = 429;
-        await context.HttpContext.Response.WriteAsJsonAsync(new
-        {
-            error = &quot;Too many requests&quot;,
-            retryAfter = context.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter)
-                ? retryAfter.TotalSeconds : 60
-        }, token);
-    };
-});
-
-app.UseRateLimiter();</pre>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 使用 ASP.NET Core Rate Limiting (.NET 7+)</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddRateLimiter</span><span class="op">(</span>options <span class="op">=&gt;</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 全局限流</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">GlobalLimiter</span> <span class="op">=</span> PartitionedRateLimiter<span class="op">.</span><span class="fu">Create</span><span class="op">&lt;</span>HttpContext<span class="op">,</span> <span class="dt">string</span><span class="op">&gt;(</span>context <span class="op">=&gt;</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>        RateLimitPartition<span class="op">.</span><span class="fu">GetFixedWindowLimiter</span><span class="op">(</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>            partitionKey<span class="op">:</span> context<span class="op">.</span><span class="fu">Connection</span><span class="op">.</span><span class="fu">RemoteIpAddress</span><span class="op">?.</span><span class="fu">ToString</span><span class="op">()</span> <span class="op">??</span> <span class="st">&quot;unknown&quot;</span><span class="op">,</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>            factory<span class="op">:</span> _ <span class="op">=&gt;</span> <span class="kw">new</span> FixedWindowRateLimiterOptions</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>                PermitLimit <span class="op">=</span> <span class="dv">100</span><span class="op">,</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>                Window <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromMinutes</span><span class="op">(</span><span class="dv">1</span><span class="op">),</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>                QueueLimit <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>            <span class="op">}));</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 按路由限流</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">AddPolicy</span><span class="op">(</span><span class="st">&quot;api&quot;</span><span class="op">,</span> context <span class="op">=&gt;</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>        RateLimitPartition<span class="op">.</span><span class="fu">GetSlidingWindowLimiter</span><span class="op">(</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>            partitionKey<span class="op">:</span> context<span class="op">.</span><span class="fu">User</span><span class="op">.</span><span class="fu">Identity</span><span class="op">?.</span><span class="fu">Name</span> <span class="op">??</span> <span class="st">&quot;anonymous&quot;</span><span class="op">,</span></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>            factory<span class="op">:</span> _ <span class="op">=&gt;</span> <span class="kw">new</span> SlidingWindowRateLimiterOptions</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>                PermitLimit <span class="op">=</span> <span class="dv">1000</span><span class="op">,</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>                Window <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromMinutes</span><span class="op">(</span><span class="dv">1</span><span class="op">),</span></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>                SegmentsPerWindow <span class="op">=</span> <span class="dv">6</span></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>            <span class="op">}));</span></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">OnRejected</span> <span class="op">=</span> <span class="fu">async</span> <span class="op">(</span>context<span class="op">,</span> token<span class="op">)</span> <span class="op">=&gt;</span></span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>        context<span class="op">.</span><span class="fu">HttpContext</span><span class="op">.</span><span class="fu">Response</span><span class="op">.</span><span class="fu">StatusCode</span> <span class="op">=</span> <span class="dv">429</span><span class="op">;</span></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>        await context<span class="op">.</span><span class="fu">HttpContext</span><span class="op">.</span><span class="fu">Response</span><span class="op">.</span><span class="fu">WriteAsJsonAsync</span><span class="op">(</span><span class="kw">new</span></span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>            error <span class="op">=</span> <span class="st">&quot;Too many requests&quot;</span><span class="op">,</span></span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>            retryAfter <span class="op">=</span> context<span class="op">.</span><span class="fu">Lease</span><span class="op">.</span><span class="fu">TryGetMetadata</span><span class="op">(</span>MetadataName<span class="op">.</span><span class="fu">RetryAfter</span><span class="op">,</span> <span class="kw">out</span> <span class="dt">var</span> retryAfter<span class="op">)</span></span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>                <span class="op">?</span> retryAfter<span class="op">.</span><span class="fu">TotalSeconds</span> <span class="op">:</span> <span class="dv">60</span></span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>        <span class="op">},</span> token<span class="op">);</span></span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">UseRateLimiter</span><span class="op">();</span></span></code></pre></div>
 <h3 id="可观测性">5.4 可观测性</h3>
-<pre><code class="language-csharp">// OpenTelemetry 集成
-builder.Services.AddOpenTelemetry()
-    .WithTracing(tracing =&gt;
-    {
-        tracing
-            .AddAspNetCoreInstrumentation()
-            .AddHttpClientInstrumentation()
-            .AddSource(&quot;Yarp.ReverseProxy&quot;)
-            .AddOtlpExporter(options =&gt;
-            {
-                options.Endpoint = new Uri(&quot;http://otel-collector:4317&quot;);
-            });
-    })
-    .WithMetrics(metrics =&gt;
-    {
-        metrics
-            .AddAspNetCoreInstrumentation()
-            .AddHttpClientInstrumentation()
-            .AddMeter(&quot;Yarp.ReverseProxy&quot;)
-            .AddOtlpExporter();
-    });
-
-// 健康检查端点
-builder.Services.AddHealthChecks()
-    .AddCheck(&quot;gateway&quot;, () =&gt; HealthCheckResult.Healthy())
-    .AddRedis(redisConnectionString)
-    .AddUrlGroup(new Uri(&quot;http://backend/health&quot;), &quot;backend&quot;);
-
-app.MapHealthChecks(&quot;/health&quot;, new HealthCheckOptions
-{
-    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-});</pre>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">// OpenTelemetry 集成</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddOpenTelemetry</span><span class="op">()</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">WithTracing</span><span class="op">(</span>tracing <span class="op">=&gt;</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>        tracing</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">AddAspNetCoreInstrumentation</span><span class="op">()</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">AddHttpClientInstrumentation</span><span class="op">()</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">AddSource</span><span class="op">(</span><span class="st">&quot;Yarp.ReverseProxy&quot;</span><span class="op">)</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">AddOtlpExporter</span><span class="op">(</span>options <span class="op">=&gt;</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>                options<span class="op">.</span><span class="fu">Endpoint</span> <span class="op">=</span> <span class="kw">new</span> <span class="fu">Uri</span><span class="op">(</span><span class="st">&quot;http://otel-collector:4317&quot;</span><span class="op">);</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>            <span class="op">});</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">})</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">WithMetrics</span><span class="op">(</span>metrics <span class="op">=&gt;</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>        metrics</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">AddAspNetCoreInstrumentation</span><span class="op">()</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">AddHttpClientInstrumentation</span><span class="op">()</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">AddMeter</span><span class="op">(</span><span class="st">&quot;Yarp.ReverseProxy&quot;</span><span class="op">)</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">AddOtlpExporter</span><span class="op">();</span></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">});</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a><span class="co">// 健康检查端点</span></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddHealthChecks</span><span class="op">()</span></span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">AddCheck</span><span class="op">(</span><span class="st">&quot;gateway&quot;</span><span class="op">,</span> <span class="op">()</span> <span class="op">=&gt;</span> HealthCheckResult<span class="op">.</span><span class="fu">Healthy</span><span class="op">())</span></span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">AddRedis</span><span class="op">(</span>redisConnectionString<span class="op">)</span></span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">AddUrlGroup</span><span class="op">(</span><span class="kw">new</span> <span class="fu">Uri</span><span class="op">(</span><span class="st">&quot;http://backend/health&quot;</span><span class="op">),</span> <span class="st">&quot;backend&quot;</span><span class="op">);</span></span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">MapHealthChecks</span><span class="op">(</span><span class="st">&quot;/health&quot;</span><span class="op">,</span> <span class="kw">new</span> HealthCheckOptions</span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>    ResponseWriter <span class="op">=</span> UIResponseWriter<span class="op">.</span><span class="fu">WriteHealthCheckUIResponse</span></span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span></code></pre></div>
 <h3 id="配置管理">5.5 配置管理</h3>
-<pre><code class="language-csharp">// 动态配置（无需重启）
-builder.Services.AddReverseProxy()
-    .LoadFromConfig(builder.Configuration.GetSection(&quot;ReverseProxy&quot;))
-    .ConfigureHttpClient((context, handler) =&gt;
-    {
-        // 自定义 HttpClient
-        handler.SslOptions.RemoteCertificateValidationCallback = 
-            (sender, cert, chain, errors) =&gt; true; // 仅开发环境
-    });
-
-// 从配置中心加载（如 Azure App Configuration）
-builder.Configuration.AddAzureAppConfiguration(options =&gt;
-{
-    options.Connect(connectionString)
-        .Select(&quot;Gateway:*&quot;)
-        .ConfigureRefresh(refresh =&gt;
-        {
-            refresh.Register(&quot;Gateway:Sentinel&quot;, refreshAll: true)
-                .SetCacheExpiration(TimeSpan.FromSeconds(30));
-        });
-});</pre>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 动态配置（无需重启）</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddReverseProxy</span><span class="op">()</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">LoadFromConfig</span><span class="op">(</span>builder<span class="op">.</span><span class="fu">Configuration</span><span class="op">.</span><span class="fu">GetSection</span><span class="op">(</span><span class="st">&quot;ReverseProxy&quot;</span><span class="op">))</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">.</span><span class="fu">ConfigureHttpClient</span><span class="op">((</span>context<span class="op">,</span> handler<span class="op">)</span> <span class="op">=&gt;</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 自定义 HttpClient</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>        handler<span class="op">.</span><span class="fu">SslOptions</span><span class="op">.</span><span class="fu">RemoteCertificateValidationCallback</span> <span class="op">=</span> </span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>            <span class="op">(</span>sender<span class="op">,</span> cert<span class="op">,</span> chain<span class="op">,</span> errors<span class="op">)</span> <span class="op">=&gt;</span> <span class="kw">true</span><span class="op">;</span> <span class="co">// 仅开发环境</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">});</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="co">// 从配置中心加载（如 Azure App Configuration）</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Configuration</span><span class="op">.</span><span class="fu">AddAzureAppConfiguration</span><span class="op">(</span>options <span class="op">=&gt;</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">Connect</span><span class="op">(</span>connectionString<span class="op">)</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">Select</span><span class="op">(</span><span class="st">&quot;Gateway:*&quot;</span><span class="op">)</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">ConfigureRefresh</span><span class="op">(</span>refresh <span class="op">=&gt;</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>            refresh<span class="op">.</span><span class="fu">Register</span><span class="op">(</span><span class="st">&quot;Gateway:Sentinel&quot;</span><span class="op">,</span> refreshAll<span class="op">:</span> <span class="kw">true</span><span class="op">)</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span><span class="fu">SetCacheExpiration</span><span class="op">(</span>TimeSpan<span class="op">.</span><span class="fu">FromSeconds</span><span class="op">(</span><span class="dv">30</span><span class="op">));</span></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>        <span class="op">});</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span></code></pre></div>
 <h3 id="容器化部署">5.6 容器化部署</h3>
 <p><strong>Dockerfile</strong>:</p>
-<pre><code class="language-dockerfile">FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-WORKDIR /app
-EXPOSE 80
-EXPOSE 443
-
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /src
-COPY [&quot;Gateway/Gateway.csproj&quot;, &quot;Gateway/&quot;]
-RUN dotnet restore &quot;Gateway/Gateway.csproj&quot;
-COPY . .
-WORKDIR &quot;/src/Gateway&quot;
-RUN dotnet build -c Release -o /app/build
-
-FROM build AS publish
-RUN dotnet publish -c Release -o /app/publish
-
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
-
-# 健康检查
-HEALTHCHECK --interval=30s --timeout=3s \
-  CMD curl -f http://localhost/health || exit 1
-
-ENTRYPOINT [&quot;dotnet&quot;, &quot;Gateway.dll&quot;]</pre>
+<pre><code class="language-dockerfile"><code class="sourceCode dockerfile"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> mcr.microsoft.com/dotnet/aspnet:8.0 <span class="kw">AS</span> base</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> /app</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="kw">EXPOSE</span> 80</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="kw">EXPOSE</span> 443</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> mcr.microsoft.com/dotnet/sdk:8.0 <span class="kw">AS</span> build</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> /src</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> [<span class="st">&quot;Gateway/Gateway.csproj&quot;</span>, <span class="st">&quot;Gateway/&quot;</span>]</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">dotnet</span> restore <span class="st">&quot;Gateway/Gateway.csproj&quot;</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> . .</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> <span class="st">&quot;/src/Gateway&quot;</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">dotnet</span> build <span class="at">-c</span> Release <span class="at">-o</span> /app/build</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> build <span class="kw">AS</span> publish</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">dotnet</span> publish <span class="at">-c</span> Release <span class="at">-o</span> /app/publish</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> base <span class="kw">AS</span> final</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> /app</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> <span class="op">--from=publish</span> /app/publish .</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 健康检查</span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a><span class="kw">HEALTHCHECK</span> <span class="op">--interval=30s</span> <span class="op">--timeout=3s</span> \</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">CMD</span> <span class="ex">curl</span> <span class="at">-f</span> http://localhost/health <span class="kw">||</span> <span class="bu">exit</span> 1</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a><span class="kw">ENTRYPOINT</span> [<span class="st">&quot;dotnet&quot;</span>, <span class="st">&quot;Gateway.dll&quot;</span>]</span></code></pre></div>
 <p><strong>Kubernetes 部署</strong>:</p>
-<pre><code class="language-yaml">apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: api-gateway
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: api-gateway
-  template:
-    metadata:
-      labels:
-        app: api-gateway
-    spec:
-      containers:
-      - name: gateway
-        image: myregistry/api-gateway:latest
-        ports:
-        - containerPort: 80
-        resources:
-          requests:
-            memory: &quot;256Mi&quot;
-            cpu: &quot;250m&quot;
-          limits:
-            memory: &quot;512Mi&quot;
-            cpu: &quot;500m&quot;
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 80
-          initialDelaySeconds: 10
-          periodSeconds: 30
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 80
-          initialDelaySeconds: 5
-          periodSeconds: 10
-        env:
-        - name: ASPNETCORE_ENVIRONMENT
-          value: &quot;Production&quot;
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: api-gateway
-spec:
-  type: LoadBalancer
-  ports:
-  - port: 80
-    targetPort: 80
-  selector:
-    app: api-gateway
----
-apiVersion: autoscaling/v2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: api-gateway-hpa
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: api-gateway
-  minReplicas: 3
-  maxReplicas: 10
-  metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 70</pre>
+<pre><code class="language-yaml"><code class="sourceCode yaml"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> apps/v1</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Deployment</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> api-gateway</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">replicas</span><span class="kw">:</span><span class="at"> </span><span class="dv">3</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">selector</span><span class="kw">:</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">matchLabels</span><span class="kw">:</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">app</span><span class="kw">:</span><span class="at"> api-gateway</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">template</span><span class="kw">:</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">labels</span><span class="kw">:</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">app</span><span class="kw">:</span><span class="at"> api-gateway</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">containers</span><span class="kw">:</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> gateway</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">image</span><span class="kw">:</span><span class="at"> myregistry/api-gateway:latest</span></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> </span><span class="fu">containerPort</span><span class="kw">:</span><span class="at"> </span><span class="dv">80</span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">resources</span><span class="kw">:</span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">requests</span><span class="kw">:</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">memory</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;256Mi&quot;</span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">cpu</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;250m&quot;</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">limits</span><span class="kw">:</span></span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">memory</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;512Mi&quot;</span></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">cpu</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;500m&quot;</span></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">livenessProbe</span><span class="kw">:</span></span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">httpGet</span><span class="kw">:</span></span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">path</span><span class="kw">:</span><span class="at"> /health</span></span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">port</span><span class="kw">:</span><span class="at"> </span><span class="dv">80</span></span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">initialDelaySeconds</span><span class="kw">:</span><span class="at"> </span><span class="dv">10</span></span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">periodSeconds</span><span class="kw">:</span><span class="at"> </span><span class="dv">30</span></span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">readinessProbe</span><span class="kw">:</span></span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">httpGet</span><span class="kw">:</span></span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">path</span><span class="kw">:</span><span class="at"> /health</span></span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">port</span><span class="kw">:</span><span class="at"> </span><span class="dv">80</span></span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">initialDelaySeconds</span><span class="kw">:</span><span class="at"> </span><span class="dv">5</span></span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">periodSeconds</span><span class="kw">:</span><span class="at"> </span><span class="dv">10</span></span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> ASPNETCORE_ENVIRONMENT</span></span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">value</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;Production&quot;</span></span>
+<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> v1</span></span>
+<span id="cb24-44"><a href="#cb24-44" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Service</span></span>
+<span id="cb24-45"><a href="#cb24-45" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb24-46"><a href="#cb24-46" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> api-gateway</span></span>
+<span id="cb24-47"><a href="#cb24-47" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb24-48"><a href="#cb24-48" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> LoadBalancer</span></span>
+<span id="cb24-49"><a href="#cb24-49" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb24-50"><a href="#cb24-50" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">port</span><span class="kw">:</span><span class="at"> </span><span class="dv">80</span></span>
+<span id="cb24-51"><a href="#cb24-51" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">targetPort</span><span class="kw">:</span><span class="at"> </span><span class="dv">80</span></span>
+<span id="cb24-52"><a href="#cb24-52" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">selector</span><span class="kw">:</span></span>
+<span id="cb24-53"><a href="#cb24-53" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">app</span><span class="kw">:</span><span class="at"> api-gateway</span></span>
+<span id="cb24-54"><a href="#cb24-54" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb24-55"><a href="#cb24-55" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> autoscaling/v2</span></span>
+<span id="cb24-56"><a href="#cb24-56" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> HorizontalPodAutoscaler</span></span>
+<span id="cb24-57"><a href="#cb24-57" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb24-58"><a href="#cb24-58" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> api-gateway-hpa</span></span>
+<span id="cb24-59"><a href="#cb24-59" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb24-60"><a href="#cb24-60" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">scaleTargetRef</span><span class="kw">:</span></span>
+<span id="cb24-61"><a href="#cb24-61" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> apps/v1</span></span>
+<span id="cb24-62"><a href="#cb24-62" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">kind</span><span class="kw">:</span><span class="at"> Deployment</span></span>
+<span id="cb24-63"><a href="#cb24-63" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> api-gateway</span></span>
+<span id="cb24-64"><a href="#cb24-64" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">minReplicas</span><span class="kw">:</span><span class="at"> </span><span class="dv">3</span></span>
+<span id="cb24-65"><a href="#cb24-65" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">maxReplicas</span><span class="kw">:</span><span class="at"> </span><span class="dv">10</span></span>
+<span id="cb24-66"><a href="#cb24-66" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">metrics</span><span class="kw">:</span></span>
+<span id="cb24-67"><a href="#cb24-67" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">type</span><span class="kw">:</span><span class="at"> Resource</span></span>
+<span id="cb24-68"><a href="#cb24-68" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">resource</span><span class="kw">:</span></span>
+<span id="cb24-69"><a href="#cb24-69" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">name</span><span class="kw">:</span><span class="at"> cpu</span></span>
+<span id="cb24-70"><a href="#cb24-70" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">target</span><span class="kw">:</span></span>
+<span id="cb24-71"><a href="#cb24-71" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">type</span><span class="kw">:</span><span class="at"> Utilization</span></span>
+<span id="cb24-72"><a href="#cb24-72" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">averageUtilization</span><span class="kw">:</span><span class="at"> </span><span class="dv">70</span></span></code></pre></div>
 <h3 id="云部署检查清单">5.7 云部署检查清单</h3>
 <pre><code>┌─────────────────────────────────────────────────────────┐
 │              云部署网关检查清单                          │
@@ -1159,7 +1159,7 @@ spec:
 │  □ 蓝绿/金丝雀发布                                     │
 │  □ 回滚策略                                            │
 │                                                         │
-└─────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────┘</code></pre>
 <hr />
 <h2 id="总结">6. 总结</h2>
 <h3 id="核心要点">核心要点</h3>

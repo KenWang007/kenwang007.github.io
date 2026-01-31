@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Cursor：AI 驱动的代码编辑器 - 关键词: AI, Cursor, 驱动的代码编辑器">
-    <meta name="keywords" content="AI, Cursor, 驱动的代码编辑器">
+    <meta name="description" content="Cursor：AI 驱动的代码编辑器 - 关键词: Cursor, AI, 驱动的代码编辑器">
+    <meta name="keywords" content="Cursor, AI, 驱动的代码编辑器">
     <meta name="author" content="Ken Wang">
     <meta name="robots" content="index, follow">
     
@@ -12,13 +12,13 @@
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://kenwang007.github.io/dist/p/post-bdc928dcc6fb.html">
     <meta property="og:title" content="Cursor：AI 驱动的代码编辑器 - Ken的知识库">
-    <meta property="og:description" content="Cursor：AI 驱动的代码编辑器 - 关键词: AI, Cursor, 驱动的代码编辑器">
+    <meta property="og:description" content="Cursor：AI 驱动的代码编辑器 - 关键词: Cursor, AI, 驱动的代码编辑器">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary">
     <meta property="twitter:url" content="https://kenwang007.github.io/dist/p/post-bdc928dcc6fb.html">
     <meta property="twitter:title" content="Cursor：AI 驱动的代码编辑器 - Ken的知识库">
-    <meta property="twitter:description" content="Cursor：AI 驱动的代码编辑器 - 关键词: AI, Cursor, 驱动的代码编辑器">
+    <meta property="twitter:description" content="Cursor：AI 驱动的代码编辑器 - 关键词: Cursor, AI, 驱动的代码编辑器">
     
     <!-- Theme Color -->
     <meta name="theme-color" content="#6366f1">
@@ -64,7 +64,7 @@
       "@context": "https://schema.org",
       "@type": "Article",
       "headline": "Cursor：AI 驱动的代码编辑器",
-      "description": "Cursor：AI 驱动的代码编辑器 - 关键词: AI, Cursor, 驱动的代码编辑器",
+      "description": "Cursor：AI 驱动的代码编辑器 - 关键词: Cursor, AI, 驱动的代码编辑器",
       "author": {
         "@type": "Person",
         "name": "Ken Wang"
@@ -142,11 +142,11 @@ VS Code 的所有功能和插件生态，同时增加了强大的 AI
 <li>根据项目上下文提供精准建议</li>
 <li>自动补全重复性的代码模式</li>
 </ul>
-<pre><code class="language-python"># 只需输入函数名和部分参数，Cursor 会自动补全整个函数
-def calculate_total_price(items, discount_rate):
-    # Cursor 会根据上下文自动生成函数体
-    total = sum(item.price * item.quantity for item in items)
-    return total * (1 - discount_rate)</pre>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 只需输入函数名和部分参数，Cursor 会自动补全整个函数</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_total_price(items, discount_rate):</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Cursor 会根据上下文自动生成函数体</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> <span class="bu">sum</span>(item.price <span class="op">*</span> item.quantity <span class="cf">for</span> item <span class="kw">in</span> items)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> total <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> discount_rate)</span></code></pre></div>
 <h3 id="快速生成样板代码">快速生成样板代码</h3>
 <p>告别手写重复代码，只需描述你的需求：</p>
 <blockquote>
@@ -168,7 +168,7 @@ def calculate_total_price(items, discount_rate):
 Cursor：用户认证主要在以下文件中实现：
 - src/auth/AuthService.ts - 核心认证逻辑
 - src/middleware/authMiddleware.ts - 认证中间件
-- src/utils/jwt.ts - JWT token 处理</pre>
+- src/utils/jwt.ts - JWT token 处理</code></pre>
 <hr />
 <h2 id="代码重构与优化">3. 代码重构与优化</h2>
 <h3 id="ai-辅助重构">AI 辅助重构</h3>
@@ -179,24 +179,24 @@ Cursor：用户认证主要在以下文件中实现：
 <li>添加错误处理</li>
 <li>转换代码风格</li>
 </ul>
-<pre><code class="language-javascript">// 重构前
-function getData(id) {
-  return fetch(&#39;/api/data/&#39; + id).then(r =&gt; r.json())
-}
-
-// 让 Cursor 重构后
-async function getData(id) {
-  try {
-    const response = await fetch(`/api/data/${id}`);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error(&#39;Failed to fetch data:&#39;, error);
-    throw error;
-  }
-}</pre>
+<pre><code class="language-javascript"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 重构前</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">getData</span>(id) {</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">fetch</span>(<span class="st">&#39;/api/data/&#39;</span> <span class="op">+</span> id)<span class="op">.</span><span class="fu">then</span>(r <span class="kw">=&gt;</span> r<span class="op">.</span><span class="fu">json</span>())</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">// 让 Cursor 重构后</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">async</span> <span class="kw">function</span> <span class="fu">getData</span>(id) {</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">try</span> {</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> response <span class="op">=</span> <span class="cf">await</span> <span class="fu">fetch</span>(<span class="vs">`/api/data/</span><span class="sc">${</span>id<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span>response<span class="op">.</span><span class="at">ok</span>) {</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>      <span class="cf">throw</span> <span class="kw">new</span> <span class="bu">Error</span>(<span class="vs">`HTTP error! status: </span><span class="sc">${</span>response<span class="op">.</span><span class="at">status</span><span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="cf">await</span> response<span class="op">.</span><span class="fu">json</span>()<span class="op">;</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">catch</span> (error) {</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">error</span>(<span class="st">&#39;Failed to fetch data:&#39;</span><span class="op">,</span> error)<span class="op">;</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">throw</span> error<span class="op">;</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <hr />
 <h2 id="bug-修复与调试">4. Bug 修复与调试</h2>
 <h3 id="智能错误诊断">智能错误诊断</h3>
@@ -213,7 +213,7 @@ Cursor：这个错误表示你尝试在一个 undefined 值上调用 map 方法�
 可能的原因：
 1. 数据还未加载完成
 2. API 返回了空值
-建议的修复方案：添加空值检查</pre>
+建议的修复方案：添加空值检查</code></pre>
 <hr />
 <h2 id="文档与注释生成">5. 文档与注释生成</h2>
 <h3 id="自动生成文档">自动生成文档</h3>
@@ -224,22 +224,22 @@ Cursor：这个错误表示你尝试在一个 undefined 值上调用 map 方法�
 <li>API 文档</li>
 <li>代码说明</li>
 </ul>
-<pre><code class="language-python">def process_user_data(user_id: str, data: dict, validate: bool = True) -&gt; dict:
-    &quot;&quot;&quot;
-    处理用户数据并返回处理结果。
-    
-    Args:
-        user_id: 用户的唯一标识符
-        data: 需要处理的用户数据字典
-        validate: 是否在处理前验证数据，默认为 True
-    
-    Returns:
-        处理后的用户数据字典
-    
-    Raises:
-        ValueError: 当用户数据验证失败时
-    &quot;&quot;&quot;
-    # 实现代码...</pre>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> process_user_data(user_id: <span class="bu">str</span>, data: <span class="bu">dict</span>, validate: <span class="bu">bool</span> <span class="op">=</span> <span class="va">True</span>) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">    处理用户数据并返回处理结果。</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">        user_id: 用户的唯一标识符</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">        data: 需要处理的用户数据字典</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">        validate: 是否在处理前验证数据，默认为 True</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">        处理后的用户数据字典</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">    Raises:</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">        ValueError: 当用户数据验证失败时</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 实现代码...</span></span></code></pre></div>
 <hr />
 <h2 id="学习与探索新技术">6. 学习与探索新技术</h2>
 <h3 id="ai-作为学习伙伴">AI 作为学习伙伴</h3>
@@ -287,7 +287,7 @@ Cursor：这个错误表示你尝试在一个 undefined 值上调用 map 方法�
 <h3 id="场景一快速原型开发">场景一：快速原型开发</h3>
 <pre><code>用户：帮我创建一个 React 组件，显示用户列表，支持搜索和分页
 
-Cursor：[自动生成完整的组件代码，包含状态管理、搜索逻辑、分页功能]</pre>
+Cursor：[自动生成完整的组件代码，包含状态管理、搜索逻辑、分页功能]</code></pre>
 <h3 id="场景二代码审查">场景二：代码审查</h3>
 <pre><code>用户：审查这段代码，找出潜在的问题
 
@@ -295,11 +295,11 @@ Cursor：发现以下问题：
 1. 缺少输入验证，可能存在安全风险
 2. 没有错误处理机制
 3. 变量命名不够清晰
-建议修改...</pre>
+建议修改...</code></pre>
 <h3 id="场景三测试用例生成">场景三：测试用例生成</h3>
 <pre><code>用户：为这个函数生成单元测试
 
-Cursor：[自动生成覆盖各种边界情况的测试用例]</pre>
+Cursor：[自动生成覆盖各种边界情况的测试用例]</code></pre>
 <hr />
 <h2 id="总结">总结</h2>
 <p>Cursor 通过以下方式帮助开发者提升效率：</p>

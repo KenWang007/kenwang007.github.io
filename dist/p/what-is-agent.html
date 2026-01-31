@@ -141,7 +141,7 @@
 │        └────────────────────────────┘                 │
 │                   环境反馈                             │
 │                                                         │
-└─────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────┘</code></pre>
 <h3 id="agent-的核心组件">1.2 Agent 的核心组件</h3>
 <pre><code>┌─────────────────────────────────────────────────────────┐
 │                   Agent 组件架构                        │
@@ -165,7 +165,7 @@
 │   │        用户输入 ←→ Agent ←→ 环境/系统            │  │
 │   └─────────────────────────────────────────────────┘  │
 │                                                         │
-└─────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────┘</code></pre>
 <table>
 <thead>
 <tr>
@@ -209,7 +209,7 @@
 ├── 2022: ChatGPT 发布，LLM Agent 兴起
 ├── 2023: AutoGPT、BabyAGI 等自主 Agent 爆发
 ├── 2024: Multi-Agent、Agent Workflow 成熟
-└── 未来: AGI？通用人工智能</pre>
+└── 未来: AGI？通用人工智能</code></pre>
 <hr />
 <h2 id="agent-可以做什么">2. Agent 可以做什么？</h2>
 <h3 id="能力图谱">2.1 能力图谱</h3>
@@ -229,22 +229,22 @@
 │  ├─ 可视化            ├─ 团队协调          ├─ 系统集成  │
 │  └─ 报表生成          └─ 客户服务          └─ DevOps   │
 │                                                         │
-└─────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────┘</code></pre>
 <h3 id="典型应用场景">2.2 典型应用场景</h3>
 <h4 id="场景一智能客服">场景一：智能客服</h4>
-<pre><code class="language-python"># 智能客服 Agent 工作流
-customer_service_agent = {
-    &quot;输入&quot;: &quot;用户问题&quot;,
-    &quot;流程&quot;: [
-        &quot;1. 理解用户意图&quot;,
-        &quot;2. 检索知识库&quot;,
-        &quot;3. 查询订单系统&quot;,
-        &quot;4. 生成回答&quot;,
-        &quot;5. 必要时转人工&quot;
-    ],
-    &quot;工具&quot;: [&quot;知识库检索&quot;, &quot;订单API&quot;, &quot;工单系统&quot;],
-    &quot;输出&quot;: &quot;解决方案 / 工单&quot;
-}</pre>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 智能客服 Agent 工作流</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>customer_service_agent <span class="op">=</span> {</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;输入&quot;</span>: <span class="st">&quot;用户问题&quot;</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;流程&quot;</span>: [</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;1. 理解用户意图&quot;</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;2. 检索知识库&quot;</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;3. 查询订单系统&quot;</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;4. 生成回答&quot;</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;5. 必要时转人工&quot;</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;工具&quot;</span>: [<span class="st">&quot;知识库检索&quot;</span>, <span class="st">&quot;订单API&quot;</span>, <span class="st">&quot;工单系统&quot;</span>],</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;输出&quot;</span>: <span class="st">&quot;解决方案 / 工单&quot;</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <h4 id="场景二代码助手">场景二：代码助手</h4>
 <pre><code>用户: &quot;帮我优化这段 Python 代码的性能&quot;
 
@@ -258,7 +258,7 @@ Agent 执行流程:
 ├── Thought: 需要验证优化效果
 ├── Action: 运行性能测试
 ├── Observation: 性能提升 10 倍
-└── Answer: 优化完成，这是修改后的代码和性能对比...</pre>
+└── Answer: 优化完成，这是修改后的代码和性能对比...</code></pre>
 <h4 id="场景三研究助手">场景三：研究助手</h4>
 <table>
 <thead>
@@ -292,15 +292,15 @@ Agent 执行流程:
 </tbody>
 </table>
 <h4 id="场景四自动化运维">场景四：自动化运维</h4>
-<pre><code class="language-python"># DevOps Agent 示例能力
-devops_agent_capabilities = {
-    &quot;监控告警&quot;: &quot;分析日志，识别异常，自动告警&quot;,
-    &quot;故障诊断&quot;: &quot;根据症状定位问题根因&quot;,
-    &quot;自动修复&quot;: &quot;执行预定义的修复脚本&quot;,
-    &quot;资源管理&quot;: &quot;根据负载自动扩缩容&quot;,
-    &quot;安全审计&quot;: &quot;检测安全漏洞，生成报告&quot;,
-    &quot;文档更新&quot;: &quot;自动更新运维文档&quot;
-}</pre>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DevOps Agent 示例能力</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>devops_agent_capabilities <span class="op">=</span> {</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;监控告警&quot;</span>: <span class="st">&quot;分析日志，识别异常，自动告警&quot;</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;故障诊断&quot;</span>: <span class="st">&quot;根据症状定位问题根因&quot;</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;自动修复&quot;</span>: <span class="st">&quot;执行预定义的修复脚本&quot;</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;资源管理&quot;</span>: <span class="st">&quot;根据负载自动扩缩容&quot;</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;安全审计&quot;</span>: <span class="st">&quot;检测安全漏洞，生成报告&quot;</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;文档更新&quot;</span>: <span class="st">&quot;自动更新运维文档&quot;</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <h3 id="agent-vs-传统自动化">2.3 Agent vs 传统自动化</h3>
 <table>
 <thead>
@@ -360,7 +360,7 @@ devops_agent_capabilities = {
 │  • 能力受限于训练数据          • 能力可通过工具扩展    │
 │  • 单轮交互为主                • 多轮迭代执行          │
 │                                                         │
-└─────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────┘</code></pre>
 <h3 id="详细对比表">3.2 详细对比表</h3>
 <table>
 <thead>
@@ -449,7 +449,7 @@ LLM 提供:                    Agent 增强:
 • 语言理解                   • 持久化记忆
 • 推理能力                   • 工具调用能力
 • 知识储备                   • 多步骤执行
-• 文本生成                   • 环境交互</pre>
+• 文本生成                   • 环境交互</code></pre>
 <h3 id="何时用-llm何时用-agent">3.4 何时用 LLM，何时用 Agent？</h3>
 <pre><code>选择决策树：
 
@@ -465,7 +465,7 @@ LLM 提供:                    Agent 增强:
 ├── 需要长期记忆？
 │   └── ✅ 用 Agent + Memory
 └── 复杂任务需要协作？
-    └── ✅ 用 Multi-Agent</pre>
+    └── ✅ 用 Multi-Agent</code></pre>
 <hr />
 <h2 id="智能体开发框架对比">4. 智能体开发框架对比</h2>
 <h3 id="主流框架概览">4.1 主流框架概览</h3>
@@ -492,7 +492,7 @@ LLM 提供:                    Agent 增强:
 │  ├── Flowise          - 可视化LangChain               │
 │  └── n8n + AI         - 工作流自动化+AI                │
 │                                                         │
-└─────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────┘</code></pre>
 <h3 id="详细对比表-1">4.2 详细对比表</h3>
 <table>
 <colgroup>
@@ -578,112 +578,112 @@ LLM 提供:                    Agent 增强:
 </tbody>
 </table>
 <h3 id="框架选型指南">4.3 框架选型指南</h3>
-<pre><code class="language-python"># 框架选择决策
-def choose_framework(requirements):
-    if requirements[&quot;快速原型验证&quot;]:
-        return &quot;Dify 或 Coze&quot;
-    
-    if requirements[&quot;复杂工作流&quot;]:
-        return &quot;LangGraph&quot;
-    
-    if requirements[&quot;多Agent协作&quot;]:
-        if requirements[&quot;软件开发场景&quot;]:
-            return &quot;MetaGPT&quot;
-        elif requirements[&quot;角色扮演风格&quot;]:
-            return &quot;CrewAI&quot;
-        else:
-            return &quot;AutoGen&quot;
-    
-    if requirements[&quot;RAG为主&quot;]:
-        return &quot;LlamaIndex&quot;
-    
-    if requirements[&quot;通用Agent开发&quot;]:
-        return &quot;LangChain&quot;
-    
-    if requirements[&quot;自主任务探索&quot;]:
-        return &quot;AutoGPT&quot;
-    
-    return &quot;LangChain&quot;  # 默认选择</pre>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 框架选择决策</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> choose_framework(requirements):</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> requirements[<span class="st">&quot;快速原型验证&quot;</span>]:</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&quot;Dify 或 Coze&quot;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> requirements[<span class="st">&quot;复杂工作流&quot;</span>]:</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&quot;LangGraph&quot;</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> requirements[<span class="st">&quot;多Agent协作&quot;</span>]:</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> requirements[<span class="st">&quot;软件开发场景&quot;</span>]:</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="st">&quot;MetaGPT&quot;</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> requirements[<span class="st">&quot;角色扮演风格&quot;</span>]:</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="st">&quot;CrewAI&quot;</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="st">&quot;AutoGen&quot;</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> requirements[<span class="st">&quot;RAG为主&quot;</span>]:</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&quot;LlamaIndex&quot;</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> requirements[<span class="st">&quot;通用Agent开发&quot;</span>]:</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&quot;LangChain&quot;</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> requirements[<span class="st">&quot;自主任务探索&quot;</span>]:</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&quot;AutoGPT&quot;</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">&quot;LangChain&quot;</span>  <span class="co"># 默认选择</span></span></code></pre></div>
 <h3 id="代码示例对比">4.4 代码示例对比</h3>
 <h4 id="langchain-agent">LangChain Agent</h4>
-<pre><code class="language-python">from langchain.agents import AgentExecutor, create_openai_tools_agent
-from langchain_openai import ChatOpenAI
-from langchain.tools import tool
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-
-@tool
-def search(query: str) -&gt; str:
-    &quot;&quot;&quot;搜索信息&quot;&quot;&quot;
-    return f&quot;搜索结果: {query}&quot;
-
-tools = [search]
-llm = ChatOpenAI(model=&quot;gpt-4&quot;)
-
-prompt = ChatPromptTemplate.from_messages([
-    (&quot;system&quot;, &quot;你是一个有帮助的助手&quot;),
-    (&quot;user&quot;, &quot;{input}&quot;),
-    MessagesPlaceholder(variable_name=&quot;agent_scratchpad&quot;),
-])
-
-agent = create_openai_tools_agent(llm, tools, prompt)
-executor = AgentExecutor(agent=agent, tools=tools)
-result = executor.invoke({&quot;input&quot;: &quot;搜索今天的新闻&quot;})</pre>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.agents <span class="im">import</span> AgentExecutor, create_openai_tools_agent</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_openai <span class="im">import</span> ChatOpenAI</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.tools <span class="im">import</span> tool</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_core.prompts <span class="im">import</span> ChatPromptTemplate, MessagesPlaceholder</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="at">@tool</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> search(query: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;搜索信息&quot;&quot;&quot;</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f&quot;搜索结果: </span><span class="sc">{</span>query<span class="sc">}</span><span class="ss">&quot;</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>tools <span class="op">=</span> [search]</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>llm <span class="op">=</span> ChatOpenAI(model<span class="op">=</span><span class="st">&quot;gpt-4&quot;</span>)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>prompt <span class="op">=</span> ChatPromptTemplate.from_messages([</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    (<span class="st">&quot;system&quot;</span>, <span class="st">&quot;你是一个有帮助的助手&quot;</span>),</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    (<span class="st">&quot;user&quot;</span>, <span class="st">&quot;</span><span class="sc">{input}</span><span class="st">&quot;</span>),</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    MessagesPlaceholder(variable_name<span class="op">=</span><span class="st">&quot;agent_scratchpad&quot;</span>),</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>agent <span class="op">=</span> create_openai_tools_agent(llm, tools, prompt)</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>executor <span class="op">=</span> AgentExecutor(agent<span class="op">=</span>agent, tools<span class="op">=</span>tools)</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> executor.invoke({<span class="st">&quot;input&quot;</span>: <span class="st">&quot;搜索今天的新闻&quot;</span>})</span></code></pre></div>
 <h4 id="crewai-multi-agent">CrewAI Multi-Agent</h4>
-<pre><code class="language-python">from crewai import Agent, Task, Crew
-
-# 定义 Agent
-researcher = Agent(
-    role=&quot;研究员&quot;,
-    goal=&quot;收集和分析信息&quot;,
-    backstory=&quot;你是一位资深研究员&quot;,
-    tools=[search_tool]
-)
-
-writer = Agent(
-    role=&quot;作家&quot;,
-    goal=&quot;撰写高质量内容&quot;,
-    backstory=&quot;你是一位专业作家&quot;
-)
-
-# 定义任务
-research_task = Task(
-    description=&quot;研究 AI Agent 最新进展&quot;,
-    agent=researcher
-)
-
-writing_task = Task(
-    description=&quot;根据研究结果撰写文章&quot;,
-    agent=writer
-)
-
-# 组建团队
-crew = Crew(
-    agents=[researcher, writer],
-    tasks=[research_task, writing_task]
-)
-
-result = crew.kickoff()</pre>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> crewai <span class="im">import</span> Agent, Task, Crew</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义 Agent</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>researcher <span class="op">=</span> Agent(</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    role<span class="op">=</span><span class="st">&quot;研究员&quot;</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    goal<span class="op">=</span><span class="st">&quot;收集和分析信息&quot;</span>,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    backstory<span class="op">=</span><span class="st">&quot;你是一位资深研究员&quot;</span>,</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    tools<span class="op">=</span>[search_tool]</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>writer <span class="op">=</span> Agent(</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    role<span class="op">=</span><span class="st">&quot;作家&quot;</span>,</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    goal<span class="op">=</span><span class="st">&quot;撰写高质量内容&quot;</span>,</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    backstory<span class="op">=</span><span class="st">&quot;你是一位专业作家&quot;</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义任务</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>research_task <span class="op">=</span> Task(</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">&quot;研究 AI Agent 最新进展&quot;</span>,</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    agent<span class="op">=</span>researcher</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>writing_task <span class="op">=</span> Task(</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">&quot;根据研究结果撰写文章&quot;</span>,</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>    agent<span class="op">=</span>writer</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a><span class="co"># 组建团队</span></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>crew <span class="op">=</span> Crew(</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>    agents<span class="op">=</span>[researcher, writer],</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>    tasks<span class="op">=</span>[research_task, writing_task]</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> crew.kickoff()</span></code></pre></div>
 <h4 id="autogen-conversation">AutoGen Conversation</h4>
-<pre><code class="language-python">from autogen import AssistantAgent, UserProxyAgent
-
-# 创建助手 Agent
-assistant = AssistantAgent(
-    name=&quot;assistant&quot;,
-    llm_config={&quot;model&quot;: &quot;gpt-4&quot;}
-)
-
-# 创建用户代理
-user_proxy = UserProxyAgent(
-    name=&quot;user_proxy&quot;,
-    human_input_mode=&quot;NEVER&quot;,
-    code_execution_config={&quot;work_dir&quot;: &quot;coding&quot;}
-)
-
-# 开始对话
-user_proxy.initiate_chat(
-    assistant,
-    message=&quot;写一个 Python 函数计算斐波那契数列&quot;
-)</pre>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> autogen <span class="im">import</span> AssistantAgent, UserProxyAgent</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建助手 Agent</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>assistant <span class="op">=</span> AssistantAgent(</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">&quot;assistant&quot;</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    llm_config<span class="op">=</span>{<span class="st">&quot;model&quot;</span>: <span class="st">&quot;gpt-4&quot;</span>}</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建用户代理</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>user_proxy <span class="op">=</span> UserProxyAgent(</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">&quot;user_proxy&quot;</span>,</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    human_input_mode<span class="op">=</span><span class="st">&quot;NEVER&quot;</span>,</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    code_execution_config<span class="op">=</span>{<span class="st">&quot;work_dir&quot;</span>: <span class="st">&quot;coding&quot;</span>}</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 开始对话</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>user_proxy.initiate_chat(</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>    assistant,</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>    message<span class="op">=</span><span class="st">&quot;写一个 Python 函数计算斐波那契数列&quot;</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <hr />
 <h2 id="智能体架构模式">5. 智能体架构模式</h2>
 <h3 id="常见架构模式">5.1 常见架构模式</h3>
@@ -711,7 +711,7 @@ user_proxy.initiate_chat(
 │     Expand → Evaluate → Backpropagate → Select         │
 │     探索多条路径，选择最优                               │
 │                                                         │
-└─────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────┘</code></pre>
 <h3 id="react-架构详解">5.2 ReAct 架构详解</h3>
 <pre><code>┌─────────────────────────────────────────────────────────┐
 │                    ReAct 架构                           │
@@ -735,7 +735,7 @@ user_proxy.initiate_chat(
 │  │ Answer: 北京今天晴，5-15°C，建议穿薄外套+长裤     │  │
 │  └──────────────────────────────────────────────────┘  │
 │                                                         │
-└─────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────┘</code></pre>
 <h3 id="plan-and-execute-架构">5.3 Plan-and-Execute 架构</h3>
 <pre><code>┌─────────────────────────────────────────────────────────┐
 │               Plan-and-Execute 架构                     │
@@ -766,7 +766,7 @@ user_proxy.initiate_chat(
 │  │  Result: 完整的博客文章                           │  │
 │  └──────────────────────────────────────────────────┘  │
 │                                                         │
-└─────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────┘</code></pre>
 <h3 id="reflexion-架构">5.4 Reflexion 架构</h3>
 <pre><code>┌─────────────────────────────────────────────────────────┐
 │                  Reflexion 架构                         │
@@ -800,7 +800,7 @@ user_proxy.initiate_chat(
 │                                                         │
 │  核心思想：失败后反思原因，改进后重试                    │
 │                                                         │
-└─────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────┘</code></pre>
 <h3 id="架构模式对比">5.5 架构模式对比</h3>
 <table>
 <colgroup>
@@ -903,7 +903,7 @@ user_proxy.initiate_chat(
 │  │   平等协作，相互沟通                            │   │
 │  └─────────────────────────────────────────────────┘   │
 │                                                         │
-└─────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────┘</code></pre>
 <h3 id="多智能体通信模式">6.2 多智能体通信模式</h3>
 <table>
 <thead>
@@ -942,34 +942,34 @@ user_proxy.initiate_chat(
 </tbody>
 </table>
 <h3 id="实践案例软件开发团队">6.3 实践案例：软件开发团队</h3>
-<pre><code class="language-python"># 使用 MetaGPT 模拟软件开发团队
-&quot;&quot;&quot;
-角色定义：
-- 产品经理 (PM): 分析需求，编写PRD
-- 架构师 (Architect): 系统设计
-- 工程师 (Engineer): 代码实现
-- QA工程师 (QA): 测试验证
-&quot;&quot;&quot;
-
-from metagpt.roles import (
-    ProductManager,
-    Architect,
-    Engineer,
-    QAEngineer
-)
-from metagpt.team import Team
-
-# 组建团队
-team = Team()
-team.hire([
-    ProductManager(),
-    Architect(),
-    Engineer(),
-    QAEngineer()
-])
-
-# 执行项目
-team.run_project(&quot;开发一个待办事项管理应用&quot;)</pre>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用 MetaGPT 模拟软件开发团队</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co">&quot;&quot;&quot;</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co">角色定义：</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co">- 产品经理 (PM): 分析需求，编写PRD</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co">- 架构师 (Architect): 系统设计</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co">- 工程师 (Engineer): 代码实现</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co">- QA工程师 (QA): 测试验证</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="co">&quot;&quot;&quot;</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> metagpt.roles <span class="im">import</span> (</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    ProductManager,</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    Architect,</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    Engineer,</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    QAEngineer</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> metagpt.team <span class="im">import</span> Team</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 组建团队</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>team <span class="op">=</span> Team()</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>team.hire([</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>    ProductManager(),</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>    Architect(),</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>    Engineer(),</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>    QAEngineer()</span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a><span class="co"># 执行项目</span></span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>team.run_project(<span class="st">&quot;开发一个待办事项管理应用&quot;</span>)</span></code></pre></div>
 <pre><code>执行流程：
 
 1️⃣ 产品经理
@@ -989,70 +989,70 @@ team.run_project(&quot;开发一个待办事项管理应用&quot;)</pre>
    输出: 测试报告、Bug列表
    
    ↓ 如有Bug，返回工程师修复
-   ↓ 通过测试，项目完成</pre>
+   ↓ 通过测试，项目完成</code></pre>
 <h3 id="实践案例研究团队">6.4 实践案例：研究团队</h3>
-<pre><code class="language-python">from crewai import Agent, Task, Crew, Process
-
-# 定义专业角色
-researcher = Agent(
-    role=&quot;首席研究员&quot;,
-    goal=&quot;深入研究主题，收集权威信息&quot;,
-    backstory=&quot;你是顶级大学的研究教授，擅长文献调研&quot;,
-    verbose=True
-)
-
-analyst = Agent(
-    role=&quot;数据分析师&quot;,
-    goal=&quot;分析数据，提取洞察&quot;,
-    backstory=&quot;你是资深数据科学家，善于发现数据中的规律&quot;
-)
-
-writer = Agent(
-    role=&quot;技术作家&quot;,
-    goal=&quot;撰写清晰准确的技术内容&quot;,
-    backstory=&quot;你是获奖技术作家，擅长将复杂概念简单化&quot;
-)
-
-reviewer = Agent(
-    role=&quot;审稿专家&quot;,
-    goal=&quot;确保内容质量和准确性&quot;,
-    backstory=&quot;你是领域专家，有严格的质量标准&quot;
-)
-
-# 定义任务流程
-research_task = Task(
-    description=&quot;研究 {topic} 的最新进展&quot;,
-    expected_output=&quot;详细的研究笔记&quot;,
-    agent=researcher
-)
-
-analysis_task = Task(
-    description=&quot;分析研究资料，提取关键信息&quot;,
-    expected_output=&quot;分析报告&quot;,
-    agent=analyst
-)
-
-writing_task = Task(
-    description=&quot;撰写研究报告&quot;,
-    expected_output=&quot;完整的研究报告&quot;,
-    agent=writer
-)
-
-review_task = Task(
-    description=&quot;审核报告质量&quot;,
-    expected_output=&quot;审核意见和最终版本&quot;,
-    agent=reviewer
-)
-
-# 组建团队
-crew = Crew(
-    agents=[researcher, analyst, writer, reviewer],
-    tasks=[research_task, analysis_task, writing_task, review_task],
-    process=Process.sequential  # 顺序执行
-)
-
-# 执行
-result = crew.kickoff(inputs={&quot;topic&quot;: &quot;大模型Agent发展趋势&quot;})</pre>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> crewai <span class="im">import</span> Agent, Task, Crew, Process</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义专业角色</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>researcher <span class="op">=</span> Agent(</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    role<span class="op">=</span><span class="st">&quot;首席研究员&quot;</span>,</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    goal<span class="op">=</span><span class="st">&quot;深入研究主题，收集权威信息&quot;</span>,</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    backstory<span class="op">=</span><span class="st">&quot;你是顶级大学的研究教授，擅长文献调研&quot;</span>,</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    verbose<span class="op">=</span><span class="va">True</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>analyst <span class="op">=</span> Agent(</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    role<span class="op">=</span><span class="st">&quot;数据分析师&quot;</span>,</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    goal<span class="op">=</span><span class="st">&quot;分析数据，提取洞察&quot;</span>,</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>    backstory<span class="op">=</span><span class="st">&quot;你是资深数据科学家，善于发现数据中的规律&quot;</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>writer <span class="op">=</span> Agent(</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>    role<span class="op">=</span><span class="st">&quot;技术作家&quot;</span>,</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>    goal<span class="op">=</span><span class="st">&quot;撰写清晰准确的技术内容&quot;</span>,</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>    backstory<span class="op">=</span><span class="st">&quot;你是获奖技术作家，擅长将复杂概念简单化&quot;</span></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>reviewer <span class="op">=</span> Agent(</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>    role<span class="op">=</span><span class="st">&quot;审稿专家&quot;</span>,</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>    goal<span class="op">=</span><span class="st">&quot;确保内容质量和准确性&quot;</span>,</span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>    backstory<span class="op">=</span><span class="st">&quot;你是领域专家，有严格的质量标准&quot;</span></span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义任务流程</span></span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>research_task <span class="op">=</span> Task(</span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">&quot;研究 </span><span class="sc">{topic}</span><span class="st"> 的最新进展&quot;</span>,</span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>    expected_output<span class="op">=</span><span class="st">&quot;详细的研究笔记&quot;</span>,</span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>    agent<span class="op">=</span>researcher</span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>analysis_task <span class="op">=</span> Task(</span>
+<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">&quot;分析研究资料，提取关键信息&quot;</span>,</span>
+<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a>    expected_output<span class="op">=</span><span class="st">&quot;分析报告&quot;</span>,</span>
+<span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a>    agent<span class="op">=</span>analyst</span>
+<span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-41"><a href="#cb23-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-42"><a href="#cb23-42" aria-hidden="true" tabindex="-1"></a>writing_task <span class="op">=</span> Task(</span>
+<span id="cb23-43"><a href="#cb23-43" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">&quot;撰写研究报告&quot;</span>,</span>
+<span id="cb23-44"><a href="#cb23-44" aria-hidden="true" tabindex="-1"></a>    expected_output<span class="op">=</span><span class="st">&quot;完整的研究报告&quot;</span>,</span>
+<span id="cb23-45"><a href="#cb23-45" aria-hidden="true" tabindex="-1"></a>    agent<span class="op">=</span>writer</span>
+<span id="cb23-46"><a href="#cb23-46" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-47"><a href="#cb23-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-48"><a href="#cb23-48" aria-hidden="true" tabindex="-1"></a>review_task <span class="op">=</span> Task(</span>
+<span id="cb23-49"><a href="#cb23-49" aria-hidden="true" tabindex="-1"></a>    description<span class="op">=</span><span class="st">&quot;审核报告质量&quot;</span>,</span>
+<span id="cb23-50"><a href="#cb23-50" aria-hidden="true" tabindex="-1"></a>    expected_output<span class="op">=</span><span class="st">&quot;审核意见和最终版本&quot;</span>,</span>
+<span id="cb23-51"><a href="#cb23-51" aria-hidden="true" tabindex="-1"></a>    agent<span class="op">=</span>reviewer</span>
+<span id="cb23-52"><a href="#cb23-52" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-53"><a href="#cb23-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-54"><a href="#cb23-54" aria-hidden="true" tabindex="-1"></a><span class="co"># 组建团队</span></span>
+<span id="cb23-55"><a href="#cb23-55" aria-hidden="true" tabindex="-1"></a>crew <span class="op">=</span> Crew(</span>
+<span id="cb23-56"><a href="#cb23-56" aria-hidden="true" tabindex="-1"></a>    agents<span class="op">=</span>[researcher, analyst, writer, reviewer],</span>
+<span id="cb23-57"><a href="#cb23-57" aria-hidden="true" tabindex="-1"></a>    tasks<span class="op">=</span>[research_task, analysis_task, writing_task, review_task],</span>
+<span id="cb23-58"><a href="#cb23-58" aria-hidden="true" tabindex="-1"></a>    process<span class="op">=</span>Process.sequential  <span class="co"># 顺序执行</span></span>
+<span id="cb23-59"><a href="#cb23-59" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-60"><a href="#cb23-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-61"><a href="#cb23-61" aria-hidden="true" tabindex="-1"></a><span class="co"># 执行</span></span>
+<span id="cb23-62"><a href="#cb23-62" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> crew.kickoff(inputs<span class="op">=</span>{<span class="st">&quot;topic&quot;</span>: <span class="st">&quot;大模型Agent发展趋势&quot;</span>})</span></code></pre></div>
 <h3 id="多智能体最佳实践">6.5 多智能体最佳实践</h3>
 <pre><code>┌─────────────────────────────────────────────────────────┐
 │              多智能体设计最佳实践                        │
@@ -1079,7 +1079,7 @@ result = crew.kickoff(inputs={&quot;topic&quot;: &quot;大模型Agent发展趋�
 │  ❌ 避免过度设计                                        │
 │     能用单 Agent 解决的，不要用多 Agent                 │
 │                                                         │
-└─────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────┘</code></pre>
 <hr />
 <h2 id="其他相关知识">7. 其他相关知识</h2>
 <h3 id="agent-安全与风险">7.1 Agent 安全与风险</h3>
@@ -1120,16 +1120,16 @@ result = crew.kickoff(inputs={&quot;topic&quot;: &quot;大模型Agent发展趋�
 </tbody>
 </table>
 <h3 id="agent-评估指标">7.2 Agent 评估指标</h3>
-<pre><code class="language-python"># Agent 评估维度
-evaluation_metrics = {
-    &quot;任务完成率&quot;: &quot;成功完成任务的比例&quot;,
-    &quot;步骤效率&quot;: &quot;完成任务所需的平均步骤数&quot;,
-    &quot;工具使用准确率&quot;: &quot;正确选择和使用工具的比例&quot;,
-    &quot;响应时间&quot;: &quot;从接收任务到完成的时间&quot;,
-    &quot;成本效率&quot;: &quot;每任务消耗的 Token/费用&quot;,
-    &quot;错误恢复率&quot;: &quot;从错误状态恢复的能力&quot;,
-    &quot;用户满意度&quot;: &quot;人工评估的质量分数&quot;
-}</pre>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Agent 评估维度</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>evaluation_metrics <span class="op">=</span> {</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;任务完成率&quot;</span>: <span class="st">&quot;成功完成任务的比例&quot;</span>,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;步骤效率&quot;</span>: <span class="st">&quot;完成任务所需的平均步骤数&quot;</span>,</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;工具使用准确率&quot;</span>: <span class="st">&quot;正确选择和使用工具的比例&quot;</span>,</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;响应时间&quot;</span>: <span class="st">&quot;从接收任务到完成的时间&quot;</span>,</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;成本效率&quot;</span>: <span class="st">&quot;每任务消耗的 Token/费用&quot;</span>,</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;错误恢复率&quot;</span>: <span class="st">&quot;从错误状态恢复的能力&quot;</span>,</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;用户满意度&quot;</span>: <span class="st">&quot;人工评估的质量分数&quot;</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <h3 id="agent-调试技巧">7.3 Agent 调试技巧</h3>
 <pre><code>调试清单：
 
@@ -1149,7 +1149,7 @@ evaluation_metrics = {
    测试异常输入、空结果、超时等情况
 
 6️⃣ 对比基线
-   与简单实现对比，确认 Agent 的价值</pre>
+   与简单实现对比，确认 Agent 的价值</code></pre>
 <h3 id="agent-性能优化">7.4 Agent 性能优化</h3>
 <table>
 <thead>
@@ -1210,7 +1210,7 @@ evaluation_metrics = {
 │  🧠 持续学习 Agent                                      │
 │     从交互中学习，不断提升能力                          │
 │                                                         │
-└─────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────┘</code></pre>
 <hr />
 <h2 id="总结">8. 总结</h2>
 <h3 id="核心要点">8.1 核心要点</h3>
@@ -1270,7 +1270,7 @@ evaluation_metrics = {
    • 多 Agent 系统设计
    • 性能优化与成本控制
    • 安全与可靠性
-   • 生产环境部署</pre>
+   • 生产环境部署</code></pre>
 <h3 id="参考资源">8.3 参考资源</h3>
 <ul>
 <li><a href="https://python.langchain.com/docs/">LangChain

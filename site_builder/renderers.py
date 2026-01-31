@@ -21,12 +21,15 @@ logger = logging.getLogger(__name__)
 
 def convert_code_blocks_for_highlightjs(html_content: str) -> str:
     """Convert pandoc-generated code blocks to highlight.js compatible format."""
-    # Convert <pre class="csharp"><code> to <pre><code class="language-csharp">
-    html_content = re.sub(r'<pre\s+class="([^"]+)"><code>', r'<pre><code class="language-\1">', html_content)
-    # Remove nested closing </code> tag
-    html_content = re.sub(r'</code></pre>', r'</pre>', html_content)
+    # Find all pre blocks with sourceCode class (handle multiline)
+    pattern = r'<div class="sourceCode"[^>]*>\s*<pre\s+class="sourceCode\s+([^"]+)">'
     
-    return html_content
+    def replace_code_block(match: re.Match) -> str:
+        language = match.group(1)
+        # Convert to standard <pre><code> format for highlight.js
+        return f'<pre><code class="language-{language}">'
+    
+    return re.sub(pattern, replace_code_block, html_content)
 
 
 def rewrite_internal_links(html_fragment: str, current_md: Path, legacy_to_new: Dict[str, str]) -> str:
@@ -95,7 +98,7 @@ def convert_markdown_to_html(md_file_path: Path, out_html_path: Path, legacy_to_
                 temp_md_path = md_file_path
 
             result = subprocess.run(
-                ["pandoc", "-s", "--no-highlight", str(temp_md_path), "-o", str(temp_html_path)],
+                ["pandoc", "-s", str(temp_md_path), "-o", str(temp_html_path)],
                 capture_output=True,
                 text=True,
                 timeout=30,
@@ -179,7 +182,7 @@ def generate_directory_page(dir_node: Dict, legacy_to_new: Dict[str, str]) -> bo
         temp_html_path = index_md.with_suffix(".temp.html")
         try:
             result = subprocess.run(
-                ["pandoc", "-s", "--no-highlight", str(index_md), "-o", str(temp_html_path)],
+                ["pandoc", "-s", str(index_md), "-o", str(temp_html_path)],
                 capture_output=True,
                 text=True,
                 timeout=30,
@@ -189,8 +192,11 @@ def generate_directory_page(dir_node: Dict, legacy_to_new: Dict[str, str]) -> bo
                 temp_html_content = temp_html_path.read_text(encoding="utf-8")
                 body_match = re.search(r"<body[^>]*>([\s\S]*?)</body>", temp_html_content, re.IGNORECASE)
                 body_content = body_match.group(1) if body_match else temp_html_content
-        
-                body_content = rewrite_internal_links(body_content, md_file_path, legacy_to_new)
+
+                # Convert code blocks to highlight.js compatible format
+                body_content = convert_code_blocks_for_highlightjs(body_content)
+
+                body_content = rewrite_internal_links(body_content, index_md, legacy_to_new)
         except Exception:
             body_content = ""
         finally:

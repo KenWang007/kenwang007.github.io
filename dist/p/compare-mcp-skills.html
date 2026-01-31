@@ -181,7 +181,7 @@ Agent
 │   │ 数据库/文件   │                 │  工具集合     │               │
 │   └───────────────┘                 └───────────────┘               │
 │                                                                     │
-└─────────────────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────────────────┘</code></pre>
 <hr />
 <h2 id="基本概念">1. 基本概念</h2>
 <h3 id="什么是-mcp-server">1.1 什么是 MCP Server？</h3>
@@ -214,7 +214,7 @@ Agent
 │   │  Cursor IDE │                          │  第三方服务 │     │
 │   └─────────────┘                          └─────────────┘     │
 │                                                                 │
-└─────────────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────────────┘</code></pre>
 <p><strong>MCP 的核心特性：</strong></p>
 <table>
 <thead>
@@ -270,7 +270,7 @@ Agent
 │   │                                                         │  │
 │   └─────────────────────────────────────────────────────────┘  │
 │                                                                 │
-└─────────────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────────────┘</code></pre>
 <p><strong>Skills 的核心特性：</strong></p>
 <table>
 <thead>
@@ -329,7 +329,7 @@ Agent
 │   • 跨进程通信                                                      │
 │   • 松耦合                                                          │
 │                                                                     │
-└─────────────────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────────────────┘</code></pre>
 <h3 id="详细对比表">2.2 详细对比表</h3>
 <table>
 <colgroup>
@@ -435,7 +435,7 @@ Agent
 │   │ • 返回执行结果 │  │ • 文件/URI     │  │ • 引导式对话   │   │
 │   └────────────────┘  └────────────────┘  └────────────────┘   │
 │                                                                 │
-└─────────────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────────────┘</code></pre>
 <table>
 <colgroup>
 <col style="width: 22%" />
@@ -493,7 +493,7 @@ Agent
 │   │   特点：可被 Agent 动态发现并按需加载                    │   │
 │   └─────────────────────────────────────────────────────────┘   │
 │                                                                 │
-└─────────────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────────────┘</code></pre>
 <h3 id="skills-的典型功能分类">3.3 Skills 的典型功能分类</h3>
 <pre><code>┌─────────────────────────────────────────────────────────────────┐
 │                      Skills 功能分类                             │
@@ -517,71 +517,71 @@ Agent
 │   │ • 格式转换  │  │ • API 调用  │  │ • 视频处理  │            │
 │   └─────────────┘  └─────────────┘  └─────────────┘            │
 │                                                                 │
-└─────────────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────────────┘</code></pre>
 <hr />
 <h2 id="使用方式对比">4. 使用方式对比</h2>
 <h3 id="mcp-server-使用流程">4.1 MCP Server 使用流程</h3>
-<pre><code class="language-python"># 1. 安装 MCP Server SDK
-# pip install mcp
-
-# 2. 定义 MCP Server
-from mcp.server import Server
-from mcp.types import Tool, TextContent
-
-server = Server(&quot;my-mcp-server&quot;)
-
-# 3. 注册工具
-@server.tool(&quot;search_database&quot;)
-async def search_database(query: str) -&gt; str:
-    &quot;&quot;&quot;搜索数据库&quot;&quot;&quot;
-    # 执行数据库查询
-    results = await db.query(query)
-    return TextContent(text=str(results))
-
-# 4. 启动服务
-if __name__ == &quot;__main__&quot;:
-    server.run()</pre>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 安装 MCP Server SDK</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pip install mcp</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 定义 MCP Server</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mcp.server <span class="im">import</span> Server</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mcp.types <span class="im">import</span> Tool, TextContent</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>server <span class="op">=</span> Server(<span class="st">&quot;my-mcp-server&quot;</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 注册工具</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="at">@server.tool</span>(<span class="st">&quot;search_database&quot;</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> search_database(query: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;搜索数据库&quot;&quot;&quot;</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 执行数据库查询</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> <span class="cf">await</span> db.query(query)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> TextContent(text<span class="op">=</span><span class="bu">str</span>(results))</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. 启动服务</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&quot;__main__&quot;</span>:</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    server.run()</span></code></pre></div>
 <p><strong>配置 MCP Server（以 Claude Desktop 为例）：</strong></p>
-<pre><code class="language-json">{
-  &quot;mcpServers&quot;: {
-    &quot;my-database-server&quot;: {
-      &quot;command&quot;: &quot;python&quot;,
-      &quot;args&quot;: [&quot;/path/to/server.py&quot;],
-      &quot;env&quot;: {
-        &quot;DATABASE_URL&quot;: &quot;postgresql://...&quot;
-      }
-    }
-  }
-}</pre>
+<pre><code class="language-json"><code class="sourceCode json"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;mcpServers&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;my-database-server&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;command&quot;</span><span class="fu">:</span> <span class="st">&quot;python&quot;</span><span class="fu">,</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;args&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;/path/to/server.py&quot;</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;env&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;DATABASE_URL&quot;</span><span class="fu">:</span> <span class="st">&quot;postgresql://...&quot;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 <h3 id="skills-使用流程">4.2 Skills 使用流程</h3>
-<pre><code class="language-yaml"># 1. 配置文件启用 Skills（以某 Agent 平台为例）
-agent_config:
-  name: &quot;my-agent&quot;
-  model: &quot;gpt-4&quot;
-  skills:
-    - name: &quot;web_search&quot;
-      enabled: true
-      config:
-        api_key: &quot;${SEARCH_API_KEY}&quot;
-        max_results: 10
-    
-    - name: &quot;code_interpreter&quot;
-      enabled: true
-      config:
-        languages: [&quot;python&quot;, &quot;javascript&quot;]
-        sandbox: true
-    
-    - name: &quot;file_operations&quot;
-      enabled: true
-      config:
-        allowed_paths: [&quot;/workspace&quot;, &quot;/tmp&quot;]</pre>
-<pre><code class="language-python"># 2. 代码中调用 Skills（框架内置方式）
-from agent_platform import Agent
-
-agent = Agent(config=&quot;agent_config.yaml&quot;)
-
-# Skills 自动可用，Agent 根据任务自动选择使用
-response = agent.run(&quot;搜索最新的 AI 新闻并生成摘要&quot;)</pre>
+<pre><code class="language-yaml"><code class="sourceCode yaml"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 配置文件启用 Skills（以某 Agent 平台为例）</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">agent_config</span><span class="kw">:</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;my-agent&quot;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">model</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;gpt-4&quot;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">skills</span><span class="kw">:</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;web_search&quot;</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">enabled</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">config</span><span class="kw">:</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">api_key</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;${SEARCH_API_KEY}&quot;</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">max_results</span><span class="kw">:</span><span class="at"> </span><span class="dv">10</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;code_interpreter&quot;</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">enabled</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">config</span><span class="kw">:</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">languages</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">&quot;python&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;javascript&quot;</span><span class="kw">]</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">sandbox</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="at">    </span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;file_operations&quot;</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">enabled</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">config</span><span class="kw">:</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">allowed_paths</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">&quot;/workspace&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;/tmp&quot;</span><span class="kw">]</span></span></code></pre></div>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 代码中调用 Skills（框架内置方式）</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> agent_platform <span class="im">import</span> Agent</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>agent <span class="op">=</span> Agent(config<span class="op">=</span><span class="st">&quot;agent_config.yaml&quot;</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Skills 自动可用，Agent 根据任务自动选择使用</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> agent.run(<span class="st">&quot;搜索最新的 AI 新闻并生成摘要&quot;</span>)</span></code></pre></div>
 <hr />
 <h2 id="优缺点对比">5. 优缺点对比</h2>
 <h3 id="mcp-server-优缺点">5.1 MCP Server 优缺点</h3>
@@ -597,7 +597,7 @@ response = agent.run(&quot;搜索最新的 AI 新闻并生成摘要&quot;)</pre>
 │ • 版本独立管理             │ • 需要处理连接管理、错误恢复       │
 │ • 社区生态丰富             │ • 依赖外部进程的可用性             │
 │ • 适合复杂企业场景         │ • 配置相对繁琐                     │
-└────────────────────────────┴────────────────────────────────────┘</pre>
+└────────────────────────────┴────────────────────────────────────┘</code></pre>
 <h3 id="skills-优缺点">5.2 Skills 优缺点</h3>
 <pre><code>┌─────────────────────────────────────────────────────────────────┐
 │                      Skills 优缺点分析                           │
@@ -611,7 +611,7 @@ response = agent.run(&quot;搜索最新的 AI 新闻并生成摘要&quot;)</pre>
 │ • 配置简洁                 │ • 版本更新依赖平台                 │
 │ • 适合快速原型             │ • 功能边界受平台限制               │
 │ • 文档完善                 │ • 难以跨平台复用                   │
-└────────────────────────────┴────────────────────────────────────┘</pre>
+└────────────────────────────┴────────────────────────────────────┘</code></pre>
 <hr />
 <h2 id="适用场景">6. 适用场景</h2>
 <h3 id="何时选择-mcp-server">6.1 何时选择 MCP Server？</h3>
@@ -637,7 +637,7 @@ response = agent.run(&quot;搜索最新的 AI 新闻并生成摘要&quot;)</pre>
 │      • 平台内置功能无法满足需求                                 │
 │      • 需要使用特定技术栈开发工具                               │
 │                                                                 │
-└─────────────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────────────┘</code></pre>
 <h3 id="何时选择-skills">6.2 何时选择 Skills？</h3>
 <pre><code>适合 Skills 的场景：
 
@@ -662,55 +662,55 @@ response = agent.run(&quot;搜索最新的 AI 新闻并生成摘要&quot;)</pre>
 │      • 已重度使用某个 Agent 平台                                │
 │      • 希望与平台生态深度集成                                   │
 │                                                                 │
-└─────────────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────────────┘</code></pre>
 <hr />
 <h2 id="实际案例对比">7. 实际案例对比</h2>
 <h3 id="案例实现数据库查询功能">7.1 案例：实现数据库查询功能</h3>
 <p><strong>使用 MCP Server：</strong></p>
-<pre><code class="language-python"># database_server.py
-from mcp.server import Server
-from mcp.types import Tool
-import asyncpg
-
-server = Server(&quot;database-mcp&quot;)
-
-@server.tool(&quot;query_sales&quot;)
-async def query_sales(start_date: str, end_date: str, region: str = None):
-    &quot;&quot;&quot;
-    查询销售数据
-    
-    Args:
-        start_date: 开始日期 (YYYY-MM-DD)
-        end_date: 结束日期 (YYYY-MM-DD)  
-        region: 可选，地区筛选
-    &quot;&quot;&quot;
-    conn = await asyncpg.connect(DATABASE_URL)
-    query = &quot;&quot;&quot;
-        SELECT * FROM sales 
-        WHERE date BETWEEN $1 AND $2
-    &quot;&quot;&quot;
-    params = [start_date, end_date]
-    
-    if region:
-        query += &quot; AND region = $3&quot;
-        params.append(region)
-    
-    results = await conn.fetch(query, *params)
-    await conn.close()
-    
-    return format_results(results)
-
-if __name__ == &quot;__main__&quot;:
-    server.run()</pre>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># database_server.py</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mcp.server <span class="im">import</span> Server</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mcp.types <span class="im">import</span> Tool</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> asyncpg</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>server <span class="op">=</span> Server(<span class="st">&quot;database-mcp&quot;</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="at">@server.tool</span>(<span class="st">&quot;query_sales&quot;</span>)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> query_sales(start_date: <span class="bu">str</span>, end_date: <span class="bu">str</span>, region: <span class="bu">str</span> <span class="op">=</span> <span class="va">None</span>):</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co">    查询销售数据</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="co">        start_date: 开始日期 (YYYY-MM-DD)</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="co">        end_date: 结束日期 (YYYY-MM-DD)  </span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="co">        region: 可选，地区筛选</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    conn <span class="op">=</span> <span class="cf">await</span> asyncpg.<span class="ex">connect</span>(DATABASE_URL)</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>    query <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="st">        SELECT * FROM sales </span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="st">        WHERE date BETWEEN $1 AND $2</span></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="st">    &quot;&quot;&quot;</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>    params <span class="op">=</span> [start_date, end_date]</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> region:</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>        query <span class="op">+=</span> <span class="st">&quot; AND region = $3&quot;</span></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>        params.append(region)</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> <span class="cf">await</span> conn.fetch(query, <span class="op">*</span>params)</span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> conn.close()</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> format_results(results)</span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&quot;__main__&quot;</span>:</span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>    server.run()</span></code></pre></div>
 <p><strong>使用 Skills：</strong></p>
-<pre><code class="language-yaml"># 平台配置
-skills:
-  - name: &quot;database_query&quot;
-    enabled: true
-    config:
-      connection_string: &quot;${DB_CONNECTION}&quot;
-      allowed_tables: [&quot;sales&quot;, &quot;products&quot;, &quot;customers&quot;]
-      max_rows: 1000</pre>
+<pre><code class="language-yaml"><code class="sourceCode yaml"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 平台配置</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">skills</span><span class="kw">:</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;database_query&quot;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">enabled</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">config</span><span class="kw">:</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">connection_string</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;${DB_CONNECTION}&quot;</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">allowed_tables</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">&quot;sales&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;products&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;customers&quot;</span><span class="kw">]</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">max_rows</span><span class="kw">:</span><span class="at"> </span><span class="dv">1000</span></span></code></pre></div>
 <h3 id="对比总结">7.2 对比总结</h3>
 <table>
 <thead>
@@ -778,7 +778,7 @@ skills:
 │   • 第三方服务 → 社区 MCP Server（复用生态）                        │
 │   • 企业私有功能 → 自定义 MCP Server（安全可控）                    │
 │                                                                     │
-└─────────────────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────────────────┘</code></pre>
 <hr />
 <h2 id="未来趋势">9. 未来趋势</h2>
 <pre><code>┌─────────────────────────────────────────────────────────────────────┐
@@ -803,7 +803,7 @@ skills:
 │   ├── 无缝切换/混合使用                                             │
 │   └── 智能工具编排与调度                                            │
 │                                                                     │
-└─────────────────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────────────────┘</code></pre>
 <hr />
 <h2 id="总结">10. 总结</h2>
 <h3 id="决策流程图">决策流程图</h3>
@@ -843,7 +843,7 @@ skills:
                                   ┌───────────────┐    ┌───────────────┐
                                   │ 使用 MCP      │    │ 根据复杂度    │
                                   │ Server        │    │ 选择方案      │
-                                  └───────────────┘    └───────────────┘</pre>
+                                  └───────────────┘    └───────────────┘</code></pre>
 <h3 id="核心要点">核心要点</h3>
 <table>
 <thead>

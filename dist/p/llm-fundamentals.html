@@ -162,7 +162,7 @@ Model），即<strong>大型语言模型</strong>，是一种基于深度学习�
 │  阿里      │  通义千问    │  中文能力强、开源            │
 │  字节      │  豆包/云雀   │  多模态、应用广泛            │
 │  DeepSeek  │  DeepSeek   │  开源、性价比高              │
-└────────────┴─────────────┴─────────────────────────────┘</pre>
+└────────────┴─────────────┴─────────────────────────────┘</code></pre>
 <hr />
 <h2 id="llm-有什么特点与其他模型的区别">2. LLM
 有什么特点？与其他模型的区别</h2>
@@ -252,7 +252,7 @@ Abilities）</h4>
    • 特定领域高精度要求（医疗诊断、金融风控）
    • 实时性要求高、低延迟
    • 资源受限的边缘设备
-   • 成本敏感的大规模部署</pre>
+   • 成本敏感的大规模部署</code></pre>
 <hr />
 <h2 id="如何构建-llm-应用">3. 如何构建 LLM 应用？</h2>
 <h3 id="应用架构全景图">3.1 应用架构全景图</h3>
@@ -275,50 +275,50 @@ Abilities）</h4>
 │  │  RAG    │  Agent  │  Tools  │  Memory         │  │
 │  │ 知识检索 │ 自主决策 │ 工具调用 │ 长期记忆        │  │
 │  └─────────┴─────────┴─────────┴─────────────────┘  │
-└─────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────┘</code></pre>
 <h3 id="构建方式">3.2 构建方式</h3>
 <h4 id="方式一直接调用-api">方式一：直接调用 API</h4>
-<pre><code class="language-python">from openai import OpenAI
-
-client = OpenAI(api_key=&quot;your-api-key&quot;)
-
-response = client.chat.completions.create(
-    model=&quot;gpt-4&quot;,
-    messages=[
-        {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;你是一个有帮助的助手。&quot;},
-        {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;什么是LLM？&quot;}
-    ]
-)
-
-print(response.choices[0].message.content)</pre>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openai <span class="im">import</span> OpenAI</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> OpenAI(api_key<span class="op">=</span><span class="st">&quot;your-api-key&quot;</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> client.chat.completions.create(</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span><span class="st">&quot;gpt-4&quot;</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    messages<span class="op">=</span>[</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        {<span class="st">&quot;role&quot;</span>: <span class="st">&quot;system&quot;</span>, <span class="st">&quot;content&quot;</span>: <span class="st">&quot;你是一个有帮助的助手。&quot;</span>},</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        {<span class="st">&quot;role&quot;</span>: <span class="st">&quot;user&quot;</span>, <span class="st">&quot;content&quot;</span>: <span class="st">&quot;什么是LLM？&quot;</span>}</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(response.choices[<span class="dv">0</span>].message.content)</span></code></pre></div>
 <h4 id="方式二使用-langchain-框架">方式二：使用 LangChain 框架</h4>
-<pre><code class="language-python">from langchain_openai import ChatOpenAI
-from langchain.prompts import ChatPromptTemplate
-from langchain.chains import LLMChain
-
-# 初始化模型
-llm = ChatOpenAI(model=&quot;gpt-4&quot;, temperature=0.7)
-
-# 创建提示模板
-prompt = ChatPromptTemplate.from_messages([
-    (&quot;system&quot;, &quot;你是一个{role}&quot;),
-    (&quot;user&quot;, &quot;{question}&quot;)
-])
-
-# 创建链
-chain = LLMChain(llm=llm, prompt=prompt)
-
-# 执行
-result = chain.run(role=&quot;AI专家&quot;, question=&quot;解释一下LLM的工作原理&quot;)</pre>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_openai <span class="im">import</span> ChatOpenAI</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.prompts <span class="im">import</span> ChatPromptTemplate</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.chains <span class="im">import</span> LLMChain</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 初始化模型</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>llm <span class="op">=</span> ChatOpenAI(model<span class="op">=</span><span class="st">&quot;gpt-4&quot;</span>, temperature<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建提示模板</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>prompt <span class="op">=</span> ChatPromptTemplate.from_messages([</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    (<span class="st">&quot;system&quot;</span>, <span class="st">&quot;你是一个</span><span class="sc">{role}</span><span class="st">&quot;</span>),</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    (<span class="st">&quot;user&quot;</span>, <span class="st">&quot;</span><span class="sc">{question}</span><span class="st">&quot;</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建链</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>chain <span class="op">=</span> LLMChain(llm<span class="op">=</span>llm, prompt<span class="op">=</span>prompt)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 执行</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> chain.run(role<span class="op">=</span><span class="st">&quot;AI专家&quot;</span>, question<span class="op">=</span><span class="st">&quot;解释一下LLM的工作原理&quot;</span>)</span></code></pre></div>
 <h4 id="方式三本地部署开源模型">方式三：本地部署开源模型</h4>
-<pre><code class="language-python"># 使用 Ollama 本地部署
-import ollama
-
-response = ollama.chat(
-    model=&#39;llama3&#39;,
-    messages=[{&#39;role&#39;: &#39;user&#39;, &#39;content&#39;: &#39;什么是LLM？&#39;}]
-)
-print(response[&#39;message&#39;][&#39;content&#39;])</pre>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用 Ollama 本地部署</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ollama</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> ollama.chat(</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span><span class="st">&#39;llama3&#39;</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    messages<span class="op">=</span>[{<span class="st">&#39;role&#39;</span>: <span class="st">&#39;user&#39;</span>, <span class="st">&#39;content&#39;</span>: <span class="st">&#39;什么是LLM？&#39;</span>}]</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(response[<span class="st">&#39;message&#39;</span>][<span class="st">&#39;content&#39;</span>])</span></code></pre></div>
 <h3 id="常用开发框架">3.3 常用开发框架</h3>
 <table>
 <thead>
@@ -381,7 +381,7 @@ print(response[&#39;message&#39;][&#39;content&#39;])</pre>
 │  负载均衡          成本追踪                            │
 │  版本管理          持续优化                            │
 │                                                         │
-└─────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────┘</code></pre>
 <h3 id="关键步骤详解">4.2 关键步骤详解</h3>
 <h4 id="step-1-模型选型考量">Step 1: 模型选型考量</h4>
 <pre><code>选型决策树：
@@ -392,7 +392,7 @@ print(response[&#39;message&#39;][&#39;content&#39;])</pre>
           ├── 是 → Llama 3 / Qwen / DeepSeek
           └── 否 → 是否成本敏感？
                     ├── 是 → GPT-4o-mini / Claude Haiku
-                    └── 否 → GPT-4o / Claude Sonnet</pre>
+                    └── 否 → GPT-4o / Claude Sonnet</code></pre>
 <h4 id="step-2-prompt-工程核心技巧">Step 2: Prompt 工程核心技巧</h4>
 <table>
 <colgroup>
@@ -436,16 +436,16 @@ print(response[&#39;message&#39;][&#39;content&#39;])</pre>
 </tbody>
 </table>
 <h4 id="step-3-评估指标">Step 3: 评估指标</h4>
-<pre><code class="language-python"># 常用评估维度
-evaluation_metrics = {
-    &quot;准确性&quot;: &quot;回答是否正确、事实是否准确&quot;,
-    &quot;相关性&quot;: &quot;回答是否与问题相关&quot;,
-    &quot;完整性&quot;: &quot;回答是否完整覆盖问题&quot;,
-    &quot;一致性&quot;: &quot;多次回答是否保持一致&quot;,
-    &quot;安全性&quot;: &quot;是否产生有害内容&quot;,
-    &quot;延迟&quot;: &quot;响应时间是否满足要求&quot;,
-    &quot;成本&quot;: &quot;Token消耗是否在预算内&quot;
-}</pre>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 常用评估维度</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>evaluation_metrics <span class="op">=</span> {</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;准确性&quot;</span>: <span class="st">&quot;回答是否正确、事实是否准确&quot;</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;相关性&quot;</span>: <span class="st">&quot;回答是否与问题相关&quot;</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;完整性&quot;</span>: <span class="st">&quot;回答是否完整覆盖问题&quot;</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;一致性&quot;</span>: <span class="st">&quot;多次回答是否保持一致&quot;</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;安全性&quot;</span>: <span class="st">&quot;是否产生有害内容&quot;</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;延迟&quot;</span>: <span class="st">&quot;响应时间是否满足要求&quot;</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;成本&quot;</span>: <span class="st">&quot;Token消耗是否在预算内&quot;</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <hr />
 <h2 id="其他-llm-相关知识">5. 其他 LLM 相关知识</h2>
 <h3 id="核心概念术语">5.1 核心概念术语</h3>
@@ -520,17 +520,17 @@ evaluation_metrics = {
 关键创新：自注意力机制（Self-Attention）
 - 允许模型关注输入序列的任意位置
 - 捕捉长距离依赖关系
-- 支持并行计算，训练效率高</pre>
+- 支持并行计算，训练效率高</code></pre>
 <h3 id="成本优化策略">5.3 成本优化策略</h3>
-<pre><code class="language-python"># 成本优化最佳实践
-cost_optimization = {
-    &quot;模型选择&quot;: &quot;根据任务复杂度选择合适模型，简单任务用小模型&quot;,
-    &quot;Prompt压缩&quot;: &quot;精简提示词，去除冗余信息&quot;,
-    &quot;缓存机制&quot;: &quot;对相同/相似请求进行缓存&quot;,
-    &quot;批量处理&quot;: &quot;合并多个请求减少API调用次数&quot;,
-    &quot;流式输出&quot;: &quot;使用streaming减少等待时间&quot;,
-    &quot;本地部署&quot;: &quot;高频场景考虑本地部署开源模型&quot;
-}</pre>
+<pre><code class="language-python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 成本优化最佳实践</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>cost_optimization <span class="op">=</span> {</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;模型选择&quot;</span>: <span class="st">&quot;根据任务复杂度选择合适模型，简单任务用小模型&quot;</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Prompt压缩&quot;</span>: <span class="st">&quot;精简提示词，去除冗余信息&quot;</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;缓存机制&quot;</span>: <span class="st">&quot;对相同/相似请求进行缓存&quot;</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;批量处理&quot;</span>: <span class="st">&quot;合并多个请求减少API调用次数&quot;</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;流式输出&quot;</span>: <span class="st">&quot;使用streaming减少等待时间&quot;</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;本地部署&quot;</span>: <span class="st">&quot;高频场景考虑本地部署开源模型&quot;</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <h3 id="安全与合规">5.4 安全与合规</h3>
 <h4 id="常见安全风险">常见安全风险</h4>
 <table>
@@ -584,7 +584,7 @@ cost_optimization = {
 │  🔒 安全可控                                            │
 │     更好的对齐、更少的幻觉、更强的可解释性              │
 │                                                         │
-└─────────────────────────────────────────────────────────┘</pre>
+└─────────────────────────────────────────────────────────┘</code></pre>
 <hr />
 <h2 id="学习资源推荐">6. 学习资源推荐</h2>
 <h3 id="入门学习">6.1 入门学习</h3>

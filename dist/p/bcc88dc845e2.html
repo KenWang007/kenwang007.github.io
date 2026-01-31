@@ -69,8 +69,8 @@
         "@type": "Person",
         "name": "Ken Wang"
       },
-      "datePublished": "2026-01-31T16:06:59.256284",
-      "dateModified": "2026-01-31T16:06:59.256284",
+      "datePublished": "2026-01-31T13:30:43.802769",
+      "dateModified": "2026-01-31T13:30:43.802769",
       "inLanguage": "zh-CN"
     }
     </script>
@@ -148,7 +148,7 @@ RPC：从根源到现状，从现象到本质</h2>
 携带结果</li>
 </ul>
 <p>用序列图表达这个模型：</p>
-<pre><code class="language-mermaid">sequenceDiagram
+<pre class="mermaid"><code>sequenceDiagram
   participant Caller as 调用方进程
   participant ClientStub as Client Stub/Proxy
   participant Network as 网络/传输
@@ -165,7 +165,7 @@ RPC：从根源到现状，从现象到本质</h2>
   ServerStub-&gt;&gt;Network: 发送 reply message
   Network-&gt;&gt;ClientStub: 接收 reply message
   ClientStub-&gt;&gt;ClientStub: 反序列化为返回值/异常
-  ClientStub--&gt;&gt;Caller: 返回给调用方（或抛异常）</pre>
+  ClientStub--&gt;&gt;Caller: 返回给调用方（或抛异常）</code></pre>
 <blockquote>
 <p>注意：RFC 5531
 也明确指出这是”示例模型”，协议本身不限制并发模型（服务端可多线程/异步等）。</p>
@@ -319,13 +319,13 @@ streaming，并可用于高效率微服务、跨语言系统、实时点对点�
 <p>同时，ASP.NET Core gRPC 文档明确：<strong>gRPC requires
 HTTP/2</strong>，并给出了 Kestrel 上 HTTP/2 + TLS 的建议配置。</p>
 <p>结构图（逻辑视角）：</p>
-<pre><code class="language-mermaid">flowchart LR
+<pre class="mermaid"><code>flowchart LR
   A[.NET Client App] --&gt; B[Generated gRPC Client (Stub)]
   B --&gt; C[GrpcChannel (long-lived connection)]
   C --&gt; D[HTTP/2 + TLS]
   D --&gt; E[Kestrel + ASP.NET Core]
   E --&gt; F[Generated Service Base (Skeleton)]
-  F --&gt; G[Your Service Implementation]</pre>
+  F --&gt; G[Your Service Implementation]</code></pre>
 <h3 id="wcf.net-framework经典企业级-rpc服务框架soap">3.2 WCF（.NET
 Framework）：经典企业级 RPC/服务框架（SOAP）</h3>
 <p>WCF 的核心卖点是”可配置的通信栈”：通过 bindings/behaviors/services
@@ -339,14 +339,14 @@ WS-I BP 1.1/ASMX 等互操作；默认文本编码；安全默认关闭。</li>
 更快，并通过配置选择性开启能力（例如可靠消息）。</li>
 </ul>
 <p>结构图（典型代理+binding 栈视角）：</p>
-<pre><code class="language-mermaid">flowchart LR
+<pre class="mermaid"><code>flowchart LR
   A[Client App] --&gt; B[WCF Client Proxy]
   B --&gt; C[Binding Stack
 Transport+Encoding+Security+Reliability]
   C --&gt; D[(Network)]
   D --&gt; E[Binding Stack]
   E --&gt; F[ServiceHost]
-  F --&gt; G[Service Implementation]</pre>
+  F --&gt; G[Service Implementation]</code></pre>
 <h3 id="corewcf把-wcf-服务端带到现代-.net迁移路径">3.3 CoreWCF：把 WCF
 服务端带到现代 .NET（迁移路径）</h3>
 <p>Microsoft Learn 提供了把 .NET Framework 上的 WCF Server-side
@@ -370,7 +370,7 @@ JSON-RPC（StreamJsonRpc）：轻量 RPC 协议 + 可自选传输</h3>
 JSON-RPC 线协议，并可运行在 Stream/WebSocket/System.IO.Pipelines
 之上，独立于底层传输。</p>
 <p>结构图（协议与传输分层视角）：</p>
-<pre><code class="language-mermaid">flowchart TB
+<pre class="mermaid"><code>flowchart TB
   subgraph App[你的应用]
     A1[Client Methods] --&gt; A2[JSON-RPC Serializer]
     A3[Server Methods] --&gt; A4[JSON-RPC Handler]
@@ -383,7 +383,7 @@ JSON-RPC 线协议，并可运行在 Stream/WebSocket/System.IO.Pipelines
   end
 
   A2 --&gt; Transport
-  Transport --&gt; A4</pre>
+  Transport --&gt; A4</code></pre>
 <h3
 id="orleans以代理对象grain-reference方式做分布式方法调用rpc-like">3.6
 Orleans：以”代理对象（grain
@@ -492,56 +492,56 @@ streaming，且适配现代 .NET/微服务场景。</p>
 protobuf（<code>.proto</code>）作为 IDL；<code>.proto</code>
 中包含服务定义与消息定义。</p>
 <p>示例 <code>greet.proto</code>（与 Microsoft 文档示例结构一致）：</p>
-<pre><code class="language-proto">syntax = &quot;proto3&quot;;
-option csharp_namespace = &quot;GrpcGreeter&quot;;
-package greet;
-
-service Greeter {
-  rpc SayHello (HelloRequest) returns (HelloReply);
-}
-
-message HelloRequest {
-  string name = 1;
-}
-
-message HelloReply {
-  string message = 1;
-}</pre>
+<pre><code class="language-proto"><code class="sourceCode protobuf"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>syntax = <span class="st">&quot;proto3&quot;</span>;</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">option</span> csharp_namespace = <span class="st">&quot;GrpcGreeter&quot;</span>;</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span> greet;</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>service Greeter {</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  rpc SayHello (HelloRequest) returns (HelloReply);</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="kw">message</span> HelloRequest {</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">string</span> name = <span class="dv">1</span>;</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="kw">message</span> HelloReply {</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">string</span> <span class="kw">message</span> = <span class="dv">1</span>;</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <h3 id="生成服务端骨架service-base并实现业务逻辑">5.2
 生成服务端骨架（Service Base）并实现业务逻辑</h3>
 <p>Microsoft Learn 描述：服务端会生成抽象 service
 base，开发者通过继承并重写方法实现业务逻辑。</p>
 <p>示例（最小可理解版）：</p>
-<pre><code class="language-csharp">public class GreeterService : Greeter.GreeterBase
-{
-    public override Task&lt;HelloReply&gt; SayHello(HelloRequest request, ServerCallContext context)
-        =&gt; Task.FromResult(new HelloReply { Message = &quot;Hello &quot; + request.Name });
-}</pre>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> GreeterService <span class="op">:</span> Greeter<span class="op">.</span><span class="fu">GreeterBase</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">override</span> Task<span class="op">&lt;</span>HelloReply<span class="op">&gt;</span> <span class="fu">SayHello</span><span class="op">(</span>HelloRequest request<span class="op">,</span> ServerCallContext context<span class="op">)</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        <span class="op">=&gt;</span> Task<span class="op">.</span><span class="fu">FromResult</span><span class="op">(</span><span class="kw">new</span> HelloReply <span class="op">{</span> Message <span class="op">=</span> <span class="st">&quot;Hello &quot;</span> <span class="op">+</span> request<span class="op">.</span><span class="fu">Name</span> <span class="op">});</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h3 id="在-asp.net-core-托管-grpc注意-http2-与-tls">5.3 在 ASP.NET Core
 托管 gRPC：注意 HTTP/2 与 TLS</h3>
 <p>Microsoft Learn 明确：gRPC requires HTTP/2，并建议 Kestrel 上的 gRPC
 endpoint 使用 TLS，并给出生产环境显式配置 TLS 的方式。</p>
 <p>概念性 <code>Program.cs</code>（示意如何注册与映射服务）：</p>
-<pre><code class="language-csharp">var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddGrpc();
-
-var app = builder.Build();
-
-app.MapGrpcService&lt;GreeterService&gt;();
-
-app.Run();</pre>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dt">var</span> builder <span class="op">=</span> WebApplication<span class="op">.</span><span class="fu">CreateBuilder</span><span class="op">(</span>args<span class="op">);</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddGrpc</span><span class="op">();</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="dt">var</span> app <span class="op">=</span> builder<span class="op">.</span><span class="fu">Build</span><span class="op">();</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">MapGrpcService</span><span class="op">&lt;</span>GreeterService<span class="op">&gt;();</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">Run</span><span class="op">();</span></span></code></pre></div>
 <h3 id="客户端调用channel长连接-强类型-client">5.4
 客户端调用：Channel（长连接）+ 强类型 Client</h3>
 <p>Microsoft Learn 指出：gRPC client 从 channel 创建；channel 表示到
 gRPC 服务的 long-lived connection；并展示了
 <code>GrpcChannel.ForAddress</code> 的典型用法。</p>
 <p>示例：</p>
-<pre><code class="language-csharp">using var channel = GrpcChannel.ForAddress(&quot;&lt;gRPC server address&gt;&quot;);
-var client = new Greeter.GreeterClient(channel);
-
-var reply = await client.SayHelloAsync(new HelloRequest { Name = &quot;World&quot; });
-Console.WriteLine(reply.Message);</pre>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> <span class="dt">var</span> channel <span class="op">=</span> GrpcChannel<span class="op">.</span><span class="fu">ForAddress</span><span class="op">(</span><span class="st">&quot;https://localhost:5001&quot;</span><span class="op">);</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="dt">var</span> client <span class="op">=</span> <span class="kw">new</span> Greeter<span class="op">.</span><span class="fu">GreeterClient</span><span class="op">(</span>channel<span class="op">);</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="dt">var</span> reply <span class="op">=</span> await client<span class="op">.</span><span class="fu">SayHelloAsync</span><span class="op">(</span><span class="kw">new</span> HelloRequest <span class="op">{</span> Name <span class="op">=</span> <span class="st">&quot;World&quot;</span> <span class="op">});</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>Console<span class="op">.</span><span class="fu">WriteLine</span><span class="op">(</span>reply<span class="op">.</span><span class="fu">Message</span><span class="op">);</span></span></code></pre></div>
 <h3 id="更推荐的客户端集成httpclientfactorygrpc-client-factory">5.5
 更推荐的客户端集成：<code>HttpClientFactory</code>（gRPC client
 factory）</h3>
@@ -549,10 +549,10 @@ factory）</h3>
 集成提供集中配置、管理底层 handler 生命周期、并在 ASP.NET Core gRPC
 服务中自动传播 deadline 与 cancellation。</p>
 <p>示例（在 <code>Program.cs</code> 注册 typed client）：</p>
-<pre><code class="language-csharp">builder.Services.AddGrpcClient&lt;Greeter.GreeterClient&gt;(o =&gt;
-{
-    o.Address = new Uri(&quot;&lt;gRPC server address&gt;&quot;);
-});</pre>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddGrpcClient</span><span class="op">&lt;</span>Greeter<span class="op">.</span><span class="fu">GreeterClient</span><span class="op">&gt;(</span>o <span class="op">=&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    o<span class="op">.</span><span class="fu">Address</span> <span class="op">=</span> <span class="kw">new</span> <span class="fu">Uri</span><span class="op">(</span><span class="st">&quot;https://localhost:5001&quot;</span><span class="op">);</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span></code></pre></div>
 <h3 id="典型踩坑点与最佳实践只列官方明确指出的部分">5.6
 典型”踩坑点”与最佳实践（只列官方明确指出的部分）</h3>
 <ul>
