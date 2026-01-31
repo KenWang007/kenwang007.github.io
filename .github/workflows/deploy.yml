@@ -51,7 +51,7 @@ jobs:
         uses: actions/configure-pages@v4
       
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           # 上传整个仓库（包含生成的 dist/ 目录）
           path: '_site'
