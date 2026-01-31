@@ -279,7 +279,7 @@ Microsoft Learn 指出：gRPC client 从 channel 创建；channel 表示到 gRPC
 示例：
 
 ```csharp
-using var channel = GrpcChannel.ForAddress("https://localhost:5001");
+using var channel = GrpcChannel.ForAddress("<gRPC server address>");
 var client = new Greeter.GreeterClient(channel);
 
 var reply = await client.SayHelloAsync(new HelloRequest { Name = "World" });
@@ -294,7 +294,7 @@ Microsoft Learn 给出：gRPC 与 `HttpClientFactory` 集成提供集中配置�
 ```csharp
 builder.Services.AddGrpcClient<Greeter.GreeterClient>(o =>
 {
-    o.Address = new Uri("https://localhost:5001");
+    o.Address = new Uri("<gRPC server address>");
 });
 ```
 
