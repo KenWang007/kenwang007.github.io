@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="page-article">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="如何使用Redis解决分布式缓存 - 关键词: Redis, Redis解决分布式缓存, 如何使用">
+    <meta name="keywords" content="Redis, Redis解决分布式缓存, 如何使用, 解决分布式缓存">
+    <meta name="author" content="Ken Wang">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://kenwang007.github.io/dist/p/0c0f2df114f9.html">
+    <meta property="og:title" content="如何使用Redis解决分布式缓存 - Ken的知识库">
+    <meta property="og:description" content="如何使用Redis解决分布式缓存 - 关键词: Redis, Redis解决分布式缓存, 如何使用">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://kenwang007.github.io/dist/p/0c0f2df114f9.html">
+    <meta property="twitter:title" content="如何使用Redis解决分布式缓存 - Ken的知识库">
+    <meta property="twitter:description" content="如何使用Redis解决分布式缓存 - 关键词: Redis, Redis解决分布式缓存, 如何使用">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#6366f1">
+    
+    <title>如何使用Redis解决分布式缓存 - Ken的知识库</title>
+    <link rel="stylesheet" href="/style.css?v=2.1.2">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%236366f1%22>📚</text></svg>">
+    <link rel="canonical" href="https://kenwang007.github.io/dist/p/0c0f2df114f9.html">
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- RSS Feed -->
+    <link rel="alternate" type="application/rss+xml" title="Ken的知识库 RSS Feed" href="/rss.xml">
+    
+    <!-- Breadcrumb Navigation -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "首页",
+          "item": "https://kenwang007.github.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "如何使用Redis解决分布式缓存",
+          "item": "https://kenwang007.github.io/dist/p/0c0f2df114f9.html"
+        }
+      ]
+    }
+    </script>
+    
+    <!-- Article Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "如何使用Redis解决分布式缓存",
+      "description": "如何使用Redis解决分布式缓存 - 关键词: Redis, Redis解决分布式缓存, 如何使用",
+      "author": {
+        "@type": "Person",
+        "name": "Ken Wang"
+      },
+      "datePublished": "2026-01-31T11:08:30.291379",
+      "dateModified": "2026-01-31T11:08:30.291379",
+      "inLanguage": "zh-CN"
+    }
+    </script>
+</head>
+<body>
+    <!-- 星空背景 -->
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+
+    <!-- 顶部固定导航 -->
+    <header class="top-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="/index.html">
+                    <span class="logo-text">📚 Ken的知识库</span>
+                </a>
+            </div>
+            <nav class="main-nav">
+                <ul id="nav-menu" class="nav-menu">
+                    <!-- 动态生成的导航菜单项 -->
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <!-- 左侧固定关键词索引 -->
+        <aside class="keyword-sidebar">
+            <div class="keyword-header">
+                <h3>关键词索引</h3>
+            </div>
+            <div class="keyword-list" id="keyword-list">
+                <!-- 动态生成的关键词 -->
+            </div>
+        </aside>
+
+        <!-- 中间主内容 -->
+        <section class="content-area">
+            <div class="content-wrapper">
+                <article class="markdown-content">
+                    
+<h1 id="如何使用redis解决分布式缓存">如何使用Redis解决分布式缓存</h1>
+<p>在现代分布式系统架构中，缓存技术已成为提升系统性能、降低数据库负载的关键手段。本文将深入探讨分布式缓存的必要性、业界主流解决方案，以及如何在.NET技术栈中基于Microsoft官方推荐的最佳实践来实现Redis分布式缓存。</p>
+<h2 id="一分布式缓存的必要性分析">一、分布式缓存的必要性分析</h2>
+<h3 id="分布式系统架构的技术背景">1.1 分布式系统架构的技术背景</h3>
+<p>随着云计算和微服务架构的普及，现代应用程序通常部署在多台服务器上，形成分布式系统。在这种架构下，传统的本地缓存（如内存缓存）面临着严峻的挑战：</p>
+<p><strong>单机缓存的局限性</strong>： -
+<strong>数据孤岛问题</strong>：每台服务器的缓存独立存在，无法共享数据 -
+<strong>数据一致性挑战</strong>：不同服务器上的缓存数据可能不一致 -
+<strong>资源浪费</strong>：相同的数据在多台服务器上重复缓存 -
+<strong>扩展性受限</strong>：无法动态扩展缓存容量</p>
+<p>根据Microsoft官方文档，当应用托管在云或服务器场中时，需要使用分布式缓存来存储数据，以确保所有应用实例都能访问相同的缓存数据。</p>
+<h3 id="分布式缓存解决的关键问题">1.2 分布式缓存解决的关键问题</h3>
+<h4 id="数据库负载过高">1.2.1 数据库负载过高</h4>
+<p>在高并发场景下，大量请求直接访问数据库会导致数据库负载过高，甚至引发数据库崩溃。分布式缓存通过在内存中存储热点数据，大幅减少对数据库的直接访问。</p>
+<p><strong>技术原理</strong>： -
+缓存热点数据：将频繁访问的数据存储在分布式缓存中 -
+减少数据库查询：大多数请求从缓存获取数据，避免数据库查询 -
+降低数据库压力：减少数据库连接数、查询次数和CPU使用率</p>
+<h4 id="系统响应延迟">1.2.2 系统响应延迟</h4>
+<p>数据库查询通常涉及磁盘I/O操作，响应时间较长（通常在几十毫秒到几百毫秒）。而分布式缓存基于内存存储，响应时间通常在微秒级别。</p>
+<p><strong>性能对比</strong>： - 数据库查询：50-500ms -
+分布式缓存查询：1-10ms - 性能提升：5-500倍</p>
+<h4 id="数据一致性挑战">1.2.3 数据一致性挑战</h4>
+<p>在分布式系统中，多台服务器需要保持数据一致性。本地缓存无法实现跨服务器的数据共享，而分布式缓存提供了统一的数据存储层。</p>
+<p><strong>一致性保证</strong>： - 所有服务器访问同一缓存实例 -
+数据更新后，所有服务器立即获取最新数据 -
+避免因缓存不一致导致的业务错误</p>
+<h3 id="分布式缓存相比本地缓存的核心优势">1.3
+分布式缓存相比本地缓存的核心优势</h3>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>本地缓存</th>
+<th>分布式缓存</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>数据共享</strong></td>
+<td>仅限单机</td>
+<td>跨服务器共享</td>
+</tr>
+<tr>
+<td><strong>一致性</strong></td>
+<td>各服务器独立</td>
+<td>全局一致</td>
+</tr>
+<tr>
+<td><strong>容量</strong></td>
+<td>受限于单机内存</td>
+<td>可横向扩展</td>
+</tr>
+<tr>
+<td><strong>可用性</strong></td>
+<td>单机故障即失效</td>
+<td>高可用集群</td>
+</tr>
+<tr>
+<td><strong>适用场景</strong></td>
+<td>单机应用</td>
+<td>分布式系统</td>
+</tr>
+</tbody>
+</table>
+<p>根据Microsoft官方文档，分布式缓存的主要优势在于： -
+<strong>跨实例共享</strong>：所有应用实例都能访问相同的缓存数据 -
+<strong>高可用性</strong>：支持故障转移和集群部署 -
+<strong>可扩展性</strong>：可根据负载动态扩展缓存容量</p>
+<h2
+id="二业界主流分布式缓存解决方案概述">二、业界主流分布式缓存解决方案概述</h2>
+<h3 id="redis">2.1 Redis</h3>
+<h4 id="核心设计思路">2.1.1 核心设计思路</h4>
+<p>Redis（Remote Dictionary
+Server）是一个开源的内存数据结构存储系统，可用作数据库、缓存和消息代理。其核心设计思路包括：</p>
+<p><strong>数据结构丰富</strong>： -
+支持多种数据类型：字符串（String）、哈希（Hash）、列表（List）、集合（Set）、有序集合（Sorted
+Set） -
+支持位图（Bitmap）、超日志（HyperLogLog）、地理位置（Geo）等高级数据结构
+- 支持事务、Lua脚本、发布订阅等高级功能</p>
+<p><strong>高性能设计</strong>： - 单线程模型：避免多线程竞争和锁开销 -
+内存存储：所有数据存储在内存中，访问速度快 -
+I/O多路复用：使用epoll等机制实现高并发处理</p>
+<p><strong>持久化支持</strong>： - RDB（Redis
+Database）：定期将数据快照保存到磁盘 - AOF（Append Only
+File）：记录所有写操作，重启时重放 - 混合持久化：结合RDB和AOF的优势</p>
+<h4 id="适用场景">2.1.2 适用场景</h4>
+<p>Redis适用于以下场景： -
+<strong>缓存系统</strong>：作为分布式缓存存储热点数据 -
+<strong>会话存储</strong>：存储用户会话信息 -
+<strong>排行榜</strong>：利用有序集合实现实时排行榜 -
+<strong>计数器</strong>：利用原子操作实现计数功能 -
+<strong>消息队列</strong>：利用发布订阅功能实现消息传递 -
+<strong>分布式锁</strong>：利用SETNX命令实现分布式锁</p>
+<h4 id="技术特点">2.1.3 技术特点</h4>
+<p><strong>优势</strong>： - 数据结构丰富，支持复杂业务场景 -
+性能优秀，单机可处理10万+ QPS - 支持主从复制和集群模式，高可用 -
+支持Lua脚本，支持复杂逻辑 - 社区活跃，生态完善</p>
+<p><strong>劣势</strong>： - 单线程模型，CPU利用率相对较低 -
+内存成本较高，需要足够的内存资源 - 大对象存储效率不如Memcached</p>
+<h3 id="memcached">2.2 Memcached</h3>
+<h4 id="核心设计思路-1">2.2.1 核心设计思路</h4>
+<p>Memcached是一个高性能的分布式内存对象缓存系统，其核心设计思路包括：</p>
+<p><strong>简单键值存储</strong>： - 仅支持简单的键值对存储 -
+不支持复杂的数据结构 - 数据最大支持1MB</p>
+<p><strong>多线程模型</strong>： - 采用多线程处理请求 -
+基于I/O多路复用技术 - 主线程接收请求后，分发给子线程处理</p>
+<p><strong>LRU淘汰策略</strong>： - 采用最近最少使用（LRU）算法淘汰缓存
+- 当内存不足时，自动淘汰最久未使用的数据 - 支持设置过期时间</p>
+<h4 id="适用场景-1">2.2.2 适用场景</h4>
+<p>Memcached适用于以下场景： -
+<strong>简单缓存</strong>：仅需存储简单的键值对数据 -
+<strong>读多写少</strong>：适合缓存读取频繁、更新较少的数据 -
+<strong>大对象缓存</strong>：对大对象的存储效率较高 -
+<strong>已有系统</strong>：许多老系统已经使用Memcached</p>
+<h4 id="技术特点-1">2.2.3 技术特点</h4>
+<p><strong>优势</strong>： - 简单易用，学习成本低 -
+多线程模型，CPU利用率高 - 对大对象存储效率高 -
+内存管理简单，不易内存泄漏</p>
+<p><strong>劣势</strong>： - 数据结构单一，不支持复杂业务场景 -
+不支持持久化，重启后数据丢失 - 不支持主从复制和集群模式 -
+功能相对简单，扩展性有限</p>
+<h3 id="分布式数据库缓存">2.3 分布式数据库缓存</h3>
+<h4 id="核心设计思路-2">2.3.1 核心设计思路</h4>
+<p>分布式数据库缓存是指利用数据库自身的缓存能力来实现分布式缓存，主要包括：</p>
+<p><strong>SQL Server缓存</strong>： - 利用SQL Server的内存优化表 -
+使用SQL Server的查询计划缓存 - 利用SQL Server的Service
+Broker实现缓存通知</p>
+<p><strong>MongoDB缓存</strong>： - 利用MongoDB的内存存储引擎 -
+利用MongoDB的TTL索引实现过期 - 利用MongoDB的Change
+Stream实现缓存失效</p>
+<h4 id="适用场景-2">2.3.2 适用场景</h4>
+<p>分布式数据库缓存适用于以下场景： -
+<strong>已有数据库</strong>：已经使用分布式数据库的系统 -
+<strong>数据一致性要求高</strong>：需要缓存和数据库强一致性的场景 -
+<strong>减少系统复杂度</strong>：不想引入额外的缓存系统</p>
+<h4 id="技术特点-2">2.3.3 技术特点</h4>
+<p><strong>优势</strong>： - 无需额外部署缓存系统 -
+数据一致性好，缓存和数据库同步 - 减少系统复杂度</p>
+<p><strong>劣势</strong>： - 性能不如专用缓存系统 - 数据库负载可能增加 -
+功能相对有限</p>
+<h3 id="方案对比总结">2.4 方案对比总结</h3>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>数据结构</th>
+<th>性能</th>
+<th>高可用</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Redis</strong></td>
+<td>丰富</td>
+<td>优秀</td>
+<td>复杂业务场景、高性能要求</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Memcached</strong></td>
+<td>简单</td>
+<td>良好</td>
+<td>简单缓存、大对象存储</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>分布式数据库缓存</strong></td>
+<td>依赖数据库</td>
+<td>一般</td>
+<td>已有数据库、一致性要求高</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2
+id="三.net技术栈下分布式缓存的最佳实践">三、.NET技术栈下分布式缓存的最佳实践</h2>
+<h3 id="技术架构设计">3.1 技术架构设计</h3>
+<p>根据Microsoft官方文档，.NET
+Core提供了<code>IDistributedCache</code>接口来实现分布式缓存。该接口定义了分布式缓存的基本操作，包括获取、设置、删除、刷新等。</p>
+<h4 id="架构层次">3.1.1 架构层次</h4>
+<p>在.NET应用中，分布式缓存的架构层次如下：</p>
+<pre><code>┌─────────────────────────────────────┐
+│   应用层（Controllers/Services）    │
+└──────────────┬──────────────────┘
+               │
+┌──────────────▼──────────────────┐
+│   IDistributedCache 接口层      │
+│   - GetAsync                   │
+│   - SetAsync                   │
+│   - RemoveAsync                 │
+└──────────────┬──────────────────┘
+               │
+┌──────────────▼──────────────────┐
+│   Redis 实现                    │
+│   - StackExchange.Redis         │
+│   - Microsoft.Extensions.Caching  │
+│     .StackExchangeRedis         │
+└──────────────┬──────────────────┘
+               │
+┌──────────────▼──────────────────┐
+│   Redis 服务器                  │
+│   - 单机模式                   │
+│   - 主从模式                   │
+│   - 集群模式                   │
+└─────────────────────────────────┘</code></pre>
+<h4 id="技术选型">3.1.2 技术选型</h4>
+<p>根据Microsoft官方文档，.NET Core提供了多种Redis实现：</p>
+<p><strong>Microsoft.Extensions.Caching.StackExchangeRedis</strong>： -
+官方推荐的Redis实现 - 基于StackExchange.Redis库 -
+支持连接池、重试、故障转移 - 与依赖注入深度集成</p>
+<p><strong>StackExchange.Redis</strong>： - 最流行的Redis .NET客户端 -
+功能丰富，性能优秀 - 支持所有Redis命令 - 社区活跃，文档完善</p>
+<p><strong>CSRedisCore</strong>： - 高性能的Redis .NET客户端 - 支持Redis
+Cluster - 支持Redis Sentinel - 支持异步操作</p>
+<p><strong>推荐选择</strong>：根据Microsoft官方文档，推荐使用<code>Microsoft.Extensions.Caching.StackExchangeRedis</code>，因为它是官方推荐的实现，与.NET
+Core深度集成。</p>
+<h3 id="核心api使用方法">3.2 核心API使用方法</h3>
+<h4 id="idistributedcache接口">3.2.1 IDistributedCache接口</h4>
+<p><code>IDistributedCache</code>接口定义了以下核心方法：</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">interface</span> IDistributedCache</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 获取缓存值</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">byte</span><span class="op">[]</span> <span class="fu">Get</span><span class="op">(</span><span class="dt">string</span> key<span class="op">);</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    Task<span class="op">&lt;</span><span class="dt">byte</span><span class="op">[]&gt;</span> <span class="fu">GetAsync</span><span class="op">(</span><span class="dt">string</span> key<span class="op">,</span> CancellationToken token <span class="op">=</span> <span class="kw">default</span><span class="op">);</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 设置缓存值</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> <span class="fu">Set</span><span class="op">(</span><span class="dt">string</span> key<span class="op">,</span> <span class="dt">byte</span><span class="op">[]</span> value<span class="op">,</span> DistributedCacheEntryOptions options<span class="op">);</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    Task <span class="fu">SetAsync</span><span class="op">(</span><span class="dt">string</span> key<span class="op">,</span> <span class="dt">byte</span><span class="op">[]</span> value<span class="op">,</span> DistributedCacheEntryOptions options<span class="op">,</span> </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>               CancellationToken token <span class="op">=</span> <span class="kw">default</span><span class="op">);</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 刷新缓存过期时间</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> <span class="fu">Refresh</span><span class="op">(</span><span class="dt">string</span> key<span class="op">);</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    Task <span class="fu">RefreshAsync</span><span class="op">(</span><span class="dt">string</span> key<span class="op">,</span> CancellationToken token <span class="op">=</span> <span class="kw">default</span><span class="op">);</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 删除缓存值</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> <span class="fu">Remove</span><span class="op">(</span><span class="dt">string</span> key<span class="op">);</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    Task <span class="fu">RemoveAsync</span><span class="op">(</span><span class="dt">string</span> key<span class="op">,</span> CancellationToken token <span class="op">=</span> <span class="kw">default</span><span class="op">);</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h4 id="distributedcacheentryoptions">3.2.2
+DistributedCacheEntryOptions</h4>
+<p><code>DistributedCacheEntryOptions</code>类用于配置缓存选项：</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> DistributedCacheEntryOptions</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 绝对过期时间：缓存项在指定时间后过期</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    DateTimeOffset<span class="op">?</span> AbsoluteExpiration <span class="op">{</span> <span class="kw">get</span><span class="op">;</span> <span class="kw">set</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 相对过期时间：缓存项在指定时间后过期（相对于当前时间）</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    TimeSpan<span class="op">?</span> AbsoluteExpirationRelativeToNow <span class="op">{</span> <span class="kw">get</span><span class="op">;</span> <span class="kw">set</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 滑动过期时间：缓存项在指定时间内未被访问则过期</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    TimeSpan<span class="op">?</span> SlidingExpiration <span class="op">{</span> <span class="kw">get</span><span class="op">;</span> <span class="kw">set</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="配置步骤">3.3 配置步骤</h3>
+<h4 id="安装nuget包">3.3.1 安装NuGet包</h4>
+<p>根据Microsoft官方文档，首先需要安装以下NuGet包：</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装Redis分布式缓存实现</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">dotnet</span> add package Microsoft.Extensions.Caching.StackExchangeRedis</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 如果使用Azure Redis Cache</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">dotnet</span> add package Microsoft.Extensions.Caching.StackExchangeRedis</span></code></pre></div>
+<h4 id="配置依赖注入">3.3.2 配置依赖注入</h4>
+<p>在<code>Program.cs</code>中配置Redis分布式缓存：</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> Microsoft<span class="op">.</span><span class="fu">Extensions</span><span class="op">.</span><span class="fu">Caching</span><span class="op">.</span><span class="fu">StackExchangeRedis</span><span class="op">;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> Microsoft<span class="op">.</span><span class="fu">Extensions</span><span class="op">.</span><span class="fu">Caching</span><span class="op">.</span><span class="fu">Distributed</span><span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="dt">var</span> builder <span class="op">=</span> WebApplication<span class="op">.</span><span class="fu">CreateBuilder</span><span class="op">(</span>args<span class="op">);</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">// 配置Redis分布式缓存</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddStackExchangeRedisCache</span><span class="op">(</span>options <span class="op">=&gt;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Redis连接字符串</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">Configuration</span> <span class="op">=</span> <span class="st">&quot;localhost:6379&quot;</span><span class="op">;</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 实例名称（可选）</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">InstanceName</span> <span class="op">=</span> <span class="st">&quot;MyApp_&quot;</span><span class="op">;</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 配置选项（可选）</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">ConfigurationOptions</span> <span class="op">=</span> <span class="kw">new</span> StackExchange<span class="op">.</span><span class="fu">Redis</span><span class="op">.</span><span class="fu">ConfigurationOptions</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        AbortOnConnectFail <span class="op">=</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        ConnectRetry <span class="op">=</span> <span class="dv">3</span><span class="op">,</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        ConnectTimeout <span class="op">=</span> <span class="dv">5000</span><span class="op">,</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        SyncTimeout <span class="op">=</span> <span class="dv">5000</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="dt">var</span> app <span class="op">=</span> builder<span class="op">.</span><span class="fu">Build</span><span class="op">();</span></span></code></pre></div>
+<p><strong>Azure Redis Cache配置示例</strong>：</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddStackExchangeRedisCache</span><span class="op">(</span>options <span class="op">=&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">Configuration</span> <span class="op">=</span> <span class="st">&quot;myredis.redis.cache.windows.net:6380,password=...&quot;</span><span class="op">;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">InstanceName</span> <span class="op">=</span> <span class="st">&quot;MyApp_&quot;</span><span class="op">;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span></code></pre></div>
+<h4 id="注入idistributedcache">3.3.3 注入IDistributedCache</h4>
+<p>在服务或控制器中注入<code>IDistributedCache</code>：</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> ProductService</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> IDistributedCache _cache<span class="op">;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> AppDbContext _dbContext<span class="op">;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">ProductService</span><span class="op">(</span>IDistributedCache cache<span class="op">,</span> AppDbContext dbContext<span class="op">)</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        _cache <span class="op">=</span> cache<span class="op">;</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        _dbContext <span class="op">=</span> dbContext<span class="op">;</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="代码实现示例">3.4 代码实现示例</h3>
+<h4 id="基本缓存操作">3.4.1 基本缓存操作</h4>
+<p><strong>获取和设置缓存</strong>：</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> async Task<span class="op">&lt;</span>Product<span class="op">&gt;</span> <span class="fu">GetProductAsync</span><span class="op">(</span><span class="dt">int</span> productId<span class="op">)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 生成缓存键</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> cacheKey <span class="op">=</span> $<span class="st">&quot;product:{productId}&quot;</span><span class="op">;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 尝试从缓存获取</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">byte</span><span class="op">[]</span> cachedData <span class="op">=</span> await _cache<span class="op">.</span><span class="fu">GetAsync</span><span class="op">(</span>cacheKey<span class="op">);</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">if</span> <span class="op">(</span>cachedData <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 缓存命中，反序列化数据</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> JsonSerializer<span class="op">.</span><span class="fu">Deserialize</span><span class="op">&lt;</span>Product<span class="op">&gt;(</span>cachedData<span class="op">);</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 缓存未命中，从数据库获取</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    Product product <span class="op">=</span> await _dbContext<span class="op">.</span><span class="fu">Products</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">FirstOrDefaultAsync</span><span class="op">(</span>p <span class="op">=&gt;</span> p<span class="op">.</span><span class="fu">Id</span> <span class="op">==</span> productId<span class="op">);</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">if</span> <span class="op">(</span>product <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 将数据序列化并写入缓存</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>        <span class="dt">byte</span><span class="op">[]</span> serializedData <span class="op">=</span> JsonSerializer<span class="op">.</span><span class="fu">SerializeToUtf8Bytes</span><span class="op">(</span>product<span class="op">);</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>        <span class="dt">var</span> options <span class="op">=</span> <span class="kw">new</span> DistributedCacheEntryOptions</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 设置绝对过期时间：1小时后过期</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>            AbsoluteExpirationRelativeToNow <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">)</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>        <span class="op">};</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>        await _cache<span class="op">.</span><span class="fu">SetAsync</span><span class="op">(</span>cacheKey<span class="op">,</span> serializedData<span class="op">,</span> options<span class="op">);</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> product<span class="op">;</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>删除缓存</strong>：</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> async Task <span class="fu">UpdateProductAsync</span><span class="op">(</span>Product product<span class="op">)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 更新数据库</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    _dbContext<span class="op">.</span><span class="fu">Products</span><span class="op">.</span><span class="fu">Update</span><span class="op">(</span>product<span class="op">);</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    await _dbContext<span class="op">.</span><span class="fu">SaveChangesAsync</span><span class="op">();</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 删除缓存</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> cacheKey <span class="op">=</span> $<span class="st">&quot;product:{product.Id}&quot;</span><span class="op">;</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    await _cache<span class="op">.</span><span class="fu">RemoveAsync</span><span class="op">(</span>cacheKey<span class="op">);</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h4 id="封装缓存辅助类">3.4.2 封装缓存辅助类</h4>
+<p>为了简化缓存操作，可以封装一个缓存辅助类：</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> CacheHelper</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> IDistributedCache _cache<span class="op">;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> ILogger<span class="op">&lt;</span>CacheHelper<span class="op">&gt;</span> _logger<span class="op">;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">CacheHelper</span><span class="op">(</span>IDistributedCache cache<span class="op">,</span> ILogger<span class="op">&lt;</span>CacheHelper<span class="op">&gt;</span> logger<span class="op">)</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        _cache <span class="op">=</span> cache<span class="op">;</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        _logger <span class="op">=</span> logger<span class="op">;</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> async Task<span class="op">&lt;</span>T<span class="op">&gt;</span> GetOrCreateAsync<span class="op">&lt;</span>T<span class="op">&gt;(</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>        <span class="dt">string</span> key<span class="op">,</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        Func<span class="op">&lt;</span>Task<span class="op">&lt;</span>T<span class="op">&gt;&gt;</span> factory<span class="op">,</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        TimeSpan<span class="op">?</span> expiration <span class="op">=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 尝试从缓存获取</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>        <span class="dt">byte</span><span class="op">[]</span> cachedData <span class="op">=</span> await _cache<span class="op">.</span><span class="fu">GetAsync</span><span class="op">(</span>key<span class="op">);</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> <span class="op">(</span>cachedData <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>            _logger<span class="op">.</span><span class="fu">LogDebug</span><span class="op">(</span><span class="st">&quot;Cache hit for key: {Key}&quot;</span><span class="op">,</span> key<span class="op">);</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> JsonSerializer<span class="op">.</span><span class="fu">Deserialize</span><span class="op">&lt;</span>T<span class="op">&gt;(</span>cachedData<span class="op">);</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>        _logger<span class="op">.</span><span class="fu">LogDebug</span><span class="op">(</span><span class="st">&quot;Cache miss for key: {Key}&quot;</span><span class="op">,</span> key<span class="op">);</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 缓存未命中，调用工厂方法获取数据</span></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>        T value <span class="op">=</span> await <span class="fu">factory</span><span class="op">();</span></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 将数据写入缓存</span></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>        <span class="dt">byte</span><span class="op">[]</span> serializedData <span class="op">=</span> JsonSerializer<span class="op">.</span><span class="fu">SerializeToUtf8Bytes</span><span class="op">(</span>value<span class="op">);</span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>        <span class="dt">var</span> options <span class="op">=</span> <span class="kw">new</span> DistributedCacheEntryOptions</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>            AbsoluteExpirationRelativeToNow <span class="op">=</span> expiration <span class="op">??</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">)</span></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>        <span class="op">};</span></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>        await _cache<span class="op">.</span><span class="fu">SetAsync</span><span class="op">(</span>key<span class="op">,</span> serializedData<span class="op">,</span> options<span class="op">);</span></span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> value<span class="op">;</span></span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> async Task <span class="fu">RemoveAsync</span><span class="op">(</span><span class="dt">string</span> key<span class="op">)</span></span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>        await _cache<span class="op">.</span><span class="fu">RemoveAsync</span><span class="op">(</span>key<span class="op">);</span></span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>        _logger<span class="op">.</span><span class="fu">LogDebug</span><span class="op">(</span><span class="st">&quot;Cache removed for key: {Key}&quot;</span><span class="op">,</span> key<span class="op">);</span></span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> async Task SetAsync<span class="op">&lt;</span>T<span class="op">&gt;(</span><span class="dt">string</span> key<span class="op">,</span> T value<span class="op">,</span> TimeSpan<span class="op">?</span> expiration <span class="op">=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>        <span class="dt">byte</span><span class="op">[]</span> serializedData <span class="op">=</span> JsonSerializer<span class="op">.</span><span class="fu">SerializeToUtf8Bytes</span><span class="op">(</span>value<span class="op">);</span></span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>        <span class="dt">var</span> options <span class="op">=</span> <span class="kw">new</span> DistributedCacheEntryOptions</span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a>            AbsoluteExpirationRelativeToNow <span class="op">=</span> expiration <span class="op">??</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">)</span></span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a>        <span class="op">};</span></span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>        await _cache<span class="op">.</span><span class="fu">SetAsync</span><span class="op">(</span>key<span class="op">,</span> serializedData<span class="op">,</span> options<span class="op">);</span></span>
+<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a>        _logger<span class="op">.</span><span class="fu">LogDebug</span><span class="op">(</span><span class="st">&quot;Cache set for key: {Key}&quot;</span><span class="op">,</span> key<span class="op">);</span></span>
+<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>使用缓存辅助类</strong>：</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> ProductService</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> CacheHelper _cache<span class="op">;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> AppDbContext _dbContext<span class="op">;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">ProductService</span><span class="op">(</span>CacheHelper cache<span class="op">,</span> AppDbContext dbContext<span class="op">)</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        _cache <span class="op">=</span> cache<span class="op">;</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        _dbContext <span class="op">=</span> dbContext<span class="op">;</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> async Task<span class="op">&lt;</span>Product<span class="op">&gt;</span> <span class="fu">GetProductAsync</span><span class="op">(</span><span class="dt">int</span> productId<span class="op">)</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        <span class="dt">string</span> cacheKey <span class="op">=</span> $<span class="st">&quot;product:{productId}&quot;</span><span class="op">;</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> await _cache<span class="op">.</span><span class="fu">GetOrCreateAsync</span><span class="op">(</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>            cacheKey<span class="op">,</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>            <span class="fu">async</span> <span class="op">()</span> <span class="op">=&gt;</span> await _dbContext<span class="op">.</span><span class="fu">Products</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span><span class="fu">FirstOrDefaultAsync</span><span class="op">(</span>p <span class="op">=&gt;</span> p<span class="op">.</span><span class="fu">Id</span> <span class="op">==</span> productId<span class="op">),</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>            TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">)</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>        <span class="op">);</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="缓存策略设计">3.5 缓存策略设计</h3>
+<h4 id="缓存键设计">3.5.1 缓存键设计</h4>
+<p><strong>缓存键命名规范</strong>：</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">static</span> <span class="kw">class</span> CacheKeys</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 产品缓存</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">static</span> <span class="dt">string</span> <span class="fu">Product</span><span class="op">(</span><span class="dt">int</span> id<span class="op">)</span> <span class="op">=&gt;</span> $<span class="st">&quot;product:{id}&quot;</span><span class="op">;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 产品列表缓存</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">static</span> <span class="dt">string</span> <span class="fu">ProductList</span><span class="op">(</span><span class="dt">string</span> filter<span class="op">)</span> <span class="op">=&gt;</span> $<span class="st">&quot;product:list:{filter}&quot;</span><span class="op">;</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 用户缓存</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">static</span> <span class="dt">string</span> <span class="fu">User</span><span class="op">(</span><span class="dt">int</span> id<span class="op">)</span> <span class="op">=&gt;</span> $<span class="st">&quot;user:{id}&quot;</span><span class="op">;</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 分类缓存</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">static</span> <span class="dt">string</span> <span class="fu">Category</span><span class="op">(</span><span class="dt">int</span> id<span class="op">)</span> <span class="op">=&gt;</span> $<span class="st">&quot;category:{id}&quot;</span><span class="op">;</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>缓存键设计原则</strong>： - 使用冒号分隔不同层级 -
+包含业务实体类型 - 包含唯一标识符 - 避免特殊字符和空格</p>
+<h4 id="过期策略选择">3.5.2 过期策略选择</h4>
+<p><strong>绝对过期</strong>： - 适用于数据更新频率较低的场景 -
+适用于数据一致性要求不高的场景 - 示例：产品详情、文章内容</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="dt">var</span> options <span class="op">=</span> <span class="kw">new</span> DistributedCacheEntryOptions</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    AbsoluteExpirationRelativeToNow <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">)</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p><strong>滑动过期</strong>： - 适用于热点数据 -
+适用于访问频率不均衡的场景 - 示例：用户会话、购物车</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="dt">var</span> options <span class="op">=</span> <span class="kw">new</span> DistributedCacheEntryOptions</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    SlidingExpiration <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromMinutes</span><span class="op">(</span><span class="dv">30</span><span class="op">)</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p><strong>混合过期</strong>： - 结合绝对过期和滑动过期 -
+适用于需要兼顾性能和一致性的场景 - 示例：推荐列表、搜索结果</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dt">var</span> options <span class="op">=</span> <span class="kw">new</span> DistributedCacheEntryOptions</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    AbsoluteExpirationRelativeToNow <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">),</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    SlidingExpiration <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromMinutes</span><span class="op">(</span><span class="dv">30</span><span class="op">)</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<h4 id="缓存预热">3.5.3 缓存预热</h4>
+<p>在系统启动时预先加载热点数据到缓存：</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> CacheWarmupService <span class="op">:</span> BackgroundService</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> IDistributedCache _cache<span class="op">;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> AppDbContext _dbContext<span class="op">;</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> ILogger<span class="op">&lt;</span>CacheWarmupService<span class="op">&gt;</span> _logger<span class="op">;</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">protected</span> <span class="kw">override</span> async Task <span class="fu">ExecuteAsync</span><span class="op">(</span>CancellationToken stoppingToken<span class="op">)</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>        _logger<span class="op">.</span><span class="fu">LogInformation</span><span class="op">(</span><span class="st">&quot;Starting cache warmup...&quot;</span><span class="op">);</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 预热热点产品</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>        <span class="dt">var</span> hotProducts <span class="op">=</span> await _dbContext<span class="op">.</span><span class="fu">Products</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">Where</span><span class="op">(</span>p <span class="op">=&gt;</span> p<span class="op">.</span><span class="fu">IsHot</span><span class="op">)</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">ToListAsync</span><span class="op">(</span>stoppingToken<span class="op">);</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>        <span class="kw">foreach</span> <span class="op">(</span><span class="dt">var</span> product <span class="kw">in</span> hotProducts<span class="op">)</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>            <span class="dt">string</span> cacheKey <span class="op">=</span> CacheKeys<span class="op">.</span><span class="fu">Product</span><span class="op">(</span>product<span class="op">.</span><span class="fu">Id</span><span class="op">);</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>            <span class="dt">byte</span><span class="op">[]</span> serializedData <span class="op">=</span> JsonSerializer<span class="op">.</span><span class="fu">SerializeToUtf8Bytes</span><span class="op">(</span>product<span class="op">);</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>            <span class="dt">var</span> options <span class="op">=</span> <span class="kw">new</span> DistributedCacheEntryOptions</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>                AbsoluteExpirationRelativeToNow <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">2</span><span class="op">)</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>            <span class="op">};</span></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>            await _cache<span class="op">.</span><span class="fu">SetAsync</span><span class="op">(</span>cacheKey<span class="op">,</span> serializedData<span class="op">,</span> options<span class="op">);</span></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>        _logger<span class="op">.</span><span class="fu">LogInformation</span><span class="op">(</span><span class="st">&quot;Cache warmup completed: {Count} products&quot;</span><span class="op">,</span> hotProducts<span class="op">.</span><span class="fu">Count</span><span class="op">);</span></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="数据一致性保障">3.6 数据一致性保障</h3>
+<h4 id="缓存更新策略">3.6.1 缓存更新策略</h4>
+<p><strong>Cache-Aside模式</strong>（旁路缓存）：</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> async Task<span class="op">&lt;</span>Product<span class="op">&gt;</span> <span class="fu">UpdateProductAsync</span><span class="op">(</span>Product product<span class="op">)</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 步骤1：更新数据库</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    _dbContext<span class="op">.</span><span class="fu">Products</span><span class="op">.</span><span class="fu">Update</span><span class="op">(</span>product<span class="op">);</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    await _dbContext<span class="op">.</span><span class="fu">SaveChangesAsync</span><span class="op">();</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 步骤2：删除缓存</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> cacheKey <span class="op">=</span> CacheKeys<span class="op">.</span><span class="fu">Product</span><span class="op">(</span>product<span class="op">.</span><span class="fu">Id</span><span class="op">);</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    await _cache<span class="op">.</span><span class="fu">RemoveAsync</span><span class="op">(</span>cacheKey<span class="op">);</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 步骤3：下次读取时重新加载缓存</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> product<span class="op">;</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Write-Through模式</strong>（写穿透）：</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> async Task<span class="op">&lt;</span>Product<span class="op">&gt;</span> <span class="fu">UpdateProductAsync</span><span class="op">(</span>Product product<span class="op">)</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 步骤1：更新数据库</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    _dbContext<span class="op">.</span><span class="fu">Products</span><span class="op">.</span><span class="fu">Update</span><span class="op">(</span>product<span class="op">);</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    await _dbContext<span class="op">.</span><span class="fu">SaveChangesAsync</span><span class="op">();</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 步骤2：更新缓存</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> cacheKey <span class="op">=</span> CacheKeys<span class="op">.</span><span class="fu">Product</span><span class="op">(</span>product<span class="op">.</span><span class="fu">Id</span><span class="op">);</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">byte</span><span class="op">[]</span> serializedData <span class="op">=</span> JsonSerializer<span class="op">.</span><span class="fu">SerializeToUtf8Bytes</span><span class="op">(</span>product<span class="op">);</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">var</span> options <span class="op">=</span> <span class="kw">new</span> DistributedCacheEntryOptions</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>        AbsoluteExpirationRelativeToNow <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">)</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    await _cache<span class="op">.</span><span class="fu">SetAsync</span><span class="op">(</span>cacheKey<span class="op">,</span> serializedData<span class="op">,</span> options<span class="op">);</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> product<span class="op">;</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Write-Behind模式</strong>（写回）：</p>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> ProductService</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> IDistributedCache _cache<span class="op">;</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> AppDbContext _dbContext<span class="op">;</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> Channel<span class="op">&lt;</span>Product<span class="op">&gt;</span> _updateChannel<span class="op">;</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">ProductService</span><span class="op">(</span>IDistributedCache cache<span class="op">,</span> AppDbContext dbContext<span class="op">)</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>        _cache <span class="op">=</span> cache<span class="op">;</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>        _dbContext <span class="op">=</span> dbContext<span class="op">;</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>        _updateChannel <span class="op">=</span> Channel<span class="op">.</span><span class="fu">CreateUnbounded</span><span class="op">&lt;</span>Product<span class="op">&gt;();</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 启动后台任务处理缓存更新</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>        _ <span class="op">=</span> Task<span class="op">.</span><span class="fu">Run</span><span class="op">(</span>ProcessCacheUpdates<span class="op">);</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> async Task <span class="fu">UpdateProductAsync</span><span class="op">(</span>Product product<span class="op">)</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 步骤1：更新数据库</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>        _dbContext<span class="op">.</span><span class="fu">Products</span><span class="op">.</span><span class="fu">Update</span><span class="op">(</span>product<span class="op">);</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>        await _dbContext<span class="op">.</span><span class="fu">SaveChangesAsync</span><span class="op">();</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 步骤2：将更新请求放入队列</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>        await _updateChannel<span class="op">.</span><span class="fu">Writer</span><span class="op">.</span><span class="fu">WriteAsync</span><span class="op">(</span>product<span class="op">);</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> async Task <span class="fu">ProcessCacheUpdates</span><span class="op">()</span></span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>        await <span class="kw">foreach</span> <span class="op">(</span><span class="dt">var</span> product <span class="kw">in</span> _updateChannel<span class="op">.</span><span class="fu">Reader</span><span class="op">.</span><span class="fu">ReadAllAsync</span><span class="op">())</span></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 异步更新缓存</span></span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>            <span class="dt">string</span> cacheKey <span class="op">=</span> CacheKeys<span class="op">.</span><span class="fu">Product</span><span class="op">(</span>product<span class="op">.</span><span class="fu">Id</span><span class="op">);</span></span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>            <span class="dt">byte</span><span class="op">[]</span> serializedData <span class="op">=</span> JsonSerializer<span class="op">.</span><span class="fu">SerializeToUtf8Bytes</span><span class="op">(</span>product<span class="op">);</span></span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>            <span class="dt">var</span> options <span class="op">=</span> <span class="kw">new</span> DistributedCacheEntryOptions</span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span></span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>                AbsoluteExpirationRelativeToNow <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">)</span></span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>            <span class="op">};</span></span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a>            await _cache<span class="op">.</span><span class="fu">SetAsync</span><span class="op">(</span>cacheKey<span class="op">,</span> serializedData<span class="op">,</span> options<span class="op">);</span></span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h4 id="缓存失效策略">3.6.2 缓存失效策略</h4>
+<p><strong>主动失效</strong>：</p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> async Task <span class="fu">DeleteProductAsync</span><span class="op">(</span><span class="dt">int</span> productId<span class="op">)</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 删除数据库</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">var</span> product <span class="op">=</span> await _dbContext<span class="op">.</span><span class="fu">Products</span><span class="op">.</span><span class="fu">FindAsync</span><span class="op">(</span>productId<span class="op">);</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">if</span> <span class="op">(</span>product <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>        _dbContext<span class="op">.</span><span class="fu">Products</span><span class="op">.</span><span class="fu">Remove</span><span class="op">(</span>product<span class="op">);</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>        await _dbContext<span class="op">.</span><span class="fu">SaveChangesAsync</span><span class="op">();</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 删除缓存</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> cacheKey <span class="op">=</span> CacheKeys<span class="op">.</span><span class="fu">Product</span><span class="op">(</span>productId<span class="op">);</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    await _cache<span class="op">.</span><span class="fu">RemoveAsync</span><span class="op">(</span>cacheKey<span class="op">);</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 删除相关缓存（如产品列表）</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> listCacheKey <span class="op">=</span> CacheKeys<span class="op">.</span><span class="fu">ProductList</span><span class="op">(</span><span class="st">&quot;all&quot;</span><span class="op">);</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    await _cache<span class="op">.</span><span class="fu">RemoveAsync</span><span class="op">(</span>listCacheKey<span class="op">);</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>批量失效</strong>：</p>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> async Task <span class="fu">UpdateCategoryAsync</span><span class="op">(</span>Category category<span class="op">)</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 更新数据库</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    _dbContext<span class="op">.</span><span class="fu">Categories</span><span class="op">.</span><span class="fu">Update</span><span class="op">(</span>category<span class="op">);</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    await _dbContext<span class="op">.</span><span class="fu">SaveChangesAsync</span><span class="op">();</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 批量删除相关缓存</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">var</span> tasks <span class="op">=</span> <span class="kw">new</span> List<span class="op">&lt;</span>Task<span class="op">&gt;();</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 删除分类详情缓存</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    tasks<span class="op">.</span><span class="fu">Add</span><span class="op">(</span>_cache<span class="op">.</span><span class="fu">RemoveAsync</span><span class="op">(</span>CacheKeys<span class="op">.</span><span class="fu">Category</span><span class="op">(</span>category<span class="op">.</span><span class="fu">Id</span><span class="op">)));</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 删除分类下的产品列表缓存</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    tasks<span class="op">.</span><span class="fu">Add</span><span class="op">(</span>_cache<span class="op">.</span><span class="fu">RemoveAsync</span><span class="op">(</span>CacheKeys<span class="op">.</span><span class="fu">ProductList</span><span class="op">(</span>$<span class="st">&quot;category:{category.Id}&quot;</span><span class="op">)));</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>    await Task<span class="op">.</span><span class="fu">WhenAll</span><span class="op">(</span>tasks<span class="op">);</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="缓存穿透击穿雪崩防护">3.7 缓存穿透、击穿、雪崩防护</h3>
+<h4 id="缓存穿透防护">3.7.1 缓存穿透防护</h4>
+<p><strong>问题描述</strong>：大量请求查询不存在的数据，导致每次请求都绕过缓存直接打到数据库。</p>
+<p><strong>解决方案1：空值缓存</strong></p>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> async Task<span class="op">&lt;</span>Product<span class="op">&gt;</span> <span class="fu">GetProductAsync</span><span class="op">(</span><span class="dt">int</span> productId<span class="op">)</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> cacheKey <span class="op">=</span> CacheKeys<span class="op">.</span><span class="fu">Product</span><span class="op">(</span>productId<span class="op">);</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 尝试从缓存获取</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">byte</span><span class="op">[]</span> cachedData <span class="op">=</span> await _cache<span class="op">.</span><span class="fu">GetAsync</span><span class="op">(</span>cacheKey<span class="op">);</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">if</span> <span class="op">(</span>cachedData <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 检查是否为空值标记</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> <span class="op">(</span>cachedData<span class="op">.</span><span class="fu">Length</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> <span class="kw">null</span><span class="op">;</span> <span class="co">// 返回空值</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> JsonSerializer<span class="op">.</span><span class="fu">Deserialize</span><span class="op">&lt;</span>Product<span class="op">&gt;(</span>cachedData<span class="op">);</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 从数据库获取</span></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    Product product <span class="op">=</span> await _dbContext<span class="op">.</span><span class="fu">Products</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">FirstOrDefaultAsync</span><span class="op">(</span>p <span class="op">=&gt;</span> p<span class="op">.</span><span class="fu">Id</span> <span class="op">==</span> productId<span class="op">);</span></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">if</span> <span class="op">(</span>product <span class="op">==</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 缓存空值，设置较短的过期时间</span></span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>        await _cache<span class="op">.</span><span class="fu">SetAsync</span><span class="op">(</span>cacheKey<span class="op">,</span> Array<span class="op">.</span><span class="fu">Empty</span><span class="op">&lt;</span><span class="dt">byte</span><span class="op">&gt;(),</span> </span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>            <span class="kw">new</span> DistributedCacheEntryOptions</span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span></span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>                AbsoluteExpirationRelativeToNow <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromMinutes</span><span class="op">(</span><span class="dv">5</span><span class="op">)</span></span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>            <span class="op">});</span></span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">else</span></span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 缓存实际数据</span></span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a>        <span class="dt">byte</span><span class="op">[]</span> serializedData <span class="op">=</span> JsonSerializer<span class="op">.</span><span class="fu">SerializeToUtf8Bytes</span><span class="op">(</span>product<span class="op">);</span></span>
+<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a>        await _cache<span class="op">.</span><span class="fu">SetAsync</span><span class="op">(</span>cacheKey<span class="op">,</span> serializedData<span class="op">,</span> </span>
+<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>            <span class="kw">new</span> DistributedCacheEntryOptions</span>
+<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span></span>
+<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a>                AbsoluteExpirationRelativeToNow <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">)</span></span>
+<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a>            <span class="op">});</span></span>
+<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> product<span class="op">;</span></span>
+<span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>解决方案2：布隆过滤器</strong></p>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> BloomFilterCache</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> IDistributedCache _cache<span class="op">;</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> IBloomFilter _bloomFilter<span class="op">;</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> async Task<span class="op">&lt;</span>Product<span class="op">&gt;</span> <span class="fu">GetProductAsync</span><span class="op">(</span><span class="dt">int</span> productId<span class="op">)</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>        <span class="dt">string</span> cacheKey <span class="op">=</span> CacheKeys<span class="op">.</span><span class="fu">Product</span><span class="op">(</span>productId<span class="op">);</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 步骤1：检查布隆过滤器</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> <span class="op">(!</span>_bloomFilter<span class="op">.</span><span class="fu">Contains</span><span class="op">(</span>productId<span class="op">))</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 布隆过滤器判断数据不存在，直接返回null</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> <span class="kw">null</span><span class="op">;</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 步骤2：尝试从缓存获取</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>        <span class="dt">byte</span><span class="op">[]</span> cachedData <span class="op">=</span> await _cache<span class="op">.</span><span class="fu">GetAsync</span><span class="op">(</span>cacheKey<span class="op">);</span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> <span class="op">(</span>cachedData <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> JsonSerializer<span class="op">.</span><span class="fu">Deserialize</span><span class="op">&lt;</span>Product<span class="op">&gt;(</span>cachedData<span class="op">);</span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 步骤3：从数据库获取</span></span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>        Product product <span class="op">=</span> await _dbContext<span class="op">.</span><span class="fu">Products</span></span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">FirstOrDefaultAsync</span><span class="op">(</span>p <span class="op">=&gt;</span> p<span class="op">.</span><span class="fu">Id</span> <span class="op">==</span> productId<span class="op">);</span></span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> <span class="op">(</span>product <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 添加到布隆过滤器</span></span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a>            _bloomFilter<span class="op">.</span><span class="fu">Add</span><span class="op">(</span>productId<span class="op">);</span></span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 缓存数据</span></span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>            <span class="dt">byte</span><span class="op">[]</span> serializedData <span class="op">=</span> JsonSerializer<span class="op">.</span><span class="fu">SerializeToUtf8Bytes</span><span class="op">(</span>product<span class="op">);</span></span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>            await _cache<span class="op">.</span><span class="fu">SetAsync</span><span class="op">(</span>cacheKey<span class="op">,</span> serializedData<span class="op">);</span></span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> product<span class="op">;</span></span>
+<span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h4 id="缓存击穿防护">3.7.2 缓存击穿防护</h4>
+<p><strong>问题描述</strong>：某个热点缓存过期时，大量请求同时穿透到数据库。</p>
+<p><strong>解决方案：互斥锁</strong></p>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> ProductService</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> IDistributedCache _cache<span class="op">;</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> IConnectionMultiplexer _redis<span class="op">;</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> AppDbContext _dbContext<span class="op">;</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> async Task<span class="op">&lt;</span>Product<span class="op">&gt;</span> <span class="fu">GetProductAsync</span><span class="op">(</span><span class="dt">int</span> productId<span class="op">)</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>        <span class="dt">string</span> cacheKey <span class="op">=</span> CacheKeys<span class="op">.</span><span class="fu">Product</span><span class="op">(</span>productId<span class="op">);</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>        <span class="dt">string</span> lockKey <span class="op">=</span> $<span class="st">&quot;lock:{cacheKey}&quot;</span><span class="op">;</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 尝试从缓存获取</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>        <span class="dt">byte</span><span class="op">[]</span> cachedData <span class="op">=</span> await _cache<span class="op">.</span><span class="fu">GetAsync</span><span class="op">(</span>cacheKey<span class="op">);</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> <span class="op">(</span>cachedData <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> JsonSerializer<span class="op">.</span><span class="fu">Deserialize</span><span class="op">&lt;</span>Product<span class="op">&gt;(</span>cachedData<span class="op">);</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 获取分布式锁</span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>        <span class="dt">var</span> db <span class="op">=</span> _redis<span class="op">.</span><span class="fu">GetDatabase</span><span class="op">();</span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>        <span class="dt">bool</span> lockAcquired <span class="op">=</span> await db<span class="op">.</span><span class="fu">StringSetAsync</span><span class="op">(</span>lockKey<span class="op">,</span> <span class="st">&quot;1&quot;</span><span class="op">,</span> </span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>            TimeSpan<span class="op">.</span><span class="fu">FromSeconds</span><span class="op">(</span><span class="dv">10</span><span class="op">),</span> </span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>            When<span class="op">.</span><span class="fu">NotExists</span><span class="op">);</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> <span class="op">(</span>lockAcquired<span class="op">)</span></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>            <span class="kw">try</span></span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span></span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>                <span class="co">// 双重检查：可能在等待期间其他请求已经填充了缓存</span></span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>                cachedData <span class="op">=</span> await _cache<span class="op">.</span><span class="fu">GetAsync</span><span class="op">(</span>cacheKey<span class="op">);</span></span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>                <span class="kw">if</span> <span class="op">(</span>cachedData <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>                <span class="op">{</span></span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>                    <span class="kw">return</span> JsonSerializer<span class="op">.</span><span class="fu">Deserialize</span><span class="op">&lt;</span>Product<span class="op">&gt;(</span>cachedData<span class="op">);</span></span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a>                <span class="op">}</span></span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a>                <span class="co">// 从数据库获取数据</span></span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a>                Product product <span class="op">=</span> await _dbContext<span class="op">.</span><span class="fu">Products</span></span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a>                    <span class="op">.</span><span class="fu">FirstOrDefaultAsync</span><span class="op">(</span>p <span class="op">=&gt;</span> p<span class="op">.</span><span class="fu">Id</span> <span class="op">==</span> productId<span class="op">);</span></span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a>                <span class="kw">if</span> <span class="op">(</span>product <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a>                <span class="op">{</span></span>
+<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a>                    <span class="co">// 缓存数据</span></span>
+<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">byte</span><span class="op">[]</span> serializedData <span class="op">=</span> JsonSerializer<span class="op">.</span><span class="fu">SerializeToUtf8Bytes</span><span class="op">(</span>product<span class="op">);</span></span>
+<span id="cb24-44"><a href="#cb24-44" aria-hidden="true" tabindex="-1"></a>                    await _cache<span class="op">.</span><span class="fu">SetAsync</span><span class="op">(</span>cacheKey<span class="op">,</span> serializedData<span class="op">,</span> </span>
+<span id="cb24-45"><a href="#cb24-45" aria-hidden="true" tabindex="-1"></a>                        <span class="kw">new</span> DistributedCacheEntryOptions</span>
+<span id="cb24-46"><a href="#cb24-46" aria-hidden="true" tabindex="-1"></a>                        <span class="op">{</span></span>
+<span id="cb24-47"><a href="#cb24-47" aria-hidden="true" tabindex="-1"></a>                            AbsoluteExpirationRelativeToNow <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">)</span></span>
+<span id="cb24-48"><a href="#cb24-48" aria-hidden="true" tabindex="-1"></a>                        <span class="op">});</span></span>
+<span id="cb24-49"><a href="#cb24-49" aria-hidden="true" tabindex="-1"></a>                <span class="op">}</span></span>
+<span id="cb24-50"><a href="#cb24-50" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb24-51"><a href="#cb24-51" aria-hidden="true" tabindex="-1"></a>                <span class="kw">return</span> product<span class="op">;</span></span>
+<span id="cb24-52"><a href="#cb24-52" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb24-53"><a href="#cb24-53" aria-hidden="true" tabindex="-1"></a>            <span class="kw">finally</span></span>
+<span id="cb24-54"><a href="#cb24-54" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span></span>
+<span id="cb24-55"><a href="#cb24-55" aria-hidden="true" tabindex="-1"></a>                <span class="co">// 释放锁</span></span>
+<span id="cb24-56"><a href="#cb24-56" aria-hidden="true" tabindex="-1"></a>                await db<span class="op">.</span><span class="fu">KeyDeleteAsync</span><span class="op">(</span>lockKey<span class="op">);</span></span>
+<span id="cb24-57"><a href="#cb24-57" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb24-58"><a href="#cb24-58" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb24-59"><a href="#cb24-59" aria-hidden="true" tabindex="-1"></a>        <span class="kw">else</span></span>
+<span id="cb24-60"><a href="#cb24-60" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb24-61"><a href="#cb24-61" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 等待锁释放后重新获取缓存</span></span>
+<span id="cb24-62"><a href="#cb24-62" aria-hidden="true" tabindex="-1"></a>            await Task<span class="op">.</span><span class="fu">Delay</span><span class="op">(</span><span class="dv">100</span><span class="op">);</span></span>
+<span id="cb24-63"><a href="#cb24-63" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> await <span class="fu">GetProductAsync</span><span class="op">(</span>productId<span class="op">);</span></span>
+<span id="cb24-64"><a href="#cb24-64" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb24-65"><a href="#cb24-65" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb24-66"><a href="#cb24-66" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h4 id="缓存雪崩防护">3.7.3 缓存雪崩防护</h4>
+<p><strong>问题描述</strong>：大量缓存同时过期，导致所有请求都穿透到数据库。</p>
+<p><strong>解决方案1：随机过期时间</strong></p>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> async Task<span class="op">&lt;</span>Product<span class="op">&gt;</span> <span class="fu">GetProductAsync</span><span class="op">(</span><span class="dt">int</span> productId<span class="op">)</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> cacheKey <span class="op">=</span> CacheKeys<span class="op">.</span><span class="fu">Product</span><span class="op">(</span>productId<span class="op">);</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 尝试从缓存获取</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">byte</span><span class="op">[]</span> cachedData <span class="op">=</span> await _cache<span class="op">.</span><span class="fu">GetAsync</span><span class="op">(</span>cacheKey<span class="op">);</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">if</span> <span class="op">(</span>cachedData <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> JsonSerializer<span class="op">.</span><span class="fu">Deserialize</span><span class="op">&lt;</span>Product<span class="op">&gt;(</span>cachedData<span class="op">);</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 从数据库获取数据</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>    Product product <span class="op">=</span> await _dbContext<span class="op">.</span><span class="fu">Products</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">FirstOrDefaultAsync</span><span class="op">(</span>p <span class="op">=&gt;</span> p<span class="op">.</span><span class="fu">Id</span> <span class="op">==</span> productId<span class="op">);</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">if</span> <span class="op">(</span>product <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 在基础过期时间上增加随机偏移量</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>        <span class="dt">var</span> baseExpiration <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>        <span class="dt">var</span> randomOffset <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromSeconds</span><span class="op">(</span>Random<span class="op">.</span><span class="fu">Shared</span><span class="op">.</span><span class="fu">Next</span><span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">300</span><span class="op">));</span> <span class="co">// 0-5分钟随机偏移</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>        <span class="dt">byte</span><span class="op">[]</span> serializedData <span class="op">=</span> JsonSerializer<span class="op">.</span><span class="fu">SerializeToUtf8Bytes</span><span class="op">(</span>product<span class="op">);</span></span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>        await _cache<span class="op">.</span><span class="fu">SetAsync</span><span class="op">(</span>cacheKey<span class="op">,</span> serializedData<span class="op">,</span> </span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>            <span class="kw">new</span> DistributedCacheEntryOptions</span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span></span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>                AbsoluteExpirationRelativeToNow <span class="op">=</span> baseExpiration <span class="op">+</span> randomOffset</span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>            <span class="op">});</span></span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> product<span class="op">;</span></span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>解决方案2：多级缓存</strong></p>
+<p>结合本地缓存和分布式缓存：</p>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> ProductService</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> IDistributedCache _distributedCache<span class="op">;</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> IMemoryCache _memoryCache<span class="op">;</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> AppDbContext _dbContext<span class="op">;</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> async Task<span class="op">&lt;</span>Product<span class="op">&gt;</span> <span class="fu">GetProductAsync</span><span class="op">(</span><span class="dt">int</span> productId<span class="op">)</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>        <span class="dt">string</span> cacheKey <span class="op">=</span> CacheKeys<span class="op">.</span><span class="fu">Product</span><span class="op">(</span>productId<span class="op">);</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 步骤1：检查本地缓存</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> <span class="op">(</span>_memoryCache<span class="op">.</span><span class="fu">TryGetValue</span><span class="op">(</span>cacheKey<span class="op">,</span> <span class="kw">out</span> Product product<span class="op">))</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> product<span class="op">;</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 步骤2：检查分布式缓存</span></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>        <span class="dt">byte</span><span class="op">[]</span> cachedData <span class="op">=</span> await _distributedCache<span class="op">.</span><span class="fu">GetAsync</span><span class="op">(</span>cacheKey<span class="op">);</span></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> <span class="op">(</span>cachedData <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>            product <span class="op">=</span> JsonSerializer<span class="op">.</span><span class="fu">Deserialize</span><span class="op">&lt;</span>Product<span class="op">&gt;(</span>cachedData<span class="op">);</span></span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 回填到本地缓存</span></span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>            _memoryCache<span class="op">.</span><span class="fu">Set</span><span class="op">(</span>cacheKey<span class="op">,</span> product<span class="op">,</span> </span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>                <span class="kw">new</span> MemoryCacheEntryOptions</span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>                <span class="op">{</span></span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>                    AbsoluteExpirationRelativeToNow <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromMinutes</span><span class="op">(</span><span class="dv">10</span><span class="op">)</span></span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>                <span class="op">});</span></span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> product<span class="op">;</span></span>
+<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 步骤3：从数据库获取</span></span>
+<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a>        product <span class="op">=</span> await _dbContext<span class="op">.</span><span class="fu">Products</span></span>
+<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">FirstOrDefaultAsync</span><span class="op">(</span>p <span class="op">=&gt;</span> p<span class="op">.</span><span class="fu">Id</span> <span class="op">==</span> productId<span class="op">);</span></span>
+<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb26-37"><a href="#cb26-37" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> <span class="op">(</span>product <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb26-38"><a href="#cb26-38" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb26-39"><a href="#cb26-39" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 同时写入两级缓存</span></span>
+<span id="cb26-40"><a href="#cb26-40" aria-hidden="true" tabindex="-1"></a>            <span class="dt">byte</span><span class="op">[]</span> serializedData <span class="op">=</span> JsonSerializer<span class="op">.</span><span class="fu">SerializeToUtf8Bytes</span><span class="op">(</span>product<span class="op">);</span></span>
+<span id="cb26-41"><a href="#cb26-41" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb26-42"><a href="#cb26-42" aria-hidden="true" tabindex="-1"></a>            await _distributedCache<span class="op">.</span><span class="fu">SetAsync</span><span class="op">(</span>cacheKey<span class="op">,</span> serializedData<span class="op">,</span> </span>
+<span id="cb26-43"><a href="#cb26-43" aria-hidden="true" tabindex="-1"></a>                <span class="kw">new</span> DistributedCacheEntryOptions</span>
+<span id="cb26-44"><a href="#cb26-44" aria-hidden="true" tabindex="-1"></a>                <span class="op">{</span></span>
+<span id="cb26-45"><a href="#cb26-45" aria-hidden="true" tabindex="-1"></a>                    AbsoluteExpirationRelativeToNow <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">)</span></span>
+<span id="cb26-46"><a href="#cb26-46" aria-hidden="true" tabindex="-1"></a>                <span class="op">});</span></span>
+<span id="cb26-47"><a href="#cb26-47" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb26-48"><a href="#cb26-48" aria-hidden="true" tabindex="-1"></a>            _memoryCache<span class="op">.</span><span class="fu">Set</span><span class="op">(</span>cacheKey<span class="op">,</span> product<span class="op">,</span> </span>
+<span id="cb26-49"><a href="#cb26-49" aria-hidden="true" tabindex="-1"></a>                <span class="kw">new</span> MemoryCacheEntryOptions</span>
+<span id="cb26-50"><a href="#cb26-50" aria-hidden="true" tabindex="-1"></a>                <span class="op">{</span></span>
+<span id="cb26-51"><a href="#cb26-51" aria-hidden="true" tabindex="-1"></a>                    AbsoluteExpirationRelativeToNow <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromMinutes</span><span class="op">(</span><span class="dv">10</span><span class="op">)</span></span>
+<span id="cb26-52"><a href="#cb26-52" aria-hidden="true" tabindex="-1"></a>                <span class="op">});</span></span>
+<span id="cb26-53"><a href="#cb26-53" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb26-54"><a href="#cb26-54" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb26-55"><a href="#cb26-55" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> product<span class="op">;</span></span>
+<span id="cb26-56"><a href="#cb26-56" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb26-57"><a href="#cb26-57" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="性能优化">3.8 性能优化</h3>
+<h4 id="批量操作">3.8.1 批量操作</h4>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> async Task<span class="op">&lt;</span>Dictionary<span class="op">&lt;</span><span class="dt">int</span><span class="op">,</span> Product<span class="op">&gt;&gt;</span> <span class="fu">GetProductsAsync</span><span class="op">(</span>IEnumerable<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> productIds<span class="op">)</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">var</span> tasks <span class="op">=</span> productIds<span class="op">.</span><span class="fu">Select</span><span class="op">(</span>async id <span class="op">=&gt;</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">string</span> cacheKey <span class="op">=</span> CacheKeys<span class="op">.</span><span class="fu">Product</span><span class="op">(</span>id<span class="op">);</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>        <span class="dt">byte</span><span class="op">[]</span> cachedData <span class="op">=</span> await _cache<span class="op">.</span><span class="fu">GetAsync</span><span class="op">(</span>cacheKey<span class="op">);</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> <span class="op">(</span>cachedData <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> <span class="op">(</span>id<span class="op">,</span> JsonSerializer<span class="op">.</span><span class="fu">Deserialize</span><span class="op">&lt;</span>Product<span class="op">&gt;(</span>cachedData<span class="op">));</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 从数据库获取</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>        Product product <span class="op">=</span> await _dbContext<span class="op">.</span><span class="fu">Products</span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">FirstOrDefaultAsync</span><span class="op">(</span>p <span class="op">=&gt;</span> p<span class="op">.</span><span class="fu">Id</span> <span class="op">==</span> id<span class="op">);</span></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> <span class="op">(</span>product <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>            <span class="dt">byte</span><span class="op">[]</span> serializedData <span class="op">=</span> JsonSerializer<span class="op">.</span><span class="fu">SerializeToUtf8Bytes</span><span class="op">(</span>product<span class="op">);</span></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>            await _cache<span class="op">.</span><span class="fu">SetAsync</span><span class="op">(</span>cacheKey<span class="op">,</span> serializedData<span class="op">,</span> </span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>                <span class="kw">new</span> DistributedCacheEntryOptions</span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>                <span class="op">{</span></span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>                    AbsoluteExpirationRelativeToNow <span class="op">=</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">)</span></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>                <span class="op">});</span></span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> <span class="op">(</span>id<span class="op">,</span> product<span class="op">);</span></span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a>    <span class="op">});</span></span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a>    <span class="dt">var</span> results <span class="op">=</span> await Task<span class="op">.</span><span class="fu">WhenAll</span><span class="op">(</span>tasks<span class="op">);</span></span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> results<span class="op">.</span><span class="fu">ToDictionary</span><span class="op">(</span>r <span class="op">=&gt;</span> r<span class="op">.</span><span class="fu">id</span><span class="op">,</span> r <span class="op">=&gt;</span> r<span class="op">.</span><span class="fu">Item2</span><span class="op">);</span></span>
+<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h4 id="序列化优化">3.8.2 序列化优化</h4>
+<p>使用高性能序列化器：</p>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> ProductSerializer</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">static</span> <span class="dt">byte</span><span class="op">[]</span> <span class="fu">Serialize</span><span class="op">(</span>Product product<span class="op">)</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 使用MemoryPack等高性能序列化器</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> MemoryPackSerializer<span class="op">.</span><span class="fu">Serialize</span><span class="op">(</span>product<span class="op">);</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">static</span> Product <span class="fu">Deserialize</span><span class="op">(</span><span class="dt">byte</span><span class="op">[]</span> data<span class="op">)</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> MemoryPackSerializer<span class="op">.</span><span class="fu">Deserialize</span><span class="op">&lt;</span>Product<span class="op">&gt;(</span>data<span class="op">);</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> async Task<span class="op">&lt;</span>Product<span class="op">&gt;</span> <span class="fu">GetProductAsync</span><span class="op">(</span><span class="dt">int</span> productId<span class="op">)</span></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> cacheKey <span class="op">=</span> CacheKeys<span class="op">.</span><span class="fu">Product</span><span class="op">(</span>productId<span class="op">);</span></span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>    <span class="dt">byte</span><span class="op">[]</span> cachedData <span class="op">=</span> await _cache<span class="op">.</span><span class="fu">GetAsync</span><span class="op">(</span>cacheKey<span class="op">);</span></span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">if</span> <span class="op">(</span>cachedData <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> ProductSerializer<span class="op">.</span><span class="fu">Deserialize</span><span class="op">(</span>cachedData<span class="op">);</span></span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>    Product product <span class="op">=</span> await _dbContext<span class="op">.</span><span class="fu">Products</span></span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span><span class="fu">FirstOrDefaultAsync</span><span class="op">(</span>p <span class="op">=&gt;</span> p<span class="op">.</span><span class="fu">Id</span> <span class="op">==</span> productId<span class="op">);</span></span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">if</span> <span class="op">(</span>product <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a>        <span class="dt">byte</span><span class="op">[]</span> serializedData <span class="op">=</span> ProductSerializer<span class="op">.</span><span class="fu">Serialize</span><span class="op">(</span>product<span class="op">);</span></span>
+<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a>        await _cache<span class="op">.</span><span class="fu">SetAsync</span><span class="op">(</span>cacheKey<span class="op">,</span> serializedData<span class="op">);</span></span>
+<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">return</span> product<span class="op">;</span></span>
+<span id="cb28-35"><a href="#cb28-35" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h4 id="连接池优化">3.8.3 连接池优化</h4>
+<div class="sourceCode" id="cb29"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddStackExchangeRedisCache</span><span class="op">(</span>options <span class="op">=&gt;</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">Configuration</span> <span class="op">=</span> <span class="st">&quot;localhost:6379&quot;</span><span class="op">;</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">InstanceName</span> <span class="op">=</span> <span class="st">&quot;MyApp_&quot;</span><span class="op">;</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    options<span class="op">.</span><span class="fu">ConfigurationOptions</span> <span class="op">=</span> <span class="kw">new</span> StackExchange<span class="op">.</span><span class="fu">Redis</span><span class="op">.</span><span class="fu">ConfigurationOptions</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 连接超时</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>        ConnectTimeout <span class="op">=</span> <span class="dv">5000</span><span class="op">,</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 同步超时</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>        SyncTimeout <span class="op">=</span> <span class="dv">5000</span><span class="op">,</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 连接重试次数</span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>        ConnectRetry <span class="op">=</span> <span class="dv">3</span><span class="op">,</span></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 连接失败时是否中止</span></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>        AbortOnConnectFail <span class="op">=</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 连接池配置</span></span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>        EndPoints <span class="op">=</span> <span class="op">{</span> <span class="st">&quot;localhost:6379&quot;</span> <span class="op">},</span></span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>        DefaultDatabase <span class="op">=</span> <span class="dv">0</span><span class="op">,</span></span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>        Password <span class="op">=</span> <span class="st">&quot;&quot;</span><span class="op">,</span></span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>        Ssl <span class="op">=</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 连接池大小</span></span>
+<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a>        MaxDirectMultiplexConnections <span class="op">=</span> <span class="dv">100</span><span class="op">,</span></span>
+<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a>        KeepAlive <span class="op">=</span> <span class="dv">180</span><span class="op">,</span></span>
+<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a>        ConnectRetry <span class="op">=</span> <span class="dv">3</span><span class="op">,</span></span>
+<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a>        ReconnectRetryPolicy <span class="op">=</span> <span class="kw">new</span> <span class="fu">ExponentialRetry</span><span class="op">(</span><span class="dv">5000</span><span class="op">)</span></span>
+<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span>
+<span id="cb29-32"><a href="#cb29-32" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span></code></pre></div>
+<h3 id="监控和日志">3.9 监控和日志</h3>
+<h4 id="缓存命中率监控">3.9.1 缓存命中率监控</h4>
+<div class="sourceCode" id="cb30"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> CacheMonitor</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> IDistributedCache _cache<span class="op">;</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> ILogger<span class="op">&lt;</span>CacheMonitor<span class="op">&gt;</span> _logger<span class="op">;</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">long</span> _cacheHits<span class="op">;</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">long</span> _cacheMisses<span class="op">;</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">double</span> HitRate <span class="op">=&gt;</span> _cacheHits <span class="op">/</span> <span class="op">(</span><span class="dt">double</span><span class="op">)(</span>_cacheHits <span class="op">+</span> _cacheMisses<span class="op">);</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> async Task<span class="op">&lt;</span>T<span class="op">&gt;</span> GetOrCreateAsync<span class="op">&lt;</span>T<span class="op">&gt;(</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>        <span class="dt">string</span> key<span class="op">,</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>        Func<span class="op">&lt;</span>Task<span class="op">&lt;</span>T<span class="op">&gt;&gt;</span> factory<span class="op">,</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>        TimeSpan<span class="op">?</span> expiration <span class="op">=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>        <span class="dt">byte</span><span class="op">[]</span> cachedData <span class="op">=</span> await _cache<span class="op">.</span><span class="fu">GetAsync</span><span class="op">(</span>key<span class="op">);</span></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> <span class="op">(</span>cachedData <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>            Interlocked<span class="op">.</span><span class="fu">Increment</span><span class="op">(</span><span class="kw">ref</span> _cacheHits<span class="op">);</span></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>            _logger<span class="op">.</span><span class="fu">LogDebug</span><span class="op">(</span><span class="st">&quot;Cache hit for key: {Key}&quot;</span><span class="op">,</span> key<span class="op">);</span></span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> JsonSerializer<span class="op">.</span><span class="fu">Deserialize</span><span class="op">&lt;</span>T<span class="op">&gt;(</span>cachedData<span class="op">);</span></span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>        Interlocked<span class="op">.</span><span class="fu">Increment</span><span class="op">(</span><span class="kw">ref</span> _cacheMisses<span class="op">);</span></span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a>        _logger<span class="op">.</span><span class="fu">LogDebug</span><span class="op">(</span><span class="st">&quot;Cache miss for key: {Key}&quot;</span><span class="op">,</span> key<span class="op">);</span></span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a>        T value <span class="op">=</span> await <span class="fu">factory</span><span class="op">();</span></span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a>        <span class="dt">byte</span><span class="op">[]</span> serializedData <span class="op">=</span> JsonSerializer<span class="op">.</span><span class="fu">SerializeToUtf8Bytes</span><span class="op">(</span>value<span class="op">);</span></span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a>        await _cache<span class="op">.</span><span class="fu">SetAsync</span><span class="op">(</span>key<span class="op">,</span> serializedData<span class="op">,</span> </span>
+<span id="cb30-31"><a href="#cb30-31" aria-hidden="true" tabindex="-1"></a>            <span class="kw">new</span> DistributedCacheEntryOptions</span>
+<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span></span>
+<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a>                AbsoluteExpirationRelativeToNow <span class="op">=</span> expiration <span class="op">??</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">)</span></span>
+<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a>            <span class="op">});</span></span>
+<span id="cb30-35"><a href="#cb30-35" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb30-36"><a href="#cb30-36" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> value<span class="op">;</span></span>
+<span id="cb30-37"><a href="#cb30-37" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb30-38"><a href="#cb30-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-39"><a href="#cb30-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">LogStatistics</span><span class="op">()</span></span>
+<span id="cb30-40"><a href="#cb30-40" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb30-41"><a href="#cb30-41" aria-hidden="true" tabindex="-1"></a>        _logger<span class="op">.</span><span class="fu">LogInformation</span><span class="op">(</span></span>
+<span id="cb30-42"><a href="#cb30-42" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;Cache statistics - Hits: {Hits}, Misses: {Misses}, Hit Rate: {HitRate:P2}&quot;</span><span class="op">,</span></span>
+<span id="cb30-43"><a href="#cb30-43" aria-hidden="true" tabindex="-1"></a>            _cacheHits<span class="op">,</span> _cacheMisses<span class="op">,</span> HitRate<span class="op">);</span></span>
+<span id="cb30-44"><a href="#cb30-44" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb30-45"><a href="#cb30-45" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h4 id="性能监控">3.9.2 性能监控</h4>
+<div class="sourceCode" id="cb31"><pre
+class="sourceCode csharp"><code class="sourceCode cs"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> CachePerformanceMonitor</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> IDistributedCache _cache<span class="op">;</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="kw">readonly</span> ILogger<span class="op">&lt;</span>CachePerformanceMonitor<span class="op">&gt;</span> _logger<span class="op">;</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> async Task<span class="op">&lt;</span>T<span class="op">&gt;</span> GetOrCreateAsync<span class="op">&lt;</span>T<span class="op">&gt;(</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>        <span class="dt">string</span> key<span class="op">,</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>        Func<span class="op">&lt;</span>Task<span class="op">&lt;</span>T<span class="op">&gt;&gt;</span> factory<span class="op">,</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>        TimeSpan<span class="op">?</span> expiration <span class="op">=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>        <span class="dt">var</span> stopwatch <span class="op">=</span> Stopwatch<span class="op">.</span><span class="fu">StartNew</span><span class="op">();</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>        <span class="dt">byte</span><span class="op">[]</span> cachedData <span class="op">=</span> await _cache<span class="op">.</span><span class="fu">GetAsync</span><span class="op">(</span>key<span class="op">);</span></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> <span class="op">(</span>cachedData <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>            stopwatch<span class="op">.</span><span class="fu">Stop</span><span class="op">();</span></span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>            _logger<span class="op">.</span><span class="fu">LogDebug</span><span class="op">(</span></span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;Cache hit for key: {Key}, Latency: {Latency}ms&quot;</span><span class="op">,</span></span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>                key<span class="op">,</span> stopwatch<span class="op">.</span><span class="fu">ElapsedMilliseconds</span><span class="op">);</span></span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> JsonSerializer<span class="op">.</span><span class="fu">Deserialize</span><span class="op">&lt;</span>T<span class="op">&gt;(</span>cachedData<span class="op">);</span></span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>        stopwatch<span class="op">.</span><span class="fu">Restart</span><span class="op">();</span></span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>        T value <span class="op">=</span> await <span class="fu">factory</span><span class="op">();</span></span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>        stopwatch<span class="op">.</span><span class="fu">Stop</span><span class="op">();</span></span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>        _logger<span class="op">.</span><span class="fu">LogDebug</span><span class="op">(</span></span>
+<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;Cache miss for key: {Key}, DB Query Latency: {Latency}ms&quot;</span><span class="op">,</span></span>
+<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a>            key<span class="op">,</span> stopwatch<span class="op">.</span><span class="fu">ElapsedMilliseconds</span><span class="op">);</span></span>
+<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a>        stopwatch<span class="op">.</span><span class="fu">Restart</span><span class="op">();</span></span>
+<span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a>        <span class="dt">byte</span><span class="op">[]</span> serializedData <span class="op">=</span> JsonSerializer<span class="op">.</span><span class="fu">SerializeToUtf8Bytes</span><span class="op">(</span>value<span class="op">);</span></span>
+<span id="cb31-35"><a href="#cb31-35" aria-hidden="true" tabindex="-1"></a>        await _cache<span class="op">.</span><span class="fu">SetAsync</span><span class="op">(</span>key<span class="op">,</span> serializedData<span class="op">,</span> </span>
+<span id="cb31-36"><a href="#cb31-36" aria-hidden="true" tabindex="-1"></a>            <span class="kw">new</span> DistributedCacheEntryOptions</span>
+<span id="cb31-37"><a href="#cb31-37" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span></span>
+<span id="cb31-38"><a href="#cb31-38" aria-hidden="true" tabindex="-1"></a>                AbsoluteExpirationRelativeToNow <span class="op">=</span> expiration <span class="op">??</span> TimeSpan<span class="op">.</span><span class="fu">FromHours</span><span class="op">(</span><span class="dv">1</span><span class="op">)</span></span>
+<span id="cb31-39"><a href="#cb31-39" aria-hidden="true" tabindex="-1"></a>            <span class="op">});</span></span>
+<span id="cb31-40"><a href="#cb31-40" aria-hidden="true" tabindex="-1"></a>        stopwatch<span class="op">.</span><span class="fu">Stop</span><span class="op">();</span></span>
+<span id="cb31-41"><a href="#cb31-41" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb31-42"><a href="#cb31-42" aria-hidden="true" tabindex="-1"></a>        _logger<span class="op">.</span><span class="fu">LogDebug</span><span class="op">(</span></span>
+<span id="cb31-43"><a href="#cb31-43" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;Cache set for key: {Key}, Write Latency: {Latency}ms&quot;</span><span class="op">,</span></span>
+<span id="cb31-44"><a href="#cb31-44" aria-hidden="true" tabindex="-1"></a>            key<span class="op">,</span> stopwatch<span class="op">.</span><span class="fu">ElapsedMilliseconds</span><span class="op">);</span></span>
+<span id="cb31-45"><a href="#cb31-45" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb31-46"><a href="#cb31-46" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> value<span class="op">;</span></span>
+<span id="cb31-47"><a href="#cb31-47" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb31-48"><a href="#cb31-48" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h2 id="四总结">四、总结</h2>
+<p>Redis作为业界领先的分布式缓存解决方案，在.NET技术栈中有着广泛的应用。通过本文的介绍，我们了解到：</p>
+<h3 id="分布式缓存的核心价值">4.1 分布式缓存的核心价值</h3>
+<ol type="1">
+<li><strong>解决数据库负载问题</strong>：通过缓存热点数据，大幅减少数据库查询</li>
+<li><strong>提升系统响应速度</strong>：内存访问比数据库访问快几个数量级</li>
+<li><strong>保证数据一致性</strong>：跨服务器共享缓存数据，避免数据不一致</li>
+<li><strong>提升系统可扩展性</strong>：支持水平扩展，应对高并发场景</li>
+</ol>
+<h3 id="net技术栈的最佳实践">4.2 .NET技术栈的最佳实践</h3>
+<ol type="1">
+<li><strong>使用官方推荐方案</strong>：采用<code>Microsoft.Extensions.Caching.StackExchangeRedis</code></li>
+<li><strong>合理设计缓存策略</strong>：根据业务场景选择合适的过期策略</li>
+<li><strong>防护缓存问题</strong>：实现穿透、击穿、雪崩的防护机制</li>
+<li><strong>优化性能</strong>：使用批量操作、高性能序列化器、连接池优化</li>
+<li><strong>监控和日志</strong>：建立完善的监控体系，持续优化缓存效果</li>
+</ol>
+<h3 id="实施建议">4.3 实施建议</h3>
+<ol type="1">
+<li><strong>渐进式实施</strong>：从核心功能开始，逐步扩展到全系统</li>
+<li><strong>充分测试</strong>：在测试环境充分验证缓存策略和性能</li>
+<li><strong>持续优化</strong>：根据监控数据持续优化缓存配置</li>
+<li><strong>文档完善</strong>：建立完善的缓存使用文档和规范</li>
+</ol>
+<p>通过合理使用Redis分布式缓存，可以显著提升.NET应用的性能和可靠性，为系统的稳定运行提供有力保障。</p>
+<h2 id="参考文档">参考文档</h2>
+<h3 id="microsoft官方文档">Microsoft官方文档</h3>
+<ul>
+<li><a
+href="https://learn.microsoft.com/zh-cn/aspnet/core/performance/caching/overview?view=aspnetcore-9.0">ASP.NET
+Core 中的缓存概述</a></li>
+<li><a
+href="https://learn.microsoft.com/zh-cn/azure/redis/dotnet-how-to-use-azure-redis-cache">快速入门:在
+.NET Framework 中使用 Azure Redis 缓存</a></li>
+<li><a
+href="https://learn.microsoft.com/zh-cn/azure/architecture/web-apps/guides/enterprise-app-patterns/reliable-web-app/dotnet/guidance">适用于
+.NET 的可靠 Web 应用模式</a></li>
+<li><a
+href="https://learn.microsoft.com/zh-cn/dotnet/aspire/caching/caching-integrations">使用
+Aspire 集成实现缓存</a></li>
+<li><a
+href="https://learn.microsoft.com/zh-cn/dotnet/aspire/caching/stackexchange-redis-integration">Aspire
+Redis 集成</a></li>
+</ul>
+<h3 id="redis官方文档">Redis官方文档</h3>
+<ul>
+<li><a href="https://redis.io/">Redis官方网站</a></li>
+<li><a href="https://redis.io/commands">Redis命令参考</a></li>
+<li><a href="https://redis.io/topics/data-types">Redis数据类型</a></li>
+</ul>
+<h3 id="技术博客和文章">技术博客和文章</h3>
+<ul>
+<li><a
+href="https://blog.csdn.net/Z123C456H/article/details/151070058">Redis缓存三兄弟:穿透、击穿、雪崩</a></li>
+<li><a
+href="https://blog.csdn.net/qq_37515544/article/details/152307289">亿级流量系统Redis缓存架构:防御缓存击穿、雪崩与穿透的完整解决方案</a></li>
+<li><a
+href="http://m.toutiao.com/group/7585848764624978458">缓存穿透、缓存击穿、缓存雪崩</a></li>
+</ul>
+<h3 id="技术对比文章">技术对比文章</h3>
+<ul>
+<li><a
+href="https://www.cnblogs.com/mark-chen/articles/18633554">分布式缓存
+Redis和Memcached的区别</a></li>
+<li><a
+href="http://m.toutiao.com/group/7413942422998221362/">Redis和Memcached区别详解(5大核心区别)</a></li>
+<li><a
+href="https://blog.csdn.net/2501_91246186/article/details/146540986">分布式缓存系统
+Redis vs Memcached 性能对比</a></li>
+</ul>
+
+                </article>
+            </div>
+        </section>
+
+        <!-- 右侧热门文章 -->
+        <aside class="popular-sidebar">
+            <div class="popular-header">
+                <h3>热门文章</h3>
+            </div>
+            <div class="popular-list" id="popular-list">
+                <!-- 动态生成的热门文章列表 -->
+            </div>
+        </aside>
+    </main>
+
+    <!-- JavaScript -->
+    <script type="module" src="/script.js?v=2.2.0"></script>
+</body>
+</html>

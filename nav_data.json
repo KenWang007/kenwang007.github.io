@@ -205,6 +205,19 @@
       ]
     },
     {
+      "title": "如何使用Redis解决分布式缓存",
+      "id": "0c0f2df114f9",
+      "slug": null,
+      "url": "dist/p/0c0f2df114f9.html",
+      "original_path": "notes/软件设计/Cache/How-to-use-Redis-distributed-cache.html",
+      "keywords": [
+        "Redis",
+        "Redis解决分布式缓存",
+        "如何使用",
+        "解决分布式缓存"
+      ]
+    },
+    {
       "title": "💾 软件架构中的缓存设计全解析",
       "id": "91a234a11ad5",
       "slug": "how-to-use-cache",
@@ -440,5 +453,5 @@
       "subdirs": []
     }
   ],
-  "generated_at": 1769785587.340179
+  "generated_at": 1769828963.96749
 }
