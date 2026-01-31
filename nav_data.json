@@ -173,8 +173,8 @@
       "url": "dist/p/post-bdc928dcc6fb.html",
       "original_path": "notes/AI相关/Tools/Ollama/OpenwebUI/how-cursor-help-software-delivery.html",
       "keywords": [
-        "AI",
         "Cursor",
+        "AI",
         "驱动的代码编辑器"
       ]
     },
@@ -259,6 +259,20 @@
       "original_path": "notes/软件设计/Python-learning.html",
       "keywords": [
         "变量与数据类型"
+      ]
+    },
+    {
+      "title": "什么是 RPC：从\"像本地调用一样\"到 gRPC/WCF 的工程实践（.NET 技术栈）",
+      "id": "bcc88dc845e2",
+      "slug": null,
+      "url": "dist/p/bcc88dc845e2.html",
+      "original_path": "notes/软件设计/RPC/什么是RPC.html",
+      "keywords": [
+        "RPC",
+        "WCF",
+        "NET",
+        "什么是",
+        "像本地调用一样"
       ]
     },
     {
@@ -440,6 +454,15 @@
           "url": "dist/c/643d05dbc4ef/index.html",
           "has_posts": true,
           "subdirs": []
+        },
+        {
+          "name": "RPC",
+          "path": "notes/软件设计/RPC",
+          "id": "57ec901bbf8f",
+          "slug": null,
+          "url": "dist/c/57ec901bbf8f/index.html",
+          "has_posts": true,
+          "subdirs": []
         }
       ]
     },
@@ -453,5 +476,5 @@
       "subdirs": []
     }
   ],
-  "generated_at": 1769831039.473081
+  "generated_at": 1769837466.234129
 }

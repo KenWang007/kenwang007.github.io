@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="page-article">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="什么是 RPC：从"像本地调用一样"到 gRPC/WCF 的工程实践（.NET 技术栈） - 关键词: RPC, WCF, NET">
+    <meta name="keywords" content="RPC, WCF, NET, 什么是, 像本地调用一样">
+    <meta name="author" content="Ken Wang">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://kenwang007.github.io/dist/p/bcc88dc845e2.html">
+    <meta property="og:title" content="什么是 RPC：从"像本地调用一样"到 gRPC/WCF 的工程实践（.NET 技术栈） - Ken的知识库">
+    <meta property="og:description" content="什么是 RPC：从"像本地调用一样"到 gRPC/WCF 的工程实践（.NET 技术栈） - 关键词: RPC, WCF, NET">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://kenwang007.github.io/dist/p/bcc88dc845e2.html">
+    <meta property="twitter:title" content="什么是 RPC：从"像本地调用一样"到 gRPC/WCF 的工程实践（.NET 技术栈） - Ken的知识库">
+    <meta property="twitter:description" content="什么是 RPC：从"像本地调用一样"到 gRPC/WCF 的工程实践（.NET 技术栈） - 关键词: RPC, WCF, NET">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#6366f1">
+    
+    <title>什么是 RPC：从"像本地调用一样"到 gRPC/WCF 的工程实践（.NET 技术栈） - Ken的知识库</title>
+    <link rel="stylesheet" href="/style.css?v=2.1.2">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%236366f1%22>📚</text></svg>">
+    <link rel="canonical" href="https://kenwang007.github.io/dist/p/bcc88dc845e2.html">
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
+    <!-- RSS Feed -->
+    <link rel="alternate" type="application/rss+xml" title="Ken的知识库 RSS Feed" href="/rss.xml">
+    
+    <!-- Breadcrumb Navigation -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "首页",
+          "item": "https://kenwang007.github.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "什么是 RPC：从"像本地调用一样"到 gRPC/WCF 的工程实践（.NET 技术栈）",
+          "item": "https://kenwang007.github.io/dist/p/bcc88dc845e2.html"
+        }
+      ]
+    }
+    </script>
+    
+    <!-- Article Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "什么是 RPC：从"像本地调用一样"到 gRPC/WCF 的工程实践（.NET 技术栈）",
+      "description": "什么是 RPC：从"像本地调用一样"到 gRPC/WCF 的工程实践（.NET 技术栈） - 关键词: RPC, WCF, NET",
+      "author": {
+        "@type": "Person",
+        "name": "Ken Wang"
+      },
+      "datePublished": "2026-01-31T13:30:43.802769",
+      "dateModified": "2026-01-31T13:30:43.802769",
+      "inLanguage": "zh-CN"
+    }
+    </script>
+</head>
+<body>
+    <!-- 星空背景 -->
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+
+    <!-- 顶部固定导航 -->
+    <header class="top-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="/index.html">
+                    <span class="logo-text">📚 Ken的知识库</span>
+                </a>
+            </div>
+            <nav class="main-nav">
+                <ul id="nav-menu" class="nav-menu">
+                    <!-- 动态生成的导航菜单项 -->
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <!-- 左侧固定关键词索引 -->
+        <aside class="keyword-sidebar">
+            <div class="keyword-header">
+                <h3>关键词索引</h3>
+            </div>
+            <div class="keyword-list" id="keyword-list">
+                <!-- 动态生成的关键词 -->
+            </div>
+        </aside>
+
+        <!-- 中间主内容 -->
+        <section class="content-area">
+            <div class="content-wrapper">
+                <article class="markdown-content">
+                    
+<h1
+id="什么是-rpc从像本地调用一样到-grpcwcf-的工程实践.net-技术栈">什么是
+RPC：从”像本地调用一样”到 gRPC/WCF 的工程实践（.NET 技术栈）</h1>
+<h2 id="导读">0. 导读</h2>
+<p>RPC（Remote Procedure
+Call，远程过程调用）是分布式系统里最经典的一类服务调用抽象：<strong>让你用”调用函数/方法”的方式去触发远端服务执行，并拿到返回结果</strong>。</p>
+<p>gRPC
+官方介绍把它描述为：客户端可以像调用本地对象一样调用不同机器上的服务方法，从而更容易构建分布式应用与服务，并且基于”定义服务接口（方法、参数、返回值）“这一
+RPC 思路来实现（同时也强调客户端 stub/服务端实现的概念）。</p>
+<hr />
+<h2 id="什么是-rpc从根源到现状从现象到本质">1. 什么是
+RPC：从根源到现状，从现象到本质</h2>
+<h3 id="从过程调用procedure-call开始本地调用的关键体验">1.1
+从”过程调用（Procedure Call）“开始：本地调用的关键体验</h3>
+<p>在同一进程内调用一个函数，开发者天然得到以下体验：</p>
+<ul>
+<li>调用方把参数”放到约定的位置”（栈/寄存器/对象等）</li>
+<li>控制流转移到被调用者</li>
+<li>被调用者执行完成后返回</li>
+<li>调用方从约定位置取回返回值并继续执行</li>
+</ul>
+<p><strong>RPC
+的设计目标</strong>就是把上面这套”本地调用体验”扩展到跨进程/跨机器的场景。</p>
+<h3 id="rpc-的模型权威定义请求-响应callreply-阻塞等待">1.2 RPC
+的模型（权威定义）：请求-响应（call/reply）+ 阻塞等待</h3>
+<p>IETF 的 ONC RPC（RFC 5531）把 RPC 模型描述得非常清楚：</p>
+<ul>
+<li>控制流在逻辑上”穿过”两个进程：调用方进程与服务端进程</li>
+<li>调用方发送 <code>call message</code>
+并等待（block）<code>reply message</code></li>
+<li><code>call message</code> 携带参数，<code>reply message</code>
+携带结果</li>
+</ul>
+<p>用序列图表达这个模型：</p>
+<pre class="mermaid"><code>sequenceDiagram
+  participant Caller as 调用方进程
+  participant ClientStub as Client Stub/Proxy
+  participant Network as 网络/传输
+  participant ServerStub as Server Stub/Skeleton
+  participant Server as 服务端实现
+
+  Caller-&gt;&gt;ClientStub: 调用本地方法（看起来像本地调用）
+  ClientStub-&gt;&gt;ClientStub: 参数编组/序列化（marshalling）
+  ClientStub-&gt;&gt;Network: 发送 call message
+  Network-&gt;&gt;ServerStub: 接收 call message
+  ServerStub-&gt;&gt;ServerStub: 反序列化/解组（unmarshalling）
+  ServerStub-&gt;&gt;Server: 调用真实业务方法
+  Server--&gt;&gt;ServerStub: 返回结果/异常
+  ServerStub-&gt;&gt;Network: 发送 reply message
+  Network-&gt;&gt;ClientStub: 接收 reply message
+  ClientStub-&gt;&gt;ClientStub: 反序列化为返回值/异常
+  ClientStub--&gt;&gt;Caller: 返回给调用方（或抛异常）</code></pre>
+<blockquote>
+<p>注意：RFC 5531
+也明确指出这是”示例模型”，协议本身不限制并发模型（服务端可多线程/异步等）。</p>
+</blockquote>
+<h3 id="现象-vs-本质rpc-到底帮你屏蔽了什么">1.3 现象 vs 本质：RPC
+到底”帮你屏蔽”了什么？</h3>
+<p>很多同学理解 RPC
+只停留在”像调用本地方法一样调用远端服务”。从工程角度看，RPC
+屏蔽的是<strong>一整套分布式调用链路</strong>：</p>
+<ul>
+<li><strong>接口契约（Contract/IDL）</strong>：描述可调用的方法、参数、返回值。
+<ul>
+<li>gRPC 明确采用 contract-first，并默认用 protobuf 的
+<code>.proto</code> 作为 IDL。</li>
+</ul></li>
+<li><strong>代理/桩代码生成（Stub/Proxy
+Generation）</strong>：把”远端方法”映射为本地可调用的方法。
+<ul>
+<li>gRPC 在 .NET 里会为服务端生成抽象基类，为客户端生成具体 client
+类型。</li>
+</ul></li>
+<li><strong>参数编组与序列化（Marshalling/Serialization）</strong>：把语言内对象变成可传输字节。
+<ul>
+<li>gRPC 在 Microsoft Learn 文档里明确提到 protobuf
+的二进制序列化可减少网络使用。</li>
+</ul></li>
+<li><strong>传输与连接管理（Transport/Channel）</strong>：连接复用、超时、消息大小限制等。
+<ul>
+<li>.NET gRPC client 以 <code>GrpcChannel</code>
+表示到服务的长连接（long-lived connection）。</li>
+</ul></li>
+<li><strong>错误传播（Error
+Propagation）</strong>：远端抛出的异常/错误如何映射到调用方。
+<ul>
+<li>Orleans 文档说明：当 grain 方法抛异常，Orleans 会跨 host
+传播异常（并要求异常可序列化）。</li>
+</ul></li>
+</ul>
+<h3 id="一句话总结rpc-的本质">1.4 一句话总结：RPC 的本质</h3>
+<p><strong>RPC 的本质</strong>：</p>
+<ul>
+<li><strong>用”过程/方法调用语义”封装”跨网络的请求-响应交互”</strong>（RFC
+5531 的 call/reply 模型）。</li>
+<li><strong>用契约/桩代码/序列化/传输抽象</strong>把分布式细节尽量隐藏，让调用方以更贴近编程语言的方式使用远端能力。</li>
+</ul>
+<hr />
+<h2 id="rpc-与其他服务调用方式有没有本质差别">2. RPC
+与其他服务调用方式：有没有本质差别？</h2>
+<p>这里给出一个务实结论：</p>
+<ul>
+<li><strong>从”网络交互”角度</strong>：无论
+RPC、REST、消息队列，本质都是跨进程通信。</li>
+<li><strong>从”抽象与约束”角度</strong>：RPC 与
+REST/消息的关键差异在于它们对”接口形态、交互风格、耦合方式”的约束不同。</li>
+</ul>
+<h3 id="rpc-vs-rest统一接口-vs-特定接口">2.1 RPC vs REST：统一接口 vs
+特定接口</h3>
+<p>Fielding 在 REST 论文中指出：REST
+与其他网络风格的核心区别在于强调”统一接口（Uniform
+Interface）“。统一接口能简化整体架构并提升可见性/可演进性，但代价是效率下降，因为信息以标准化形式传输，而不是针对应用的特定形式。</p>
+<p>因此：</p>
+<ul>
+<li><strong>RPC 更偏向”特定接口（specific
+interface）“</strong>：方法名、参数、返回值都强绑定到服务能力。</li>
+<li><strong>REST 更偏向”统一接口 + 资源表述”</strong>：用统一语义（如
+HTTP 方法）对资源进行操作，强调整体可演进与通用性。</li>
+</ul>
+<h3 id="rpc-vs-异步消息message-broker-queue同步耦合-vs-时间解耦">2.2 RPC
+vs 异步消息（Message Broker / Queue）：同步耦合 vs 时间解耦</h3>
+<p>Azure Architecture Center 指出，消息代理（message
+broker）能够在”生成消息的生产者”和”使用消息的消费者”之间解耦，并提供<strong>时间解耦（temporal
+decoupling）</strong>：生产者与消费者不必同时在线；生产者不必等待消费者完成长耗时操作；通过消息实现异步处理。</p>
+<p>因此：</p>
+<ul>
+<li><strong>RPC
+更像”我现在要你立刻执行并给我结果”</strong>（同步请求-响应的调用语义很强）。</li>
+<li><strong>消息更像”我发出一个命令/事件，什么时候处理由系统决定”</strong>（异步、缓冲、削峰、解耦）。</li>
+</ul>
+<h3 id="rpc-vs-事件驱动发布订阅点对点调用-vs-广播语义">2.3 RPC vs
+事件驱动/发布订阅：点对点调用 vs 广播语义</h3>
+<p>在事件驱动里：</p>
+<ul>
+<li>生产者往往不关心具体哪个消费者处理，也不一定期待”同步返回值”。</li>
+<li>典型目标是解耦与可扩展（多消费者、可重放、最终一致）。</li>
+</ul>
+<p>这类交互从抽象上就与 RFC 5531 描述的
+call/reply（调用方等待回复）不同。</p>
+<h3 id="多维度对比表">2.4 多维度对比表</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>维度</th>
+<th>RPC（典型）</th>
+<th>REST（典型）</th>
+<th>异步消息（典型）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>抽象</td>
+<td>方法/过程调用</td>
+<td>资源 + 表述 + 统一接口</td>
+<td>消息/命令/事件</td>
+</tr>
+<tr>
+<td>交互形态</td>
+<td>call/reply（常见为同步等待）</td>
+<td>请求/响应（语义统一、可缓存）</td>
+<td>生产-消费（时间解耦）</td>
+</tr>
+<tr>
+<td>接口约束</td>
+<td>强契约（方法签名）</td>
+<td>统一接口约束（Fielding）</td>
+<td>消息契约（事件 schema）</td>
+</tr>
+<tr>
+<td>耦合</td>
+<td>客户端对服务接口耦合较强</td>
+<td>对资源模型/统一语义耦合</td>
+<td>生产者与消费者通过 broker 解耦</td>
+</tr>
+<tr>
+<td>典型收益</td>
+<td>开发体验贴近代码、性能可控</td>
+<td>可见性/通用性/可缓存/可演进</td>
+<td>缓冲削峰、解耦、异步处理</td>
+</tr>
+<tr>
+<td>典型代价</td>
+<td>版本演进、错误语义、超时重试等复杂</td>
+<td>统一接口可能牺牲效率（Fielding）</td>
+<td>需要幂等/补偿/最终一致等工程能力</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="net-技术栈下的-rpc-实现方式有哪些含结构图">3. .NET 技术栈下的
+RPC 实现方式有哪些（含结构图）</h2>
+<h3 id="grpc-on-asp.net-core现代-.net-的主流-rpc-路线">3.1 gRPC on
+ASP.NET Core：现代 .NET 的主流 RPC 路线</h3>
+<p>Microsoft Learn 对 gRPC 的定位是：高性能、轻量、契约优先、默认
+protobuf、支持多种
+streaming，并可用于高效率微服务、跨语言系统、实时点对点服务。</p>
+<p>同时，ASP.NET Core gRPC 文档明确：<strong>gRPC requires
+HTTP/2</strong>，并给出了 Kestrel 上 HTTP/2 + TLS 的建议配置。</p>
+<p>结构图（逻辑视角）：</p>
+<pre class="mermaid"><code>flowchart LR
+  A[.NET Client App] --&gt; B[Generated gRPC Client (Stub)]
+  B --&gt; C[GrpcChannel (long-lived connection)]
+  C --&gt; D[HTTP/2 + TLS]
+  D --&gt; E[Kestrel + ASP.NET Core]
+  E --&gt; F[Generated Service Base (Skeleton)]
+  F --&gt; G[Your Service Implementation]</code></pre>
+<h3 id="wcf.net-framework经典企业级-rpc服务框架soap">3.2 WCF（.NET
+Framework）：经典企业级 RPC/服务框架（SOAP）</h3>
+<p>WCF 的核心卖点是”可配置的通信栈”：通过 bindings/behaviors/services
+等配置决定传输（HTTP/TCP/命名管道等）、安全、可靠性等。</p>
+<p>WCF 的两个典型 binding 示例：</p>
+<ul>
+<li><code>basicHttpBinding</code>：使用 HTTP 发送 SOAP 1.1 消息、强调与
+WS-I BP 1.1/ASMX 等互操作；默认文本编码；安全默认关闭。</li>
+<li><code>netTcpBinding</code>：默认传输安全 + TCP +
+二进制编码；面向内网 WCF 通信；默认配置相比 <code>wsHttpBinding</code>
+更快，并通过配置选择性开启能力（例如可靠消息）。</li>
+</ul>
+<p>结构图（典型代理+binding 栈视角）：</p>
+<pre class="mermaid"><code>flowchart LR
+  A[Client App] --&gt; B[WCF Client Proxy]
+  B --&gt; C[Binding Stack
+Transport+Encoding+Security+Reliability]
+  C --&gt; D[(Network)]
+  D --&gt; E[Binding Stack]
+  E --&gt; F[ServiceHost]
+  F --&gt; G[Service Implementation]</code></pre>
+<h3 id="corewcf把-wcf-服务端带到现代-.net迁移路径">3.3 CoreWCF：把 WCF
+服务端带到现代 .NET（迁移路径）</h3>
+<p>Microsoft Learn 提供了把 .NET Framework 上的 WCF Server-side
+项目升级到 CoreWCF（.NET 6）的迁移指导，并指出该工具使用 CoreWCF
+来完成自托管 WCF 服务端的迁移。</p>
+<p>CoreWCF 官网也明确给出定位：CoreWCF 是一个基于 WCF 的 .NET Core Web
+Services 框架。</p>
+<h3 id="wcf-客户端在现代-.net-的现实依赖-nuget-包-目标框架约束">3.4 WCF
+客户端在现代 .NET 的现实：依赖 NuGet 包 + 目标框架约束</h3>
+<p>Microsoft Learn 明确说明：WCF Client 6.0 目标为 .NET 6 且不再支持
+.NET Standard 2.0；并给出建议（例如多目标框架、移除部分已废弃包）。</p>
+<p>生成客户端代理方面，Microsoft Learn 描述 <code>dotnet-svcutil</code>
+可从 WSDL 或网络服务元数据生成 WCF
+客户端代理方法，并且是跨平台工具。</p>
+<h3 id="json-rpcstreamjsonrpc轻量-rpc-协议-可自选传输">3.5
+JSON-RPC（StreamJsonRpc）：轻量 RPC 协议 + 可自选传输</h3>
+<p>JSON-RPC 2.0 规范明确：JSON-RPC 是一种无状态、轻量的 RPC
+协议，并且”传输无关”（transport agnostic），可用于进程内、socket、HTTP
+等多种消息环境。</p>
+<p>在 .NET 生态里，StreamJsonRpc 在 NuGet 的描述中明确：它实现了
+JSON-RPC 线协议，并可运行在 Stream/WebSocket/System.IO.Pipelines
+之上，独立于底层传输。</p>
+<p>结构图（协议与传输分层视角）：</p>
+<pre class="mermaid"><code>flowchart TB
+  subgraph App[你的应用]
+    A1[Client Methods] --&gt; A2[JSON-RPC Serializer]
+    A3[Server Methods] --&gt; A4[JSON-RPC Handler]
+  end
+
+  subgraph Transport[可替换传输]
+    T1[Stream] 
+    T2[WebSocket]
+    T3[System.IO.Pipelines]
+  end
+
+  A2 --&gt; Transport
+  Transport --&gt; A4</code></pre>
+<h3
+id="orleans以代理对象grain-reference方式做分布式方法调用rpc-like">3.6
+Orleans：以”代理对象（grain
+reference）“方式做分布式方法调用（RPC-like）</h3>
+<p>Orleans 文档说明：grain reference 是一个实现相同 grain interface
+的代理对象，你用它来调用目标 grain；它代表逻辑身份、与物理位置无关。</p>
+<p>Orleans
+同时强调其编程模型基于异步编程（async/await），并描述调用方式与异常传播。</p>
+<hr />
+<h2 id="net-技术栈主流-rpc-方案对比优缺点-集成-场景">4. .NET 技术栈主流
+RPC 方案对比（优缺点 / 集成 / 场景）</h2>
+<blockquote>
+<p>说明：这里的”主流”以 .NET
+工程实践中常见方案为主，且每个条目的关键特性都对应官方/规范/权威来源。</p>
+</blockquote>
+<table>
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 12%" />
+</colgroup>
+<thead>
+<tr>
+<th>方案</th>
+<th>契约/接口</th>
+<th>传输与协议</th>
+<th>Streaming</th>
+<th>主要优势</th>
+<th>主要局限</th>
+<th>适用场景</th>
+<th>典型集成方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gRPC on ASP.NET Core</td>
+<td><code>.proto</code>（contract-first，默认 protobuf）</td>
+<td>gRPC over HTTP/2；服务端建议 TLS</td>
+<td>支持 client/server/双向 streaming</td>
+<td>高性能、轻量、强类型代码生成、适合微服务/跨语言/实时点对点</td>
+<td>浏览器直连受限（常需 gRPC-Web）；HTTP/2/TLS/代理环境需要配置</td>
+<td>内网微服务、跨语言系统、实时流式接口</td>
+<td>ASP.NET Core 托管 gRPC；客户端用 <code>Grpc.Net.Client</code> 或
+<code>Grpc.Net.ClientFactory</code></td>
+</tr>
+<tr>
+<td>WCF（.NET Framework）</td>
+<td>.NET Contract（接口/属性）+ 元数据（WSDL）</td>
+<td>多种 binding（HTTP/TCP 等）、SOAP；可配置安全/可靠等</td>
+<td>取决于 binding/模式</td>
+<td>传统企业集成成熟、互操作（如 <code>basicHttpBinding</code>）</td>
+<td>服务端主要在 .NET Framework；现代 .NET 侧需要迁移或选替代</td>
+<td>传统 SOA、对 SOAP/WS-* 依赖、与 ASMX/旧系统互通</td>
+<td><code>svcutil</code>/配置驱动 binding；服务端
+<code>ServiceHost</code></td>
+</tr>
+<tr>
+<td>CoreWCF</td>
+<td>WCF 风格</td>
+<td>基于 WCF 概念迁移到 .NET 6+</td>
+<td>取决于实现</td>
+<td>迁移 WCF 服务端到现代 .NET 的路径</td>
+<td>生态/能力与 WCF 完整度受限于项目现状；需要评估兼容面</td>
+<td>WCF 服务端现代化、逐步迁移</td>
+<td>参考 Microsoft 升级指导与 CoreWCF 文档</td>
+</tr>
+<tr>
+<td>JSON-RPC（协议）+ StreamJsonRpc（.NET 库）</td>
+<td>JSON-RPC 方法名+参数（规范定义数据结构与规则）</td>
+<td>传输无关（transport agnostic）；StreamJsonRpc 支持
+Stream/WebSocket/Pipelines</td>
+<td>取决于上层设计；可做通知/请求</td>
+<td>协议简单、实现轻量、对传输选择自由</td>
+<td>标准化治理能力（鉴权、IDL、版本）需自行设计</td>
+<td>IDE/工具集成、进程间通信、轻量服务调用</td>
+<td>直接引用 StreamJsonRpc；自定义传输（Stream/WebSocket 等）</td>
+</tr>
+<tr>
+<td>Orleans（RPC-like）</td>
+<td>Grain interface</td>
+<td>Orleans runtime 负责路由与调用</td>
+<td>以异步为主；可组合 Task 模式</td>
+<td>代理对象/位置透明、天然分布式对象模型、异步编程模型明确</td>
+<td>属于分布式运行时体系，不是”纯协议”；引入平台依赖</td>
+<td>分布式业务域建模、状态ful actor、复杂并发/隔离需求</td>
+<td>使用 Orleans SDK；通过 grain reference 调用</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="选择-grpc.net进行代码示例讲解">5. 选择
+gRPC（.NET）进行代码示例讲解</h2>
+<blockquote>
+<p>选择理由：Microsoft Learn 在 gRPC
+概览里强调其高性能、轻量、契约优先、默认 protobuf、支持多种
+streaming，且适配现代 .NET/微服务场景。</p>
+</blockquote>
+<h3 id="定义契约.proto先把远端可调用的方法签名写清楚">5.1
+定义契约（<code>.proto</code>）：先把”远端可调用的方法签名”写清楚</h3>
+<p>Microsoft Learn 明确：gRPC 使用 contract-first，默认使用
+protobuf（<code>.proto</code>）作为 IDL；<code>.proto</code>
+中包含服务定义与消息定义。</p>
+<p>示例 <code>greet.proto</code>（与 Microsoft 文档示例结构一致）：</p>
+<pre><code class="language-proto"><code class="sourceCode protobuf"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>syntax = <span class="st">&quot;proto3&quot;</span>;</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">option</span> csharp_namespace = <span class="st">&quot;GrpcGreeter&quot;</span>;</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span> greet;</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>service Greeter {</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  rpc SayHello (HelloRequest) returns (HelloReply);</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="kw">message</span> HelloRequest {</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">string</span> name = <span class="dv">1</span>;</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="kw">message</span> HelloReply {</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">string</span> <span class="kw">message</span> = <span class="dv">1</span>;</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h3 id="生成服务端骨架service-base并实现业务逻辑">5.2
+生成服务端骨架（Service Base）并实现业务逻辑</h3>
+<p>Microsoft Learn 描述：服务端会生成抽象 service
+base，开发者通过继承并重写方法实现业务逻辑。</p>
+<p>示例（最小可理解版）：</p>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> GreeterService <span class="op">:</span> Greeter<span class="op">.</span><span class="fu">GreeterBase</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">override</span> Task<span class="op">&lt;</span>HelloReply<span class="op">&gt;</span> <span class="fu">SayHello</span><span class="op">(</span>HelloRequest request<span class="op">,</span> ServerCallContext context<span class="op">)</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        <span class="op">=&gt;</span> Task<span class="op">.</span><span class="fu">FromResult</span><span class="op">(</span><span class="kw">new</span> HelloReply <span class="op">{</span> Message <span class="op">=</span> <span class="st">&quot;Hello &quot;</span> <span class="op">+</span> request<span class="op">.</span><span class="fu">Name</span> <span class="op">});</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="在-asp.net-core-托管-grpc注意-http2-与-tls">5.3 在 ASP.NET Core
+托管 gRPC：注意 HTTP/2 与 TLS</h3>
+<p>Microsoft Learn 明确：gRPC requires HTTP/2，并建议 Kestrel 上的 gRPC
+endpoint 使用 TLS，并给出生产环境显式配置 TLS 的方式。</p>
+<p>概念性 <code>Program.cs</code>（示意如何注册与映射服务）：</p>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dt">var</span> builder <span class="op">=</span> WebApplication<span class="op">.</span><span class="fu">CreateBuilder</span><span class="op">(</span>args<span class="op">);</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddGrpc</span><span class="op">();</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="dt">var</span> app <span class="op">=</span> builder<span class="op">.</span><span class="fu">Build</span><span class="op">();</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">MapGrpcService</span><span class="op">&lt;</span>GreeterService<span class="op">&gt;();</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">Run</span><span class="op">();</span></span></code></pre></div>
+<h3 id="客户端调用channel长连接-强类型-client">5.4
+客户端调用：Channel（长连接）+ 强类型 Client</h3>
+<p>Microsoft Learn 指出：gRPC client 从 channel 创建；channel 表示到
+gRPC 服务的 long-lived connection；并展示了
+<code>GrpcChannel.ForAddress</code> 的典型用法。</p>
+<p>示例：</p>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> <span class="dt">var</span> channel <span class="op">=</span> GrpcChannel<span class="op">.</span><span class="fu">ForAddress</span><span class="op">(</span><span class="st">&quot;https://localhost:5001&quot;</span><span class="op">);</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="dt">var</span> client <span class="op">=</span> <span class="kw">new</span> Greeter<span class="op">.</span><span class="fu">GreeterClient</span><span class="op">(</span>channel<span class="op">);</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="dt">var</span> reply <span class="op">=</span> await client<span class="op">.</span><span class="fu">SayHelloAsync</span><span class="op">(</span><span class="kw">new</span> HelloRequest <span class="op">{</span> Name <span class="op">=</span> <span class="st">&quot;World&quot;</span> <span class="op">});</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>Console<span class="op">.</span><span class="fu">WriteLine</span><span class="op">(</span>reply<span class="op">.</span><span class="fu">Message</span><span class="op">);</span></span></code></pre></div>
+<h3 id="更推荐的客户端集成httpclientfactorygrpc-client-factory">5.5
+更推荐的客户端集成：<code>HttpClientFactory</code>（gRPC client
+factory）</h3>
+<p>Microsoft Learn 给出：gRPC 与 <code>HttpClientFactory</code>
+集成提供集中配置、管理底层 handler 生命周期、并在 ASP.NET Core gRPC
+服务中自动传播 deadline 与 cancellation。</p>
+<p>示例（在 <code>Program.cs</code> 注册 typed client）：</p>
+<pre><code class="language-csharp"><code class="sourceCode cs"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>builder<span class="op">.</span><span class="fu">Services</span><span class="op">.</span><span class="fu">AddGrpcClient</span><span class="op">&lt;</span>Greeter<span class="op">.</span><span class="fu">GreeterClient</span><span class="op">&gt;(</span>o <span class="op">=&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    o<span class="op">.</span><span class="fu">Address</span> <span class="op">=</span> <span class="kw">new</span> <span class="fu">Uri</span><span class="op">(</span><span class="st">&quot;https://localhost:5001&quot;</span><span class="op">);</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span></code></pre></div>
+<h3 id="典型踩坑点与最佳实践只列官方明确指出的部分">5.6
+典型”踩坑点”与最佳实践（只列官方明确指出的部分）</h3>
+<ul>
+<li><strong>HTTP/2 是硬性前提</strong>：文档明确 “gRPC requires
+HTTP/2”。</li>
+<li><strong>避免在异步代码里使用阻塞方法</strong>：Microsoft Learn 在
+unary call
+部分明确提示：阻塞方法不要在异步代码中使用，否则会导致性能与可靠性问题。</li>
+</ul>
+<hr />
+<h2 id="选型建议什么时候优先考虑-rpc">6. 选型建议：什么时候优先考虑
+RPC？</h2>
+<p>你可以把 RPC 的适用场景理解为：</p>
+<ul>
+<li><strong>你需要强类型、强契约、低开销、高频调用</strong>（例如内部微服务间调用）</li>
+<li><strong>你需要”像代码一样”的调用体验</strong>，并希望通过代码生成降低接口联调成本</li>
+<li><strong>你明确接受同步 call/reply
+带来的耦合</strong>，并能在工程上处理超时、重试、限流、熔断等问题</li>
+</ul>
+<p>反之，如果你的核心诉求是时间解耦、削峰填谷、异步处理、跨团队松耦合，Azure
+Architecture Center 对 message broker 的解耦与 temporal decoupling
+描述更符合这类需求。</p>
+<hr />
+<h2 id="参考资料">参考资料</h2>
+<ol type="1">
+<li>RFC 5531: RPC: Remote Procedure Call Protocol Specification Version
+2
+<ul>
+<li>https://www.rfc-editor.org/rfc/rfc5531</li>
+</ul></li>
+<li>Microsoft Learn - Overview for gRPC on .NET
+<ul>
+<li>https://learn.microsoft.com/en-us/aspnet/core/grpc/?view=aspnetcore-10.0</li>
+</ul></li>
+<li>Microsoft Learn - gRPC services with ASP.NET Core
+<ul>
+<li>https://learn.microsoft.com/en-us/aspnet/core/grpc/aspnetcore?view=aspnetcore-9.0</li>
+</ul></li>
+<li>Microsoft Learn - gRPC services with C#
+<ul>
+<li>https://learn.microsoft.com/en-us/aspnet/core/grpc/basics?view=aspnetcore-10.0</li>
+</ul></li>
+<li>Microsoft Learn - Call gRPC services with .NET client
+<ul>
+<li>https://learn.microsoft.com/en-us/aspnet/core/grpc/client?view=aspnetcore-10.0</li>
+</ul></li>
+</ol>
+
+                </article>
+            </div>
+        </section>
+
+        <!-- 右侧热门文章 -->
+        <aside class="popular-sidebar">
+            <div class="popular-header">
+                <h3>热门文章</h3>
+            </div>
+            <div class="popular-list" id="popular-list">
+                <!-- 动态生成的热门文章列表 -->
+            </div>
+        </aside>
+    </main>
+
+    <!-- JavaScript -->
+    <script type="module" src="/script.js?v=2.2.0"></script>
+    
+    <!-- Initialize Highlight.js -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Highlight all code blocks
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        });
+    </script>
+</body>
+</html>
